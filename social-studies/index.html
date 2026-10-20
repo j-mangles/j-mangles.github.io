@@ -1,0 +1,1249 @@
+<!doctype html>
+<html lang="en">
+<head>
+<title>Societies of the Past Atlas</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%231c2b3a'/%3E%3Cpath d='M9 22c3-6 5-11 7-12s2 5 7 2' stroke='%23e0b14f' stroke-width='2.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<style>*,*::before,*::after{box-sizing:border-box}body{margin:0;font-family:system-ui,sans-serif;font-size:14px}img{max-width:100%}[hidden]{display:none!important}</style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Spectral:ital,wght@0,500;0,600;1,500&display=swap">
+<style>
+/* Layout: full-screen atlas. Header with unit tabs, map + timeline on the left, reading panel on the right (stacks below on phones). */
+:root{
+  --bg:#eef2f3; --panel:#fbfcfc; --ink:#1c2b3a; --muted:#5b6977; --rule:#cfd8dd;
+  --ocean:#d3e1e8; --land:#f1efe6; --coast:#9fb0ba; --grat:#c3d3db;
+  --river:#2c6e9b; --accent:#b8862a; --route:#b4552d; --farm:#6f8f3e; --halo:#f1efe6; --halo-sea:#d3e1e8;
+  --good:#2e7d4f; --bad:#b23b2e;
+  --f-display:"Spectral", Cambria, Georgia, serif;
+  --f-ui:"IBM Plex Sans", Calibri, "Segoe UI", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f1a23; --panel:#15222d; --ink:#e4eaee; --muted:#93a3b0; --rule:#2a3a47;
+  --ocean:#13222e; --land:#26343f; --coast:#4c5f6c; --grat:#1d2f3c;
+  --river:#6fb0de; --accent:#e0b14f; --route:#e48a5c; --farm:#9dbb63; --halo:#26343f; --halo-sea:#13222e;
+  --good:#6cc08f; --bad:#ef7b6c; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1a23; --panel:#15222d; --ink:#e4eaee; --muted:#93a3b0; --rule:#2a3a47;
+  --ocean:#13222e; --land:#26343f; --coast:#4c5f6c; --grat:#1d2f3c;
+  --river:#6fb0de; --accent:#e0b14f; --route:#e48a5c; --farm:#9dbb63; --halo:#26343f; --halo-sea:#13222e;
+  --good:#6cc08f; --bad:#ef7b6c; color-scheme:dark}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-ui);font-size:16px;line-height:1.45;overflow:hidden}
+button{font:inherit;color:inherit}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.app{height:100%;display:grid;grid-template-rows:auto 1fr}
+
+/* header */
+.top{display:flex;flex-wrap:wrap;align-items:center;gap:10px 22px;padding-block:10px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));border-bottom:1px solid var(--rule);background:var(--panel)}
+.brand{display:flex;flex-direction:column;line-height:1.1}
+.brand small{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.brand h1{margin:2px 0 0;font-family:var(--f-display);font-weight:600;font-size:22px;letter-spacing:.01em}
+.tabs{display:flex;gap:2px;overflow-x:auto;flex:1 1 380px;min-width:0;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{background:none;border:0;padding:8px 10px 7px;border-bottom:2px solid transparent;white-space:nowrap;cursor:pointer;color:var(--muted);font-weight:500;font-size:15px}
+.tab b{font-variant-numeric:tabular-nums;font-weight:600;margin-right:5px;color:var(--muted)}
+.tab:hover{color:var(--ink)}
+.tab[aria-current="true"]{color:var(--ink);border-bottom-color:var(--ink)}
+.tab[aria-current="true"] b{color:var(--accent)}
+.tab.soon{opacity:.62}
+.tab .soonlab{font-size:10px;letter-spacing:.1em;text-transform:uppercase;margin-left:6px;font-weight:600}
+.controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.seg{display:flex;border:1px solid var(--rule);border-radius:7px;overflow:hidden}
+.seg button{background:none;border:0;padding:7px 12px;cursor:pointer;font-size:14px;font-weight:500;color:var(--muted)}
+.seg button+button{border-left:1px solid var(--rule)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--panel)}
+.seg button:disabled{opacity:.4;cursor:not-allowed}
+.tog{background:none;border:1px solid var(--rule);border-radius:7px;padding:7px 10px;font-size:13px;cursor:pointer;color:var(--muted)}
+.tog[aria-pressed="true"]{color:var(--ink);border-color:var(--ink)}
+
+/* body */
+.main{display:grid;grid-template-columns:minmax(0,1fr) 370px;min-height:0}
+.mapcol{display:grid;grid-template-rows:1fr auto;min-height:0;min-width:0}
+.mapwrap{position:relative;min-height:0;overflow:hidden;background:var(--bg)}
+#map{display:block;width:100%;height:100%;cursor:grab;touch-action:none}
+#map.quiz{cursor:crosshair}
+.zoombtns{position:absolute;right:12px;bottom:12px;display:flex;flex-direction:column;border:1px solid var(--rule);border-radius:7px;overflow:hidden;background:var(--panel)}
+.zoombtns button{border:0;background:none;width:36px;height:34px;cursor:pointer;font-size:18px;line-height:1}
+.zoombtns button+button{border-top:1px solid var(--rule)}
+.note{position:absolute;left:12px;bottom:12px;max-width:min(420px,70%);background:var(--panel);border:1px solid var(--rule);border-radius:7px;padding:8px 11px;font-size:13px;color:var(--muted)}
+.legend{position:absolute;left:12px;top:12px;display:flex;gap:12px;flex-wrap:wrap;background:color-mix(in srgb,var(--panel) 88%,transparent);border:1px solid var(--rule);border-radius:7px;padding:6px 10px;font-size:12px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:5px}
+
+/* quiz banner */
+.banner{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:max-content;max-width:calc(100% - 24px);background:var(--panel);border:1px solid var(--rule);border-radius:9px;box-shadow:0 6px 24px rgba(0,0,0,.12);padding:10px 16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:center}
+.banner .q{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.banner .target{font-family:var(--f-display);font-size:30px;font-weight:600;line-height:1.1}
+.banner .count{font-variant-numeric:tabular-nums;color:var(--muted);font-size:14px}
+.banner .res{font-weight:600}
+.banner .res.ok{color:var(--good)} .banner .res.no{color:var(--bad)}
+.btn{background:var(--ink);color:var(--panel);border:0;border-radius:7px;padding:8px 14px;font-weight:600;cursor:pointer;font-size:14px}
+.btn.ghost{background:none;color:var(--ink);border:1px solid var(--rule)}
+
+/* timeline */
+.timeline{border-top:1px solid var(--rule);background:var(--panel);overflow-x:auto;padding-block:10px 12px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:16px}
+.tl-head{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:6px;white-space:nowrap}
+.tl{display:flex;position:relative;min-width:max-content}
+.tl::before{content:"";position:absolute;left:0;right:0;top:27px;height:1px;background:var(--rule)}
+.stop{position:relative;background:none;border:0;text-align:left;padding:0 18px 0 0;width:150px;cursor:pointer;display:grid;grid-template-rows:auto 14px auto;gap:2px}
+.stop .d{font-size:12px;font-weight:600;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.stop .dot{width:9px;height:9px;border-radius:50%;background:var(--panel);border:2px solid var(--ink);margin-top:1px;position:relative;z-index:1}
+.stop .t{font-size:13.5px;line-height:1.3}
+.stop:hover .t{text-decoration:underline;text-underline-offset:3px}
+.stop.on .dot{background:var(--accent);border-color:var(--accent)}
+.stop.soon{opacity:.55}
+.tl.units-tl .stop{width:220px}
+
+/* panel */
+.panel{border-left:1px solid var(--rule);background:var(--panel);overflow-y:auto;min-width:0;padding:22px 24px 28px;padding-right:max(24px,env(safe-area-inset-right,0px))}
+.eyebrow{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.eyebrow .now{color:var(--accent)}
+.panel h2{font-family:var(--f-display);font-weight:600;font-size:32px;line-height:1.1;margin:6px 0 4px;text-wrap:balance}
+.span{color:var(--muted);font-variant-numeric:tabular-nums;font-size:15px}
+.panel p{margin:12px 0 0;font-size:17px;max-width:62ch}
+.panel h3{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:24px 0 6px;padding-bottom:6px;border-bottom:1px solid var(--rule)}
+.plist{list-style:none;margin:0;padding:0}
+.plist button{display:grid;grid-template-columns:16px 1fr auto;align-items:baseline;gap:8px;width:100%;background:none;border:0;border-bottom:1px solid color-mix(in srgb,var(--rule) 60%,transparent);padding:8px 2px;text-align:left;cursor:pointer;font-size:15.5px}
+.plist button:hover .nm{text-decoration:underline;text-underline-offset:3px}
+.plist .dt{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.plist svg{align-self:center}
+.back{background:none;border:0;padding:0;color:var(--muted);cursor:pointer;font-size:14px;margin-bottom:14px}
+.back:hover{color:var(--ink)}
+.meta{display:flex;flex-wrap:wrap;gap:4px 14px;color:var(--muted);font-size:14.5px;margin-top:2px}
+.fine{font-size:13.5px !important;color:var(--muted)}
+.units{list-style:none;margin:0;padding:0}
+.units button{width:100%;display:grid;grid-template-columns:30px 1fr;gap:10px;align-items:start;background:none;border:0;border-bottom:1px solid color-mix(in srgb,var(--rule) 60%,transparent);padding:11px 2px;text-align:left;cursor:pointer}
+.units .n{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-weight:600;font-size:13px;background:var(--ink);color:var(--panel);font-variant-numeric:tabular-nums}
+.units .soon .n{background:none;border:1.5px solid var(--muted);color:var(--muted)}
+.units .nm{font-weight:600;font-size:16px}
+.units .sub{display:block;font-size:13.5px;color:var(--muted)}
+.tag{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;margin-left:6px;color:var(--accent)}
+.score{font-family:var(--f-display);font-size:56px;font-weight:600;line-height:1;margin-top:10px;font-variant-numeric:tabular-nums}
+.ptabs{display:flex;gap:18px;margin-top:18px;border-bottom:1px solid var(--rule)}
+.ptabs button{background:none;border:0;border-bottom:2px solid transparent;padding:6px 0;margin-bottom:-1px;font-weight:600;font-size:14px;color:var(--muted);cursor:pointer}
+.ptabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--ink)}
+.lessons{list-style:none;margin:6px 0 0;padding:0}
+.lessons button{display:grid;grid-template-columns:38px 1fr auto;align-items:center;gap:10px;width:100%;background:none;border:0;border-bottom:1px solid color-mix(in srgb,var(--rule) 60%,transparent);padding:10px 2px;text-align:left;cursor:pointer;font-size:15.5px}
+.lessons .ln{font-variant-numeric:tabular-nums;font-weight:600;font-size:13px;color:var(--muted);border:1px solid var(--rule);border-radius:6px;text-align:center;padding:3px 0}
+.lessons .st{font-size:12px;color:var(--muted);white-space:nowrap}
+.lessons .st.ok{color:var(--good);font-weight:600}
+.lessons button:hover .nm{text-decoration:underline;text-underline-offset:3px}
+.lessons .locked{opacity:.55}
+.callout{border-left:3px solid var(--accent);padding:2px 0 2px 14px;margin-top:14px}
+.callout p{margin:6px 0 0}
+/* lesson sheet */
+.sheet{position:fixed;inset:0;z-index:50;background:color-mix(in srgb,var(--bg) 55%,rgba(0,0,0,.45));display:flex;justify-content:center;align-items:flex-start;padding-top:max(24px,env(safe-area-inset-top,0px));padding-bottom:24px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));overflow-y:auto}
+.sheet-card{background:var(--panel);border:1px solid var(--rule);border-radius:10px;box-shadow:0 18px 50px rgba(0,0,0,.25);width:min(780px,100%);padding:26px 30px 30px;position:relative}
+.sheet-card h2{font-family:var(--f-display);font-weight:600;font-size:34px;line-height:1.1;margin:6px 0 0;text-wrap:balance}
+.sheet-card h3{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:26px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--rule)}
+.sheet-card p,.sheet-card li{font-size:17px;max-width:66ch}
+.sheet-card ul.notes{margin:0;padding-left:20px;display:grid;gap:8px}
+.sheet-close{position:absolute;top:14px;right:14px;background:none;border:1px solid var(--rule);border-radius:7px;width:36px;height:36px;font-size:20px;cursor:pointer;line-height:1}
+.big{font-family:var(--f-display);font-size:21px;line-height:1.35;margin:0}
+dl.terms{display:grid;grid-template-columns:minmax(120px,auto) 1fr;gap:6px 18px;margin:0}
+dl.terms dt{font-weight:600}
+dl.terms dd{margin:0;color:var(--ink)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{background:none;border:1px solid var(--rule);border-radius:7px;padding:6px 11px;font-size:14px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.chip:hover{border-color:var(--ink)}
+.q{margin-top:16px}
+.q .qt{font-weight:600;font-size:16.5px}
+.q .opts{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.opt{background:none;border:1px solid var(--rule);border-radius:7px;padding:8px 12px;font-size:15px;cursor:pointer;text-align:left}
+.opt:hover:not(:disabled){border-color:var(--ink)}
+.opt:disabled{cursor:default}
+.opt.right{border-color:var(--good);color:var(--good);font-weight:600}
+.opt.wrong{border-color:var(--bad);color:var(--bad);text-decoration:line-through}
+.q .why{font-size:14.5px;color:var(--muted);margin-top:6px}
+.qscore{margin-top:18px;font-weight:600}
+.sheet-nav{display:flex;justify-content:space-between;gap:10px;margin-top:28px;flex-wrap:wrap}
+.missed{margin-top:18px;padding:12px 14px;border:1px solid var(--rule);border-radius:8px;font-size:15px}
+.missed b{display:block;margin-bottom:2px}
+.hero{margin:16px 0 0;}
+.hero img,.gal img{display:block;width:100%;height:auto;border-radius:6px;border:1px solid var(--rule);cursor:zoom-in;background:var(--bg)}
+.hero img{max-height:420px;object-fit:contain}
+figcaption{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.35}
+.gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
+.gal figure{margin:0;min-width:0}
+.gal img{aspect-ratio:4/3;object-fit:cover}
+.placeimg{margin:14px 0 0}
+.placeimg img{display:block;width:100%;max-height:220px;object-fit:cover;border-radius:6px;border:1px solid var(--rule);cursor:zoom-in}
+.lightbox{position:fixed;inset:0;z-index:70;background:rgba(10,14,18,.88);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px max(16px,env(safe-area-inset-right,0px)) 24px max(16px,env(safe-area-inset-left,0px));cursor:zoom-out}
+.lightbox img{max-width:100%;max-height:82vh;object-fit:contain;border-radius:6px}
+.lightbox p{color:#dde3e8;font-size:14px;max-width:70ch;text-align:center;margin:0}
+.diagram{overflow-x:auto;margin-top:14px}
+.diagram svg{display:block;min-width:620px;width:100%;height:auto}
+.l-cat{font:italic 500 12.5px var(--f-ui);fill:var(--muted)}
+.mk-cat{fill:var(--panel);stroke:var(--river);stroke-width:2}
+@media (max-width: 860px){.sheet-card{padding:22px 18px 24px}.sheet-card h2{font-size:28px}dl.terms{grid-template-columns:1fr}dl.terms dd{margin-bottom:8px}}
+
+/* map svg */
+.sphere{fill:var(--ocean)}
+.grat{fill:none;stroke:var(--grat);stroke-width:.6;vector-effect:non-scaling-stroke}
+.land{fill:var(--land)}
+.coast{fill:none;stroke:var(--coast);stroke-width:.8;vector-effect:non-scaling-stroke}
+.border{fill:none;stroke:var(--muted);stroke-width:.7;stroke-dasharray:3 3;vector-effect:non-scaling-stroke;opacity:.7}
+.crescent{fill:var(--farm);opacity:.16;stroke:var(--farm);stroke-opacity:.5;stroke-width:1;stroke-dasharray:4 4;vector-effect:non-scaling-stroke}
+.river{fill:none;stroke:var(--river);stroke-width:2.2;stroke-linejoin:round;stroke-linecap:round;vector-effect:non-scaling-stroke}
+.river.minor{stroke-width:1.4;opacity:.75}
+.river.hit{stroke:var(--accent);stroke-width:5}
+.route{fill:none;stroke:var(--route);stroke-width:2;stroke-dasharray:7 5;vector-effect:non-scaling-stroke;opacity:.9}
+.pl{cursor:pointer}
+.pl text{paint-order:stroke;stroke:var(--halo);stroke-width:3.5px;stroke-linejoin:round}
+.l-city{font:600 14px var(--f-ui);fill:var(--ink)}
+.l-water{font:italic 500 15.5px var(--f-display);fill:var(--river)}
+.pl text.l-water{stroke:var(--halo-sea)}
+.l-river{font:italic 500 15px var(--f-display);fill:var(--river)}
+.l-region{font:600 12px var(--f-ui);letter-spacing:.3em;fill:var(--muted);text-transform:uppercase}
+.l-mtn{font:600 11.5px var(--f-ui);letter-spacing:.22em;fill:var(--muted);text-transform:uppercase}
+.l-cont{font:600 13px var(--f-ui);letter-spacing:.42em;fill:var(--muted);opacity:.75}
+.l-route{font:italic 500 14px var(--f-display);fill:var(--route)}
+.mk-city{fill:var(--ink);stroke:var(--halo);stroke-width:1.5}
+.mk-site{fill:var(--accent);stroke:var(--halo);stroke-width:1.5}
+.mk-unc{fill:none;stroke:var(--ink);stroke-width:1.6;stroke-dasharray:3 2.5}
+.faint{fill:var(--muted);opacity:.55}
+.anchor circle{fill:var(--ink);stroke:var(--halo);stroke-width:2}
+.anchor text.num{font:600 14px var(--f-ui);fill:var(--panel);stroke:none}
+.anchor text.anm{font:600 15px var(--f-ui);fill:var(--ink)}
+.anchor.soon circle{fill:var(--halo);stroke:var(--muted);stroke-width:1.6}
+.anchor.soon text.num{fill:var(--muted)}
+.anchor.soon text.anm{fill:var(--muted);font-weight:500}
+.selring{fill:none;stroke:var(--accent);stroke-width:3}
+.pulse{fill:none;stroke:var(--accent);stroke-width:3;animation:pulse 1.4s ease-out infinite}
+@keyframes pulse{from{r:8;opacity:1}to{r:26;opacity:0}}
+.fb-line{stroke:var(--bad);stroke-width:2;stroke-dasharray:5 4;fill:none}
+.fb-x{stroke:var(--bad);stroke-width:3;stroke-linecap:round}
+.fb-x.ok{stroke:var(--good)}
+.fb-true circle{fill:var(--good);stroke:var(--halo);stroke-width:2}
+.fb-true text{font:600 15px var(--f-ui);fill:var(--ink);paint-order:stroke;stroke:var(--halo);stroke-width:3.5px}
+@media (prefers-reduced-motion: reduce){.pulse{animation:none;r:14}}
+
+@media (max-width: 860px){
+  body{overflow:auto}
+  .app{height:auto;min-height:100%}
+  .main{grid-template-columns:1fr}
+  .mapcol{grid-template-rows:62vh auto}
+  .panel{border-left:0;border-top:1px solid var(--rule);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+  .brand h1{font-size:19px}
+  .banner .target{font-size:24px}
+  .legend{display:none}
+}
+</style>
+
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <div class="brand"><small>Grade 8 Social Studies</small><h1>Societies of the Past Atlas</h1></div>
+    <nav class="tabs" id="tabs" aria-label="Units"></nav>
+    <div class="controls">
+      <div class="seg" id="modes" role="group" aria-label="Mode">
+        <button id="m-explore" data-mode="explore" aria-pressed="true">Explore</button>
+        <button id="m-find" data-mode="find" aria-pressed="false">Find it</button>
+        <button id="m-name" data-mode="name" aria-pressed="false">Name it</button>
+      </div>
+      <button class="tog" id="t-labels" aria-pressed="true">Labels</button>
+      <button class="tog" id="t-borders" aria-pressed="false">Modern borders</button>
+    </div>
+  </header>
+  <div class="main">
+    <div class="mapcol">
+      <div class="mapwrap" id="mapwrap">
+        <svg id="map" role="img" aria-label="Map"></svg>
+        <div class="legend" id="legend"></div>
+        <div class="banner" id="banner" hidden></div>
+        <div class="note" id="note" hidden></div>
+        <div class="zoombtns">
+          <button id="z-in" aria-label="Zoom in">+</button>
+          <button id="z-out" aria-label="Zoom out">&minus;</button>
+          <button id="z-fit" aria-label="Fit the whole unit" title="Fit view">&#8962;</button>
+        </div>
+      </div>
+      <div class="timeline" id="timeline"></div>
+    </div>
+    <aside class="panel" id="panel" aria-live="polite"></aside>
+  </div>
+  <div class="lightbox" id="lightbox" hidden><img id="lbimg" alt=""><p id="lbcap"></p></div>
+  <div class="sheet" id="sheet" hidden role="dialog" aria-modal="true" aria-label="Lesson"><div class="sheet-card" id="sheetcard"></div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+<script>
+/* ---------------------------------------------------------------
+   CONTENT. Each unit adds its own places, rivers, labels and timeline.
+   status: "done" (studied), "now" (current unit), "soon" (coming up)
+   --------------------------------------------------------------- */
+const UNITS = [
+{
+  id:"early-humans", n:1, name:"Early Humans", status:"done",
+  span:"3.7 million – 9,000 years ago",
+  bbox:[-180,-46,180,72], anchor:[36,-1], tol:500,
+  intro:"Long before cities, people lived as hunter-gatherers. The evidence for that story is spread across the whole planet: footprints, bones, stone tools, cave art and the first farming villages.",
+  footnote:"Migration routes are simplified. Scientists still debate the exact paths and dates, and new finds keep changing them.",
+  places:[
+    {id:"laetoli", name:"Laetoli", kind:"site", ll:[35.18,-3.22], lab:"l", where:"Tanzania", date:"about 3.7 million years ago",
+     text:"Footprints pressed into wet volcanic ash, then buried and preserved. They show our early ancestors were already walking upright on two feet."},
+    {id:"olduvai", name:"Olduvai Gorge", kind:"site", ll:[35.35,-2.99], lab:"r", where:"Tanzania", date:"about 2 million years ago",
+     text:"A deep canyon that cuts through layers of ancient ground, like pages in a book. Stone tools and fossils found here cover almost two million years."},
+    {id:"hadar", name:"Hadar (Lucy)", kind:"site", ll:[40.58,11.10], lab:"r", where:"Ethiopia", date:"about 3.2 million years ago",
+     text:"In 1974 scientists found about 40% of one skeleton here and nicknamed her Lucy. She was small, walked upright, and still had long arms that were good for climbing."},
+    {id:"jebel", name:"Jebel Irhoud", kind:"site", ll:[-8.87,31.85], lab:"l", where:"Morocco", date:"about 300,000 years ago",
+     text:"The oldest fossils of our own species, Homo sapiens, found so far. When they were dated in 2017, our species suddenly looked about 100,000 years older than people thought."},
+    {id:"blombos", name:"Blombos Cave", kind:"site", ll:[21.22,-34.41], lab:"r", where:"South Africa", date:"about 75,000 years ago",
+     text:"Chunks of red ochre with crosshatched lines scratched into them. It is some of the oldest evidence of people making symbols, which is a sign of minds like ours."},
+    {id:"mungo", name:"Lake Mungo", kind:"site", ll:[143.05,-33.73], lab:"l", where:"Australia", date:"about 42,000 years ago",
+     text:"Burials of a man and a woman, one sprinkled with red ochre. People had reached Australia long before this, which meant crossing open sea."},
+    {id:"chauvet", name:"Chauvet Cave", kind:"site", ll:[4.42,44.39], lab:"r", where:"France", date:"about 36,000 years ago",
+     text:"Hundreds of animal paintings, including lions, rhinos and horses. A rockfall sealed the entrance for thousands of years until it was found in 1994."},
+    {id:"lascaux", name:"Lascaux", kind:"site", ll:[1.17,45.05], lab:"l", where:"France", date:"about 17,000 years ago",
+     text:"Cave walls covered with horses, bulls and deer. It was found in 1940 by four teenagers exploring the hillside."},
+    {id:"beringia", name:"Beringia", kind:"site", ll:[-169,65.6], lab:"b", where:"Bering Strait today", date:"at least 15,000 years ago",
+     text:"During the last Ice Age, sea levels were lower and a wide land bridge joined Asia and North America. People crossed into the Americas at least 15,000 years ago, possibly much earlier."},
+    {id:"gobekli", name:"Göbekli Tepe", kind:"site", ll:[38.92,37.22], lab:"r", where:"Turkey", date:"about 11,500 years ago",
+     text:"Giant carved stone pillars arranged in circles, built by hunter-gatherers before farming began. It flipped the old idea that people only built big monuments after they settled down."},
+    {id:"catal", name:"Çatalhöyük", kind:"site", ll:[32.83,37.67], lab:"l", where:"Turkey", date:"about 9,000 years ago",
+     text:"A packed farming town with no streets. Houses were built wall to wall, and people came and went through holes in their roofs."},
+    {id:"jericho", name:"Jericho", kind:"site", ll:[35.44,31.87], lab:"bl", where:"Jordan River valley", date:"about 10,000 years ago",
+     text:"One of the oldest towns on Earth. Early farmers here built a stone wall and a tall stone tower."}
+  ],
+  labels:[
+    {text:"AFRICA", cls:"l-cont", ll:[18,4]},
+    {text:"EUROPE", cls:"l-cont", ll:[18,52]},
+    {text:"ASIA", cls:"l-cont", ll:[92,47]},
+    {text:"AUSTRALIA", cls:"l-cont", ll:[133,-24]},
+    {text:"NORTH AMERICA", cls:"l-cont", ll:[-102,44]},
+    {text:"SOUTH AMERICA", cls:"l-cont", ll:[-60,-12]},
+    {text:"Into Asia and Australia, 60,000–50,000 years ago", cls:"l-route", ll:[96,4]},
+    {text:"Into Europe, about 45,000 years ago", cls:"l-route", ll:[10,36.5]},
+    {text:"Into the Americas, 15,000+ years ago", cls:"l-route", ll:[-96,24]}
+  ],
+  routes:[
+    [[36,3],[43.4,12.6],[55,18],[72,22],[88,20],[100,12],[110,0],[125,-10],[135,-20]],
+    [[36,3],[33,15],[32,28],[35.5,33],[29,40],[20,46],[5,47]],
+    [[72,22],[70,40],[95,45],[120,50],[150,62],[-170,65.5],[-150,62],[-125,52],[-105,30],[-90,15],[-75,0],[-68,-25]]
+  ],
+  crescent:true,
+  timeline:[
+    {d:"3.7 million yrs ago", t:"Footprints at Laetoli", p:"laetoli"},
+    {d:"3.2 million yrs ago", t:"Lucy lives at Hadar", p:"hadar"},
+    {d:"2 million yrs ago", t:"Stone tools at Olduvai", p:"olduvai"},
+    {d:"300,000 yrs ago", t:"Homo sapiens at Jebel Irhoud", p:"jebel"},
+    {d:"75,000 yrs ago", t:"Symbols carved at Blombos", p:"blombos"},
+    {d:"60,000 yrs ago", t:"Groups spread out of Africa", p:null},
+    {d:"42,000 yrs ago", t:"Burials at Lake Mungo", p:"mungo"},
+    {d:"36,000 yrs ago", t:"Paintings at Chauvet", p:"chauvet"},
+    {d:"17,000 yrs ago", t:"Paintings at Lascaux", p:"lascaux"},
+    {d:"15,000+ yrs ago", t:"People reach the Americas", p:"beringia"},
+    {d:"11,500 yrs ago", t:"Göbekli Tepe built", p:"gobekli"},
+    {d:"10,000 yrs ago", t:"Farmers wall Jericho", p:"jericho"},
+    {d:"9,000 yrs ago", t:"Çatalhöyük farming town", p:"catal"}
+  ]
+},
+{
+  id:"mesopotamia", n:2, name:"Mesopotamia", status:"now",
+  span:"c. 5400 – 539 BCE",
+  bbox:[35,28.6,50,39.2], anchor:[44.5,32.5], tol:30,
+  intro:"The land between two rivers. Farmers here dug canals off the Tigris and Euphrates, grew more food than they needed, and built the world's first cities, laws and writing.",
+  footnote:"Rivers are drawn where they flow today. Over 5,000 years they have shifted, so some ancient cities like Ur that once sat on the Euphrates are now miles from it.",
+  places:[
+    {id:"eridu", name:"Eridu", kind:"city", ll:[45.99,30.82], lab:"bl", where:"southern Iraq", date:"settled c. 5400 BCE",
+     text:"Sumerian myths said kingship came down from heaven and landed at Eridu first. Archaeologists found something plainer: a tiny mudbrick shrine from about 5400 BCE, with 18 temples later built one on top of the other."},
+    {id:"ur", img:"img/ziggurat-ur.jpg", imgcap:"The Ziggurat of Ur. Photo: Hardnfast, CC BY 3.0", name:"Ur", kind:"city", ll:[46.10,30.96], lab:"r", where:"southern Iraq", date:"c. 2600–1750 BCE",
+     text:"A rich Sumerian city and home of the moon god Nanna. Enheduanna served as high priestess here, its stepped ziggurat from about 2100 BCE still stands, and the angry complaint tablet to the copper trader Ea-nasir was found in his house here."},
+    {id:"uruk", img:"img/l1-uruk.jpg", imgcap:"Uruk reconstructed (top) and today (bottom). Image from the lesson slides", name:"Uruk", kind:"city", ll:[45.64,31.32], lab:"l", where:"southern Iraq", date:"peak c. 3100 BCE",
+     text:"Around 3100 BCE it was likely the biggest city in the world, with about 50,000 people inside a wall roughly 9 km long. The earliest writing found so far comes from here. The King List names Gilgamesh as its 5th king."},
+    {id:"lagash", name:"Lagash", kind:"city", ll:[46.40,31.41], lab:"r", where:"southern Iraq", date:"c. 2450 BCE",
+     text:"A Sumerian city-state that fought a long war with its neighbour Umma over farmland and water. Lagash carved the story of its victory onto a stone monument."},
+    {id:"umma", name:"Umma", kind:"city", ll:[45.88,31.66], lab:"t", where:"southern Iraq", date:"c. 2450 BCE",
+     text:"Lagash's rival. Their border fight over fields and canals went on for generations, one of the first wars we have written records of."},
+    {id:"shuruppak", name:"Shuruppak", kind:"city", ll:[45.51,31.78], lab:"l", where:"southern Iraq", date:"flood layer c. 2900 BCE",
+     text:"In the flood stories, the flood hero came from this city. Archaeologists found a layer of river flood mud here, but it dates to a different time than the flood layers at Ur and Kish."},
+    {id:"nippur", name:"Nippur", kind:"city", ll:[45.23,32.13], lab:"r", where:"central Iraq", date:"c. 2500 BCE",
+     text:"The religious heart of Sumer and home of the temple of Enlil, god of air and storms. Kings from other cities wanted to be accepted here."},
+    {id:"kish", name:"Kish", kind:"city", ll:[44.60,32.54], lab:"r", where:"central Iraq", date:"c. 2900–2300 BCE",
+     text:"An early powerful city. The King List says Kubaba, a tavern keeper, became its king, and that young Sargon worked here as cupbearer to King Ur-Zababa before taking power himself."},
+    {id:"babylon", img:"img/l4-stele.jpg", imgcap:"Hammurabi's law stele, Louvre. Photo: Mbzt, CC BY 3.0", name:"Babylon", kind:"city", ll:[44.42,32.54], lab:"l", where:"central Iraq", date:"c. 1792 BCE onward",
+     text:"Hammurabi took the throne here around 1792 BCE, united Mesopotamia again, and carved about 282 laws onto a stone stele around 1750 BCE. Much later it became famous for the blue-tiled Ishtar Gate."},
+    {id:"akkad", name:"Akkad (lost)", kind:"unc", ll:[44.62,33.22], lab:"r", where:"central Iraq, somewhere", date:"c. 2334 BCE", quiz:false,
+     text:"Sargon built the world's first empire from this city. Archaeologists still have not found it, so this circle is only a best guess."},
+    {id:"mari", name:"Mari", kind:"city", ll:[40.89,34.55], lab:"b", where:"eastern Syria", date:"c. 1800 BCE",
+     text:"A trading city on the Euphrates, upriver from Sumer. Its palace held thousands of clay tablets: letters, contracts and records."},
+    {id:"assur", name:"Assur", kind:"city", ll:[43.26,35.46], lab:"r", where:"northern Iraq", date:"from c. 2000 BCE",
+     text:"The first capital and holy city of the Assyrians, named after their chief god, Ashur."},
+    {id:"nineveh", name:"Nineveh", kind:"city", ll:[43.15,36.36], lab:"r", where:"Mosul, northern Iraq", date:"fell 612 BCE",
+     text:"Capital of the Assyrian Empire. King Ashurbanipal's library held thousands of clay tablets, including the flood story from Gilgamesh. When enemies burned the city in 612 BCE, the fire baked the tablets hard, which helped them survive."},
+    {id:"susa", name:"Susa", kind:"site", ll:[48.25,32.19], lab:"r", where:"southwestern Iran", date:"stele found 1901",
+     text:"Not a Mesopotamian city, but this is where archaeologists found Hammurabi's law stele in 1901. Enemies had carried it off as war loot centuries after Hammurabi. Today it's in the Louvre in Paris."},
+    {id:"tigris", name:"Tigris River", kind:"river", ll:[44.25,34.45], lab:"c", where:"Turkey, Syria and Iraq", date:"",
+     line:[[39.4,38.5],[40.23,37.91],[41.5,37.6],[42.19,37.33],[42.8,36.9],[43.13,36.34],[43.27,35.5],[43.49,34.93],[43.68,34.6],[43.87,34.2],[44.2,33.6],[44.38,33.32],[45.0,32.9],[45.82,32.5],[46.6,32.1],[47.15,31.84],[47.43,31.0]],
+     text:"The faster and more dangerous of the two rivers. Fed by melting mountain snow, its floods could arrive suddenly and wipe out fields and villages."},
+    {id:"euphrates", name:"Euphrates River", kind:"river", ll:[42.0,34.62], lab:"c", where:"Turkey, Syria and Iraq", date:"",
+     line:[[40.0,39.7],[38.9,38.85],[38.4,37.9],[37.98,37.03],[38.0,36.82],[38.5,36.2],[39.01,35.95],[40.14,35.33],[40.92,34.45],[41.6,34.35],[42.37,34.14],[43.3,33.42],[43.78,33.35],[44.1,32.9],[44.42,32.48],[44.9,31.95],[45.29,31.31],[46.26,31.04],[46.9,30.95],[47.43,31.0]],
+     text:"The slower, calmer river, easier to dig canals from. Most early Sumerian cities were built near it."},
+    {id:"gulf", name:"Persian Gulf", kind:"water", ll:[49.5,29.15], where:"", date:"",
+     text:"Where both rivers end. Ships sailed from here to trade partners called Dilmun, Magan and Meluhha, bringing back copper, tin and lapis lazuli."},
+    {id:"zagros", name:"Zagros Mountains", kind:"mtn", ll:[47.4,33.6], rot:35, where:"western Iran", date:"",
+     text:"A wall of mountains to the east and a source of timber. The Gutians, who finished off Sargon's empire around 2154 BCE, came from these hills."},
+    {id:"taurus", name:"Taurus Mountains", kind:"mtn", ll:[40.6,38.65], where:"southeastern Turkey", date:"",
+     text:"Snow melting in these mountains every spring fed both rivers and caused their floods."},
+    {id:"desert", name:"Syrian Desert", kind:"mtn", ll:[39.4,32.6], where:"", date:"",
+     text:"Dry land to the west. Without the rivers, most of Mesopotamia would look like this."},
+    {id:"sumer", name:"Sumer", kind:"region", ll:[46.95,31.95], where:"", date:"",
+     text:"The southern region, closest to the Gulf. Home to the first city-states, each with its own lugal and patron god."},
+    {id:"akkadreg", name:"Akkad", kind:"region", ll:[43.55,32.75], where:"", date:"",
+     text:"The middle region, north of Sumer. Later it was known as Babylonia."},
+    {id:"assyria", name:"Assyria", kind:"region", ll:[41.85,36.15], where:"", date:"",
+     text:"The northern region along the upper Tigris, home of the Assyrians."},
+    {id:"crescent", name:"Fertile Crescent", kind:"water", farm:true, ll:[37.9,36.9], where:"", date:"", quiz:false,
+     text:"A curved band of good farmland from the Mediterranean coast to the Persian Gulf. Some of the world's first farming started here."}
+  ],
+  labels:[
+    {text:"Mediterranean Sea", cls:"l-water", ll:[34.5,33.2]}
+  ],
+  minor:[ [[47.43,31.0],[47.81,30.5],[48.5,29.95]] ],
+  crescent:true,
+  timeline:[
+    {d:"c. 5400 BCE", t:"A shrine is built at Eridu", p:"eridu"},
+    {d:"c. 3300 BCE", t:"Writing begins at Uruk", p:"uruk"},
+    {d:"c. 3100 BCE", t:"Uruk reaches its peak", p:"uruk"},
+    {d:"c. 2600 BCE", t:"Royal Tombs of Ur", p:"ur"},
+    {d:"c. 2450 BCE", t:"Lagash defeats Umma", p:"lagash"},
+    {d:"c. 2334 BCE", t:"Sargon builds the first empire", p:"akkad"},
+    {d:"c. 2300 BCE", t:"Enheduanna becomes high priestess", p:"ur"},
+    {d:"c. 2154 BCE", t:"Akkadian Empire collapses", p:"zagros"},
+    {d:"c. 1750 BCE", t:"Hammurabi's Code", p:"babylon"},
+    {d:"612 BCE", t:"Nineveh burns", p:"nineveh"},
+    {d:"539 BCE", t:"Persians take Babylon", p:"babylon"}
+  ],
+  lessons:[
+    {id:"l0", n:"0", title:"Where Are We in Time?", released:true, places:[], diagram:"bce",
+     big:"Historians count years from a starting point. BCE years count down toward year 1, so the bigger the BCE number, the longer ago it was.",
+     notes:[
+       "BCE means Before Common Era (the same years as BC). CE means Common Era (the same years as AD).",
+       "There is no year 0. The year 1 BCE is followed straight away by 1 CE.",
+       "On a timeline, 3300 BCE is further back than 1750 BCE.",
+       "Historians made up big labels to organize the past: Prehistory (before writing), Ancient (Mesopotamia, Egypt, Greece, Rome), the Middle Ages, and Modern times. The dates for these are rough.",
+       "Cleopatra (died 30 BCE) lived closer in time to us than to the people who built the Great Pyramid (about 2560 BCE)."
+     ],
+     terms:[["BCE","Before Common Era. Years counted backward from year 1."],["CE","Common Era. Years counted forward from year 1."],["Prehistory","The time before people had writing."]],
+     work:"Where Are We in Time? notes sheet (the timeline boxes and quick check).",
+     check:[
+       {q:"Which happened first?", a:["1750 BCE","3300 BCE"], c:1, why:"Bigger BCE number means further back in time."},
+       {q:"Put these in order, oldest first: 500 CE, 2560 BCE, 30 BCE", a:["2560 BCE, 30 BCE, 500 CE","30 BCE, 500 CE, 2560 BCE","500 CE, 30 BCE, 2560 BCE"], c:0, why:"Start with the biggest BCE number, then move into CE."},
+       {q:"Writing was invented around 3300 BCE. About how long ago was that?", a:["About 3,300 years ago","About 5,300 years ago","About 1,300 years ago"], c:1, why:"3,300 years to get to year 1, plus about 2,000 more years to now."}
+     ]},
+    {imgs:[{"src": "img/l1-uruk.jpg", "cap": "Top: a modern reconstruction of Uruk. Bottom: what's left of it today. (image from the lesson slides)"}, {"src": "img/l1-map.jpg", "cap": "Sumer's city-states sat close together along the rivers and canals. (image from the lesson slides)"}, {"src": "img/l1-kinglist.jpg", "cap": "The Sumerian King List, a clay prism that names Gilgamesh as the 5th king of Uruk. (image from the lesson slides)"}, {"src": "img/l1-gilgamesh.jpg", "cap": "An Assyrian palace carving of a hero holding a lion, often said to be Gilgamesh. It was carved about 2,000 years after he lived. (image from the lesson slides)"}, {"src": "img/ziggurat-ur.jpg", "cap": "The Ziggurat of Ur, first built c. 2100 BCE. Photo: Hardnfast, CC BY 3.0"}], id:"l1", n:"1", title:"Sumer: The First Cities", released:true, places:["uruk","eridu","ur","lagash","kish"],
+     big:"Sumer had the world's first true cities. Some of what the Sumerians said about them was history, and some was legend.",
+     notes:[
+       "Historians call a place a true city when it has a large, crowded population, people doing specialized jobs, huge buildings (monumental architecture), and an organized government.",
+       "Uruk was the first great city: about 50,000 people around 3100 BCE, a wall about 9 km long, and some of the earliest writing ever found.",
+       "Gilgamesh appears in a real document, the Sumerian King List, as the 5th king of Uruk. He was probably a real king, but the stories added things like being two-thirds god.",
+       "The myth says kingship came down from heaven to Eridu. Archaeology shows Eridu started as a tiny mudbrick shrine around 5400 BCE that grew slowly, with 18 temples built on top of each other.",
+       "Sumer was never one country. Uruk, Ur, Eridu, Lagash and Kish were separate city-states, often at war, each ruled by a lugal (\"big man\", or king) working with the priests.",
+       "Each city had a ziggurat, a stepped mudbrick temple tower. People believed the city's god lived at the top, and only priests could go inside."
+     ],
+     terms:[["City-state","A city and the farmland around it, with its own ruler."],["Lugal","Sumerian word for king. It means \"big man\"."],["Ziggurat","A huge stepped temple tower made of mudbrick."],["Sumerian King List","An ancient list of kings and how long they ruled. Useful, but it mixes history with legend."]],
+     work:"Real or Legend? The Gilgamesh Files. Sort each claim as Proven, Reasonable Guess or Just a Legend, then answer the questions.",
+     check:[
+       {q:"What does the Sumerian word lugal mean?", a:["Priest","Big man (king)","Scribe"], c:1, why:"A lugal ruled a city-state alongside the priests."},
+       {q:"\"Gilgamesh was two-thirds god.\" Which is it?", a:["Proven","Reasonable guess","Just a legend"], c:2, why:"It only shows up in the epic, never in real records."},
+       {q:"Who was allowed inside a ziggurat?", a:["Anyone in the city","Only priests","Only the king's family"], c:1, why:"The god was believed to live at the top, so only priests could enter."}
+     ]},
+    {imgs:[{"src": "img/l2-nanni.jpg", "cap": "Nanni's complaint tablet to Ea-nasir, Ur, c. 1750 BCE, British Museum. Photo: Zunkir, CC BY-SA 4.0"}, {"src": "img/l2-tokens.jpg", "cap": "A hollow clay envelope and the counting tokens sealed inside it, Susa, c. 3300 BCE, Louvre. Photo: Marie-Lan Nguyen, public domain"}, {"src": "img/l2-protocuneiform.jpg", "cap": "Proto-cuneiform tablet from Uruk, c. 3200 BCE, Louvre. Photo: Mbzt, CC BY 3.0"}, {"src": "img/l2-wedges.jpg", "cap": "How signs changed from pictures to wedges over 2,000 years. Chart: William A. Mason, 1920, public domain"}], id:"l2", n:"2", title:"Cuneiform and the First Writing", released:true, places:["uruk","ur"],
+     big:"Writing was invented to solve a boring problem: keeping track of goods. Letters, stories and laws came later.",
+     notes:[
+       "A customer named Nanni wrote a clay tablet complaining to the copper trader Ea-nasir about bad copper, about 3,750 years ago. We have it because it was found in Ea-nasir's house at Ur.",
+       "Writing grew in steps: clay tokens to count goods, then clay envelopes (bullae) holding tokens, then tablets with only numbers, then proto-cuneiform at Uruk around 3300 BCE.",
+       "Cuneiform means \"wedge-shaped\". Pressing a reed stylus into wet clay made wedges much more easily than curved pictures, so the pictures turned into wedges.",
+       "About 85% of the earliest tablets were records for running things, like counts of grain and animals.",
+       "Scribes trained at the edubba (\"tablet house\"). Most students were boys from wealthy families, and a surviving essay called \"Schooldays\" complains about getting beaten for being late or messy.",
+       "The Sumerian word for scribe was dub-sar. Cuneiform was used for about 3,000 years."
+     ],
+     terms:[["Cuneiform","Wedge-shaped writing pressed into clay."],["Stylus","The reed tool used to press wedges into clay."],["Edubba","Scribe school. It means \"tablet house\"."],["Scribe","A trained writer who kept records. In Sumerian, a dub-sar."]],
+     work:"Write It in Wedges. Includes writing your own complaint tablet using real Mesopotamian details.",
+     check:[
+       {q:"What was writing mostly used for at first?", a:["Stories and poems","Keeping records of goods","Writing laws"], c:1, why:"About 85% of the earliest tablets were records."},
+       {q:"What does cuneiform mean?", a:["Wedge-shaped","Sacred writing","Clay picture"], c:0, why:"From the Latin word cuneus, a wedge."},
+       {q:"Where does proto-cuneiform first appear, around 3300 BCE?", a:["Babylon","Uruk","Nineveh"], c:1, why:"Uruk, the first great city."}
+     ]},
+    {imgs:[{"src": "img/l3-enheduanna.jpg", "cap": "Disk of Enheduanna (she is third from the right), Ur, c. 2300 BCE, Penn Museum. Photo: Mefman00, CC BY 4.0"}, {"src": "img/ziggurat-ur.jpg", "cap": "The Ziggurat of Ur, home of the moon god Nanna, first built c. 2100 BCE. Photo: Hardnfast, CC BY 3.0"}, {"src": "img/l3-inanna.jpg", "cap": "The goddess Inanna (Ishtar) with her lion on a cylinder seal, c. 2350–2150 BCE, Oriental Institute Museum. Photo: Sailko, CC BY 3.0"}, {"src": "img/l3-worshipper.jpg", "cap": "Standing male worshipper from Tell Asmar, c. 2900–2600 BCE. Notice the huge eyes. Metropolitan Museum of Art, CC0"}], id:"l3", n:"3", title:"Gods and Priests", released:true, places:["ur","nippur","eridu"],
+     big:"In Sumer, religious power and political power were tied together. The temple could rival the palace.",
+     notes:[
+       "Enheduanna, daughter of Sargon, was high priestess of the moon god Nanna at Ur around 2300 BCE. She is often called the world's first named author.",
+       "Historians debate whether she wrote her poems herself, because every copy we have was made about 600 years later, in a later form of Sumerian.",
+       "Key gods: An (sky, head of the gods), Enlil (air and storms), Enki or Ea (water and wisdom), Inanna or Ishtar (love and war), Utu or Shamash (sun and justice), Nanna or Sin (moon).",
+       "Every city belonged to a god, who was believed to actually live in the ziggurat as a statue. Ur belonged to Nanna.",
+       "In the Atrahasis myth, the lower gods went on strike after 40 years of digging canals, so the gods made humans out of clay to do the work.",
+       "The afterlife was a dark, dusty underworld that no one came back from.",
+       "Temples owned land, employed workers like weavers, brewers, farmers and scribes, and stored and handed out grain. A high priest or priestess was called an en. Worshipper statues had huge eyes to show they never stopped paying attention to the god."
+     ],
+     terms:[["Patron god","The god a city belonged to."],["En","Sumerian title for a high priest or priestess."],["Pantheon","All the gods a people worshipped."]],
+     work:"Gods and Priests notes and assignment. Part B is The Enheduanna File: weigh the evidence about whether she wrote her poems.",
+     check:[
+       {q:"Which god did the city of Ur belong to?", a:["Enlil","Nanna, the moon god","Shamash"], c:1, why:"Enheduanna was Nanna's high priestess at Ur."},
+       {q:"In the Atrahasis myth, why did the gods create humans?", a:["To be their friends","To do the gods' hard work","To rule the earth"], c:1, why:"The lower gods went on strike, so humans were made to take over the work."},
+       {q:"Why do some historians doubt Enheduanna wrote her poems?", a:["Her name isn't on them","The copies were made about 600 years later","She couldn't read"], c:1, why:"No copy survives from her own lifetime."}
+     ]},
+    {imgs:[{"src": "img/l4-sargon-stele.jpg", "cap": "Sargon of Akkad on his victory stele, c. 2300 BCE, Louvre. Photo: ALFGRN, CC BY-SA 2.0"}, {"src": "img/l4-legend.jpg", "cap": "Clay tablet telling the legend of Sargon's birth, Louvre. Photo: 0x010C, CC BY-SA 4.0"}, {"src": "img/l4-head.jpg", "cap": "Bronze head of an Akkadian king, probably Sargon or his grandson Naram-Sin. Iraq Museum. Public domain"}, {"src": "img/l4-akkad-map.jpg", "cap": "The Akkadian Empire and its military campaigns (yellow arrows). Map: Wikimedia Commons, CC BY-SA 3.0"}], id:"l4a", n:"4A", title:"Sargon's Empire", released:true, places:["akkad","kish","ur","zagros"],
+     big:"Sargon built the first empire by conquering the Sumerian city-states. The legend about him and the plainer record tell different stories.",
+     notes:[
+       "The legend: Sargon's mother set him adrift in a reed basket on the river. A man named Akki found him and raised him as a gardener, and the goddess Ishtar made him king. Assyrian scribes copied this in the 600s BCE, over 1,500 years after Sargon.",
+       "The Sumerian King List gives a plainer story: Sargon was cupbearer (a trusted palace servant) to King Ur-Zababa of Kish, then took power and built the city of Akkad.",
+       "A humble birth and being chosen by the gods made a king look like he deserved to rule. It's the same pattern as the Gilgamesh stories.",
+       "Sargon ruled about 2334 to 2279 BCE. He conquered the Sumerian city-states and made the first empire, stretching from the Persian Gulf toward the Mediterranean.",
+       "The empire fell apart around 2154 BCE, after about 180 years, when the Gutians from the Zagros Mountains invaded. A long drought may also have helped bring it down."
+     ],
+     terms:[["City-state","One city and its farmland, with its own ruler."],["Empire","Many lands and peoples ruled by one ruler."],["Dynasty","A line of rulers from the same family."]],
+     work:"Sargon's Empire notes and assignment. Part B is Two Stories of Sargon: compare the Birth Legend with the King List.",
+     check:[
+       {q:"What was Sargon's job before he became king, according to the King List?", a:["Gardener for Ishtar","Cupbearer to the king of Kish","Scribe at Ur"], c:1, why:"He served King Ur-Zababa of Kish."},
+       {q:"What's the difference between a city-state and an empire?", a:["An empire rules many lands and peoples","A city-state is bigger","There isn't one"], c:0, why:"A city-state is one city; an empire is many under one ruler."},
+       {q:"Who finished off the Akkadian Empire around 2154 BCE?", a:["The Babylonians","The Gutians","The Egyptians"], c:1, why:"The Gutians came from the Zagros Mountains."}
+     ]},
+    {imgs:[{"src": "img/l4-stele.jpg", "cap": "Code of Hammurabi stele, Louvre. Photo: Mbzt, CC BY 3.0"}, {"src": "img/l4-shamash.jpg", "cap": "Top of the stele: Hammurabi (standing) before the sun god Shamash. Photo: Mbzt, CC BY 3.0"}, {"src": "img/l4-babylon-map.jpg", "cap": "Babylonian territory at the start and end of Hammurabi's reign. Map: MapMaster, CC BY-SA 4.0"}], id:"l4b", n:"4B", title:"The Code of Hammurabi", released:true, places:["babylon","susa","ur"],
+     big:"Written law created order, but that didn't always mean fairness.",
+     notes:[
+       "Around 1792 BCE, Hammurabi took the throne of Babylon and set out to unite Mesopotamia again.",
+       "His laws were carved on a tall black stone pillar called a stele, about 2.25 m high, with about 282 laws. It was found at Susa in 1901 and is now in the Louvre in Paris.",
+       "At the top, the sun god Shamash hands Hammurabi the laws. That was a claim that the laws came from the gods, not just the king.",
+       "It was not the first law code. The Code of Ur-Nammu, from Ur, is about 300 years older. Hammurabi's is just the most complete one that survives.",
+       "\"An eye for an eye\": the idea that the punishment should match the crime is called lex talionis.",
+       "The Code named three classes: free landowners, commoners (freed people), and enslaved people. The same crime got a different punishment depending on who the victim was."
+     ],
+     terms:[["Stele","A tall carved stone slab or pillar."],["Lex talionis","Latin for \"law of retaliation\". The punishment matches the crime."],["Law code","A written set of laws everyone is supposed to follow."]],
+     work:"Code of Hammurabi notes and assignment. Part B is You Be the Judge: predict the verdicts, then compare them to the real laws.",
+     check:[
+       {q:"Which god hands Hammurabi the laws at the top of the stele?", a:["Shamash, god of the sun and justice","Enlil","Nanna"], c:0, why:"It showed the laws came from the gods."},
+       {q:"Was the Code of Hammurabi the first law code?", a:["Yes","No, Ur-Nammu's code is about 300 years older"], c:1, why:"Hammurabi's is the most complete one to survive, not the first."},
+       {q:"Under the Code, what decided the punishment for putting out someone's eye?", a:["How old the attacker was","The victim's social class","The king's mood"], c:1, why:"Laws 196, 198 and 199 punish the same crime three different ways."}
+     ]},
+    {imgs:[{"src": "img/l5-s07-0.jpg", "cap": "A gardener lifting water with a shaduf, from an Egyptian tomb painting, c. 1250 BCE. The same tool was used in Mesopotamia. Copy by Norman de Garis Davies, public domain"}, {"src": "img/l5-s06-0.jpg", "cap": "Seal impression showing a team working an ox-drawn seeder plow, c. 1300 BCE. Drawing: Albert T. Clay, public domain"}, {"src": "img/l5-s05-0.jpg", "cap": "The Bronocice pot, Poland, c. 3500 BCE, with what may be the oldest picture of a wagon. Photo: Silar, CC BY-SA 3.0"}, {"src": "img/l5-s08-0.jpg", "cap": "Stone weights used for weighing out silver, British Museum. Photo: Geni, CC BY-SA 4.0"}, {"src": "img/l5-s09-0.jpg", "cap": "Trade routes between Mesopotamia and the Indus Valley. Map: Wikimedia Commons, CC BY-SA 3.0"}, {"src": "img/l5-s10-0.jpg", "cap": "A rebuilt mudbrick house on its ancient foundations at Ur, Iraq. Photo: Aziz1005, CC BY 4.0"}], id:"l5", n:"5", title:"Trade, Technology and Everyday Life", released:true, places:["gulf","zagros"],
+     big:"Technology and trade built the wealth that kings and priests often got the credit for.",
+     notes:[
+       "The potter's wheel is confidently credited to Mesopotamia, around 3500 BCE. Who invented the cart wheel is still debated, since wagons show up in Europe around the same time.",
+       "A plow pulled by oxen let one farmer work far more land than digging by hand.",
+       "Farmers dug canals and built levees to steer river water. A shaduf was a pole-and-bucket lever for lifting water by hand.",
+       "There were no coins anywhere yet. People traded (barter) or measured value in weighed silver or barley.",
+       "Houses were mudbrick, built around an open courtyard, with flat roofs used as extra space. People ate barley bread, drank beer, and ate dates, onions and fish. Most wore wool tunics.",
+       "Mesopotamia imported what it lacked (copper, tin, timber, lapis lazuli) and exported what it had extra (grain, wool, woven cloth)."
+     ],
+     terms:[["Shaduf","A pole-and-bucket lever for lifting water."],["Barter","Trading goods for goods, with no money."],["Levee","A raised bank that keeps a river from flooding fields."]],
+     work:"A Day in Sumer. Sort the trade goods, pick a role, and write one ordinary day in that person's life.",
+     check:[
+       {q:"How did Mesopotamians pay for things?", a:["Gold coins","Weighed silver or barley","Paper money"], c:1, why:"Coins weren't invented until the 600s BCE."},
+       {q:"Which of these did Mesopotamia have to import?", a:["Grain","Wool","Copper"], c:2, why:"The river valley had rich soil but little metal, stone or timber."},
+       {q:"What was a shaduf for?", a:["Lifting water","Grinding grain","Writing"], c:0, why:"A pole-and-bucket lever for irrigation."}
+     ]},
+    {imgs:[{"src": "img/l6-s09-0.jpg", "cap": "Commoners lead animals and carry goods (lower rows) while the elite feast above. Standard of Ur, British Museum. Public domain"}, {"src": "img/l6-s03-0.jpg", "cap": "The Sumerian King List on a clay prism, c. 1800 BCE. Kubaba is on it. Ashmolean Museum. Photo: Gts-tg, CC BY-SA 4.0"}, {"src": "img/l6-s02-0.jpg", "cap": "Gold and lapis lazuli objects from a royal tomb at Ur, c. 2500 BCE. Photo: Gary Todd, CC0"}, {"src": "img/l6-s10-0.jpg", "cap": "War captives on an Akkadian victory stele, c. 2300 BCE, Louvre. Photo: ALFGRN, CC BY-SA 2.0"}], id:"l6", n:"6", title:"Rich and Poor in Mesopotamia", released:true, places:["kish"],
+     big:"Civilization created enormous wealth, but it did not share it equally.",
+     notes:[
+       "Kubaba ran a tavern and, according to the King List, became lugal of Kish. She is the only woman on the list who ruled in her own right.",
+       "Historians are careful with her story: the list says she ruled 100 years, which can't be true, and different copies disagree about how she got power.",
+       "The social pyramid, top to bottom: king and royal family; priests and temple officials; scribes, merchants and craftspeople; farmers and common labourers; enslaved people.",
+       "People became enslaved through war capture, unpaid debt, or being born to an enslaved mother. Hammurabi's Law 117 limited debt slavery to 3 years.",
+       "Enslaved people could own property, run small businesses, marry and sometimes buy their freedom, but they could still be bought and sold.",
+       "A woman's class decided her rights more than anything else. The one realistic way for a commoner to move up was to become a scribe."
+     ],
+     terms:[["Social pyramid","A diagram showing who had the most and least power and wealth."],["Debt slavery","Working as an enslaved person to pay off a debt."],["Social class","A group of people with similar status and rights."]],
+     work:"The Social Pyramid Investigation. Sort the case files into the pyramid and decide whether the system was fair.",
+     check:[
+       {q:"How long could debt slavery last under Hammurabi's Law 117?", a:["Forever","3 years","10 years"], c:1, why:"After three years, freedom was required."},
+       {q:"What was the one realistic way for a commoner to move up?", a:["Becoming a scribe","Becoming a priest-king","Owning a tavern"], c:0, why:"Reading and writing were rare and valuable skills."},
+       {q:"Why are historians cautious about Kubaba's story?", a:["The list says she ruled 100 years","There are no records at all","She was from Egypt"], c:0, why:"An impossible reign length and copies that disagree."}
+     ]},
+    {imgs:[{"src": "img/l6b-s02-0.jpg", "cap": "The Flood Tablet (Epic of Gilgamesh, Tablet 11), from Nineveh, 600s BCE. British Museum, CC0"}, {"src": "img/l6b-s04-0.jpg", "cap": "Mesopotamia in the 2nd millennium BCE, with Nineveh in the north and Uruk in the south. Map: Wikimedia Commons, CC BY-SA 2.5"}], id:"l6b", n:"6B", title:"Gilgamesh and the Great Flood", released:true, places:["nineveh","uruk","ur","shuruppak"],
+     big:"The Epic of Gilgamesh isn't a true record of events, but it is good evidence of what Mesopotamians believed, feared and valued.",
+     notes:[
+       "In 1872, George Smith, a former banknote engraver who taught himself cuneiform, read a broken flood tablet at the British Museum. It came from King Ashurbanipal's library at Nineveh.",
+       "Gilgamesh was probably a real king of Uruk. The earliest poems about him date to about 2100 BCE, and the 12-tablet version was put together between 1300 and 1000 BCE.",
+       "In the story, his friend Enkidu dies, Gilgamesh becomes afraid of death, and he searches for Utnapishtim, the one man allowed to live forever.",
+       "The flood: the god Ea warns Utnapishtim through the wall of his reed hut. He builds a boat, loads his family, craftsmen and animals, sends out a dove, a swallow and a raven, and is made immortal.",
+       "An older story, Atrahasis, says the gods sent the flood because humans were too noisy. Some lines in Gilgamesh were copied from it almost word for word.",
+       "In 1929 Leonard Woolley found a thick layer of flood clay at Ur. Flood layers at other cities came from different dates and Eridu had none, so historians think there were many local floods, not one."
+     ],
+     terms:[["Epic","A long poem about a hero's adventures."],["Flood layer","A layer of river mud left in the ground by a flood."]],
+     work:"The Flood Files. Compare the two flood stories and decide what the epic can and can't tell a historian.",
+     check:[
+       {q:"Why did the fire at Nineveh help the tablets survive?", a:["It baked the clay hard","It melted them together","It hid them in ash"], c:0, why:"Fired clay lasts much longer than dried clay."},
+       {q:"Why do historians think there wasn't one giant flood?", a:["No one wrote about floods","The flood layers come from different dates","Mesopotamia had no rivers"], c:1, why:"One flood would leave layers of the same date everywhere."},
+       {q:"In Atrahasis, why did the gods send the flood?", a:["Humans were too noisy","Humans stopped praying","A king insulted them"], c:0, why:"The gods couldn't sleep."}
+     ]},
+    {imgs:[{"src": "img/l7-s01-0.jpg", "cap": "The Ziggurat of Ur, Iraq, first built c. 2100 BCE. Photo: Hardnfast, CC BY 3.0"}, {"src": "img/l7-s05-0.jpg", "cap": "An early writing tablet, c. 3100 BCE, British Museum. Photo: BabelStone, CC BY-SA 3.0"}, {"src": "img/l7-s09-0.jpg", "cap": "Hammurabi before the god Shamash, Louvre. Photo: Mbzt, CC BY 3.0"}, {"src": "img/l7-s16-0.jpg", "cap": "Plimpton 322, a Babylonian math tablet written in base 60, c. 1800 BCE, Columbia University. Public domain"}], id:"l7", n:"7", title:"Review and Test", released:true, places:[],
+     big:"Mesopotamia's biggest idea that runs through every lesson: always ask who wrote a source, when, and why.",
+     notes:[
+       "Order of big events: clay tokens (c. 8500 BCE), Eridu shrine (c. 5400), writing at Uruk (c. 3300), Uruk's peak (c. 3100), Kubaba in Kish (c. 2500–2400), Sargon's empire (c. 2334), Enheduanna at Ur (c. 2300), Akkad collapses (c. 2154), Hammurabi's Code and the Ea-nasir complaint (c. 1750).",
+       "Three sources to be careful with: the King List (long-after-the-fact, impossible reign lengths), Enheduanna's poems (copied 600 years later), and Kubaba's story (copies disagree).",
+       "Know these terms for the test: lugal, ziggurat, cuneiform, edubba, empire, lex talionis, shaduf, barter, social pyramid, debt slavery."
+     ],
+     terms:[["Lugal","King (\"big man\")."],["Ziggurat","Stepped temple tower."],["Cuneiform","Wedge-shaped writing."],["Edubba","Scribe school."],["Empire","Many lands under one ruler."],["Lex talionis","Punishment matches the crime."],["Shaduf","Water-lifting lever."],["Barter","Trading goods for goods."],["Social pyramid","Ranking of classes by power and wealth."],["Debt slavery","Enslaved to pay off a debt."]],
+     work:"Timeline and Legacy Trail review sheet, then the unit test. Practise places with Find it on the map.",
+     check:[
+       {q:"Which came first?", a:["Sargon's empire","Hammurabi's Code"], c:0, why:"Sargon c. 2334 BCE, Hammurabi c. 1750 BCE."},
+       {q:"What is lex talionis?", a:["A scribe school","Punishment that matches the crime","A trade route"], c:1, why:"\"An eye for an eye.\""},
+       {q:"Why must historians be careful with the Sumerian King List?", a:["It was written long after many events and has impossible reigns","It's in Greek","It only lists gods"], c:0, why:"Some early kings supposedly ruled for thousands of years."}
+     ]}
+  ]
+},
+{
+  id:"egypt", n:3, name:"Ancient Egypt", status:"next",
+  span:"c. 3100 – 30 BCE",
+  bbox:[24,14,41.5,33], anchor:[31.2,26.6], tol:40,
+  intro:"One river through a desert. The Nile's yearly flood made Egypt rich and its deserts kept it safe, so one civilization lasted almost 3,000 years. To the south, Nubia was its trading partner, rival and, for a while, its ruler.",
+  footnote:"Lake Nasser, behind the Aswan High Dam, now covers the Second Cataract and the fortress of Buhen. Abu Simbel was cut into blocks and moved uphill in the 1960s to save it.",
+  places:[
+    {id:"nile", name:"Nile River", kind:"river", ll:[30.2,27.6], lab:"c", where:"Uganda to Egypt", date:"",
+     line:[[33.2,0.44],[32.9,1.6],[32.3,2.3],[31.4,2.4],[32.06,3.6],[31.6,4.85],[31.65,9.53],[32.53,15.6],[32.7,16.3],[33.43,16.69],[33.73,16.96],[33.97,17.7],[33.88,18.3],[33.32,19.55],[32.37,18.95],[31.82,18.48],[30.75,18.22],[30.48,19.17],[30.41,19.6],[30.35,19.82],[30.6,20.7],[31.33,21.8],[31.6,22.4],[32.9,24.09],[32.64,25.69],[32.73,26.16],[31.18,27.18],[30.9,27.7],[31.24,30.04],[30.42,31.4]],
+     text:"Egypt is about 96% desert, so almost everyone lived on the green strip along this river. It flows north. Its flood came at nearly the same time every year, but nobody could predict whether it would be too high, too low, or just right."},
+    {id:"lower", name:"Lower Egypt", kind:"region", ll:[30.95,30.75], where:"", date:"",
+     text:"The north, where the Nile fans out into the Delta. It's called \"lower\" because it's downstream. Its symbol was the red crown."},
+    {id:"upper", name:"Upper Egypt", kind:"region", ll:[30.6,25.4], where:"", date:"",
+     text:"The long, narrow valley in the south. It's called \"upper\" because it's upstream, even though it's at the bottom of the map. Its symbol was the white crown."},
+    {id:"western", name:"Western Desert", kind:"mtn", ll:[27.6,26.4], where:"", date:"",
+     text:"Part of Deshret, the Red Land. Deserts on both sides made Egypt very hard to invade, unlike open Mesopotamia."},
+    {id:"eastern", name:"Eastern Desert", kind:"mtn", ll:[33.75,25.9], rot:66, where:"", date:"",
+     text:"Desert between the Nile and the Red Sea, with gold mines and stone quarries. Also part of Deshret, the Red Land."},
+    {id:"sinai", name:"Sinai", kind:"mtn", ll:[33.9,29.4], where:"", date:"",
+     text:"A desert peninsula where Egyptians mined copper and turquoise."},
+    {id:"redsea", name:"Red Sea", kind:"water", ll:[37.6,21.6], where:"", date:"",
+     text:"Egyptian ships sailed down this sea to trade with the land of Punt."},
+    {id:"memphis", name:"Memphis", kind:"city", ll:[31.25,29.85], lab:"r", where:"near Cairo", date:"from c. 3100 BCE",
+     text:"The first capital of united Egypt, right where Upper and Lower Egypt meet. Its burial ground at Saqqara holds Djoser's Step Pyramid, the first pyramid."},
+    {id:"giza", name:"Giza", kind:"site", ll:[31.13,29.98], lab:"l", where:"edge of Cairo", date:"c. 2560 BCE",
+     text:"Home of the Great Pyramid, built for the pharaoh Khufu, and the Great Sphinx. The Great Pyramid was the tallest thing humans had built for about 3,800 years."},
+    {id:"hierakonpolis", name:"Hierakonpolis", kind:"site", ll:[32.78,25.10], lab:"r", where:"southern Egypt", date:"c. 3100 BCE",
+     text:"One of Egypt's earliest big towns, also called Nekhen. The Narmer Palette was found here. It shows a king wearing the crowns of both Upper and Lower Egypt."},
+    {id:"abydos", name:"Abydos", kind:"site", ll:[31.92,26.19], lab:"l", where:"middle Egypt", date:"from c. 3100 BCE",
+     text:"Where Egypt's earliest kings were buried. Later it was the holy city of Osiris, god of the afterlife."},
+    {id:"amarna", name:"Amarna", kind:"city", ll:[30.90,27.65], lab:"l", where:"middle Egypt", date:"c. 1346 BCE",
+     text:"Akhenaten built this brand-new capital to worship one sun god, the Aten. After he died, the old gods came back and the city was abandoned."},
+    {id:"thebes", name:"Thebes", kind:"city", ll:[32.64,25.70], lab:"r", where:"Luxor today", date:"c. 2000–1000 BCE",
+     text:"The great religious capital, home of the giant temple of Amun at Karnak. Across the river is the Valley of the Kings, where Tutankhamun's tomb was found in 1922."},
+    {id:"aswan", name:"Aswan", kind:"city", ll:[32.89,24.09], lab:"r", where:"southern Egypt", date:"",
+     text:"At the First Cataract, Egypt's natural southern border. Granite for obelisks was cut here, and a Nilometer measured how high the flood was rising."},
+    {id:"abusimbel", name:"Abu Simbel", kind:"site", ll:[31.63,22.34], lab:"r", where:"far southern Egypt", date:"c. 1264 BCE",
+     text:"Ramesses II carved two huge temples into a cliff here, with giant statues of himself facing south toward Nubia, as a message."},
+    {id:"buhen", name:"Buhen", kind:"site", ll:[31.29,21.91], lab:"r", where:"northern Sudan", date:"c. 1900 BCE",
+     text:"A massive Egyptian mudbrick fortress at the Second Cataract, built to control the border with Nubia and the trade coming through it. It's now under Lake Nasser."},
+    {id:"kerma", name:"Kerma", kind:"city", ll:[30.41,19.60], lab:"r", where:"northern Sudan", date:"c. 2500–1500 BCE",
+     text:"Capital of the first great kingdom of Kush. Its giant mudbrick temple, the Western Deffufa, still stands. Kerma's armies once raided deep into Egypt."},
+    {id:"napata", name:"Napata", kind:"city", ll:[31.83,18.53], lab:"l", where:"northern Sudan", date:"c. 750–650 BCE",
+     text:"Capital of the Kushite kings, beside the holy mountain Jebel Barkal. From here King Piye conquered Egypt around 727 BCE, and Kushite pharaohs ruled it for nearly a century."},
+    {id:"meroe", name:"Meroe", kind:"city", ll:[33.75,16.94], lab:"r", where:"central Sudan", date:"c. 300 BCE–350 CE",
+     text:"A later Kushite capital, famous for iron-working and steep pyramids. Nubia has roughly twice as many pyramids as Egypt. Meroitic writing still can't be fully read."},
+    {id:"alexandria", name:"Alexandria", kind:"city", ll:[29.92,31.20], lab:"l", where:"northern Egypt", date:"331 BCE",
+     text:"Founded by Alexander the Great in 331 BCE. Greek kings ruled Egypt from here until Cleopatra died in 30 BCE and Rome took over. Famous for its great library and lighthouse."},
+    {id:"rosetta", name:"Rosetta", kind:"site", ll:[30.42,31.40], lab:"t", where:"Nile Delta", date:"found 1799 CE",
+     text:"Where French soldiers found the Rosetta Stone in 1799. The same decree is carved in hieroglyphs, demotic and Greek, which let Champollion crack hieroglyphs in 1822."},
+    {id:"punt", name:"Punt (location debated)", kind:"unc", ll:[39.5,15.2], lab:"r", where:"Red Sea coast, somewhere", date:"c. 1470 BCE", quiz:false,
+     text:"A land of incense, gold, ebony and exotic animals that Egypt traded with by sea. Hatshepsut sent a famous expedition there. Nobody knows exactly where it was, so this circle is a guess."},
+    {id:"cat1", name:"First Cataract", short:"1st Cataract", kind:"cat", ll:[32.88,24.0], lab:"l", where:"Aswan", date:"",
+     text:"Cataracts aren't waterfalls. They're shallow, rocky rapids that boats can't easily get through. The First Cataract was Egypt's natural southern border for most of its history."},
+    {id:"cat2", name:"Second Cataract", short:"2nd", kind:"cat", ll:[31.27,21.78], lab:"l", where:"now under Lake Nasser", date:"", quiz:false,
+     text:"Rocky rapids where Egypt built its biggest Nubian border forts, like Buhen."},
+    {id:"cat3", name:"Third Cataract", short:"3rd", kind:"cat", ll:[30.35,19.82], lab:"l", where:"northern Sudan", date:"", quiz:false,
+     text:"Rocky rapids just north of Kerma."},
+    {id:"cat4", name:"Fourth Cataract", short:"4th", kind:"cat", ll:[32.37,18.95], lab:"r", where:"northern Sudan", date:"", quiz:false,
+     text:"Rocky rapids upstream of Napata."},
+    {id:"cat5", name:"Fifth Cataract", short:"5th", kind:"cat", ll:[33.88,18.3], lab:"r", where:"northern Sudan", date:"", quiz:false,
+     text:"Rocky rapids between Meroe and Napata."},
+    {id:"cat6", name:"Sixth Cataract", short:"6th", kind:"cat", ll:[32.7,16.3], lab:"l", where:"north of Khartoum", date:"", quiz:false,
+     text:"The last set of rapids before the Blue and White Nile meet at Khartoum."},
+    {id:"nubia", name:"Nubia", kind:"region", ll:[31.4,20.6], where:"", date:"",
+     text:"The land along the Nile south of Egypt, in today's southern Egypt and Sudan. Kush is the name of the kingdoms based here. Nubian people still live there today."}
+  ],
+  labels:[
+    {text:"Mediterranean Sea", cls:"l-water", ll:[28.2,32.6]}
+  ],
+  minor:[ [[31.24,30.04],[31.81,31.42]] ],
+  timeline:[
+    {d:"c. 3100 BCE", t:"Upper and Lower Egypt unite", p:"hierakonpolis"},
+    {d:"c. 2650 BCE", t:"Djoser's Step Pyramid", p:"memphis"},
+    {d:"c. 2560 BCE", t:"Great Pyramid of Giza", p:"giza"},
+    {d:"c. 1900 BCE", t:"Forts guard the Nubian border", p:"buhen"},
+    {d:"c. 1470 BCE", t:"Hatshepsut's trip to Punt", p:"punt"},
+    {d:"c. 1346 BCE", t:"Akhenaten builds Amarna", p:"amarna"},
+    {d:"c. 1323 BCE", t:"Tutankhamun is buried", p:"thebes"},
+    {d:"c. 1264 BCE", t:"Abu Simbel is carved", p:"abusimbel"},
+    {d:"c. 727 BCE", t:"Kushite king Piye conquers Egypt", p:"napata"},
+    {d:"331 BCE", t:"Alexander founds Alexandria", p:"alexandria"},
+    {d:"30 BCE", t:"Cleopatra dies; Rome takes over", p:"alexandria"},
+    {d:"1799 CE", t:"Rosetta Stone found", p:"rosetta"}
+  ]
+},
+
+{ id:"greece", n:4, name:"Ancient Greece", status:"soon", span:"c. 800 – 146 BCE", bbox:[19,34.5,29.5,42], anchor:[22.5,38.6],
+  intro:"Independent city-states, Athens and Sparta, the first democracy, and ideas we still use." },
+{ id:"rome", n:5, name:"Ancient Rome", status:"soon", span:"753 BCE – 476 CE", bbox:[-10,28,42,52], anchor:[12.5,41.9],
+  intro:"How one city grew into an empire around the whole Mediterranean, and why it fell apart." },
+{ id:"middle-ages", n:6, name:"Middle Ages", status:"soon", span:"c. 500 – 1500 CE", bbox:[-12,30,45,62], anchor:[3,48.5],
+  intro:"Castles and kingdoms, the Church, the Islamic world, and the trade routes that tied it all together." }
+];
+
+/* Fertile Crescent band */
+const CRESCENT=[[34.5,31],[35.5,33.5],[36.5,36.5],[38.5,37.6],[41,37.8],[43.5,37.5],[45,35.5],[46.5,33.5],[48,31.2],[48.5,30],[47,30.2],[45.5,31],[44,32.3],[42.5,34],[40.5,35.3],[38.3,35.6],[36.8,34.8],[35.8,32.8],[35,30.8]];
+
+const KIND={city:"City", site:"Archaeological site", unc:"Location unknown", river:"River", water:"Water & land", mtn:"Landform", region:"Region", cat:"Cataract"};
+
+/* ---------------- state ---------------- */
+const S={view:"world", mode:"explore", sel:null, labels:true, borders:false, t:null, quiz:null, ptab:"places"};
+try{const p=JSON.parse(localStorage.getItem("atlas-prefs")||"{}"); if(typeof p.labels==="boolean")S.labels=p.labels; if(typeof p.borders==="boolean")S.borders=p.borders;}catch(e){}
+function savePrefs(){try{localStorage.setItem("atlas-prefs",JSON.stringify({labels:S.labels,borders:S.borders}))}catch(e){}}
+const unitById=id=>UNITS.find(u=>u.id===id);
+const curUnit=()=>unitById(S.view);
+const nowUnit=()=>UNITS.find(u=>u.status==="now");
+const openUnits=()=>UNITS.filter(u=>u.status!=="soon");
+const placeById=(u,id)=>u&&u.places?u.places.find(p=>p.id===id):null;
+
+const $=s=>document.querySelector(s);
+window.addEventListener("error",e=>{const n=document.getElementById("note");n.hidden=false;n.textContent="Error: "+e.message+" (line "+e.lineno+")";});
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+if(!window.d3){
+  document.getElementById("note").hidden=false;
+  document.getElementById("note").textContent="The map library didn't load. Check the internet connection and refresh.";
+}
+
+/* ---------------- map setup ---------------- */
+const svg=d3.select("#map");
+const gGeo=svg.append("g");
+const gOver=svg.append("g");
+const projection=d3.geoNaturalEarth1();
+const path=d3.geoPath(projection);
+let W=800,H=500, world=null;
+const zoom=d3.zoom().scaleExtent([1,80]).clickDistance(5).on("zoom",e=>{S.t=e.transform; gGeo.attr("transform",e.transform); position();});
+svg.call(zoom);
+S.t=d3.zoomIdentity;
+
+function size(){
+  const r=$("#mapwrap").getBoundingClientRect(); W=Math.max(300,r.width); H=Math.max(260,r.height);
+  svg.attr("viewBox",`0 0 ${W} ${H}`);
+  projection.fitExtent([[10,10],[W-10,H-10]],{type:"Sphere"});
+  zoom.extent([[0,0],[W,H]]).translateExtent([[-W*.2,-H*.2],[W*1.2,H*1.2]]);
+}
+
+function drawGeo(){
+  gGeo.selectAll("*").remove();
+  gGeo.append("path").attr("class","sphere").attr("d",path({type:"Sphere"}));
+  gGeo.append("path").attr("class","grat").attr("d",path(d3.geoGraticule10()));
+  if(world){
+    gGeo.append("path").attr("class","land").attr("d",path(world.land));
+    gGeo.append("path").attr("class","coast").attr("d",path(world.coast));
+    gGeo.append("path").attr("class","border").attr("id","borders").attr("d",path(world.borders)).attr("display",S.borders?null:"none");
+  }
+  gGeo.append("path").attr("class","crescent").attr("id","crescent")
+    .attr("d","M"+CRESCENT.map(p=>projection(p).join(",")).join("L")+"Z");
+  const rg=gGeo.append("g").attr("id","routes");
+  UNITS.forEach(u=>(u.routes||[]).forEach(r=>rg.append("path").attr("class","route").attr("data-unit",u.id).attr("d",path({type:"LineString",coordinates:r}))));
+  UNITS.forEach(u=>{
+    (u.minor||[]).forEach(l=>gGeo.append("path").attr("class","river minor").attr("d",path({type:"LineString",coordinates:l})));
+    (u.places||[]).filter(p=>p.kind==="river").forEach(p=>gGeo.append("path").attr("class","river").attr("id","rv-"+p.id).attr("d",path({type:"LineString",coordinates:p.line})));
+  });
+}
+
+/* ---------------- overlay: markers and labels ---------------- */
+const SYM={
+  city:'<circle class="mk-city" r="5.5"></circle>',
+  site:'<path class="mk-site" d="M0,-7L7,0L0,7L-7,0Z"></path>',
+  unc:'<circle class="mk-unc" r="8"></circle>',
+  cat:'<rect class="mk-cat" x="-6" y="-2.5" width="12" height="5" rx="1.5"></rect>'
+};
+function labelAttrs(lab,size){
+  const o=size||9;
+  switch(lab){
+    case "l": return {x:-o,y:5,a:"end"};
+    case "t": return {x:0,y:-o-3,a:"middle"};
+    case "b": return {x:0,y:o+12,a:"middle"};
+    case "bl": return {x:-o+2,y:o+10,a:"end"};
+    case "c": return {x:0,y:5,a:"middle"};
+    default: return {x:o,y:5,a:"start"};
+  }
+}
+let overlayItems=[];
+function buildOverlay(){
+  gOver.selectAll("*").remove(); overlayItems=[];
+  // unit anchors (world view)
+  UNITS.forEach(u=>{
+    const g=gOver.append("g").attr("class","pl anchor"+(u.status==="soon"?" soon":"")).attr("data-role","anchor").attr("data-unit",u.id)
+      .attr("tabindex",0).attr("role","button").attr("aria-label","Unit "+u.n+": "+u.name);
+    g.append("circle").attr("r",13);
+    g.append("text").attr("class","num").attr("text-anchor","middle").attr("y",5).text(u.n);
+    g.append("text").attr("class","anm").attr("x",19).attr("y",5).text(u.name);
+    g.on("click",ev=>{ev.stopPropagation(); setView(u.id);}).on("keydown",ev=>{if(ev.key==="Enter")setView(u.id)});
+    overlayItems.push({g,ll:u.anchor});
+  });
+  // unit places
+  UNITS.forEach(u=>{
+    (u.places||[]).forEach(p=>{
+      const g=gOver.append("g").attr("class","pl").attr("data-unit",u.id).attr("data-id",p.id).attr("data-kind",p.kind);
+      if(SYM[p.kind]){
+        g.html(SYM[p.kind]);
+        g.append("circle").attr("class","faint").attr("r",3).attr("data-role","faint");
+        const la=labelAttrs(p.lab, p.kind==="unc"?11:9);
+        g.append("text").attr("class",p.kind==="cat"?"l-cat":"l-city").attr("x",la.x).attr("y",la.y).attr("text-anchor",la.a).text(p.short||p.name);
+      }else{
+        const cls=p.kind==="river"?"l-river":p.kind==="water"?"l-water":p.kind==="mtn"?"l-mtn":"l-region";
+        const t=g.append("text").attr("class",cls).attr("text-anchor","middle").attr("y",5).text(p.kind==="region"||p.kind==="mtn"?p.name.toUpperCase():p.name);
+        if(p.farm) t.style("fill","var(--farm)");
+        if(p.rot) t.attr("transform",`rotate(${p.rot})`);
+      }
+      g.attr("tabindex",0).attr("role","button").attr("aria-label",p.name);
+      g.on("click",ev=>{ev.stopPropagation(); if(S.mode==="explore") select(u.id,p.id);})
+       .on("keydown",ev=>{if(ev.key==="Enter"&&S.mode==="explore")select(u.id,p.id)});
+      overlayItems.push({g,ll:p.ll,unit:u.id,place:p});
+    });
+    (u.labels||[]).forEach(l=>{
+      const g=gOver.append("g").attr("class","pl lab").attr("data-unit",u.id).style("pointer-events","none");
+      g.append("text").attr("class",l.cls).attr("text-anchor","middle").text(l.text);
+      overlayItems.push({g,ll:l.ll,unit:u.id,label:true});
+    });
+  });
+  gOver.append("g").attr("id","fx");
+  refresh();
+}
+function xy(ll){const p=projection(ll); return p?S.t.apply(p):[-999,-999];}
+function position(){
+  overlayItems.forEach(it=>{const [x,y]=xy(it.ll); it.g.attr("transform",`translate(${x},${y})`);});
+  d3.select("#fx").selectAll("[data-ll]").each(function(){
+    const el=d3.select(this); const ll=JSON.parse(el.attr("data-ll")); const [x,y]=xy(ll); el.attr("transform",`translate(${x},${y})`);
+  });
+  d3.select("#fx").selectAll("line[data-a]").each(function(){
+    const el=d3.select(this); const a=xy(JSON.parse(el.attr("data-a"))), b=xy(JSON.parse(el.attr("data-b")));
+    el.attr("x1",a[0]).attr("y1",a[1]).attr("x2",b[0]).attr("y2",b[1]);
+  });
+}
+
+/* what is visible depends on view + mode */
+function refresh(){
+  const v=S.view, u=curUnit(), quiz=S.mode!=="explore";
+  const target=S.quiz&&S.quiz.list[S.quiz.i];
+  overlayItems.forEach(it=>{
+    const g=it.g; let show=false, full=false;
+    if(g.attr("data-role")==="anchor"){ show=(v==="world"); }
+    else if(it.label){ show=(it.unit===v && S.labels && !quiz); }
+    else{
+      const p=it.place, own=(it.unit===v), isText=!SYM[p.kind];
+      if(v==="world"){ show=!isText && p.kind!=="cat" && unitById(it.unit).status!=="soon"; full=false; }
+      else if(own){
+        if(!quiz){ show = isText ? S.labels : true; full=true; }
+        else if(S.mode==="name" && target && target.id===p.id && SYM[p.kind]){ show=true; full=false; }
+        else show=false;
+      }else{ show=!isText && p.kind!=="cat" && unitById(it.unit).status!=="soon" && !quiz; full=false; }
+    }
+    g.attr("display",show?null:"none");
+    if(show && !g.classed("anchor") && it.place && SYM[it.place.kind]){
+      const asFaint=!full;
+      g.selectAll(".mk-city,.mk-site,.mk-unc,.mk-cat").attr("display",asFaint&&!(S.mode==="name"&&target&&target.id===it.place.id)?"none":null);
+      g.select("[data-role=faint]").attr("display",asFaint&&!(S.mode==="name"&&target&&target.id===it.place.id)?null:"none");
+      g.select("text").attr("display",(full&&(S.labels||S.sel===it.place.id))?null:"none");
+      g.style("pointer-events",full&&!quiz?null:"none");
+    }
+    g.classed("is-sel",S.sel&&it.place&&it.place.id===S.sel);
+  });
+  gOver.selectAll(".selring").remove();
+  if(S.sel&&!quiz){
+    const it=overlayItems.find(o=>o.place&&o.place.id===S.sel&&o.unit===S.view);
+    if(it&&SYM[it.place.kind]) it.g.insert("circle",":first-child").attr("class","selring").attr("r",13);
+  }
+  d3.selectAll(".river").classed("hit",false);
+  if(S.sel&&!quiz) d3.select("#rv-"+S.sel).classed("hit",true);
+  if(quiz&&target&&target.kind==="river"&&(S.mode==="name"||S.quiz.answered)) d3.select("#rv-"+target.id).classed("hit",true);
+  d3.select("#crescent").attr("display",(u&&u.crescent)?null:"none");
+  d3.selectAll(".route").attr("display",function(){return d3.select(this).attr("data-unit")===v?null:"none"});
+  d3.select("#borders").attr("display",S.borders?null:"none");
+  svg.classed("quiz",S.mode==="find");
+  position();
+  renderLegend();
+}
+
+function renderLegend(){
+  const u=curUnit(); const L=$("#legend");
+  if(!u||!u.places||S.mode!=="explore"){L.hidden=true;return;}
+  const kinds=new Set(u.places.map(p=>p.kind)); const out=[];
+  if(kinds.has("city")) out.push('<span><svg width="12" height="12" viewBox="-6 -6 12 12"><circle class="mk-city" r="4.5"/></svg>City</span>');
+  if(kinds.has("site")) out.push('<span><svg width="14" height="14" viewBox="-7 -7 14 14"><path class="mk-site" d="M0,-6L6,0L0,6L-6,0Z"/></svg>Site</span>');
+  if(kinds.has("cat")) out.push('<span><svg width="16" height="10" viewBox="-8 -5 16 10"><rect class="mk-cat" x="-6" y="-2.5" width="12" height="5" rx="1.5"/></svg>Cataract</span>');
+  if(kinds.has("unc")) out.push('<span><svg width="16" height="16" viewBox="-8 -8 16 16"><circle class="mk-unc" r="6"/></svg>Location unknown</span>');
+  if(u.routes) out.push('<span><svg width="22" height="8"><line x1="0" y1="4" x2="22" y2="4" stroke="var(--route)" stroke-width="2" stroke-dasharray="5 3"/></svg>Migration route</span>');
+  if(u.crescent) out.push('<span><svg width="16" height="10"><rect width="16" height="10" fill="var(--farm)" opacity=".3"/></svg>Fertile Crescent</span>');
+  L.innerHTML=out.join(""); L.hidden=false;
+}
+
+/* ---------------- camera ---------------- */
+function bboxTransform(b){
+  const pts=[]; const [x0,y0,x1,y1]=b;
+  for(let i=0;i<=8;i++){const fx=x0+(x1-x0)*i/8, fy=y0+(y1-y0)*i/8; pts.push([fx,y0],[fx,y1],[x0,fy],[x1,fy]);}
+  const bb=path.bounds({type:"MultiPoint",coordinates:pts});
+  const w=bb[1][0]-bb[0][0], h=bb[1][1]-bb[0][1];
+  const k=Math.max(1,Math.min(80,0.92*Math.min(W/w,H/h)));
+  const cx=(bb[0][0]+bb[1][0])/2, cy=(bb[0][1]+bb[1][1])/2;
+  return d3.zoomIdentity.translate(W/2-k*cx,H/2-k*cy).scale(k);
+}
+function fitView(dur){
+  const u=curUnit(); const T=(!u||S.view==="world")?d3.zoomIdentity:bboxTransform(u.bbox);
+  svg.interrupt();
+  if(dur) svg.transition().duration(dur).ease(d3.easeCubicInOut).call(zoom.transform,T); else svg.call(zoom.transform,T);
+}
+function panTo(ll){
+  const p=projection(ll); if(!p)return; const [x,y]=S.t.apply(p);
+  if(x>W*.12&&x<W*.88&&y>H*.12&&y<H*.88)return;
+  const T=d3.zoomIdentity.translate(W/2-S.t.k*p[0],H/2-S.t.k*p[1]).scale(S.t.k);
+  svg.transition().duration(600).call(zoom.transform,T);
+}
+
+/* ---------------- views & panel ---------------- */
+function setView(id){
+  S.view=id; S.sel=null;
+  const u=curUnit();
+  if(S.mode!=="explore" && (!u||u.status==="soon")) S.mode="explore";
+  if(S.mode!=="explore") startQuiz(); else { S.quiz=null; clearFx(); $("#banner").hidden=true; }
+  renderTabs(); renderModes(); refresh(); renderPanel(); renderTimeline(); fitView(750);
+}
+function select(unitId,placeId){
+  const moved=S.view!==unitId;
+  if(moved){ S.view=unitId; renderTabs(); renderModes(); fitView(750); }
+  S.sel=placeId; refresh(); renderPanel(); renderTimeline();
+  const p=placeById(unitById(unitId),placeId); if(p) setTimeout(()=>panTo(p.ll),moved?800:0);
+}
+function renderTabs(){
+  const tabs=[{id:"world",label:"World",n:""}].concat(UNITS.map(u=>({id:u.id,label:u.name,n:u.n,soon:u.status==="soon"})));
+  $("#tabs").innerHTML=tabs.map(t=>`<button class="tab${t.soon?" soon":""}" data-id="${t.id}" aria-current="${S.view===t.id}">${t.n?`<b>${t.n}</b>`:""}${esc(t.label)}</button>`).join("");
+  $("#tabs").querySelectorAll(".tab").forEach(b=>b.onclick=()=>setView(b.dataset.id));
+  const cur=$("#tabs").querySelector('[aria-current="true"]'); if(cur) cur.scrollIntoView({block:"nearest",inline:"nearest"});
+}
+function renderModes(){
+  const u=curUnit(); const can=!!(u&&u.status!=="soon"&&u.places);
+  document.querySelectorAll("#modes button").forEach(b=>{
+    b.setAttribute("aria-pressed",String(S.mode===b.dataset.mode));
+    b.disabled = b.dataset.mode!=="explore" && !can && S.view!=="world";
+  });
+  $("#t-labels").setAttribute("aria-pressed",String(S.labels));
+  $("#t-borders").setAttribute("aria-pressed",String(S.borders));
+}
+function glyph(kind){
+  if(kind==="city") return '<svg width="12" height="12" viewBox="-6 -6 12 12"><circle class="mk-city" r="4.5"/></svg>';
+  if(kind==="site") return '<svg width="14" height="14" viewBox="-7 -7 14 14"><path class="mk-site" d="M0,-6L6,0L0,6L-6,0Z"/></svg>';
+  if(kind==="cat") return '<svg width="14" height="10" viewBox="-7 -5 14 10"><rect class="mk-cat" x="-6" y="-2.5" width="12" height="5" rx="1.5"/></svg>';
+  if(kind==="unc") return '<svg width="14" height="14" viewBox="-7 -7 14 14"><circle class="mk-unc" r="5"/></svg>';
+  if(kind==="river") return '<svg width="14" height="10"><path d="M1 6 C4 1,8 9,13 4" fill="none" stroke="var(--river)" stroke-width="2"/></svg>';
+  return '<svg width="12" height="12"><line x1="2" y1="10" x2="10" y2="2" stroke="var(--muted)" stroke-width="1.5"/></svg>';
+}
+function statusTag(u){return u.status==="now"?'<span class="tag">Now</span>':u.status==="next"?'<span class="tag">Up next</span>':u.status==="done"?'<span class="tag" style="color:var(--muted)">Done</span>':'<span class="tag" style="color:var(--muted)">Coming up</span>';}
+function renderPanel(){
+  const P=$("#panel"); const u=curUnit();
+  if(S.mode!=="explore"&&S.quiz){ renderQuizPanel(); return; }
+  if(S.view==="world"){
+    const n=openUnits().reduce((a,u)=>a+u.places.filter(p=>SYM[p.kind]&&p.kind!=="cat").length,0);
+    const nu=nowUnit();
+    P.innerHTML=`<div class="eyebrow">Our year · 2026–27</div><h2>Societies of the Past</h2>
+      <div class="span">${n} places on the map so far</div>
+      <p>Every unit adds a new layer to this map. Pick a unit to zoom in, or click a number on the map.</p>
+      ${nu&&nu.lessons?`<div class="missed"><b>Missed a class?</b>Open a unit and choose Lessons. Each lesson has the notes, key terms and a quick self-check. <button class="btn ghost" id="golessons" style="margin-top:10px">${esc(nu.name)} lessons</button></div>`:""}
+      <h3>Units</h3><ul class="units">${UNITS.map(x=>`<li class="${x.status==="soon"?"soon":""}"><button data-u="${x.id}"><span class="n">${x.n}</span><span><span class="nm">${esc(x.name)}</span>${statusTag(x)}<span class="sub">${esc(x.span)}</span></span></button></li>`).join("")}</ul>`;
+    P.querySelectorAll("[data-u]").forEach(b=>b.onclick=()=>setView(b.dataset.u));
+    const gl=$("#golessons"); if(gl) gl.onclick=()=>{S.ptab="lessons"; setView(nu.id);};
+    return;
+  }
+  if(u.status==="soon"){
+    P.innerHTML=`<div class="eyebrow">Unit ${u.n} · Coming up</div><h2>${esc(u.name)}</h2><div class="span">${esc(u.span)}</div>
+      <p>${esc(u.intro)}</p><p class="fine">Places for this unit get added to the map when we start it.</p>`;
+    return;
+  }
+  const p=S.sel&&placeById(u,S.sel);
+  if(p){
+    const used=(u.lessons||[]).filter(l=>l.released&&l.places.includes(p.id));
+    P.innerHTML=`<button class="back" id="back">&larr; All ${esc(u.name)} places</button>
+      <div class="eyebrow">${KIND[p.kind]}</div><h2>${esc(p.name)}</h2>
+      <div class="meta">${p.date?`<span>${esc(p.date)}</span>`:""}${p.where?`<span>${esc(p.where)}</span>`:""}</div>
+      ${p.img?`<figure class="placeimg"><img src="${p.img}" alt="${esc(p.name)}" data-cap="${esc(p.imgcap||"")}" loading="lazy"><figcaption>${esc(p.imgcap||"")}</figcaption></figure>`:""}
+      <p>${esc(p.text)}</p>
+      ${used.length?`<h3>Comes up in</h3><div class="chips">${used.map(l=>`<button class="chip" data-l="${l.id}">Lesson ${esc(l.n)}: ${esc(l.title)}</button>`).join("")}</div>`:""}`;
+    $("#back").onclick=()=>{S.sel=null;refresh();renderPanel();renderTimeline();};
+    P.querySelectorAll("[data-l]").forEach(b=>b.onclick=()=>openLesson(u.id,b.dataset.l));
+    return;
+  }
+  const hasL=!!(u.lessons&&u.lessons.length);
+  if(!hasL) S.ptab="places";
+  const head=`<div class="eyebrow">Unit ${u.n} ${statusTag(u)}</div><h2>${esc(u.name)}</h2><div class="span">${esc(u.span)}</div>
+    <p>${esc(u.intro)}</p>
+    ${hasL?`<div class="ptabs" role="tablist"><button role="tab" id="tab-places" aria-selected="${S.ptab!=="lessons"}">Places</button><button role="tab" id="tab-lessons" aria-selected="${S.ptab==="lessons"}">Lessons</button></div>`:""}`;
+  let body;
+  if(hasL&&S.ptab==="lessons"){
+    const done=getDone();
+    body=`<p class="fine">Missed a class? Open the lesson, read the notes, try the self-check, then get the handout from Mr. Mangles. Looking ahead is fine too.</p>
+      <ul class="lessons">${u.lessons.map(l=>{
+        const ok=done.has(u.id+":"+l.id);
+        return `<li class="${l.released?"":"locked"}"><button data-l="${l.id}" ${l.released?"":'aria-disabled="true"'}><span class="ln">${esc(l.n)}</span><span class="nm">${esc(l.title)}</span><span class="st ${ok?"ok":""}">${l.released?(ok?"Checked ✓":""):"After class"}</span></button></li>`;}).join("")}</ul>`;
+  }else{
+    const pts=u.places.filter(p=>SYM[p.kind]&&p.kind!=="cat"), geo=u.places.filter(p=>!SYM[p.kind]||p.kind==="cat");
+    const row=p=>`<li><button data-p="${p.id}">${glyph(p.kind)}<span class="nm">${esc(p.name)}</span><span class="dt">${esc(p.date||"")}</span></button></li>`;
+    body=`<h3>${u.id==="early-humans"?"Sites":"Cities and sites"}</h3><ul class="plist">${pts.map(row).join("")}</ul>
+      ${geo.length?`<h3>Rivers, land and regions</h3><ul class="plist">${geo.map(row).join("")}</ul>`:""}
+      ${u.footnote?`<p class="fine">${esc(u.footnote)}</p>`:""}`;
+  }
+  P.innerHTML=head+body;
+  P.querySelectorAll("[data-p]").forEach(b=>b.onclick=()=>select(u.id,b.dataset.p));
+  P.querySelectorAll(".lessons [data-l]").forEach(b=>b.onclick=()=>{const l=u.lessons.find(x=>x.id===b.dataset.l); if(l&&l.released) openLesson(u.id,l.id);});
+  const tp=$("#tab-places"), tl=$("#tab-lessons");
+  if(tp) tp.onclick=()=>{S.ptab="places";renderPanel();};
+  if(tl) tl.onclick=()=>{S.ptab="lessons";renderPanel();};
+}
+
+/* ---------------- lesson pages ---------------- */
+function getDone(){ try{ return new Set(JSON.parse(localStorage.getItem("atlas-done")||"[]")); }catch(e){ return new Set(); } }
+function markDone(key){ try{ const d=getDone(); d.add(key); localStorage.setItem("atlas-done",JSON.stringify([...d])); }catch(e){} }
+let sheetCtx=null, lastFocus=null;
+function openLesson(unitId,lessonId){
+  const u=unitById(unitId); if(!u||!u.lessons) return;
+  const l=u.lessons.find(x=>x.id===lessonId); if(!l||!l.released) return;
+  sheetCtx={u,l,answers:{}};
+  if($("#sheet").hidden) lastFocus=document.activeElement;
+  renderSheet();
+  $("#sheet").hidden=false;
+  $("#sheetcard").scrollTop=0; $("#sheet").scrollTop=0;
+  const c=$("#sheet-x"); if(c) c.focus();
+}
+function closeLesson(){ $("#sheet").hidden=true; sheetCtx=null; if(lastFocus&&lastFocus.focus) lastFocus.focus(); }
+function renderSheet(){
+  const {u,l,answers}=sheetCtx;
+  const rel=u.lessons.filter(x=>x.released); const i=rel.indexOf(l);
+  const prev=rel[i-1], next=rel[i+1];
+  const places=l.places.map(id=>placeById(u,id)).filter(Boolean);
+  const qs=l.check.map((q,qi)=>{
+    const a=answers[qi];
+    return `<div class="q"><div class="qt">${qi+1}. ${esc(q.q)}</div><div class="opts">${q.a.map((o,oi)=>{
+      let cls="opt"; if(a!==undefined){ if(oi===q.c) cls+=" right"; else if(oi===a) cls+=" wrong"; }
+      return `<button class="${cls}" data-q="${qi}" data-o="${oi}" ${a!==undefined?"disabled":""}>${esc(o)}</button>`;}).join("")}</div>
+      ${a!==undefined?`<div class="why">${a===q.c?"Right. ":"Not quite. "}${esc(q.why)}</div>`:""}</div>`;}).join("");
+  const nAns=Object.keys(answers).length, nRight=l.check.filter((q,qi)=>answers[qi]===q.c).length;
+  $("#sheetcard").innerHTML=`<button class="sheet-close" id="sheet-x" aria-label="Close lesson">&times;</button>
+    <div class="eyebrow">${esc(u.name)} · Lesson ${esc(l.n)}</div>
+    <h2>${esc(l.title)}</h2>
+    ${l.imgs&&l.imgs.length?`<figure class="hero"><img src="${l.imgs[0].src}" alt="" data-cap="${esc(l.imgs[0].cap)}"><figcaption>${esc(l.imgs[0].cap)}</figcaption></figure>`:""}
+    <div class="callout"><div class="eyebrow">The big idea</div><p class="big">${esc(l.big)}</p></div>
+    <h3>What we covered</h3><ul class="notes">${l.notes.map(n=>`<li>${esc(n)}</li>`).join("")}</ul>
+    ${l.diagram==="bce"?`<div class="diagram">${bceDiagram()}</div>`:""}
+    ${l.imgs&&l.imgs.length>1?`<h3>Pictures from the lesson</h3><div class="gal">${l.imgs.slice(1).map(im=>`<figure><img src="${im.src}" alt="" loading="lazy" data-cap="${esc(im.cap)}"><figcaption>${esc(im.cap)}</figcaption></figure>`).join("")}</div>`:""}
+    ${l.terms.length?`<h3>Key terms</h3><dl class="terms">${l.terms.map(t=>`<dt>${esc(t[0])}</dt><dd>${esc(t[1])}</dd>`).join("")}</dl>`:""}
+    ${places.length?`<h3>On the map</h3><div class="chips">${places.map(p=>`<button class="chip" data-place="${p.id}">${glyph(p.kind)}${esc(p.name)}</button>`).join("")}</div>`:""}
+    <h3>Your work</h3><p>${esc(l.work)}</p><p class="fine">Get the handout from Mr. Mangles if you don't have it.</p>
+    <h3>Check yourself</h3>${qs}
+    ${nAns===l.check.length?`<div class="qscore">${nRight} out of ${l.check.length}${nRight===l.check.length?". Nice, you've got this lesson.":". Have another look at the notes above, then try again."} <button class="btn ghost" id="retry" style="margin-left:8px">Try again</button></div>`:""}
+    <div class="sheet-nav">${prev?`<button class="btn ghost" id="lprev">&larr; Lesson ${esc(prev.n)}</button>`:"<span></span>"}${next?`<button class="btn ghost" id="lnext">Lesson ${esc(next.n)} &rarr;</button>`:""}</div>`;
+  $("#sheet-x").onclick=closeLesson;
+  document.querySelectorAll("#sheetcard .opt").forEach(b=>b.onclick=()=>{
+    sheetCtx.answers[+b.dataset.q]=+b.dataset.o;
+    const all=l.check.every((q,qi)=>sheetCtx.answers[qi]===q.c);
+    if(all){ markDone(u.id+":"+l.id); renderPanel(); }
+    renderSheet();
+  });
+  const r=$("#retry"); if(r) r.onclick=()=>{sheetCtx.answers={}; renderSheet();};
+  const pv=$("#lprev"); if(pv) pv.onclick=()=>openLesson(u.id,prev.id);
+  const nx=$("#lnext"); if(nx) nx.onclick=()=>openLesson(u.id,next.id);
+  document.querySelectorAll("#sheetcard [data-place]").forEach(b=>b.onclick=()=>{
+    const pid=b.dataset.place; closeLesson();
+    if(S.mode!=="explore"){S.mode="explore";S.quiz=null;clearFx();$("#banner").hidden=true;renderModes();}
+    select(u.id,pid);
+  });
+}
+$("#sheet").addEventListener("click",e=>{ if(e.target.id==="sheet") closeLesson(); });
+document.addEventListener("click",e=>{
+  const im=e.target.closest&&e.target.closest(".hero img,.gal img,.placeimg img");
+  if(!im) return;
+  $("#lbimg").src=im.src; $("#lbcap").textContent=im.dataset.cap||""; $("#lightbox").hidden=false;
+});
+$("#lightbox").addEventListener("click",()=>{$("#lightbox").hidden=true;});
+function bceDiagram(){
+  const W=720,H=190,x0=40,x1=680,a=-4000,b=2026,X=y=>x0+(y-a)/(b-a)*(x1-x0);
+  const ev=[[-3300,"First writing","3300 BCE",-1],[-2560,"Great Pyramid","2560 BCE",1],[-2334,"Sargon's empire","2334 BCE",-1],[-1750,"Hammurabi's laws","1750 BCE",1],[-30,"Cleopatra dies","30 BCE",-1],[2026,"Today","2026 CE",1]];
+  let g=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Timeline from 4000 BCE to today">`;
+  g+=`<line x1="${x0}" y1="95" x2="${x1}" y2="95" stroke="var(--ink)" stroke-width="2"/>`;
+  [-4000,-3000,-2000,-1000,1,1000,2000].forEach(y=>{const x=X(y);g+=`<line x1="${x}" y1="89" x2="${x}" y2="101" stroke="var(--muted)"/><text x="${x}" y="${y===1?118:116}" text-anchor="middle" font-size="11" fill="var(--muted)" font-family="IBM Plex Sans, sans-serif">${y<0?(-y)+" BCE":y===1?"1 CE":y+" CE"}</text>`;});
+  const z=X(0);
+  g+=`<line x1="${z}" y1="60" x2="${z}" y2="130" stroke="var(--accent)" stroke-dasharray="4 3"/><text x="${z}" y="146" text-anchor="middle" font-size="11.5" fill="var(--accent)" font-weight="600" font-family="IBM Plex Sans, sans-serif">No year 0</text>`;
+  g+=`<text x="${(x0+z)/2}" y="176" text-anchor="middle" font-size="12" fill="var(--muted)" font-family="IBM Plex Sans, sans-serif">BCE: bigger number = longer ago</text><text x="${(z+x1)/2}" y="176" text-anchor="middle" font-size="12" fill="var(--muted)" font-family="IBM Plex Sans, sans-serif">CE: counting up to today</text>`;
+  ev.forEach(([y,t,d,side])=>{const x=X(y),ty=side<0?36:62;
+    g+=`<line x1="${x}" y1="${side<0?44:70}" x2="${x}" y2="95" stroke="var(--river)"/><circle cx="${x}" cy="95" r="4.5" fill="var(--river)"/>`;
+    g+=`<text x="${x}" y="${ty-12}" text-anchor="middle" font-size="12" font-weight="600" fill="var(--ink)" font-family="IBM Plex Sans, sans-serif">${t}</text><text x="${x}" y="${ty+2}" text-anchor="middle" font-size="11" fill="var(--muted)" font-family="IBM Plex Sans, sans-serif">${d}</text>`;});
+  return g+"</svg>";
+}
+
+function renderTimeline(){
+  const T=$("#timeline"); const u=curUnit();
+  if(S.view==="world"){
+    T.innerHTML=`<div class="tl-head">The year in order</div><div class="tl units-tl">${UNITS.map(x=>`<button class="stop${x.status==="soon"?" soon":""}${x.status==="now"?" on":""}" data-u="${x.id}"><span class="d">${esc(x.span)}</span><span class="dot"></span><span class="t">${x.n}. ${esc(x.name)}</span></button>`).join("")}</div>`;
+    T.querySelectorAll("[data-u]").forEach(b=>b.onclick=()=>setView(b.dataset.u));
+    return;
+  }
+  if(!u.timeline){ T.innerHTML=`<div class="tl-head">Timeline</div><div class="fine" style="font-size:13.5px;color:var(--muted)">Added when we start this unit.</div>`; return; }
+  T.innerHTML=`<div class="tl-head">${esc(u.name)} timeline · in order, not to scale</div><div class="tl">${u.timeline.map((e,i)=>`<button class="stop${S.sel&&e.p===S.sel?" on":""}" data-i="${i}"><span class="d">${esc(e.d)}</span><span class="dot"></span><span class="t">${esc(e.t)}</span></button>`).join("")}</div>`;
+  T.querySelectorAll("[data-i]").forEach(b=>b.onclick=()=>{
+    const e=u.timeline[+b.dataset.i];
+    if(S.mode!=="explore"){S.mode="explore";S.quiz=null;clearFx();$("#banner").hidden=true;renderModes();}
+    if(e.p) select(u.id,e.p); else { S.sel=null; refresh(); renderPanel(); renderTimeline(); fitView(600); }
+  });
+}
+
+/* ---------------- quiz modes ---------------- */
+function km(a,b){const R=6371,r=Math.PI/180,dLa=(b[1]-a[1])*r,dLo=(b[0]-a[0])*r;
+  const h=Math.sin(dLa/2)**2+Math.cos(a[1]*r)*Math.cos(b[1]*r)*Math.sin(dLo/2)**2; return 2*R*Math.asin(Math.min(1,Math.sqrt(h)));}
+function distTo(p,ll){
+  if(p.kind!=="river") return km(p.ll,ll);
+  let best=1e9;
+  for(let i=0;i<p.line.length-1;i++){const a=p.line[i],b=p.line[i+1];
+    for(let s=0;s<=10;s++){const q=[a[0]+(b[0]-a[0])*s/10,a[1]+(b[1]-a[1])*s/10]; best=Math.min(best,km(q,ll));}}
+  return best;
+}
+function tolFor(u,p){ return p.kind==="river"?u.tol*0.8 : SYM[p.kind]?u.tol : u.tol*3; }
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function startQuiz(){
+  const u=curUnit(); clearFx();
+  let pool=u.places.filter(p=>p.quiz!==false);
+  if(S.mode==="name") pool=pool.filter(p=>SYM[p.kind]||p.kind==="river");
+  const list=shuffle(pool).slice(0,10);
+  S.quiz={list,i:0,score:0,answered:false,revealed:false,done:false};
+  S.sel=null;
+  renderBanner(); renderPanel();
+}
+function clearFx(){ d3.select("#fx").selectAll("*").remove(); d3.selectAll(".river").classed("hit",false); }
+function renderBanner(){
+  const B=$("#banner"); const q=S.quiz; if(!q){B.hidden=true;return;}
+  B.hidden=false;
+  const n=q.list.length;
+  if(q.done){
+    B.innerHTML=`<span class="q">Round over</span><span class="target">${q.score} / ${n}</span><button class="btn" id="again">Play again</button>`;
+    $("#again").onclick=()=>{startQuiz();refresh();};
+    return;
+  }
+  const t=q.list[q.i];
+  const count=`<span class="count">${q.i+1} of ${n} · score ${q.score}</span>`;
+  if(S.mode==="find"){
+    if(!q.answered) B.innerHTML=`<span class="q">Find</span><span class="target">${esc(t.name)}</span>${count}`;
+    else B.innerHTML=`<span class="res ${q.last.ok?"ok":"no"}">${q.last.ok?"Got it":"Not quite"} · ${q.last.d<1?"right on":Math.round(q.last.d)+" km "+(q.last.ok?"away":"off")}</span><span class="target">${esc(t.name)}</span>${count}<button class="btn" id="next">${q.i+1<n?"Next":"See score"}</button>`;
+  }else{
+    if(!q.revealed) B.innerHTML=`<span class="q">What is this place?</span>${count}<button class="btn" id="reveal">Reveal</button>`;
+    else B.innerHTML=`<span class="target">${esc(t.name)}</span>${count}<button class="btn" id="gotit">Class got it</button><button class="btn ghost" id="missed">Missed</button>`;
+  }
+  const nx=$("#next"); if(nx) nx.onclick=nextQ;
+  const rv=$("#reveal"); if(rv) rv.onclick=()=>{q.revealed=true; showTruth(t,true); renderBanner();};
+  const g=$("#gotit"); if(g) g.onclick=()=>{q.score++;nextQ();};
+  const m=$("#missed"); if(m) m.onclick=nextQ;
+  if(S.mode==="name"&&!q.revealed){ showPulse(t); }
+}
+function showPulse(t){
+  clearFx();
+  if(t.kind==="river"){ d3.select("#rv-"+t.id).classed("hit",true); return; }
+  d3.select("#fx").append("g").attr("data-ll",JSON.stringify(t.ll)).append("circle").attr("class","pulse").attr("r",8);
+  position();
+}
+function showTruth(t,keepPulse){
+  const fx=d3.select("#fx"); if(!keepPulse) {/* keep click marks */}
+  if(t.kind==="river"){ d3.select("#rv-"+t.id).classed("hit",true); }
+  const g=fx.append("g").attr("class","fb-true").attr("data-ll",JSON.stringify(t.ll));
+  if(t.kind!=="river"&&SYM[t.kind]) g.append("circle").attr("r",7);
+  g.append("text").attr("x",t.kind==="river"||!SYM[t.kind]?0:12).attr("y",t.kind==="river"||!SYM[t.kind]?-10:5).attr("text-anchor",t.kind==="river"||!SYM[t.kind]?"middle":"start").text(t.name);
+  position();
+}
+function nextQ(){
+  const q=S.quiz; clearFx();
+  if(q.i+1>=q.list.length){ q.done=true; renderBanner(); renderPanel(); return; }
+  q.i++; q.answered=false; q.revealed=false; refresh(); renderBanner(); renderPanel();
+}
+svg.on("click",ev=>{
+  if(S.mode!=="find"||!S.quiz||S.quiz.answered||S.quiz.done) return;
+  const [mx,my]=d3.pointer(ev,svg.node()); const pt=S.t.invert([mx,my]); const ll=projection.invert(pt);
+  if(!ll||isNaN(ll[0])) return;
+  const u=curUnit(), t=S.quiz.list[S.quiz.i], d=distTo(t,ll), ok=d<=tolFor(u,t);
+  S.quiz.answered=true; S.quiz.last={ok,d}; if(ok) S.quiz.score++;
+  const fx=d3.select("#fx");
+  if(!ok && t.kind!=="river"){
+    fx.append("line").attr("class","fb-line").attr("data-a",JSON.stringify(ll)).attr("data-b",JSON.stringify(t.ll));
+  }
+  const xg=fx.append("g").attr("data-ll",JSON.stringify(ll));
+  xg.append("path").attr("class","fb-x"+(ok?" ok":"")).attr("d","M-7,-7L7,7M7,-7L-7,7");
+  showTruth(t);
+  renderBanner(); renderPanel();
+});
+function renderQuizPanel(){
+  const P=$("#panel"), q=S.quiz, u=curUnit();
+  const how=S.mode==="find"
+    ? `<p>A place name pops up. Click where you think it is on the map. Labels are hidden.</p><p class="fine">Counts as correct within ${Math.round(u.tol)} km for cities and sites, a bit more for rivers and regions. Zoom and drag the map any time.</p>`
+    : `<p>A spot on the map lights up. The class names it, then hit Reveal to check.</p><p class="fine">Works well as a team game: teams take turns, or everyone writes the answer on a whiteboard before you reveal.</p>`;
+  if(q.done){
+    P.innerHTML=`<div class="eyebrow">${S.mode==="find"?"Find it":"Name it"} · ${esc(u.name)}</div><h2>Round over</h2><div class="score">${q.score}<span style="font-size:28px;color:var(--muted)"> / ${q.list.length}</span></div>${how}`;
+    return;
+  }
+  P.innerHTML=`<div class="eyebrow">${S.mode==="find"?"Find it":"Name it"} · ${esc(u.name)}</div><h2>${S.mode==="find"?"Find it on the map":"Name that place"}</h2>
+    <div class="span">Question ${q.i+1} of ${q.list.length} · score ${q.score}</div>${how}
+    <p><button class="btn ghost" id="restart">Start a new round</button></p>`;
+  $("#restart").onclick=()=>{startQuiz();refresh();};
+}
+
+/* ---------------- controls ---------------- */
+document.querySelectorAll("#modes button").forEach(b=>b.onclick=()=>{
+  const m=b.dataset.mode;
+  if(m!=="explore"){ const u=curUnit(); if(!u||u.status==="soon"||!u.places){ const nu=nowUnit(); S.mode=m; setView(nu.id); return; } }
+  S.mode=m; S.sel=null;
+  if(m==="explore"){ S.quiz=null; clearFx(); $("#banner").hidden=true; }
+  else { startQuiz(); fitView(500); }
+  renderModes(); refresh(); renderPanel(); renderTimeline();
+});
+$("#t-labels").onclick=()=>{S.labels=!S.labels; savePrefs(); renderModes(); refresh();};
+$("#t-borders").onclick=()=>{S.borders=!S.borders; savePrefs(); renderModes(); refresh();};
+$("#z-in").onclick=()=>svg.transition().duration(300).call(zoom.scaleBy,1.6);
+$("#z-out").onclick=()=>svg.transition().duration(300).call(zoom.scaleBy,1/1.6);
+$("#z-fit").onclick=()=>fitView(500);
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape"&&!$("#lightbox").hidden){ $("#lightbox").hidden=true; return; }
+  if(e.key==="Escape"&&!$("#sheet").hidden){ closeLesson(); return; }
+  if(e.key==="Escape"){ if(S.sel){S.sel=null;refresh();renderPanel();renderTimeline();} else if(S.view!=="world") setView("world"); }
+  if(e.key==="Enter" && S.quiz && S.mode==="find" && S.quiz.answered && !S.quiz.done) nextQ();
+});
+
+/* ---------------- boot ---------------- */
+function boot(){
+  size(); drawGeo(); buildOverlay(); renderTabs(); renderModes(); renderPanel(); renderTimeline();
+  const h=(location.hash||"").replace("#",""); let openL=null;
+  const m=h.match(/^([a-z-]+?)-l([0-9a-z]+)$/);
+  if(m&&unitById(m[1])){ S.view=m[1]; S.ptab="lessons"; openL=[m[1],"l"+m[2]]; }
+  else if(h&&(h==="world"||unitById(h))) S.view=h;
+  if(S.view!=="world"){ renderTabs(); renderPanel(); renderTimeline(); refresh(); }
+  fitView(0);
+  if(openL) openLesson(openL[0],openL[1]);
+}
+let rT; window.addEventListener("resize",()=>{clearTimeout(rT); rT=setTimeout(()=>{size(); drawGeo(); refresh(); fitView(0);},150);});
+
+/* World coastlines come from the Datamaps library's built-in world file (loaded as a script). */
+function loadWorld(){
+  const urls=[
+    "https://cdnjs.cloudflare.com/ajax/libs/datamaps/0.5.9/datamaps.world.hires.min.js",
+    "https://cdn.jsdelivr.net/npm/datamaps@0.5.9/dist/datamaps.world.hires.min.js",
+    "https://cdnjs.cloudflare.com/ajax/libs/datamaps/0.5.9/datamaps.world.min.js",
+    "https://cdn.jsdelivr.net/npm/datamaps@0.5.9/dist/datamaps.world.min.js"
+  ];
+  let i=0;
+  const tryNext=()=>{
+    if(i>=urls.length){ const n=$("#note"); n.hidden=false; n.textContent="Coastlines couldn't load (check the internet connection). Places, rivers and quizzes still work."; return; }
+    const s=document.createElement("script"); s.src=urls[i++];
+    s.onload=()=>{
+      try{
+        const D=window.Datamap||window.Datamaps; const topo=D&&D.prototype&&D.prototype.worldTopo;
+        if(!topo||typeof topo!=="object"||!window.topojson) throw new Error("no topo");
+        const key=Object.keys(topo.objects)[0]; const obj=topo.objects[key];
+        world={ land: topojson.merge(topo,obj.geometries), coast: topojson.mesh(topo,obj,(a,b)=>a===b), borders: topojson.mesh(topo,obj,(a,b)=>a!==b) };
+        drawGeo(); refresh();
+      }catch(e){ tryNext(); }
+    };
+    s.onerror=tryNext;
+    document.head.appendChild(s);
+  };
+  tryNext();
+}
+if(window.d3){ boot(); loadWorld(); }
+</script>
+
+</body>
+</html>
