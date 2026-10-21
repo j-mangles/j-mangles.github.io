@@ -21,7 +21,7 @@ def nav(active):
         for f, c, label, *_ in SUBJECTS)
     return f'<header class="topbar"><div class="wrap"><a class="home" href="../">Mr. Mangles\' Class</a><nav class="subnav" aria-label="Subjects">{links}</nav></div></header>'
 
-def page(folder, code, label, eyebrow, title, lede, tools):
+def page(folder, code, label, eyebrow, title, lede, tools, models=False):
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -46,7 +46,7 @@ def page(folder, code, label, eyebrow, title, lede, tools):
 <div class="lightbox" id="lightbox" hidden><img id="lbimg" alt=""><p id="lbcap"></p></div>
 <footer class="site"><div class="wrap">Mr. Mangles' Class · École Edward Schreyer School · 2026–27</div></footer>
 <script src="data.js"></script>
-{'<script src="tools.js"></script>' if tools else ''}
+{'<script src="tools.js"></script>' if tools else ''}{chr(10)+'<script src="models.js"></script>' if models else ''}
 <script src="../assets/chart.js"></script>
 <script src="../assets/review.js"></script>
 <script src="../assets/hub.js"></script>
@@ -63,5 +63,6 @@ if __name__ == "__main__":
             continue
         tools = s[6] and os.path.exists(os.path.join(folder, "tools.js"))
         with open(os.path.join(folder, "index.html"), "w") as f:
-            f.write(page(*s[:6], tools))
+            models = os.path.exists(os.path.join(folder, "models.js"))
+            f.write(page(*s[:6], tools, models))
         print("built", folder)
