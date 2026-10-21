@@ -13,83 +13,195 @@
     er:{name:"Endoplasmic reticulum",job:"Folded membranes attached to the nucleus. Builds proteins and moves materials around the cell."},
     golgi:{name:"Golgi apparatus",job:"The post office. Packs and ships materials. Unlike the ER, it sits on its own."}
   };
-  function cellSVG(type){
-    const plant = type==="plant";
-    const C = {
-      wall:"#8DB36B", mem:"#3E7C59", cyto:plant?"#EEF6E3":"#F7EEE6", vac:"#CFE6F2", vacS:"#7FB2CF",
-      nuc:"#B9A3D6", nucS:"#6D5596", nucl:"#7E62A8", mito:"#F2B48C", mitoS:"#B86A3E", chl:"#5FA35A", chlS:"#2F6B2C",
-      er:"#C98FB0", golgi:"#E3C065"
-    };
-    let s = `<svg viewBox="0 0 420 300" role="img" aria-label="${plant?"Plant":"Animal"} cell diagram" style="width:100%;height:auto;display:block">`;
-    if(plant){
-      s += `<g data-o="wall" class="org"><rect x="10" y="10" width="400" height="280" rx="18" fill="${C.wall}" stroke="#5E8A43" stroke-width="2"/></g>`;
-      s += `<g data-o="membrane" class="org"><rect x="24" y="24" width="372" height="252" rx="12" fill="none" stroke="${C.mem}" stroke-width="5"/></g>`;
-      s += `<g data-o="cytoplasm" class="org"><rect x="27" y="27" width="366" height="246" rx="10" fill="${C.cyto}"/></g>`;
-      s += `<g data-o="vacuole" class="org"><path d="M150 70 C 230 50, 330 60, 350 110 C 370 170, 330 235, 250 240 C 175 245, 140 200, 145 150 C 148 115, 120 85, 150 70 Z" fill="${C.vac}" stroke="${C.vacS}" stroke-width="2"/></g>`;
-      [[60,60,0],[300,250,20],[370,150,90],[56,230,-20],[200,258,0]].forEach(([x,y,r])=>{
-        s += `<g data-o="chloro" class="org" transform="translate(${x} ${y}) rotate(${r})"><ellipse rx="20" ry="10" fill="${C.chl}" stroke="${C.chlS}" stroke-width="1.5"/><path d="M-12 -2 h24 M-12 3 h24" stroke="#2F6B2C" stroke-width="1.2"/></g>`;});
-      s += nucleusAt(85,150,C) + erNear(85,150,C) + golgiAt(345,64,C) + mitoAt(110,250,30,C) + mitoAt(250,40,-10,C);
-    } else {
-      s += `<g data-o="membrane" class="org"><path d="M60 60 C 140 0, 300 10, 370 70 C 430 130, 400 250, 300 280 C 190 310, 70 280, 35 200 C 10 140, 25 90, 60 60 Z" fill="none" stroke="${C.mem}" stroke-width="5"/></g>`;
-      s += `<g data-o="cytoplasm" class="org"><path d="M62 63 C 140 5, 298 14, 366 72 C 424 130, 396 246, 298 276 C 190 306, 72 276, 39 200 C 15 140, 30 92, 62 63 Z" fill="${C.cyto}"/></g>`;
-      [[300,90,14],[330,200,10],[95,215,11],[250,240,9]].forEach(([x,y,r])=>{s += `<g data-o="vacuole" class="org"><circle cx="${x}" cy="${y}" r="${r}" fill="${C.vac}" stroke="${C.vacS}" stroke-width="1.5"/></g>`;});
-      s += nucleusAt(200,150,C) + erNear(200,150,C) + golgiAt(300,145,C) + mitoAt(110,110,25,C) + mitoAt(170,250,-15,C) + mitoAt(355,135,80,C);
-    }
-    s += `<g id="lbl"></g></svg>`;
+  /* ---------- Detailed cell diagrams, drawn in SVG so every part stays clickable ---------- */
+  function rng(seed){ return function(){ seed|=0; seed=seed+0x6D2B79F5|0; let t=Math.imul(seed^seed>>>15,1|seed); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }
+  const f1 = n => Math.round(n*10)/10;
+
+  function defs(p, plant){ return `<defs>
+    <radialGradient id="${p}cyto" cx="45%" cy="40%" r="75%"><stop offset="0" stop-color="${plant?"#F5FAEE":"#FFF7F0"}"/><stop offset="1" stop-color="${plant?"#E2EED2":"#F5DFCD"}"/></radialGradient>
+    <radialGradient id="${p}nuc" cx="40%" cy="35%" r="70%"><stop offset="0" stop-color="#ECE3F7"/><stop offset=".7" stop-color="#CDBBE6"/><stop offset="1" stop-color="#AE94D4"/></radialGradient>
+    <radialGradient id="${p}nucl" cx="38%" cy="32%" r="70%"><stop offset="0" stop-color="#9A79C9"/><stop offset="1" stop-color="#5A3B8C"/></radialGradient>
+    <radialGradient id="${p}vac" cx="40%" cy="30%" r="85%"><stop offset="0" stop-color="#EEF8FE"/><stop offset=".7" stop-color="#C9E5F5"/><stop offset="1" stop-color="#9ECBE6"/></radialGradient>
+    <linearGradient id="${p}mito" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FCCCA6"/><stop offset="1" stop-color="#E88E58"/></linearGradient>
+    <linearGradient id="${p}chl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9FD585"/><stop offset="1" stop-color="#5FA84A"/></linearGradient>
+    <linearGradient id="${p}gol" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F8E08F"/><stop offset="1" stop-color="#E0B445"/></linearGradient>
+    <pattern id="${p}fib" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="rotate(32)"><rect width="12" height="12" fill="#BCDB93"/><path d="M0 3h12M0 8.5h12" stroke="#9CC371" stroke-width="1.5"/></pattern>
+    <filter id="${p}soft" x="-15%" y="-15%" width="130%" height="130%"><feDropShadow dx="0" dy="1.6" stdDeviation="1.6" flood-color="#2A2A40" flood-opacity=".22"/></filter>
+  </defs>`; }
+
+  function mito(p,x,y,r,L=62,W=28){
+    const hl=L/2, hw=W/2, il=hl-4, ih=hw-4, n=6, span=2*il-1.3*ih;
+    let cr=""; for(let i=0;i<n;i++){ const cx=-il+0.65*ih+(i+0.5)*span/n, s=i%2?1:-1;
+      cr+=`<path d="M${f1(cx-3)} ${f1(s*ih)} L${f1(cx-3)} ${f1(-s*ih*0.2)} Q${f1(cx)} ${f1(-s*ih*0.55)} ${f1(cx+3)} ${f1(-s*ih*0.2)} L${f1(cx+3)} ${f1(s*ih)}"/>`; }
+    return `<g data-o="mito" class="org" transform="translate(${x} ${y}) rotate(${r})" filter="url(#${p}soft)">
+      <rect x="${-hl}" y="${-hw}" width="${L}" height="${W}" rx="${hw}" fill="url(#${p}mito)" stroke="#B05C2B" stroke-width="2"/>
+      <rect x="${-il}" y="${-ih}" width="${2*il}" height="${2*ih}" rx="${ih}" fill="#FDE6D4" stroke="#C8703C" stroke-width="1.5"/>
+      <g fill="#F2AE80" stroke="#C8703C" stroke-width="1.3" stroke-linejoin="round">${cr}</g></g>`;
+  }
+
+  function chloro(p,x,y,r,L=80,W=36){
+    const a=L/2, b=W/2; let g="";
+    [-0.55,-0.2,0.15,0.5].forEach((t,i)=>{ const gx=t*a, n=i%2?4:5, h=4, gy=-(n*h)/2+(i%2?3:-2);
+      for(let k=0;k<n;k++) g+=`<rect x="${f1(gx-7)}" y="${f1(gy+k*h)}" width="14" height="3.3" rx="1.6" fill="#3E8E39" stroke="#2A6627" stroke-width=".6"/>`; });
+    const lam=`<path d="M${f1(-a*0.78)} -1 C ${f1(-a*0.3)} -7, ${f1(a*0.1)} 6, ${f1(a*0.78)} 0" fill="none" stroke="#56A24C" stroke-width="1.4"/><path d="M${f1(-a*0.62)} 6 C ${f1(-a*0.2)} 2, ${f1(a*0.2)} 10, ${f1(a*0.62)} 5" fill="none" stroke="#56A24C" stroke-width="1.2"/>`;
+    return `<g data-o="chloro" class="org" transform="translate(${x} ${y}) rotate(${r})" filter="url(#${p}soft)">
+      <ellipse rx="${a}" ry="${b}" fill="url(#${p}chl)" stroke="#367730" stroke-width="2"/>
+      <ellipse rx="${a-3.5}" ry="${b-3.5}" fill="#CDE9B6" stroke="#5E9F4E" stroke-width="1.2"/>${lam}${g}</g>`;
+  }
+
+  function nucleus(p,x,y,rx,ry,R){
+    let pores=""; for(let i=0;i<16;i++){ const t=i/16*Math.PI*2+0.2; pores+=`<circle cx="${f1(x+Math.cos(t)*(rx-2.5))}" cy="${f1(y+Math.sin(t)*(ry-2.5))}" r="2.5" fill="#F1EAF9"/>`; }
+    let chrom=""; for(let i=0;i<11;i++){ const t=R()*6.283, d=0.15+R()*0.5, cx=x+Math.cos(t)*rx*d, cy=y+Math.sin(t)*ry*d;
+      chrom+=`<path d="M${f1(cx)} ${f1(cy)} q ${f1(R()*14-7)} ${f1(R()*14-7)} ${f1(R()*18-9)} ${f1(R()*18-9)} t ${f1(R()*18-9)} ${f1(R()*18-9)}"/>`; }
+    return `<g data-o="nucleus" class="org" filter="url(#${p}soft)">
+      <ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${ry}" fill="#9677C3" stroke="#563A88" stroke-width="2"/>
+      <ellipse cx="${x}" cy="${y}" rx="${rx-5}" ry="${ry-5}" fill="url(#${p}nuc)" stroke="#6B4F9E" stroke-width="1.3"/>${pores}
+      <g fill="none" stroke="#9479BF" stroke-width="2" stroke-linecap="round" opacity=".75">${chrom}</g>
+      <ellipse cx="${f1(x+rx*0.16)}" cy="${f1(y-ry*0.12)}" rx="${f1(rx*0.29)}" ry="${f1(ry*0.26)}" fill="url(#${p}nucl)"/>
+      <ellipse cx="${f1(x+rx*0.1)}" cy="${f1(y-ry*0.2)}" rx="${f1(rx*0.09)}" ry="${f1(ry*0.06)}" fill="#fff" opacity=".35"/></g>`;
+  }
+
+  /* Rough ER: flattened sacs wrapped around the nucleus, studded with ribosomes, joined to the envelope.
+     Smooth ER: a few bare tubes nearby. Both are the same clickable part. */
+  function er(x,y,rx,ry,a0,a1,smooth){
+    const N=36, pts=(d,ph)=>{ const out=[]; for(let i=0;i<=N;i++){ const t=a0+(a1-a0)*i/N, w=Math.sin(i/N*Math.PI*5+ph)*3; out.push([x+Math.cos(t)*(rx+d+w), y+Math.sin(t)*(ry+d+w), t]); } return out; };
+    const line=a=>"M"+a.map(q=>f1(q[0])+" "+f1(q[1])).join(" L");
+    let sacs="", ribo="", hit="";
+    [14,29,44,59].forEach((d,k)=>{ const a=pts(d,k*1.3), dd=line(a);
+      sacs+=`<path d="${dd}" stroke="#AD5D88" stroke-width="10"/><path d="${dd}" stroke="#F5C9DF" stroke-width="6.4"/>`;
+      hit+=`<path d="${dd}" stroke="transparent" stroke-width="18"/>`;
+      a.forEach((q,i)=>{ if(i%2) return; [-6.6,6.6].forEach(o=>{ ribo+=`<circle cx="${f1(q[0]+Math.cos(q[2])*o)}" cy="${f1(q[1]+Math.sin(q[2])*o)}" r="1.75"/>`; }); }); });
+    let con=""; [a0+0.12,(a0+a1)/2,a1-0.12].forEach(t=>{ con+=`<path d="M${f1(x+Math.cos(t)*(rx-1))} ${f1(y+Math.sin(t)*(ry-1))} L${f1(x+Math.cos(t)*(rx+15))} ${f1(y+Math.sin(t)*(ry+15))}" stroke="#AD5D88" stroke-width="6"/>`; });
+    let sm=""; (smooth||[]).forEach(d=>{ sm+=`<path d="${d}" stroke="#AD5D88" stroke-width="9"/><path d="${d}" stroke="#F5C9DF" stroke-width="5.6"/>`; hit+=`<path d="${d}" stroke="transparent" stroke-width="18"/>`; });
+    return `<g data-o="er" class="org" fill="none" stroke-linecap="round" stroke-linejoin="round">${hit}${con}${sacs}${sm}<g fill="#76385F" stroke="none">${ribo}</g></g>`;
+  }
+
+  function golgi(p,x,y,r){
+    let s=""; [78,72,64,56,46].forEach((w,i)=>{ const yy=i*11-22, d=`M${-w/2} ${yy} Q 0 ${yy-18} ${w/2} ${yy}`;
+      s+=`<path d="${d}" stroke="#B0841A" stroke-width="9"/><path d="${d}" stroke="url(#${p}gol)" stroke-width="5.4"/>`;
+      s+=`<circle cx="${f1(w/2+6)}" cy="${f1(yy+2)}" r="3.6" fill="#F4D47C" stroke="#B0841A" stroke-width="1.2"/>`;
+      if(i%2===0) s+=`<circle cx="${f1(-w/2-6)}" cy="${f1(yy+2)}" r="3.2" fill="#F4D47C" stroke="#B0841A" stroke-width="1.2"/>`; });
+    const ves=[[-12,36,4],[12,41,3.5],[46,30,4.2],[-46,26,3.6],[28,-38,3.4]].map(v=>`<circle cx="${v[0]}" cy="${v[1]}" r="${v[2]}" fill="#F4D47C" stroke="#B0841A" stroke-width="1.2"/>`).join("");
+    return `<g data-o="golgi" class="org" transform="translate(${x} ${y}) rotate(${r})" fill="none" stroke-linecap="round" filter="url(#${p}soft)"><rect x="-56" y="-46" width="112" height="94" fill="transparent" stroke="none"/>${s}${ves}</g>`;
+  }
+
+  function smallVac(p,x,y,r){ return `<g data-o="vacuole" class="org" filter="url(#${p}soft)"><circle cx="${x}" cy="${y}" r="${r}" fill="url(#${p}vac)" stroke="#5E9CC2" stroke-width="2"/><ellipse cx="${f1(x-r*0.3)}" cy="${f1(y-r*0.35)}" rx="${f1(r*0.38)}" ry="${f1(r*0.2)}" fill="#fff" opacity=".6"/></g>`; }
+
+  function dots(R,n,inside){ let s=""; for(let i=0;i<n;){ const x=40+R()*720, y=30+R()*500; if(!inside(x,y)) continue; s+=`<circle cx="${f1(x)}" cy="${f1(y)}" r="1.5"/>`; i++; } return s; }
+
+  const PINS = {
+    plant:{wall:[33,300],membrane:[750,302],cytoplasm:[318,82],vacuole:[520,280],nucleus:[140,312],er:[287,292],golgi:[110,447],mito:[100,120],chloro:[420,78]},
+    animal:{membrane:[54,330],cytoplasm:[612,186],nucleus:[365,292],er:[395,150],golgi:[630,343],mito:[165,175],vacuole:[110,290]}
+  };
+  function pins(type,sc){ sc=sc||1; const order=Object.keys(ORG).filter(k=>type==="plant"||!ORG[k].plant);
+    return `<g class="pins" pointer-events="none">${order.map((k,i)=>{ const [x,y]=PINS[type][k]; return `<g><circle cx="${x}" cy="${y}" r="${f1(13*sc)}" fill="#202126" stroke="#fff" stroke-width="2.5"/><text x="${x}" y="${f1(y+5*sc)}" text-anchor="middle" font-size="${f1(14*sc)}" font-weight="700" fill="#fff" font-family="Inter,system-ui,sans-serif">${i+1}</text></g>`; }).join("")}</g>`; }
+
+  function plantSVG(){
+    const p="pc", R=rng(11);
+    const outer="M58 22 H742 Q778 22 778 58 V502 Q778 538 742 538 H58 Q22 538 22 502 V58 Q22 22 58 22 Z";
+    const inner="M60 44 H740 Q756 44 756 60 V500 Q756 516 740 516 H60 Q44 516 44 500 V60 Q44 44 60 44 Z";
+    const mem="M64 50 H736 Q750 50 750 64 V496 Q750 510 736 510 H64 Q50 510 50 496 V64 Q50 50 64 50 Z";
+    const vac="M346 120 C 430 92, 600 96, 664 126 C 700 146, 694 250, 688 330 C 682 410, 636 452, 540 452 C 450 452, 374 446, 350 402 C 328 358, 332 300, 337 240 C 341 190, 322 140, 346 120 Z";
+    let s=`<svg viewBox="0 0 800 560" role="img" aria-label="Plant cell diagram" style="width:100%;height:auto;display:block">${defs(p,true)}`;
+    s+=`<g data-o="wall" class="org"><path d="${inner}" fill="#EDF5E1"/><path d="${outer} ${inner}" fill-rule="evenodd" fill="url(#${p}fib)" stroke="#7FA55A" stroke-width="1.6"/></g>`;
+    s+=`<g data-o="cytoplasm" class="org"><path d="${mem}" fill="url(#${p}cyto)"/><g fill="#8DA57E" opacity=".75">${dots(R,190,(x,y)=>x>58&&x<742&&y>58&&y<502)}</g></g>`;
+    s+=`<g data-o="membrane" class="org" fill="none"><path d="${mem}" stroke="transparent" stroke-width="16"/><path d="${mem}" stroke="#2F7A4C" stroke-width="4.5"/><path d="${mem}" stroke="#B8E2C6" stroke-width="1.6"/></g>`;
+    s+=`<g data-o="vacuole" class="org" filter="url(#${p}soft)"><path d="${vac}" fill="url(#${p}vac)" stroke="#5E9CC2" stroke-width="3"/><ellipse cx="450" cy="168" rx="78" ry="24" transform="rotate(-8 450 168)" fill="#fff" opacity=".5"/><ellipse cx="610" cy="400" rx="30" ry="9" transform="rotate(-30 610 400)" fill="#fff" opacity=".35"/></g>`;
+    s+=er(170,290,78,72,-1.25,1.25,["M214 440 C 232 424, 250 452, 268 436 S 300 450, 296 470","M222 470 C 240 458, 258 486, 278 474","M200 418 C 214 404, 236 410, 244 398"]);
+    s+=nucleus(p,170,290,78,72,R);
+    s+=golgi(p,112,456,0);
+    s+=mito(p,100,120,25)+mito(p,255,104,-15)+mito(p,330,488,5)+mito(p,690,490,-4)+mito(p,726,276,90);
+    s+=chloro(p,180,80,0)+chloro(p,420,78,0)+chloro(p,590,75,4)+chloro(p,728,190,88)+chloro(p,728,362,92)+chloro(p,480,487,0)+chloro(p,606,488,-3);
     return s;
   }
-  function nucleusAt(x,y,C){return `<g data-o="nucleus" class="org"><circle cx="${x}" cy="${y}" r="34" fill="${C.nuc}" stroke="${C.nucS}" stroke-width="2.5"/><circle cx="${x+6}" cy="${y-4}" r="10" fill="${C.nucl}"/></g>`;}
-  function erNear(x,y,C){return `<g data-o="er" class="org" fill="none" stroke="${C.er}" stroke-width="4" stroke-linecap="round"><path d="M${x+36} ${y-18} q 12 10 0 20 q -12 10 0 20"/><path d="M${x+46} ${y-26} q 14 14 0 28 q -14 14 0 28"/><path d="M${x+56} ${y-30} q 16 16 0 32 q -16 16 0 32"/><rect x="${x+30}" y="${y-36}" width="44" height="76" fill="transparent" stroke="none"/></g>`;}
-  function golgiAt(x,y,C){return `<g data-o="golgi" class="org" fill="none" stroke="${C.golgi}" stroke-width="5" stroke-linecap="round"><path d="M${x-22} ${y-10} q 22 -14 44 0"/><path d="M${x-24} ${y} q 24 -14 48 0"/><path d="M${x-22} ${y+10} q 22 -14 44 0"/><path d="M${x-18} ${y+20} q 18 -12 36 0"/><rect x="${x-26}" y="${y-20}" width="52" height="44" fill="transparent" stroke="none"/></g>`;}
-  function mitoAt(x,y,r,C){return `<g data-o="mito" class="org" transform="translate(${x} ${y}) rotate(${r})"><ellipse rx="24" ry="11" fill="${C.mito}" stroke="${C.mitoS}" stroke-width="2"/><path d="M-16 0 q 4 -8 8 0 q 4 8 8 0 q 4 -8 8 0 q 4 8 8 0" fill="none" stroke="${C.mitoS}" stroke-width="1.5"/></g>`;}
+
+  function animalSVG(){
+    const p="ac", R=rng(23);
+    const mem="M120 110 C 220 30, 520 20, 650 80 C 760 130, 790 260, 740 370 C 690 480, 540 535, 380 530 C 220 525, 90 470, 50 360 C 15 260, 40 170, 120 110 Z";
+    let s=`<svg viewBox="0 0 800 560" role="img" aria-label="Animal cell diagram" style="width:100%;height:auto;display:block">${defs(p,false)}`;
+    s+=`<g data-o="cytoplasm" class="org"><path d="${mem}" fill="url(#${p}cyto)"/><g fill="#B39A88" opacity=".75">${dots(R,170,(x,y)=>((x-405)/325)**2+((y-282)/218)**2<1)}</g></g>`;
+    s+=`<g data-o="membrane" class="org" fill="none"><path d="${mem}" stroke="transparent" stroke-width="22"/><path d="${mem}" stroke="#5EA582" stroke-width="11"/><path d="${mem}" stroke="#DDF1E5" stroke-width="4.5"/><path d="${mem}" stroke="#2F7A54" stroke-width="4.2" stroke-dasharray="0 8.5" stroke-linecap="round"/></g>`;
+    s+=smallVac(p,110,290,20)+smallVac(p,712,322,16)+smallVac(p,360,482,17)+smallVac(p,480,92,13)+smallVac(p,255,150,14);
+    s+=er(395,275,92,84,-2.6,0.3,["M262 410 C 280 392, 300 420, 318 402 S 350 414, 352 436","M276 440 C 296 428, 314 458, 336 448","M248 386 C 262 372, 284 380, 292 366"]);
+    s+=nucleus(p,395,275,92,84,R);
+    s+=golgi(p,630,345,-18);
+    s+=mito(p,165,175,35)+mito(p,560,126,12)+mito(p,682,228,75)+mito(p,180,402,-25)+mito(p,478,470,5)+mito(p,600,452,-30);
+    return s;
+  }
+  function cellSVG(type,showPins,k){ return (type==="plant"?plantSVG():animalSVG())+(showPins?pins(type,k):"")+`</svg>`; }
+
+  const NICK = {nucleus:"the “brain” of the cell", mito:"the “powerhouse of the cell”", golgi:"the “post office” of the cell", vacuole:"the “storage unit” of the cell"};
 
   window.HUB.tools = window.HUB.tools || {};
   function explorer(el){
-    let type="plant", mode="explore", sel=null, target=null, score=0, tries=0;
+    let type="plant", mode="explore", labels=false, sel=null, target=null, score=0, tries=0;
     el.innerHTML = `<div class="eyebrow">Interactive diagram</div><h2>Cell Explorer</h2>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 12px">
-        <button class="btn ghost" id="t-plant">Plant cell</button><button class="btn ghost" id="t-animal">Animal cell</button>
-        <span style="flex:1"></span>
-        <button class="btn ghost" id="m-explore">Explore</button><button class="btn ghost" id="m-quiz">Quiz</button>
+      <div class="cx-row" id="cellctl" style="margin:10px 0 12px">
+        <span class="cx-seg"><button id="t-plant">Plant cell</button><button id="t-animal">Animal cell</button></span>
+        <span class="cx-seg"><button id="m-explore">Explore</button><button id="m-quiz">Quiz</button></span>
+        <button class="cx-toggle" id="m-labels" aria-pressed="false"><span></span>Labels</button>
       </div>
-      <div id="cellbox"></div><div id="cellinfo" style="min-height:96px;margin-top:12px"></div>
+      <div id="cellbox"></div><div id="legend"></div><div id="cellinfo" aria-live="polite" style="min-height:96px;margin-top:12px"></div>
       <style>
-        #cellbox .org{cursor:pointer;transition:opacity .15s}
-        #cellbox svg:hover .org{opacity:.88}#cellbox svg .org:hover{opacity:1}
-        #cellbox .org.on>*{filter:drop-shadow(0 0 4px var(--accent))}
-        .seg-on{background:var(--btn)!important;color:var(--on-btn)!important;border-color:var(--btn)!important}
+        .cx-seg{display:inline-flex;padding:3px;background:var(--soft);border-radius:980px}
+        .cx-seg button{border:0;background:none;padding:6px 13px;border-radius:980px;font-size:14.5px;font-weight:600;color:var(--muted);cursor:pointer;white-space:nowrap}
+        #cellctl .cx-seg button.seg-on{background:var(--paper);color:var(--ink);border:0;box-shadow:0 1px 3px rgba(20,20,40,.14)}
+        .cx-toggle{display:inline-flex;align-items:center;gap:7px;border:0;background:none;font-size:14.5px;font-weight:600;color:var(--muted);cursor:pointer;padding:6px 4px}
+        .cx-toggle span{width:30px;height:18px;border-radius:9px;background:var(--rule);position:relative;transition:background .15s}
+        .cx-toggle span::after{content:"";position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25);transition:left .15s}
+        .cx-toggle[aria-pressed="true"]{color:var(--ink)}
+        .cx-toggle[aria-pressed="true"] span{background:var(--accent)}
+        .cx-toggle[aria-pressed="true"] span::after{left:14px}
+        #cellbox{border-radius:12px;overflow:hidden;background:var(--paper)}
+        #cellbox .org{cursor:pointer;transition:opacity .2s,filter .15s}
+        #cellbox .org:hover{filter:brightness(1.05) drop-shadow(0 0 3px rgba(89,104,232,.75))}
+        #cellbox svg.has-sel .org:not(.on){opacity:.4}
+        #cellbox .org.on{filter:drop-shadow(0 0 2px #fff) drop-shadow(0 0 7px var(--accent))}
+        #legend ol{list-style:none;margin:10px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:4px 14px;font-size:15px}
+        #legend li{display:flex;gap:8px;align-items:center}
+        #legend b{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:#202126;color:#fff;font-size:12px;flex:none}
+        #legend button{background:none;border:0;padding:2px 0;cursor:pointer;text-align:left;font-size:15px}
+        #legend button:hover{text-decoration:underline}
+        @media (prefers-reduced-motion:reduce){#cellbox .org{transition:none}}
       </style>`;
-    const box=el.querySelector("#cellbox"), info=el.querySelector("#cellinfo");
+    const box=el.querySelector("#cellbox"), info=el.querySelector("#cellinfo"), legend=el.querySelector("#legend");
     const present=()=>Object.keys(ORG).filter(k=>type==="plant"||!ORG[k].plant);
     function newTarget(){ const list=present().filter(k=>k!==target); target=list[Math.floor(Math.random()*list.length)]; }
     function draw(){
-      box.innerHTML=cellSVG(type);
+      const w=box.clientWidth||480, k=Math.max(1,Math.min(1.7,(800/w)*0.55));
+      box.innerHTML=cellSVG(type, mode==="explore"&&labels, k);
+      const svg=box.querySelector("svg");
       ["plant","animal"].forEach(t=>el.querySelector("#t-"+t).classList.toggle("seg-on",type===t));
-      ["explore","quiz"].forEach(m=>el.querySelector("#m-"+m).classList.toggle("seg-on",mode===m));
+      el.querySelector("#m-explore").classList.toggle("seg-on",mode==="explore");
+      el.querySelector("#m-quiz").classList.toggle("seg-on",mode==="quiz");
+      const lb=el.querySelector("#m-labels"); lb.hidden=mode!=="explore"; lb.setAttribute("aria-pressed",String(labels));
       box.querySelectorAll(".org").forEach(g=>{
         g.addEventListener("click",ev=>{ev.stopPropagation(); pick(g.dataset.o);});
         if(sel&&g.dataset.o===sel&&mode==="explore") g.classList.add("on");
       });
+      svg.classList.toggle("has-sel",!!sel&&mode==="explore");
+      legend.innerHTML = mode==="explore"&&labels ? `<ol>${present().map((k,i)=>`<li><b>${i+1}</b><button data-k="${k}">${esc(ORG[k].name)}</button></li>`).join("")}</ol>` : "";
+      legend.querySelectorAll("[data-k]").forEach(b=>b.onclick=()=>pick(b.dataset.k));
       showInfo();
     }
     function pick(o){
-      if(mode==="explore"){ sel=o; draw(); return; }
+      if(mode==="explore"){ sel = sel===o ? null : o; draw(); return; }
       tries++; const ok=o===target; if(ok) score++;
-      info.innerHTML=`<p style="margin:0;font-weight:700;color:${ok?"var(--good)":"var(--bad)"}">${ok?"Correct!":"That's the "+esc(ORG[o].name)+"."}</p>
-        <p style="margin:4px 0 0">${esc(ORG[target].name)}: ${esc(ORG[target].job)}</p>
-        <p class="note" style="margin:8px 0 0">Score ${score} of ${tries} · <button class="btn ghost" id="nextq" style="padding:5px 10px">Next</button></p>`;
+      info.innerHTML=`<p style="margin:0;font-weight:700;color:${ok?"var(--good)":"var(--bad)"}">${ok?"Correct!":"That's the "+esc(ORG[o].name.toLowerCase())+"."}</p>
+        <p style="margin:4px 0 0"><b>${esc(ORG[target].name)}:</b> ${esc(JOB[target])}</p>
+        <p class="note" style="margin:8px 0 0">Score ${score} of ${tries} · <button class="btn ghost" id="nextq" style="padding:5px 12px">Next</button></p>`;
       el.querySelector("#nextq").onclick=()=>{newTarget(); showInfo();};
     }
     function showInfo(){
       if(mode==="quiz"){ if(!target||!present().includes(target)) newTarget();
         info.innerHTML=`<p style="margin:0" class="note">Click the part of the ${type} cell that is the…</p><p style="margin:2px 0 0;font-family:var(--f-title);font-size:26px;font-weight:700">${esc(ORG[target].name)}</p><p class="note" style="margin:6px 0 0">Score ${score} of ${tries}</p>`; return; }
-      if(!sel){ info.innerHTML=`<p class="note" style="margin:0">Click any part of the cell to see what it is and what it does. A ${type} cell has ${present().length} major organelles.</p>`; return; }
-      const d=ORG[sel];
-      info.innerHTML=`<p style="margin:0;font-family:var(--f-title);font-size:24px;font-weight:700">${esc(d.name)}</p><p style="margin:4px 0 0">${esc(d.job)}</p>${d.plant?`<p class="note" style="margin:6px 0 0">Found in plant cells, not animal cells.</p>`:""}`;
+      if(!sel){ info.innerHTML=`<p class="note" style="margin:0">Click any part of the cell to see what it is and what it does. ${type==="plant"?"A plant":"An animal"} cell has ${present().length} major organelles.${labels?"":" Turn on Labels to number them."}</p>`; return; }
+      info.innerHTML=`<p style="margin:0;font-family:var(--f-title);font-size:24px;font-weight:700">${esc(ORG[sel].name)}</p><p style="margin:4px 0 0">${esc(JOB[sel])}</p>${NICK[sel]?`<p class="note" style="margin:6px 0 0">Nickname: ${esc(NICK[sel])}.</p>`:""}${ORG[sel].plant?`<p class="note" style="margin:6px 0 0">Found in plant cells, not animal cells.</p>`:""}`;
     }
     el.querySelector("#t-plant").onclick=()=>{type="plant";sel=null;draw();};
     el.querySelector("#t-animal").onclick=()=>{type="animal";sel=null;if(ORG[target]&&ORG[target].plant)target=null;draw();};
     el.querySelector("#m-explore").onclick=()=>{mode="explore";draw();};
+    el.querySelector("#m-labels").onclick=()=>{mode="explore";labels=!labels;draw();};
     el.querySelector("#m-quiz").onclick=()=>{mode="quiz";sel=null;target=null;score=0;tries=0;draw();};
     draw();
   }
