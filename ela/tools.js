@@ -78,7 +78,7 @@
           <path d="${path}" fill="none" stroke="var(--ink)" stroke-width="3" stroke-linejoin="round"/>
           ${P.map((p,k)=>`<g data-s="${k}" style="cursor:pointer" tabindex="0" role="button" aria-label="${STAGES[k][0]}">
             <circle cx="${p[0]}" cy="${p[1]}" r="${k===sel?11:8}" fill="${k===sel?"var(--accent)":"var(--paper)"}" stroke="var(--accent)" stroke-width="3"/>
-            <text x="${p[0]}" y="${k===3?p[1]-18:p[1]+28}" text-anchor="middle" font-size="12.5" font-weight="700" fill="${k===sel?"var(--accent)":"var(--muted)"}" font-family="Calibri, Carlito, sans-serif">${k+1}</text></g>`).join("")}
+            <text x="${p[0]}" y="${k===3?p[1]-18:p[1]+28}" text-anchor="middle" font-size="12.5" font-weight="700" fill="${k===sel?"var(--accent)":"var(--muted)"}" font-family="Inter, sans-serif">${k+1}</text></g>`).join("")}
         </svg>
         <div style="margin-top:6px"><p style="margin:0;font-family:var(--f-title);font-size:26px;font-weight:700">${sel+1}. ${esc(STAGES[sel][0])}</p>
         <p style="margin:4px 0 0">${esc(STAGES[sel][1])}</p>

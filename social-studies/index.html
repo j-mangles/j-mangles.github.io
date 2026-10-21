@@ -7,28 +7,26 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%231c2b3a'/%3E%3Cpath d='M9 22c3-6 5-11 7-12s2 5 7 2' stroke='%23e0b14f' stroke-width='2.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
 <style>*,*::before,*::after{box-sizing:border-box}body{margin:0;font-family:system-ui,sans-serif;font-size:14px}img{max-width:100%}[hidden]{display:none!important}</style>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caladea:ital,wght@0,400;0,700;1,400&family=Carlito:wght@400;700&display=swap">
+<link rel="stylesheet" href="../assets/fonts.css">
 <style>
 /* Layout: full-screen atlas. Header with unit tabs, map + timeline on the left, reading panel on the right (stacks below on phones). */
 :root{
-  --bg:#F4F6F8; --panel:#FFFFFF; --ink:#1C3A5E; --muted:#566475; --rule:#D3DAE1;
+  --bg:#FAF9F5; --panel:#FFFFFF; --ink:#141413; --muted:#6C6A64; --rule:#E6DFD8;
   --ocean:#d3e1e8; --land:#f1efe6; --coast:#9fb0ba; --grat:#c3d3db;
-  --river:#2E5C8A; --accent:#A67A1F; --route:#b4552d; --farm:#6f8f3e; --halo:#f1efe6; --halo-sea:#d3e1e8;
+  --river:#3B6E8F; --accent:#CC785C; --route:#b4552d; --farm:#6f8f3e; --halo:#f1efe6; --halo-sea:#d3e1e8;
   --good:#2e7d4f; --bad:#b23b2e;
-  --f-display:Cambria, "Caladea", Georgia, serif;
-  --f-ui:Calibri, "Carlito", "Segoe UI", system-ui, sans-serif;
+  --f-display:"Cormorant Garamond","EB Garamond",Georgia,serif; --f-label:"JetBrains Mono",ui-monospace,monospace;
+  --f-ui:"Inter",system-ui,sans-serif;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#0f1a23; --panel:#15222d; --ink:#e4eaee; --muted:#93a3b0; --rule:#2a3a47;
+  --bg:#181715; --panel:#1F1E1B; --ink:#FAF9F5; --muted:#A09D96; --rule:#3D3D3A;
   --ocean:#13222e; --land:#26343f; --coast:#4c5f6c; --grat:#1d2f3c;
-  --river:#6fb0de; --accent:#e0b14f; --route:#e48a5c; --farm:#9dbb63; --halo:#26343f; --halo-sea:#13222e;
+  --river:#6fb0de; --accent:#E39A7C; --route:#e48a5c; --farm:#9dbb63; --halo:#26343f; --halo-sea:#13222e;
   --good:#6cc08f; --bad:#ef7b6c; color-scheme:dark}}
 :root[data-theme="dark"]{
-  --bg:#0f1a23; --panel:#15222d; --ink:#e4eaee; --muted:#93a3b0; --rule:#2a3a47;
+  --bg:#181715; --panel:#1F1E1B; --ink:#FAF9F5; --muted:#A09D96; --rule:#3D3D3A;
   --ocean:#13222e; --land:#26343f; --coast:#4c5f6c; --grat:#1d2f3c;
-  --river:#6fb0de; --accent:#e0b14f; --route:#e48a5c; --farm:#9dbb63; --halo:#26343f; --halo-sea:#13222e;
+  --river:#6fb0de; --accent:#E39A7C; --route:#e48a5c; --farm:#9dbb63; --halo:#26343f; --halo-sea:#13222e;
   --good:#6cc08f; --bad:#ef7b6c; color-scheme:dark}
 html,body{height:100%}
 body{background:var(--bg);color:var(--ink);font-family:var(--f-ui);font-size:16px;line-height:1.45;overflow:hidden}
@@ -40,7 +38,7 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .top{display:flex;flex-wrap:wrap;align-items:center;gap:10px 22px;padding-block:10px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));border-bottom:1px solid var(--rule);background:var(--panel)}
 .brand{display:flex;flex-direction:column;line-height:1.1}
 .brand small{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700}
-.brand h1{margin:2px 0 0;font-family:var(--f-display);font-weight:700;font-size:23px;letter-spacing:.01em;color:var(--ink)}
+.brand h1{margin:2px 0 0;font-family:var(--f-display);font-weight:700;font-size:28px;letter-spacing:0;color:var(--ink)}
 .tabs{display:flex;gap:2px;overflow-x:auto;flex:1 1 380px;min-width:0;scrollbar-width:none}
 .tabs::-webkit-scrollbar{display:none}
 .tab{background:none;border:0;padding:8px 10px 7px;border-bottom:2px solid transparent;white-space:nowrap;cursor:pointer;color:var(--muted);font-weight:500;font-size:15px}
@@ -75,7 +73,7 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 /* quiz banner */
 .banner{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:max-content;max-width:calc(100% - 24px);background:var(--panel);border:1px solid var(--rule);border-radius:9px;box-shadow:0 6px 24px rgba(0,0,0,.12);padding:10px 16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:center}
 .banner .q{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700}
-.banner .target{font-family:var(--f-display);font-size:30px;font-weight:700;line-height:1.1}
+.banner .target{font-family:var(--f-display);font-size:36px;font-weight:700;line-height:1.1}
 .banner .count{font-variant-numeric:tabular-nums;color:var(--muted);font-size:14px}
 .banner .res{font-weight:700}
 .banner .res.ok{color:var(--good)} .banner .res.no{color:var(--bad)}
@@ -100,7 +98,7 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .panel{border-left:1px solid var(--rule);background:var(--panel);overflow-y:auto;min-width:0;padding:22px 24px 28px;padding-right:max(24px,env(safe-area-inset-right,0px))}
 .eyebrow{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700}
 .eyebrow .now{color:var(--accent)}
-.panel h2{font-family:var(--f-display);font-weight:700;font-size:32px;line-height:1.1;margin:6px 0 4px;text-wrap:balance}
+.panel h2{font-family:var(--f-display);font-weight:600;font-size:40px;line-height:1.1;margin:6px 0 4px;text-wrap:balance}
 .span{color:var(--muted);font-variant-numeric:tabular-nums;font-size:15px}
 .panel p{margin:12px 0 0;font-size:17px;max-width:62ch}
 .panel h3{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:24px 0 6px;padding-bottom:6px;border-bottom:1px solid var(--rule)}
@@ -120,7 +118,7 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .units .nm{font-weight:700;font-size:16px}
 .units .sub{display:block;font-size:13.5px;color:var(--muted)}
 .tag{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;margin-left:6px;color:var(--accent)}
-.score{font-family:var(--f-display);font-size:56px;font-weight:700;line-height:1;margin-top:10px;font-variant-numeric:tabular-nums}
+.score{font-family:var(--f-display);font-size:64px;font-weight:700;line-height:1;margin-top:10px;font-variant-numeric:tabular-nums}
 .ptabs{display:flex;gap:18px;margin-top:18px;border-bottom:1px solid var(--rule)}
 .ptabs button{background:none;border:0;border-bottom:2px solid transparent;padding:6px 0;margin-bottom:-1px;font-weight:700;font-size:14px;color:var(--muted);cursor:pointer}
 .ptabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--ink)}
@@ -136,12 +134,12 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 /* lesson sheet */
 .sheet{position:fixed;inset:0;z-index:50;background:color-mix(in srgb,var(--bg) 55%,rgba(0,0,0,.45));display:flex;justify-content:center;align-items:flex-start;padding-top:max(24px,env(safe-area-inset-top,0px));padding-bottom:24px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));overflow-y:auto}
 .sheet-card{background:var(--panel);border:1px solid var(--rule);border-radius:10px;box-shadow:0 18px 50px rgba(0,0,0,.25);width:min(780px,100%);padding:26px 30px 30px;position:relative}
-.sheet-card h2{font-family:var(--f-display);font-weight:700;font-size:34px;line-height:1.1;margin:6px 0 0;text-wrap:balance}
+.sheet-card h2{font-family:var(--f-display);font-weight:600;font-size:42px;line-height:1.1;margin:6px 0 0;text-wrap:balance}
 .sheet-card h3{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:26px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--rule)}
 .sheet-card p,.sheet-card li{font-size:17px;max-width:66ch}
 .sheet-card ul.notes{margin:0;padding-left:20px;display:grid;gap:8px}
 .sheet-close{position:absolute;top:14px;right:14px;background:none;border:1px solid var(--rule);border-radius:7px;width:36px;height:36px;font-size:20px;cursor:pointer;line-height:1}
-.big{font-family:var(--f-display);font-size:21px;line-height:1.35;margin:0}
+.big{font-family:var(--f-display);font-size:25px;line-height:1.35;margin:0}
 dl.terms{display:grid;grid-template-columns:minmax(120px,auto) 1fr;gap:6px 18px;margin:0}
 dl.terms dt{font-weight:700}
 dl.terms dd{margin:0;color:var(--ink)}
@@ -230,6 +228,11 @@ figcaption{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.35}
   .banner .target{font-size:24px}
   .legend{display:none}
 }
+
+/* SS design system: JetBrains Mono labels, Cormorant at 600 */
+.brand small,.tab .soonlab,.banner .q,.tl-head,.eyebrow,.panel h3,.tag,.sheet-card h3{font-family:var(--f-label);font-weight:500;letter-spacing:.08em}
+.brand h1,.banner .target,.score{font-weight:600}
+.units .n{border-radius:2px}
 </style>
 
 </head>
@@ -1061,13 +1064,13 @@ function bceDiagram(){
   const ev=[[-3300,"First writing","3300 BCE",-1],[-2560,"Great Pyramid","2560 BCE",1],[-2334,"Sargon's empire","2334 BCE",-1],[-1750,"Hammurabi's laws","1750 BCE",1],[-30,"Cleopatra dies","30 BCE",-1],[2026,"Today","2026 CE",1]];
   let g=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Timeline from 4000 BCE to today">`;
   g+=`<line x1="${x0}" y1="95" x2="${x1}" y2="95" stroke="var(--ink)" stroke-width="2"/>`;
-  [-4000,-3000,-2000,-1000,1,1000,2000].forEach(y=>{const x=X(y);g+=`<line x1="${x}" y1="89" x2="${x}" y2="101" stroke="var(--muted)"/><text x="${x}" y="${y===1?118:116}" text-anchor="middle" font-size="11" fill="var(--muted)" font-family="Calibri, Carlito, sans-serif">${y<0?(-y)+" BCE":y===1?"1 CE":y+" CE"}</text>`;});
+  [-4000,-3000,-2000,-1000,1,1000,2000].forEach(y=>{const x=X(y);g+=`<line x1="${x}" y1="89" x2="${x}" y2="101" stroke="var(--muted)"/><text x="${x}" y="${y===1?118:116}" text-anchor="middle" font-size="11" fill="var(--muted)" font-family="Inter, sans-serif">${y<0?(-y)+" BCE":y===1?"1 CE":y+" CE"}</text>`;});
   const z=X(0);
-  g+=`<line x1="${z}" y1="60" x2="${z}" y2="130" stroke="var(--accent)" stroke-dasharray="4 3"/><text x="${z}" y="146" text-anchor="middle" font-size="11.5" fill="var(--accent)" font-weight="600" font-family="Calibri, Carlito, sans-serif">No year 0</text>`;
-  g+=`<text x="${(x0+z)/2}" y="176" text-anchor="middle" font-size="12" fill="var(--muted)" font-family="Calibri, Carlito, sans-serif">BCE: bigger number = longer ago</text><text x="${(z+x1)/2}" y="176" text-anchor="middle" font-size="12" fill="var(--muted)" font-family="Calibri, Carlito, sans-serif">CE: counting up to today</text>`;
+  g+=`<line x1="${z}" y1="60" x2="${z}" y2="130" stroke="var(--accent)" stroke-dasharray="4 3"/><text x="${z}" y="146" text-anchor="middle" font-size="11.5" fill="var(--accent)" font-weight="600" font-family="Inter, sans-serif">No year 0</text>`;
+  g+=`<text x="${(x0+z)/2}" y="176" text-anchor="middle" font-size="12" fill="var(--muted)" font-family="Inter, sans-serif">BCE: bigger number = longer ago</text><text x="${(z+x1)/2}" y="176" text-anchor="middle" font-size="12" fill="var(--muted)" font-family="Inter, sans-serif">CE: counting up to today</text>`;
   ev.forEach(([y,t,d,side])=>{const x=X(y),ty=side<0?36:62;
     g+=`<line x1="${x}" y1="${side<0?44:70}" x2="${x}" y2="95" stroke="var(--river)"/><circle cx="${x}" cy="95" r="4.5" fill="var(--river)"/>`;
-    g+=`<text x="${x}" y="${ty-12}" text-anchor="middle" font-size="12" font-weight="600" fill="var(--ink)" font-family="Calibri, Carlito, sans-serif">${t}</text><text x="${x}" y="${ty+2}" text-anchor="middle" font-size="11" fill="var(--muted)" font-family="Calibri, Carlito, sans-serif">${d}</text>`;});
+    g+=`<text x="${x}" y="${ty-12}" text-anchor="middle" font-size="12" font-weight="600" fill="var(--ink)" font-family="Inter, sans-serif">${t}</text><text x="${x}" y="${ty+2}" text-anchor="middle" font-size="11" fill="var(--muted)" font-family="Inter, sans-serif">${d}</text>`;});
   return g+"</svg>";
 }
 

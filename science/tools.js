@@ -56,7 +56,7 @@
         #cellbox .org{cursor:pointer;transition:opacity .15s}
         #cellbox svg:hover .org{opacity:.88}#cellbox svg .org:hover{opacity:1}
         #cellbox .org.on>*{filter:drop-shadow(0 0 4px var(--accent))}
-        .seg-on{background:var(--navy)!important;color:var(--paper)!important;border-color:var(--navy)!important}
+        .seg-on{background:var(--btn)!important;color:var(--on-btn)!important;border-color:var(--btn)!important}
       </style>`;
     const box=el.querySelector("#cellbox"), info=el.querySelector("#cellinfo");
     const present=()=>Object.keys(ORG).filter(k=>type==="plant"||!ORG[k].plant);

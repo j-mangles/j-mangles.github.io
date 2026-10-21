@@ -11,7 +11,8 @@ SUBJECTS = [
     ("critical-thinking", "ct", "Critical Thinking", "Grade 7/8 Enrichment", "Critical Thinking", "Puzzles, games and the thinking tools behind them.", True),
 ]
 
-FONTS = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caladea:wght@400;700&family=Carlito:ital,wght@0,400;0,700;1,400&display=swap">'
+def fonts(code):
+    return '<link rel="stylesheet" href="../assets/fonts.css">'
 ICON = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231C3A5E'/%3E%3Ctext x='16' y='22' font-family='Georgia' font-size='17' font-weight='700' text-anchor='middle' fill='%23ffffff'%3EM%3C/text%3E%3C/svg%3E"
 
 def nav(active):
@@ -25,11 +26,12 @@ def page(folder, code, label, eyebrow, title, lede, tools):
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<meta name="theme-color" content="{'#131313' if code=='ct' else '#ffffff'}">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>{title} · Mr. Mangles' Class</title>
 <meta name="description" content="{eyebrow}: lessons and practice for Mr. Mangles' class.">
 <link rel="icon" href="{ICON}">
-{FONTS}
+{fonts(code)}
 <link rel="stylesheet" href="../assets/site.css">
 </head>
 <body data-subject="{code}">
