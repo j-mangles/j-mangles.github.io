@@ -132,7 +132,7 @@ ol.lessons .t{font-size:17.5px}
 ol.lessons .s{font-size:13.5px;color:var(--muted);white-space:nowrap}
 ol.lessons .s.ok{color:var(--good);font-weight:700}
 ol.lessons button:hover .t{text-decoration:underline;text-underline-offset:3px}
-.tool{background:var(--toolbg,var(--paper));border:1px solid var(--rule);border-radius:var(--radius);padding:20px 22px;min-width:0}
+.tool{background:var(--toolbg,var(--paper));border:1px solid var(--rule);border-radius:var(--radius);padding:20px 22px;min-width:0;align-self:start}
 .tool h2{font-size:calc(24px * var(--title-scale))}
 
 /* lesson view */
