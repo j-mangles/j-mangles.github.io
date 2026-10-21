@@ -187,7 +187,14 @@ window.HUB = {
          {q:"A coffee filter is…", a:["Permeable","Impermeable","Selectively permeable"], c:2, why:"Water gets through, coffee grounds don't."}
        ]},
       {id:"metabolism", n:"5", title:"Cellular Metabolism",
-       imgs:[{src:"img/ph.jpg",cap:"How well three digestive enzymes work at different pH levels. Graph from the lesson slides."}],
+       charts:[{title:"How well three digestive enzymes work at different pH levels",
+         x:{label:"pH  (lower = more acidic, 7 = neutral, higher = more basic)",short:"pH",min:0,max:12,step:1,snap:0.1},
+         y:{label:"Enzyme activity (% of best)",min:0,max:100,step:25,unit:"%"},
+         start:2,
+         series:[{name:"Pepsin (stomach)",fn:x=>100*Math.exp(-Math.pow(x-2,2)/(2*0.89*0.89))},
+                 {name:"Amylase (saliva)",fn:x=>100*Math.exp(-Math.pow(x-7,2)/(2*1.0*1.0)),dash:"9 6"},
+                 {name:"Trypsin (small intestine)",fn:x=>100*Math.exp(-Math.pow(x-8.3,2)/(2*0.95*0.95)),dash:"2 6"}],
+         note:"Drag across the graph to change the pH. Tap an enzyme's name to hide or show its line."}],
        big:"Cells change energy from one form to another. Photosynthesis and cellular respiration are mirror images of each other.",
        notes:[
          "Metabolism is all the chemical reactions inside an organism.",
@@ -201,6 +208,7 @@ window.HUB = {
        terms:[["Metabolism","All the chemical reactions in an organism."],["Cellular respiration","Turning sugar into usable energy."],["Photosynthesis","Turning sunlight into chemical energy."],["Enzyme","A protein that speeds up chemical reactions."],["pH","How acidic or basic something is."]],
        work:"Cells booklet, Topic 2: Cellular Metabolism and the pH graph questions.",
        check:[
+         {q:"Use the graph. Which enzyme works best in a very acidic place like the stomach (pH 2)?", a:["Pepsin","Amylase","Trypsin"], c:0, why:"Pepsin peaks at pH 2. The other two barely work there."},
          {q:"Where does cellular respiration happen?", a:["Chloroplast","Mitochondria","Nucleus"], c:1, why:"The powerhouse of the cell."},
          {q:"Which is an OUTPUT of photosynthesis?", a:["Carbon dioxide","Oxygen","Water"], c:1, why:"Plants release oxygen."},
          {q:"Your stomach is about pH 2. Which enzyme works well there?", a:["Pepsin","Amylase","Trypsin"], c:0, why:"Pepsin's best pH is about 2."}
@@ -284,9 +292,14 @@ window.HUB = {
          {q:"The brain and spinal cord form the…", a:["Central nervous system","Peripheral nervous system"], c:0, why:"Nerves elsewhere are peripheral."}
        ]},
       {id:"circulatory", n:"10", title:"The Circulatory System",
+       charts:[{title:"One student's heart rate before, during and after jogging",
+         x:{label:"Time (minutes)",short:"Time",min:0,max:14,step:1,snap:1,unit:"min"},
+         y:{label:"Heart rate (beats per minute)",min:60,max:160,step:20,unit:"bpm"},
+         start:8, bands:[{from:2,to:8,label:"jogging"}], labels:[{x:1,text:"resting"},{x:11.5,text:"resting again"}],
+         series:[{name:"Heart rate",points:[[0,72],[1,71],[2,73],[3,96],[4,118],[5,131],[6,138],[7,141],[8,142],[9,121],[10,104],[11,91],[12,82],[13,76],[14,73]]}],
+         note:"Drag across the graph to read the heart rate at each minute. This is sample data from the lesson."}],
        imgs:[{src:"img/heart-flow.jpg",cap:"Blood flow through the heart. Wapcaplet, CC BY-SA 3.0."},
              {src:"img/capillary.jpg",cap:"A capillary bed between an artery (red) and a vein (blue). OpenStax, CC BY."},
-             {src:"img/heart-rate.jpg",cap:"One student's heart rate before, during and after jogging. Sample data from the lesson."},
              {src:"img/blood.jpg",cap:"Red blood cells, white blood cells and platelets under an electron microscope. Bruce Wetzel and Harry Schaefer, National Cancer Institute, public domain."}],
        big:"The heart pumps blood through arteries, capillaries and veins to deliver oxygen and nutrients and carry away wastes.",
        notes:[
@@ -301,6 +314,7 @@ window.HUB = {
        terms:[["Artery","Carries blood away from the heart."],["Vein","Carries blood toward the heart."],["Capillary","Tiny vessel where exchange with cells happens."],["Hemoglobin","Protein in red blood cells that carries oxygen and makes blood red."],["Plasma","The liquid part of blood."]],
        work:"Systems booklet, Topic 7: Blood Vessels, Blood Flow, the heart-rate graph and the red blood cell reading. Then the Systems Review.",
        check:[
+         {q:"Use the graph. About how long after stopping does the heart rate get back near resting?", a:["1 minute","About 5–6 minutes","It never does"], c:1, why:"It stops at minute 8 and is back near 73 by about minute 13–14."},
          {q:"Which vessel carries blood from the heart to the body?", a:["Aorta","Vena cava","Pulmonary vein"], c:0, why:"It's the main artery."},
          {q:"Why is blood red?", a:["Plasma is red","Hemoglobin in red blood cells","Platelets"], c:1, why:"Hemoglobin gives the colour."},
          {q:"What is the largest component of blood by volume?", a:["Red blood cells","Plasma","White blood cells"], c:1, why:"About 55%."}

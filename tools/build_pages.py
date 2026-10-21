@@ -47,6 +47,8 @@ def page(folder, code, label, eyebrow, title, lede, tools):
 <footer class="site"><div class="wrap">Mr. Mangles' Class · École Edward Schreyer School · 2026–27</div></footer>
 <script src="data.js"></script>
 {'<script src="tools.js"></script>' if tools else ''}
+<script src="../assets/chart.js"></script>
+<script src="../assets/review.js"></script>
 <script src="../assets/hub.js"></script>
 </body>
 </html>
