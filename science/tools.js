@@ -1,4 +1,5 @@
-/* Science tools: Cells unit panel (Cell Explorer diagram, Part & Role matching, Organelle Rush game)
+/* Science tools: Cells unit panel (Cell Explorer diagram, Part & Role matching, Organelle Rush game),
+   Membrane Lab live models on the transport lesson,
    and Metric Converter practice (Science Skills unit). */
 (function(){
   const esc = s => String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -386,6 +387,237 @@
     el.querySelectorAll("[data-tab]").forEach(b=>b.onclick=()=>show(b.dataset.tab));
     show(cur);
   };
+
+  /* ---------- Membrane Lab: live particle models for the transport lesson (booklet Topic 2) ---------- */
+  function membraneLab(el){
+    const W=600, H=330, MX=300, MT=18, TOP=34;          // canvas units; membrane centre x and thickness; space for labels
+    const KIND={
+      water:{r:3,c:"#3B8ED8",name:"Water",v:85},
+      oxygen:{r:4.2,c:"#E0533F",name:"Oxygen",v:75},
+      grounds:{r:9,c:"#7A5232",name:"Large particles",v:40},
+      glucose:{r:6.5,c:"#F0A230",name:"Glucose (sugar)",v:58},
+      solute:{r:7.5,c:"#8E63C7",name:"Solute (dissolved salt)",v:42},
+      ion:{r:5.5,c:"#D9447A",name:"Particles",v:60}
+    };
+    const TABS=[["perm","Permeability"],["diff","Simple diffusion"],["fac","Facilitated diffusion"],["osmo","Osmosis"],["active","Active transport"]];
+    let tab="perm", P=[], running=true, raf=0, last=0, cfg={}, fx=[], atp=0, pump=null, lvl={L:0,R:0}, hist=[], readT=0;
+
+    el.innerHTML=`<div class="eyebrow">Live models</div><h2>Membrane Lab</h2>
+      <p class="note" style="margin:4px 0 12px">Every dot is a particle moving around at random, like real molecules. Nothing is scripted: watch what happens at the membrane.</p>
+      <div class="ml-tabs" role="tablist" aria-label="Models">${TABS.map(([k,t])=>`<button role="tab" data-tab="${k}">${t}</button>`).join("")}</div>
+      <div class="ml-ctl" id="ml-ctl"></div>
+      <div class="ml-stage"><canvas id="ml-cv" aria-label="Particle model"></canvas></div>
+      <div class="ml-read" id="ml-read" aria-live="off"></div>
+      <div class="ml-txt" id="ml-txt"></div>
+      <style>
+        .ml-tabs{display:flex;flex-wrap:wrap;gap:4px;padding:4px;background:var(--soft);border-radius:16px}
+        .ml-tabs button{border:0;background:none;padding:7px 12px;border-radius:12px;cursor:pointer;font-size:14.5px;font-weight:600;color:var(--muted)}
+        .ml-tabs button[aria-selected="true"]{background:var(--paper);color:var(--ink);box-shadow:0 1px 3px rgba(20,20,40,.14)}
+        .ml-ctl{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:12px 0 10px}
+        .ml-ctl .btn{padding:7px 14px;font-size:14.5px}
+        .ml-ctl .seg{display:inline-flex;padding:3px;background:var(--soft);border-radius:980px;flex-wrap:wrap}
+        .ml-ctl .seg button{border:0;background:none;padding:6px 12px;border-radius:980px;font-size:14px;font-weight:600;color:var(--muted);cursor:pointer}
+        .ml-ctl .seg button.on{background:var(--paper);color:var(--ink);box-shadow:0 1px 3px rgba(20,20,40,.14)}
+        .ml-ctl label{font-size:14.5px;color:var(--muted);display:inline-flex;align-items:center;gap:8px}
+        .ml-ctl input[type=range]{accent-color:var(--accent);width:120px}
+        .ml-stage{border:1px solid var(--rule);border-radius:12px;overflow:hidden;background:#fff;line-height:0}
+        .ml-stage canvas{display:block;width:100%}
+        .ml-read{display:grid;gap:6px;margin-top:10px;font-size:14.5px}
+        .ml-bar{display:grid;grid-template-columns:minmax(92px,auto) 1fr;gap:10px;align-items:center}
+        .ml-bar .tr{display:flex;height:22px;border-radius:6px;overflow:hidden;background:var(--soft);font-size:12.5px;font-weight:700;color:#fff;font-variant-numeric:tabular-nums}
+        .ml-bar .tr span{display:flex;align-items:center;padding:0 7px;white-space:nowrap;transition:flex-grow .35s}
+        .ml-key{display:inline-flex;align-items:center;gap:6px}
+        .ml-key i{width:11px;height:11px;border-radius:50%;display:inline-block}
+        .ml-txt{margin-top:12px;font-size:16px;line-height:1.5}
+        .ml-txt .def{background:var(--task,var(--accent-soft));border-radius:10px;padding:10px 14px;margin:0 0 8px}
+        .ml-txt p{margin:6px 0 0}
+      </style>`;
+    const cv=el.querySelector("#ml-cv"), ctx=cv.getContext("2d"), ctl=el.querySelector("#ml-ctl"), read=el.querySelector("#ml-read"), txt=el.querySelector("#ml-txt");
+    let scale=1;
+    function fit(){ const w=cv.parentElement.clientWidth||560, dpr=window.devicePixelRatio||1; scale=w/W; cv.width=Math.round(w*dpr); cv.height=Math.round(H*scale*dpr); cv.style.height=(H*scale)+"px"; ctx.setTransform(scale*dpr,0,0,scale*dpr,0,0); }
+
+    const rnd=(a,b)=>a+Math.random()*(b-a);
+    const top=side=> tab==="osmo" ? H-lvl[side<0?"L":"R"] : TOP;
+    function add(kind,side,n){ const k=KIND[kind]; for(let i=0;i<n;i++){ const a=rnd(0,6.283);
+      const x0=side<0?k.r+4:MX+MT/2+k.r+3, x1=side<0?MX-MT/2-k.r-3:W-k.r-4;
+      P.push({kind,r:k.r,x:rnd(x0,x1),y:rnd(top(side)+k.r+2,H-k.r-3),vx:Math.cos(a)*k.v,vy:Math.sin(a)*k.v,side,pass:0,v:k.v}); } }
+    const count=(kind,side)=>P.filter(p=>p.kind===kind&&p.side===side&&!p.pass&&!p.held).length;
+
+    /* channels: list of [centreY, halfOpening] where the membrane is open for this tab */
+    function channels(){
+      if(tab==="fac"){ const n=cfg.prot; const out=[]; for(let i=0;i<n;i++) out.push([TOP+(H-TOP)*(i+0.5)/n, 11]); return out; }
+      if(tab==="perm"&&cfg.mode==="perm"){ const out=[]; for(let y=TOP+22;y<H-10;y+=46) out.push([y,15]); return out; }
+      return [];
+    }
+    function canCross(p,dir){
+      if(tab==="perm") return cfg.mode==="perm" ? inChannel(p) : cfg.mode==="sel" ? p.kind==="water" : false;
+      if(tab==="diff") return true;
+      if(tab==="fac") return inChannel(p);
+      if(tab==="osmo"){ if(p.kind!=="water") return false;
+        const s=p.side<0?"L":"R", w=count("water",p.side)+1, sol=count("solute",p.side); return Math.random() < w/(w+5*sol); }
+      return false; // active transport: only the pump moves particles
+    }
+    function inChannel(p){ return channels().some(([y,h])=>Math.abs(p.y-y)<=h-p.r*0.6); }
+
+    function setup(){
+      P=[]; fx=[]; hist=[]; pump=null; cfg=cfg||{};
+      if(tab==="perm"){ cfg.mode=cfg.mode||"sel"; add("water",-1,46); add("grounds",-1,14); }
+      if(tab==="diff"){ add("oxygen",-1,70); }
+      if(tab==="fac"){ cfg.prot=cfg.prot==null?2:cfg.prot; add("glucose",-1,44); }
+      if(tab==="osmo"){ cfg.solL=cfg.solL==null?0:cfg.solL; cfg.solR=cfg.solR==null?12:cfg.solR; lvl={L:168,R:168}; add("water",-1,60); add("water",1,60); add("solute",-1,cfg.solL); add("solute",1,cfg.solR); }
+      if(tab==="active"){ atp=10; add("ion",-1,24); add("ion",1,36); }
+      controls(); words(); readout(true);
+    }
+
+    function step(dt){
+      if(tab==="osmo"){ ["L","R"].forEach(s=>{ const side=s==="L"?-1:1, target=30+2.3*count("water",side)+0.6*count("solute",side); lvl[s]+= (target-lvl[s])*Math.min(1,dt*0.7); }); }
+      for(const p of P){
+        if(p.held) continue;
+        p.vx+=rnd(-1,1)*p.v*6*dt; p.vy+=rnd(-1,1)*p.v*6*dt;
+        const sp=Math.hypot(p.vx,p.vy), m=p.v*1.25; if(sp>m){p.vx*=m/sp;p.vy*=m/sp;} if(sp<p.v*0.45){p.vx*=1.15;p.vy*=1.15;}
+        let nx=p.x+p.vx*dt, ny=p.y+p.vy*dt;
+        const t=top(p.pass||p.side);
+        if(ny<t+p.r){ny=t+p.r;p.vy=Math.abs(p.vy);} if(ny>H-p.r-1){ny=H-p.r-1;p.vy=-Math.abs(p.vy);}
+        if(nx<p.r+1){nx=p.r+1;p.vx=Math.abs(p.vx);} if(nx>W-p.r-1){nx=W-p.r-1;p.vx=-Math.abs(p.vx);}
+        const L=MX-MT/2, R=MX+MT/2;
+        if(p.pass){ // inside the membrane on the way across
+          if(p.pass>0&&nx-p.r>R){p.side=1;p.pass=0;} else if(p.pass<0&&nx+p.r<L){p.side=-1;p.pass=0;}
+          else if(p.pass>0&&nx+p.r<L){p.side=-1;p.pass=0;} else if(p.pass<0&&nx-p.r>R){p.side=1;p.pass=0;}
+          else if(tab==="fac"||tab==="perm"){ const ch=channels().find(([y,h])=>Math.abs(p.y-y)<=h+2); if(ch){ ny=Math.max(ch[0]-ch[1]+p.r,Math.min(ch[0]+ch[1]-p.r,ny)); } }
+        } else if(p.side<0&&nx+p.r>L){ if(canCross(p,1)) p.pass=1; else {nx=L-p.r;p.vx=-Math.abs(p.vx);} }
+        else if(p.side>0&&nx-p.r<R){ if(canCross(p,-1)) p.pass=-1; else {nx=R+p.r;p.vx=Math.abs(p.vx);} }
+        p.x=nx; p.y=ny;
+      }
+      if(tab==="active") pumpStep(dt);
+      fx=fx.filter(f=>(f.t+=dt)<f.d);
+    }
+
+    /* the pump: a carrier protein that grabs a particle on the outside and, using one ATP, pushes it inside */
+    const PY=H/2+14, PH=34;
+    function pumpStep(dt){
+      if(pump){ pump.t+=dt; const k=Math.min(1,pump.t/0.7), p=pump.p;
+        p.x=pump.x0+(MX+MT/2+p.r+6-pump.x0)*k; p.y=pump.y0+(PY-pump.y0)*Math.min(1,k*2);
+        if(k>=1){ p.held=false; p.side=1; p.vx=p.v; p.vy=rnd(-30,30); pump=null; } return; }
+      if(atp<=0||!running) return;
+      const L=MX-MT/2, p=P.find(q=>q.side<0&&!q.held&&!q.pass&&q.x>L-q.r-16&&Math.abs(q.y-PY)<PH-4);
+      if(p){ p.held=true; atp--; pump={p,t:0,x0:p.x,y0:p.y}; fx.push({x:MX,y:PY,t:0,d:0.6}); readout(true); }
+    }
+
+    /* ---------- drawing ---------- */
+    function draw(){
+      ctx.clearRect(0,0,W,H);
+      const outside=tab==="perm"?"Side A":"Outside the cell", inside=tab==="perm"?"Side B":"Inside the cell";
+      if(tab==="osmo"){ ctx.fillStyle="#E6F2FB"; ctx.fillRect(0,H-lvl.L,MX,lvl.L); ctx.fillRect(MX,H-lvl.R,W-MX,lvl.R);
+        ctx.strokeStyle="#8DBCE0"; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(0,H-lvl.L); ctx.lineTo(MX-MT/2,H-lvl.L); ctx.moveTo(MX+MT/2,H-lvl.R); ctx.lineTo(W,H-lvl.R); ctx.stroke(); }
+      else { ctx.fillStyle=tab==="perm"?"#F7F8FB":"#FBF6F0"; ctx.fillRect(0,0,MX,H); ctx.fillStyle=tab==="perm"?"#F7F8FB":"#F3F8EE"; ctx.fillRect(MX,0,W-MX,H); }
+      ctx.font="600 13px Inter,system-ui,sans-serif"; ctx.fillStyle="#6B6E79"; ctx.textBaseline="middle";
+      ctx.textAlign="left"; ctx.fillText(outside.toUpperCase(),12,17); ctx.textAlign="right"; ctx.fillText(inside.toUpperCase(),W-12,17);
+      drawBarrier();
+      for(const f of fx){ const k=f.t/f.d, R=10+22*k; ctx.save(); ctx.globalAlpha=1-k; ctx.fillStyle="#FFC531"; ctx.strokeStyle="#E08A00"; ctx.lineWidth=1.5; star(f.x-MT-6,f.y-26,R*0.55,R,8); ctx.fill(); ctx.stroke();
+        ctx.globalAlpha=(1-k); ctx.fillStyle="#8A5A00"; ctx.font="700 11px Inter,system-ui,sans-serif"; ctx.textAlign="center"; ctx.fillText("ATP",f.x-MT-6,f.y-26); ctx.restore(); }
+      for(const p of P){ const k=KIND[p.kind]; ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,6.283); ctx.fillStyle=k.c; ctx.fill();
+        if(p.r>4){ ctx.fillStyle="rgba(255,255,255,.45)"; ctx.beginPath(); ctx.arc(p.x-p.r*0.3,p.y-p.r*0.3,p.r*0.35,0,6.283); ctx.fill(); } }
+      if(tab==="osmo"){ ctx.font="700 13px Inter,system-ui,sans-serif"; ctx.fillStyle="#2E6FA6"; ctx.textAlign="center";
+        ctx.fillText("water level",MX/2,H-lvl.L-10); ctx.fillText("water level",MX+(W-MX)/2,H-lvl.R-10); }
+      if(!running){ ctx.fillStyle="rgba(255,255,255,.55)"; ctx.fillRect(0,0,W,H); ctx.fillStyle="#202126"; ctx.font="700 18px Inter,system-ui,sans-serif"; ctx.textAlign="center"; ctx.fillText("Paused",W/2,H/2); }
+    }
+    function star(x,y,r1,r2,n){ ctx.beginPath(); for(let i=0;i<n*2;i++){ const a=i*Math.PI/n-Math.PI/2, r=i%2?r1:r2; ctx.lineTo(x+Math.cos(a)*r,y+Math.sin(a)*r);} ctx.closePath(); }
+    function bilayer(y0,y1){ const L=MX-MT/2+3, R=MX+MT/2-3;
+      ctx.strokeStyle="#D7B66A"; ctx.lineWidth=1.3; for(let y=y0+3;y<y1-2;y+=6.5){ ctx.beginPath(); ctx.moveTo(L+2,y); ctx.lineTo(MX-1.5,y+1.5); ctx.moveTo(R-2,y); ctx.lineTo(MX+1.5,y+1.5); ctx.stroke(); }
+      ctx.fillStyle="#3E8E5A"; for(let y=y0+3;y<y1-2;y+=6.5){ ctx.beginPath(); ctx.arc(L,y,2.8,0,6.283); ctx.arc(R,y,2.8,0,6.283); ctx.fill(); } }
+    function drawBarrier(){
+      const L=MX-MT/2, y0=tab==="osmo"?H-Math.max(lvl.L,lvl.R)-14:TOP-4;
+      if(tab==="perm"){ ctx.fillStyle=cfg.mode==="imp"?"#7D8597":"#9AA3B5";
+        if(cfg.mode==="imp"){ ctx.fillRect(L,y0,MT,H-y0); }
+        else if(cfg.mode==="perm"){ let y=y0; channels().forEach(([cy,h])=>{ ctx.fillRect(L,y,MT,cy-h-y); y=cy+h; }); ctx.fillRect(L,y,MT,H-y); }
+        else { for(let y=y0;y<H;y+=7){ ctx.fillRect(L,y,MT,4.4); } }
+        return; }
+      const ch=tab==="fac"?channels():[];
+      let y=y0; const segs=[];
+      ch.forEach(([cy,h])=>{ segs.push([y,cy-h-19]); y=cy+h+19; }); segs.push([y,H]);
+      if(tab==="active") { segs.length=0; segs.push([y0,PY-PH-4],[PY+PH+4,H]); }
+      segs.forEach(([a,b])=>{ if(b>a) bilayer(a,b); });
+      ch.forEach(([cy,h])=>protein(cy,h));
+      if(tab==="active") pumpDraw();
+    }
+    function protein(cy,h){ const w=MT+22, x=MX-w/2, cap=17;
+      ctx.fillStyle="rgba(124,92,196,.16)"; ctx.fillRect(x+3,cy-h,w-6,2*h);
+      ctx.fillStyle="#7C5CC4"; ctx.strokeStyle="#4E3391"; ctx.lineWidth=1.6;
+      rr(x,cy-h-cap,w,cap+3,7); ctx.fill(); ctx.stroke(); rr(x,cy+h-3,w,cap+3,7); ctx.fill(); ctx.stroke();
+      ctx.fillStyle="rgba(255,255,255,.28)"; rr(x+4,cy-h-cap+3,w-8,4,2); ctx.fill(); rr(x+4,cy+h+1,w-8,4,2); ctx.fill(); }
+    function pumpDraw(){ const w=MT+20, x=MX-w/2, busy=!!pump;
+      ctx.fillStyle=busy?"#1F9E8E":"#23B3A0"; ctx.strokeStyle="#147567"; ctx.lineWidth=1.6;
+      rr(x,PY-PH-4,w,PH*2+8,8); ctx.fill(); ctx.stroke();
+      ctx.fillStyle="#E8F7F4"; rr(x+5,PY-9,w-10,18,6); ctx.fill();
+      ctx.fillStyle="#147567"; ctx.font="700 10px Inter,system-ui,sans-serif"; ctx.textAlign="center"; ctx.fillText("PUMP",MX,PY-PH+8); }
+    function rr(x,y,w,h,r){ ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
+
+    /* ---------- controls, readout and words ---------- */
+    function controls(){
+      let h=`<button class="btn" id="ml-play">${running?"Pause":"Play"}</button><button class="btn ghost" id="ml-reset">Reset</button>`;
+      if(tab==="perm") h+=`<span class="seg">${[["perm","Permeable"],["imp","Impermeable"],["sel","Selectively permeable"]].map(([k,t])=>`<button data-mode="${k}" class="${cfg.mode===k?"on":""}">${t}</button>`).join("")}</span>`;
+      if(tab==="diff") h+=`<button class="btn ghost" id="ml-addL">+ particles outside</button><button class="btn ghost" id="ml-addR">+ particles inside</button>`;
+      if(tab==="fac") h+=`<label>Transport proteins <input type="range" min="0" max="4" step="1" value="${cfg.prot}" id="ml-prot"> <b id="ml-protn">${cfg.prot}</b></label>`;
+      if(tab==="osmo") h+=`<label>Solute outside <input type="range" min="0" max="16" step="2" value="${cfg.solL}" id="ml-solL"> <b>${cfg.solL}</b></label><label>Solute inside <input type="range" min="0" max="16" step="2" value="${cfg.solR}" id="ml-solR"> <b>${cfg.solR}</b></label>`;
+      if(tab==="active") h+=`<button class="btn ghost" id="ml-atp">+10 ATP from mitochondria</button>`;
+      ctl.innerHTML=h;
+      ctl.querySelector("#ml-play").onclick=()=>{ running=!running; ctl.querySelector("#ml-play").textContent=running?"Pause":"Play"; if(running){last=0;} draw(); };
+      ctl.querySelector("#ml-reset").onclick=()=>{ setup(); };
+      ctl.querySelectorAll("[data-mode]").forEach(b=>b.onclick=()=>{ cfg.mode=b.dataset.mode; setup(); });
+      const on=(id,f)=>{ const e=ctl.querySelector(id); if(e) e.addEventListener("input",f); };
+      on("#ml-prot",e=>{ cfg.prot=+e.target.value; ctl.querySelector("#ml-protn").textContent=cfg.prot; words(); });
+      on("#ml-solL",e=>{ cfg.solL=+e.target.value; setup(); });
+      on("#ml-solR",e=>{ cfg.solR=+e.target.value; setup(); });
+      const a=ctl.querySelector("#ml-addL"); if(a) a.onclick=()=>{ add("oxygen",-1,25); };
+      const b=ctl.querySelector("#ml-addR"); if(b) b.onclick=()=>{ add("oxygen",1,25); };
+      const t=ctl.querySelector("#ml-atp"); if(t) t.onclick=()=>{ atp+=10; readout(true); };
+    }
+    function bar(label,kind,colorA,colorB){
+      const a=count(kind,-1), b=count(kind,1), n=a+b||1;
+      return `<div class="ml-bar"><span class="ml-key"><i style="background:${KIND[kind].c}"></i>${label}</span><div class="tr"><span style="flex:${a/n} 1 0;background:${colorA};padding:${a?"0 7px":"0"}">${a?`outside ${a}`:""}</span><span style="flex:${b/n} 1 0;background:${colorB};justify-content:flex-end;padding:${b?"0 7px":"0"}">${b?`inside ${b}`:""}</span></div></div>`;
+    }
+    function readout(force){
+      if(!force&&performance.now()-readT<300) return; readT=performance.now();
+      const A="#8A93A8", B="#5968E8";
+      let h="";
+      if(tab==="perm"){ h=bar("Water","water",A,B).replace(/outside/g,"A").replace(/inside/g,"B")+bar("Large particles","grounds",A,B).replace(/outside/g,"A").replace(/inside/g,"B"); }
+      if(tab==="diff") h=bar("Oxygen","oxygen",A,B);
+      if(tab==="fac") h=bar("Glucose","glucose",A,B);
+      if(tab==="osmo") h=bar("Water","water",A,B)+bar("Solute","solute",A,B)+`<div class="note">Water level: outside ${Math.round(lvl.L)} · inside ${Math.round(lvl.R)}</div>`;
+      if(tab==="active") h=bar("Particles","ion",A,B)+`<div class="note">ATP left: <b>${atp}</b>${atp===0?" · the pump has stopped. Add ATP to restart it.":""}</div>`;
+      read.innerHTML=h;
+    }
+    function words(){
+      const D={
+        perm:`<div class="def"><b>Permeable</b> lets ANYTHING through. <b>Impermeable</b> lets NOTHING through. <b>Selectively permeable</b> (also known as semipermeable) lets ONLY SOME THINGS through.</div>
+          <p>${cfg.mode==="perm"?"Like a window screen: the openings are big, so the water and the large particles both get through.":cfg.mode==="imp"?"Like plastic wrap: nothing gets through, no matter how long you wait.":"Like a coffee filter: the tiny water particles slip through, but the large particles stay behind. The cell membrane works this way."}</p>`,
+        diff:`<div class="def"><b>Simple diffusion</b> – movement of molecules from an area of <b>high</b> concentration to an area of <b>low</b> concentration.</div>
+          <p>Oxygen is small enough to slip straight through the phospholipids. Nobody pushes the particles: random movement alone spreads them out. Once both sides are about even, particles keep crossing both ways, but the numbers stay balanced. No energy is used, so this is passive transport.</p>`,
+        fac:`<div class="def"><b>Facilitated diffusion</b> – movement of certain molecules through the cell membrane by a specialized <b>transport protein</b>.</div>
+          <p>Glucose is too big to get through the phospholipids, so it can only cross through the purple transport proteins. It still goes from high to low concentration, and it still needs no energy. ${cfg.prot===0?"<b>With 0 proteins, nothing crosses at all.</b>":"Try 0 proteins, then 4. More proteins means faster crossing."}</p>`,
+        osmo:`<div class="def"><b>Osmosis</b> – movement of <b>water</b> molecules from an area of <b>low</b> solute concentration to an area of <b>high</b> solute concentration.</div>
+          <p>The purple solute particles can't cross the membrane, but the blue water can. Watch the water level rise on the side with more solute. Notice that it is the water moving across the membrane, not the solute particles! ${cfg.solL===cfg.solR?"<b>Both sides have the same solute, so there's no net flow and the water levels stay about even.</b> They wobble a little because the particles move at random.":"Try making the solute the same on both sides."}</p>`,
+        active:`<div class="def"><b>Active transport</b> – moving substances across the cell membrane from areas of <b>low</b> concentration to <b>high</b> concentration, using energy.</div>
+          <p>There are already more particles inside than outside, so diffusion would never move them in. The pump (a carrier protein) uses one ATP each time it pushes a particle in, even against the concentration gradient. When the ATP runs out, the pump stops. Recall: the mitochondria make ATP from sugar.</p>`
+      };
+      txt.innerHTML=D[tab];
+    }
+
+    function show(k){ tab=k; cfg={}; running=true;
+      el.querySelectorAll("[data-tab]").forEach(b=>b.setAttribute("aria-selected",String(b.dataset.tab===k))); fit(); setup(); }
+    el.querySelectorAll("[data-tab]").forEach(b=>b.onclick=()=>show(b.dataset.tab));
+
+    function loop(ts){
+      if(!document.body.contains(cv)){ cancelAnimationFrame(raf); window.removeEventListener("resize",fit); return; }
+      const dt=last?Math.min(0.05,(ts-last)/1000):0; last=ts;
+      if(running&&!document.hidden){ step(dt); readout(false); }
+      draw(); raf=requestAnimationFrame(loop);
+    }
+    window.addEventListener("resize",fit);
+    show("perm"); raf=requestAnimationFrame(loop);
+    el.membraneLab={get P(){return P;},get tab(){return tab;},get lvl(){return lvl;},get atp(){return atp;},step,count};
+  }
+  window.HUB.lessonTools = Object.assign(window.HUB.lessonTools||{}, {"cells/transport": membraneLab});
 
   /* Metric converter practice */
   const UNITS = {

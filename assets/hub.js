@@ -67,12 +67,14 @@
         return `<button class="${c}" data-q="${qi}" data-o="${oi}" ${a!==undefined?"disabled":""}>${esc(o)}</button>`;}).join("")}</div>
         ${a!==undefined?`<div class="why">${a===q.c?"Right. ":"Not quite. "}${esc(q.why)}</div>`:""}</div>`;}).join("");
     const n=Object.keys(answers).length, right=(l.check||[]).filter((q,qi)=>answers[qi]===q.c).length;
+    const ltKey=u.id+"/"+l.id, LT=H.lessonTools&&H.lessonTools[ltKey], keep=document.getElementById("ltool");
     $("#main").innerHTML = `<div class="wrap"><article class="lesson">
       <button class="back" id="back">&larr; ${esc(u.name)} lessons</button>
       <div class="eyebrow" style="margin-top:18px">Unit ${esc(u.n)} · Lesson ${esc(l.n)}</div>
       <h2>${esc(l.title)}</h2>
       ${imgs[0]?`<figure class="hero"><img src="${imgs[0].src}" alt="" data-cap="${esc(imgs[0].cap)}"><figcaption>${esc(imgs[0].cap)}</figcaption></figure>`:""}
       ${l.big?`<div class="big"><div class="eyebrow">The big idea</div><p>${esc(l.big)}</p></div>`:""}
+      ${LT?`<div id="ltool-slot"></div>`:""}
       ${(l.charts||[]).map((c,ci)=>`<div id="lc-${ci}"></div>`).join("")}
       ${l.notes&&l.notes.length?`<h3>What we covered</h3><ul class="notes">${l.notes.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:""}
       ${l.table?`<h3>${esc(l.table.title||"Reference")}</h3>${tableHTML(l.table)}`:""}
@@ -85,6 +87,12 @@
       <div class="pager">${prev?`<button class="btn ghost" data-go="${u.id}/${prev.id}">&larr; Lesson ${esc(prev.n)}</button>`:"<span></span>"}${next?`<button class="btn ghost" data-go="${u.id}/${next.id}">Lesson ${esc(next.n)} &rarr;</button>`:(ls.length>1?`<button class="btn" data-go="${u.id}/review">Unit review &rarr;</button>`:"")}</div>
     </article></div>`;
     $("#back").onclick=()=>go(u.id);
+    if(LT){ // a live model on the lesson page; reuse it on re-render so answering questions doesn't reset it
+      const slot=$("#ltool-slot");
+      if(keep&&keep.dataset.k===ltKey) slot.replaceWith(keep);
+      else { const d=document.createElement("div"); d.className="tool ltool"; d.id="ltool"; d.dataset.k=ltKey; slot.replaceWith(d);
+        try{ LT(d); }catch(e){ d.textContent="This model didn't load. Refresh the page to try again."; } }
+    }
     (l.charts||[]).forEach((c,ci)=>{ if(window.LineChart) window.LineChart($("#lc-"+ci),c); });
     document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>go(b.dataset.go));
     document.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{

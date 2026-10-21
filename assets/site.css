@@ -134,6 +134,7 @@ ol.lessons .s.ok{color:var(--good);font-weight:700}
 ol.lessons button:hover .t{text-decoration:underline;text-underline-offset:3px}
 .tool{background:var(--toolbg,var(--paper));border:1px solid var(--rule);border-radius:var(--radius);padding:20px 22px;min-width:0;align-self:start}
 .tool h2{font-size:calc(24px * var(--title-scale))}
+.ltool{margin-top:24px}
 
 /* lesson view */
 .lesson{max-width:780px;padding-block:26px 70px}
