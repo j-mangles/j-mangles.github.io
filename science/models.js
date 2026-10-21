@@ -285,5 +285,211 @@
     el.jarLab={get gas(){return gas;}, set(o){ if("plant" in o) plant=o.plant; if("mouse" in o) mouse=o.mouse; if("light" in o) light=o.light; controls(); }, step, reset};
   }
 
-  H0.lessonTools = Object.assign(H0.lessonTools||{}, {"cells/metabolism": metabolismLab});
+  /* ======================= BLOOD FLOW ======================= */
+  const OXY="#D2414B", DEOXY="#4A73C9";
+  /* The loop a red blood cell travels, in order. ox: true = oxygenated, false = deoxygenated, "drop"/"pick" = changes here. */
+  const ROUTE=[
+    {id:"body",name:"Body capillaries",kind:"capillaries",ox:"drop",d:"M395 472 C 362 494, 336 452, 300 472 S 238 494, 205 472",
+     info:"Capillaries: tiny blood vessels which exchange gases, nutrients, and wastes with cells located throughout the body. Your cell drops off its oxygen here and picks up carbon dioxide, so it becomes deoxygenated."},
+    {id:"vc",name:"Vena cava",kind:"vein",ox:false,d:"M205 472 C 118 472, 104 410, 104 330 C 104 240, 140 200, 226 214",
+     info:"The vena cava is a vein. It delivers deoxygenated blood from the body back to the heart."},
+    {id:"ra",name:"Right atrium (heart chamber)",kind:"heart",ox:false,d:"M226 214 C 250 214, 262 232, 264 262",
+     info:"Your cell enters the right side of the heart. The heart's four muscular chambers contract and relax to keep blood flowing."},
+    {id:"rv",name:"Right ventricle (heart chamber)",kind:"heart",ox:false,d:"M264 262 C 262 300, 280 310, 288 290 C 292 262, 288 230, 286 186",
+     info:"The right ventricle squeezes and pumps your cell out toward the lungs."},
+    {id:"pa",name:"Pulmonary artery",kind:"artery",ox:false,d:"M286 186 C 284 140, 240 140, 214 108",
+     info:"The pulmonary artery delivers deoxygenated blood from the heart to the lungs. It's one of the exceptions: an artery carrying deoxygenated blood. It's still an artery because it carries blood AWAY from the heart."},
+    {id:"lungs",name:"Lung capillaries",kind:"capillaries",ox:"pick",d:"M214 108 C 230 62, 266 52, 300 72 S 370 62, 386 108",
+     info:"In the lungs, your cell picks up oxygen and drops off carbon dioxide to be breathed out. This is where the circulatory and respiratory systems work together."},
+    {id:"pv",name:"Pulmonary vein",kind:"vein",ox:true,d:"M386 108 C 404 146, 404 196, 376 218",
+     info:"The pulmonary vein delivers oxygenated blood from the lungs to the heart. It's the other exception: a vein carrying oxygenated blood, because it carries blood TOWARD the heart."},
+    {id:"la",name:"Left atrium (heart chamber)",kind:"heart",ox:true,d:"M376 218 C 350 220, 338 236, 336 262",
+     info:"Your cell enters the left side of the heart, now full of oxygen."},
+    {id:"lv",name:"Left ventricle (heart chamber)",kind:"heart",ox:true,d:"M336 262 C 338 300, 320 310, 312 290 C 308 262, 312 230, 314 186",
+     info:"The left ventricle is the heart's strongest chamber. It pumps your cell out to the whole body."},
+    {id:"ao",name:"Aorta",kind:"artery",ox:true,d:"M314 186 C 316 140, 360 120, 430 124 C 490 130, 500 200, 496 300 C 492 420, 450 472, 395 472",
+     info:"The aorta is an artery. It moves oxygenated blood from the heart to the rest of the body."}
+  ];
+  const VESSELS=["vc","pa","pv","ao"];
+
+  function bloodLab(el){
+    let tab="flow";
+    el.innerHTML=`<div class="eyebrow">Live models</div><h2>Blood Flow</h2>
+      <p class="note" style="margin:4px 0 12px">Follow one red blood cell all the way around the body, then see how your heart responds to exercise.</p>
+      <div class="mx-tabs" role="tablist"><button role="tab" data-tab="flow">Follow a blood cell</button><button role="tab" data-tab="hr">Heart rate &amp; exercise</button></div>
+      <div id="mx-body"></div>${STYLE}`;
+    const body=el.querySelector("#mx-body");
+    function show(k){ tab=k; el.querySelectorAll("[data-tab]").forEach(b=>b.setAttribute("aria-selected",String(b.dataset.tab===k)));
+      const d=document.createElement("div"); body.replaceChildren(d); (k==="flow"?flowLab:heartRateLab)(d); }
+    el.querySelectorAll("[data-tab]").forEach(b=>b.onclick=()=>show(b.dataset.tab));
+    show("flow");
+  }
+
+  function flowLab(el){
+    const NS="http://www.w3.org/2000/svg";
+    let mode="watch", playing=true, u=0, labels=true, quiz=null, score=0, asked=0, lastSeg=-1, beat=0;
+    el.innerHTML=`<div class="mx-ctl">
+        <span class="mx-seg" id="bf-mode"><button data-m="watch">Watch</button><button data-m="step">Step by step</button><button data-m="quiz">Quiz me</button></span>
+        <button class="btn" id="bf-play">Pause</button><button class="btn ghost" id="bf-next" hidden>Next stop →</button>
+        <button class="mx-chip" id="bf-lab" style="border:0;cursor:pointer">Labels: on</button>
+      </div>
+      <div class="mx-stage" style="background:#FBFBFD"><div id="bf-svg"></div></div>
+      <div class="mx-txt" id="bf-cap" aria-live="polite"></div>
+      <div class="mx-txt"><p class="note">Red = oxygenated blood. Blue = deoxygenated blood. In real life blood is always red: it's just darker red when it's low on oxygen. Diagrams use blue to make it easier to follow.</p></div>`;
+    const vessel=(s)=>{ const col=s.ox===true?OXY:s.ox===false?DEOXY:`url(#bf-${s.id})`;
+      return `<path d="${s.d}" fill="none" stroke="${col}" stroke-width="15" stroke-linecap="round" opacity=".9"/><path d="${s.d}" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" opacity=".28"/>`; };
+    const lab=(x,y,t,anchor="middle",cls="")=>`<text class="bf-lab ${cls}" x="${x}" y="${y}" text-anchor="${anchor}">${t}</text>`;
+    let svg=`<svg viewBox="0 0 600 530" role="img" aria-label="Diagram of blood flow through the heart, lungs and body" style="width:100%;height:auto;display:block">
+      <defs>
+        <linearGradient id="bf-lungs" gradientUnits="userSpaceOnUse" x1="214" y1="0" x2="386" y2="0"><stop offset="0" stop-color="${DEOXY}"/><stop offset="1" stop-color="${OXY}"/></linearGradient>
+        <linearGradient id="bf-body" gradientUnits="userSpaceOnUse" x1="395" y1="0" x2="205" y2="0"><stop offset="0" stop-color="${OXY}"/><stop offset="1" stop-color="${DEOXY}"/></linearGradient>
+        <radialGradient id="bf-lung" cx="45%" cy="40%" r="70%"><stop offset="0" stop-color="#FBD9DD"/><stop offset="1" stop-color="#EFAAB3"/></radialGradient>
+      </defs>
+      <style>.bf-lab{font:600 13.5px Inter,system-ui,sans-serif;fill:#2B2E38;paint-order:stroke;stroke:#FBFBFD;stroke-width:4px;stroke-linejoin:round}.bf-lab.small{font-size:12px;fill:#5A5E6B}.bf-hide .bf-vl{display:none}</style>
+      <path d="M300 18 V 40" stroke="#C98A93" stroke-width="10" stroke-linecap="round"/>
+      <ellipse cx="214" cy="88" rx="56" ry="46" fill="url(#bf-lung)" stroke="#D88893" stroke-width="2"/>
+      <ellipse cx="386" cy="88" rx="56" ry="46" fill="url(#bf-lung)" stroke="#D88893" stroke-width="2"/>
+      <path d="M300 38 C 290 50, 262 56, 246 74 M300 38 C 310 50, 338 56, 354 74" fill="none" stroke="#C98A93" stroke-width="6" stroke-linecap="round"/>
+      <rect x="186" y="446" width="228" height="62" rx="16" fill="#F3EDE6" stroke="#D9CBBC" stroke-width="2"/>
+      ${ROUTE.filter(s=>s.kind!=="heart"&&s.id!=="ao").map(vessel).join("")}
+      <g id="bf-heart">
+        <path d="M218 222 C 216 186, 262 178, 300 192 C 338 178, 384 186, 382 222 C 384 272, 352 316, 300 348 C 248 316, 216 272, 218 222 Z" fill="#E2A9AE" stroke="#A9464F" stroke-width="2.5"/>
+        <path d="M226 230 C 226 206, 252 200, 270 204 C 286 208, 292 222, 290 238 C 278 250, 240 252, 226 230 Z" fill="#BFCCEC" stroke="#5E7BC0" stroke-width="2"/>
+        <path d="M374 230 C 374 206, 348 200, 330 204 C 314 208, 308 222, 310 238 C 322 250, 360 252, 374 230 Z" fill="#F1BFC3" stroke="#BC4A55" stroke-width="2"/>
+        <path d="M234 256 C 254 250, 280 252, 294 260 L 294 322 C 270 312, 240 290, 234 256 Z" fill="#A9BCE6" stroke="#5E7BC0" stroke-width="2"/>
+        <path d="M366 256 C 346 250, 320 252, 306 260 L 306 322 C 330 312, 360 290, 366 256 Z" fill="#E59AA2" stroke="#BC4A55" stroke-width="2"/>
+        <path d="M300 196 V 338" stroke="#8E3B44" stroke-width="3"/>
+        <text class="bf-lab small" x="260" y="236" text-anchor="middle" style="font-size:10.5px">RA</text><text class="bf-lab small" x="340" y="236" text-anchor="middle" style="font-size:10.5px">LA</text>
+        <text class="bf-lab small" x="266" y="300" text-anchor="middle" style="font-size:10.5px">RV</text><text class="bf-lab small" x="334" y="300" text-anchor="middle" style="font-size:10.5px">LV</text>
+      </g>
+      <path d="${ROUTE.find(s=>s.id==="ao").d}" fill="none" stroke="#FBFBFD" stroke-width="23" stroke-linecap="round"/>${vessel(ROUTE.find(s=>s.id==="ao"))}
+      <g id="bf-hl"></g>
+      <g id="bf-cells"></g>
+      <g id="bf-labels">
+        ${lab(214,94,"Lung")}${lab(386,94,"Lung")}${lab(300,500,"Body cells","middle","small")}${lab(300,484,"Body capillaries")}
+        ${lab(300,148,"Lung capillaries","middle","small")}
+        ${lab(232,368,"Right side","middle","small")}${lab(368,368,"Left side","middle","small")}${lab(300,384,"(the heart's own right and left)","middle","small")}
+        <g class="bf-vl">${lab(92,330,"Vena cava","end")}${lab(236,156,"Pulmonary","end")}${lab(236,172,"artery","end")}${lab(410,180,"Pulmonary","start")}${lab(410,196,"vein","start")}${lab(508,300,"Aorta","start")}</g>
+      </g>
+    </svg>`;
+    el.querySelector("#bf-svg").innerHTML=svg;
+    const root=el.querySelector("svg"), cellsG=root.querySelector("#bf-cells"), hl=root.querySelector("#bf-hl"), heart=root.querySelector("#bf-heart");
+    // measure each segment
+    const segs=ROUTE.map(s=>{ const p=document.createElementNS(NS,"path"); p.setAttribute("d",s.d); return {...s,p,len:p.getTotalLength()}; });
+    let total=0; segs.forEach(s=>{ s.start=total; total+=s.len; });
+    const at=v=>{ v=((v%total)+total)%total; let i=segs.findIndex(s=>v<s.start+s.len); if(i<0) i=segs.length-1; const s=segs[i], k=(v-s.start)/s.len, pt=s.p.getPointAtLength(v-s.start); return {i,s,k,x:pt.x,y:pt.y}; };
+    const colAt=(s,k)=> s.ox===true?OXY:s.ox===false?DEOXY: mix(s.ox==="pick"?DEOXY:OXY, s.ox==="pick"?OXY:DEOXY, Math.min(1,Math.max(0,(k-0.25)/0.5)));
+    function mix(a,b,t){ const h=x=>[1,3,5].map(i=>parseInt(x.slice(i,i+2),16)), A=h(a),B=h(b); return "rgb("+A.map((v,i)=>Math.round(v+(B[i]-v)*t)).join(",")+")"; }
+    // flowing background cells + "your" cell
+    const N=40, bg=[]; for(let i=0;i<N;i++){ const c=document.createElementNS(NS,"ellipse"); c.setAttribute("rx","4.6"); c.setAttribute("ry","3.6"); c.setAttribute("opacity",".85"); cellsG.appendChild(c); bg.push(c); }
+    const me=document.createElementNS(NS,"g"); me.innerHTML=`<circle r="15" fill="none" stroke="#202126" stroke-width="2" stroke-dasharray="4 3"/><ellipse rx="9" ry="7" stroke="#fff" stroke-width="2.5"/><ellipse rx="3.5" ry="2.5" fill="rgba(0,0,0,.2)"/>`; cellsG.appendChild(me);
+    const meBody=me.querySelector("ellipse");
+    u=segs[1].start+5;   // start in the vena cava
+    function speedAt(s){ return s.kind==="heart"?60:s.kind==="capillaries"?55:120; }
+    let stopAt=null;
+    function caption(i){ const s=segs[i]; const ox=s.ox===true?"oxygenated":s.ox===false?"deoxygenated":s.ox==="pick"?"picking up oxygen":"dropping off oxygen";
+      const kind=s.kind==="heart"?"inside the heart":s.kind==="capillaries"?"capillaries":s.kind;
+      el.querySelector("#bf-cap").innerHTML=`<div class="def"><span class="mx-chip" style="float:right;background:${s.ox===true?"#FBE3DF":s.ox===false?"#E1E8F7":"#EFE9F7"};color:${s.ox===true?"#A8323A":s.ox===false?"#33539A":"#5B4B86"}">${ox}</span><b>Now: ${esc(s.name)}</b> <span class="note">· ${esc(kind)}</span><p style="margin:6px 0 0">${esc(s.info)}</p></div>
+        <p class="note">Stop ${i+1} of ${segs.length}${mode==="quiz"?` · Quiz score: ${score} of ${asked}`:""}</p>`; }
+    function highlight(i){ hl.innerHTML=`<path d="${segs[i].d}" fill="none" stroke="#FFD34E" stroke-width="24" stroke-linecap="round" opacity=".45"/>`; }
+    function askQuiz(i){ const s=segs[i]; playing=false; const opts=VESSELS.map(id=>segs.find(x=>x.id===id).name).sort(()=>Math.random()-.5);
+      el.querySelector("#bf-cap").innerHTML=`<div class="def"><b>Quiz:</b> your cell is in the highlighted blood vessel. Which one is it?</div>
+        <div class="opts" style="display:flex;flex-wrap:wrap;gap:8px">${opts.map(o=>`<button class="opt" data-a="${esc(o)}">${esc(o)}</button>`).join("")}</div>
+        <p class="note" id="bf-fb" style="min-height:24px"></p>`;
+      el.querySelectorAll("[data-a]").forEach(b=>b.onclick=()=>{ asked++; const ok=b.dataset.a===s.name; if(ok) score++;
+        el.querySelectorAll("[data-a]").forEach(x=>{ x.disabled=true; if(x.dataset.a===s.name) x.classList.add("right"); else if(x===b) x.classList.add("wrong"); });
+        const ox=s.ox===true?"oxygenated":"deoxygenated";
+        el.querySelector("#bf-fb").innerHTML=`${ok?"<b style=\"color:var(--good)\">Right!</b>":"<b style=\"color:var(--bad)\">Not quite.</b>"} It's the <b>${esc(s.name.toLowerCase())}</b>, carrying <b>${ox}</b> blood ${s.id==="vc"||s.id==="pv"?"toward":"away from"} the heart. Score: ${score} of ${asked}. <button class="btn ghost" id="bf-go" style="padding:5px 12px;margin-left:6px">Keep going</button>`;
+        el.querySelector("#bf-go").onclick=()=>{ quiz=null; playing=true; u+=4; lastSeg=-1; controls(); };
+      }); }
+    function frame(dt){
+      if(!document.body.contains(root)) return;
+      beat+=dt*72/60; const ph=beat%1, sc=1+0.035*Math.max(0,Math.sin(ph*Math.PI*2))*(ph<0.5?1:0);
+      heart.setAttribute("transform",`translate(300 260) scale(${sc.toFixed(3)}) translate(-300 -260)`);
+      const cur=at(u);
+      if(playing){ const sp=speedAt(cur.s); let nu=u+sp*dt;
+        if(mode==="step"&&stopAt!=null&&nu>=stopAt){ nu=stopAt; playing=false; controls(); }
+        if(mode==="quiz"){ for(const id of VESSELS){ const s=segs.find(x=>x.id===id), mid=s.start+s.len*0.5; const m=((mid%total)+total)%total, a=((u%total)+total)%total, b=a+sp*dt; if(a<m&&b>=m&&!quiz){ nu=u+(m-a); quiz=id; } } }
+        u=nu; }
+      const now=at(u);
+      for(let i=0;i<N;i++){ const p=at(u+ (i+1)*total/(N+1)); bg[i].setAttribute("cx",p.x.toFixed(1)); bg[i].setAttribute("cy",p.y.toFixed(1)); bg[i].setAttribute("fill",colAt(p.s,p.k)); }
+      me.setAttribute("transform",`translate(${now.x.toFixed(1)} ${now.y.toFixed(1)})`); meBody.setAttribute("fill",colAt(now.s,now.k));
+      if(now.i!==lastSeg){ lastSeg=now.i; highlight(now.i); if(!quiz) caption(now.i); }
+      if(quiz&&!el.querySelector("[data-a]")){ highlight(now.i); askQuiz(now.i); }
+    }
+    function controls(){
+      el.querySelectorAll("[data-m]").forEach(b=>b.classList.toggle("on",b.dataset.m===mode));
+      const play=el.querySelector("#bf-play"), next=el.querySelector("#bf-next");
+      play.hidden=mode==="step"; next.hidden=mode!=="step"; play.textContent=playing?"Pause":"Play";
+      next.disabled=playing;
+      const showLabels=labels&&mode!=="quiz"; root.classList.toggle("bf-hide",!showLabels);
+      const lb=el.querySelector("#bf-lab"); lb.textContent="Labels: "+(showLabels?"on":"off"); lb.hidden=mode==="quiz"; lb.classList.toggle("on",showLabels);
+    }
+    el.querySelectorAll("[data-m]").forEach(b=>b.onclick=()=>{ mode=b.dataset.m; quiz=null; stopAt=null; lastSeg=-1;
+      if(mode==="step"){ playing=false; } else playing=true; if(mode==="quiz"){ score=0; asked=0; }
+      controls(); });
+    el.querySelector("#bf-play").onclick=()=>{ if(quiz) return; playing=!playing; controls(); };
+    el.querySelector("#bf-next").onclick=()=>{ const cur=at(u), a=((u%total)+total)%total, nx=segs[(cur.i+1)%segs.length]; let target=nx.start+nx.len*0.5; if(target<=a) target+=total; stopAt=u+(target-a); playing=true; controls(); };
+    el.querySelector("#bf-lab").onclick=()=>{ labels=!labels; controls(); };
+    controls();
+    loopOn(root,frame);
+    el.flowLab={get u(){return u;}, set u(v){u=v;}, at, segs, frame, get quiz(){return quiz;}, get mode(){return mode;}};
+  }
+
+  function heartRateLab(el){
+    const REST=72, JOG=140, CW=600, CH=230, SPEED=15; // 1 real second = 15 seconds of body time
+    let jogging=false, hr=REST, tmin=0, hist=[[0,REST]], beat=0, stopped=null, backAt=null, running=true;
+    el.innerHTML=`<div class="mx-ctl"><button class="btn" id="hr-jog">Start jogging</button><button class="btn ghost" id="hr-play">Pause</button><button class="btn ghost" id="hr-reset">Start over</button></div>
+      <div style="display:grid;grid-template-columns:minmax(120px,170px) 1fr;gap:14px;align-items:center" id="hr-grid">
+        <div style="text-align:center"><svg viewBox="0 0 120 110" style="width:100%;max-width:150px" aria-hidden="true"><g id="hr-heart" transform="translate(60 56)"><path d="M0 -18 C -12 -36, -46 -32, -46 -6 C -46 18, -18 34, 0 48 C 18 34, 46 18, 46 -6 C 46 -32, 12 -36, 0 -18 Z" fill="#D2414B" stroke="#9E2F37" stroke-width="2.5"/><path d="M-30 -10 C -28 -22, -18 -24, -12 -20" stroke="#fff" stroke-width="4" fill="none" opacity=".45" stroke-linecap="round"/></g></svg>
+          <div style="font-size:40px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums" id="hr-bpm">72</div><div class="note">beats per minute</div></div>
+        <div><div class="mx-stage"><canvas id="hr-cv" aria-label="Your heart rate graph"></canvas></div></div>
+      </div>
+      <div class="mx-read" id="hr-read"></div>
+      <div class="mx-txt" id="hr-txt"></div>`;
+    const cv=el.querySelector("#hr-cv"), ctx=cv.getContext("2d");
+    const fits=()=>{ fitCanvas(cv,ctx,CW,CH); el.querySelector("#hr-grid").style.gridTemplateColumns = el.clientWidth<480?"1fr":"minmax(120px,170px) 1fr"; };
+    fits(); window.addEventListener("resize",()=>{ if(document.body.contains(cv)) fits(); });
+    function words(){
+      let m;
+      if(jogging) m= hr<JOG-8 ? "<b>Jogging!</b> Your heart rate is climbing. Working muscle cells need more oxygen and nutrients, and need carbon dioxide carried away faster, so the heart pumps blood around the body faster."
+                              : "Your heart rate has levelled off at about 140. The heart is now pumping fast enough to keep up with what your muscle cells need.";
+      else if(stopped===null) m="Resting. Press <b>Start jogging</b> and watch the graph.";
+      else { const since=tmin-stopped; if(hr<=REST+4&&backAt===null) backAt=since; m= backAt===null ? `You stopped ${since<1?"less than a minute":`${since.toFixed(1)} minutes`} ago. The extra demand is gone, so the body is bringing the heart rate back down.`
+                              : `<b>Back to resting</b>, about ${Math.max(1,Math.round(backAt))} minutes after you stopped. Bringing the heart rate back to its normal, stable level is <b>homeostasis</b>: keeping conditions inside the body balanced.`; }
+      el.querySelector("#hr-txt").innerHTML=`<div class="def"><b>Homeostasis</b> keeps the conditions inside your body stable and balanced, even when the world outside changes.</div><p>${m}</p>`;
+      el.querySelector("#hr-read").innerHTML=`<span class="mx-chip ${jogging?"on":""}">${jogging?"jogging":"resting"}</span><span class="note">Graph time is sped up: 1 second on screen = ${SPEED} seconds in your body.</span>`;
+    }
+    function draw(){
+      ctx.clearRect(0,0,CW,CH); ctx.fillStyle="#fff"; ctx.fillRect(0,0,CW,CH);
+      const L=54,R=CW-14,T=14,B=CH-40, span=Math.max(14,Math.ceil(tmin)), X=m=>L+(R-L)*m/span, Y=b=>B-(b-60)/(160-60)*(B-T);
+      ctx.font="11.5px Inter,system-ui,sans-serif"; ctx.fillStyle="#6B6E79"; ctx.strokeStyle="#E3E5EC"; ctx.lineWidth=1; ctx.textBaseline="middle";
+      for(let b=60;b<=160;b+=20){ ctx.beginPath(); ctx.moveTo(L,Y(b)); ctx.lineTo(R,Y(b)); ctx.stroke(); ctx.textAlign="right"; ctx.fillText(b,L-8,Y(b)); }
+      ctx.textAlign="center"; const stepM=span>20?4:2; for(let m=0;m<=span;m+=stepM) ctx.fillText(m,X(m),B+14);
+      ctx.fillStyle="#4A4E5A"; ctx.font="600 12px Inter,system-ui,sans-serif"; ctx.fillText("Time (minutes)",(L+R)/2,CH-8);
+      ctx.save(); ctx.translate(14,(T+B)/2); ctx.rotate(-Math.PI/2); ctx.fillText("Heart rate (bpm)",0,0); ctx.restore();
+      ctx.strokeStyle="#D2414B"; ctx.lineWidth=2.8; ctx.beginPath(); hist.forEach(([m,b],i)=>{ i?ctx.lineTo(X(m),Y(b)):ctx.moveTo(X(m),Y(b)); }); ctx.stroke();
+      const [lm,lb]=hist[hist.length-1]; ctx.fillStyle="#D2414B"; ctx.beginPath(); ctx.arc(X(lm),Y(lb),4.5,0,6.283); ctx.fill();
+    }
+    let wt=0;
+    function frame(dt){
+      if(!running) { draw(); return; }
+      const bm=dt*SPEED/60; tmin+=bm;
+      const target=jogging?JOG:REST, tau=jogging?0.9:1.8;  // minutes
+      hr+= (target-hr)*(1-Math.exp(-bm/tau)) + (Math.random()-0.5)*0.4*dt*10;
+      if(hist.length===0||tmin-hist[hist.length-1][0]>0.05) hist.push([tmin,hr]);
+      beat+=dt*hr/60; const ph=beat%1, sc=1+0.12*Math.exp(-ph*9);
+      el.querySelector("#hr-heart").setAttribute("transform",`translate(60 56) scale(${sc.toFixed(3)})`);
+      el.querySelector("#hr-bpm").textContent=Math.round(hr);
+      wt+=dt; if(wt>0.4){ wt=0; words(); }
+      draw();
+    }
+    el.querySelector("#hr-jog").onclick=()=>{ jogging=!jogging; backAt=null; if(!jogging) stopped=tmin; else stopped=null; el.querySelector("#hr-jog").textContent=jogging?"Stop jogging":"Start jogging"; words(); };
+    el.querySelector("#hr-play").onclick=()=>{ running=!running; el.querySelector("#hr-play").textContent=running?"Pause":"Play"; };
+    el.querySelector("#hr-reset").onclick=()=>{ jogging=false; hr=REST; tmin=0; hist=[[0,REST]]; stopped=null; backAt=null; el.querySelector("#hr-jog").textContent="Start jogging"; words(); };
+    words(); loopOn(cv,frame);
+    el.hrLab={frame, get hr(){return hr;}, get tmin(){return tmin;}, jog(on){ if(on!==jogging) el.querySelector("#hr-jog").click(); }};
+  }
+
+  H0.lessonTools = Object.assign(H0.lessonTools||{}, {"cells/metabolism": metabolismLab, "cells/circulatory": bloodLab});
 })();
