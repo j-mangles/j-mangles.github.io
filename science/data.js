@@ -110,7 +110,7 @@ window.HUB = {
   {
     id:"cells", n:"1", name:"Cells and Systems", status:"now", when:"Late September to November",
     intro:"Every living thing is made of cells. We start with what cells are and what's inside them, then build up to tissues, organs and the body's systems.",
-    after:"Practise the parts of the cell on this page. Diagram: click any part to see what it does. Part & Role: match each organelle to its job. Game: Organelle Rush, 60 seconds to name as many organelles from their clues as you can.",
+    after:"Practise the parts of the cell on this page. Diagram: click any part to see what it does, or use Label it to practise the plant and animal cell labelling worksheets. Part & Role: match each organelle to its job. Game: Organelle Rush, 60 seconds to name as many organelles from their clues as you can.",
     lessons:[
       {id:"theory", n:"1", title:"Cell Theory and Cell Size",
        imgs:[{src:"img/hooke.jpg",cap:"A modern portrait of Robert Hooke. No portrait of him from his own lifetime survives. Image from the lesson slides."},

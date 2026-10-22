@@ -12,7 +12,22 @@
     chloro:{name:"Chloroplast",job:"Where photosynthesis happens: sunlight energy becomes chemical energy. Contains green chlorophyll.",plant:true},
     vacuole:{name:"Vacuole",job:"Storage for water, nutrients and wastes. Plant cells have one big one; animal cells have many small ones."},
     er:{name:"Endoplasmic reticulum",job:"Folded membranes attached to the nucleus. Builds proteins and moves materials around the cell."},
-    golgi:{name:"Golgi apparatus",job:"The post office. Packs and ships materials. Unlike the ER, it sits on its own."}
+    golgi:{name:"Golgi apparatus",job:"The post office. Packs and ships materials. Unlike the ER, it sits on its own."},
+    /* extra parts from the plant and animal cell labelling worksheets (diagram only) */
+    nucenv:{name:"Nuclear membrane",alt:"nuclear envelope",ws:true},
+    nucleolus:{name:"Nucleolus",ws:true},
+    rer:{name:"Rough endoplasmic reticulum",short:"Rough ER",ws:true},
+    ser:{name:"Smooth endoplasmic reticulum",short:"Smooth ER",ws:true},
+    ribo:{name:"Ribosomes",ws:true},
+    cytoskeleton:{name:"Cytoskeleton",ws:true},
+    centrosome:{name:"Centrosome",ws:true},
+    lysosome:{name:"Lysosome",ws:true}
+  };
+  /* Booklet set (9 plant / 7 animal) drives Part & Role and the game; the diagram shows every part on the labelling worksheets. */
+  const BOOK = ["wall","membrane","cytoplasm","nucleus","mito","chloro","vacuole","er","golgi"];
+  const SHEET = {
+    plant:["wall","membrane","cytoplasm","nucleus","nucenv","nucleolus","rer","ser","ribo","golgi","mito","vacuole","chloro","cytoskeleton"],
+    animal:["membrane","cytoplasm","nucleus","nucenv","nucleolus","rer","ser","ribo","golgi","mito","vacuole","centrosome","lysosome"]
   };
   /* ---------- Detailed cell diagrams, drawn in SVG so every part stays clickable ---------- */
   function rng(seed){ return function(){ seed|=0; seed=seed+0x6D2B79F5|0; let t=Math.imul(seed^seed>>>15,1|seed); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }
@@ -54,12 +69,13 @@
     let pores=""; for(let i=0;i<16;i++){ const t=i/16*Math.PI*2+0.2; pores+=`<circle cx="${f1(x+Math.cos(t)*(rx-2.5))}" cy="${f1(y+Math.sin(t)*(ry-2.5))}" r="2.5" fill="#F1EAF9"/>`; }
     let chrom=""; for(let i=0;i<11;i++){ const t=R()*6.283, d=0.15+R()*0.5, cx=x+Math.cos(t)*rx*d, cy=y+Math.sin(t)*ry*d;
       chrom+=`<path d="M${f1(cx)} ${f1(cy)} q ${f1(R()*14-7)} ${f1(R()*14-7)} ${f1(R()*18-9)} ${f1(R()*18-9)} t ${f1(R()*18-9)} ${f1(R()*18-9)}"/>`; }
-    return `<g data-o="nucleus" class="org" filter="url(#${p}soft)">
-      <ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${ry}" fill="#9677C3" stroke="#563A88" stroke-width="2"/>
-      <ellipse cx="${x}" cy="${y}" rx="${rx-5}" ry="${ry-5}" fill="url(#${p}nuc)" stroke="#6B4F9E" stroke-width="1.3"/>${pores}
-      <g fill="none" stroke="#9479BF" stroke-width="2" stroke-linecap="round" opacity=".75">${chrom}</g>
-      <ellipse cx="${f1(x+rx*0.16)}" cy="${f1(y-ry*0.12)}" rx="${f1(rx*0.29)}" ry="${f1(ry*0.26)}" fill="url(#${p}nucl)"/>
-      <ellipse cx="${f1(x+rx*0.1)}" cy="${f1(y-ry*0.2)}" rx="${f1(rx*0.09)}" ry="${f1(ry*0.06)}" fill="#fff" opacity=".35"/></g>`;
+    const ring=`M${x-rx} ${y} a${rx} ${ry} 0 1 0 ${2*rx} 0 a${rx} ${ry} 0 1 0 ${-2*rx} 0 Z M${x-rx+5} ${y} a${rx-5} ${ry-5} 0 1 0 ${2*rx-10} 0 a${rx-5} ${ry-5} 0 1 0 ${-2*rx+10} 0 Z`;
+    return `<g filter="url(#${p}soft)"><g data-o="nucleus" class="org">
+      <ellipse cx="${x}" cy="${y}" rx="${rx-5}" ry="${ry-5}" fill="url(#${p}nuc)" stroke="#6B4F9E" stroke-width="1.3"/>
+      <g fill="none" stroke="#9479BF" stroke-width="2" stroke-linecap="round" opacity=".75">${chrom}</g></g>
+      <g data-o="nucenv" class="org"><ellipse cx="${x}" cy="${y}" rx="${rx-2.5}" ry="${ry-2.5}" fill="none" stroke="transparent" stroke-width="14"/><path d="${ring}" fill="#9677C3" fill-rule="evenodd" stroke="#563A88" stroke-width="2"/>${pores}</g>
+      <g data-o="nucleolus" class="org"><ellipse cx="${f1(x+rx*0.16)}" cy="${f1(y-ry*0.12)}" rx="${f1(rx*0.29)}" ry="${f1(ry*0.26)}" fill="url(#${p}nucl)"/>
+      <ellipse cx="${f1(x+rx*0.1)}" cy="${f1(y-ry*0.2)}" rx="${f1(rx*0.09)}" ry="${f1(ry*0.06)}" fill="#fff" opacity=".35"/></g></g>`;
   }
 
   /* Rough ER: flattened sacs wrapped around the nucleus, studded with ribosomes, joined to the envelope.
@@ -73,8 +89,8 @@
       hit+=`<path d="${dd}" stroke="transparent" stroke-width="18"/>`;
       a.forEach((q,i)=>{ if(i%2) return; [-6.6,6.6].forEach(o=>{ ribo+=`<circle cx="${f1(q[0]+Math.cos(q[2])*o)}" cy="${f1(q[1]+Math.sin(q[2])*o)}" r="1.75"/>`; }); }); });
     let con=""; [a0+0.12,(a0+a1)/2,a1-0.12].forEach(t=>{ con+=`<path d="M${f1(x+Math.cos(t)*(rx-1))} ${f1(y+Math.sin(t)*(ry-1))} L${f1(x+Math.cos(t)*(rx+15))} ${f1(y+Math.sin(t)*(ry+15))}" stroke="#AD5D88" stroke-width="6"/>`; });
-    let sm=""; (smooth||[]).forEach(d=>{ sm+=`<path d="${d}" stroke="#AD5D88" stroke-width="9"/><path d="${d}" stroke="#F5C9DF" stroke-width="5.6"/>`; hit+=`<path d="${d}" stroke="transparent" stroke-width="18"/>`; });
-    return `<g data-o="er" class="org" fill="none" stroke-linecap="round" stroke-linejoin="round">${hit}${con}${sacs}${sm}<g fill="#76385F" stroke="none">${ribo}</g></g>`;
+    let sm="", smHit=""; (smooth||[]).forEach(d=>{ sm+=`<path d="${d}" stroke="#AD5D88" stroke-width="9"/><path d="${d}" stroke="#F5C9DF" stroke-width="5.6"/>`; smHit+=`<path d="${d}" stroke="transparent" stroke-width="18"/>`; });
+    return `<g fill="none" stroke-linecap="round" stroke-linejoin="round"><g data-o="rer" class="org">${hit}${con}${sacs}<g fill="#76385F" stroke="none">${ribo}</g></g><g data-o="ser" class="org">${smHit}${sm}</g></g>`;
   }
 
   function golgi(p,x,y,r){
@@ -88,14 +104,23 @@
 
   function smallVac(p,x,y,r){ return `<g data-o="vacuole" class="org" filter="url(#${p}soft)"><circle cx="${x}" cy="${y}" r="${r}" fill="url(#${p}vac)" stroke="#5E9CC2" stroke-width="2"/><ellipse cx="${f1(x-r*0.3)}" cy="${f1(y-r*0.35)}" rx="${f1(r*0.38)}" ry="${f1(r*0.2)}" fill="#fff" opacity=".6"/></g>`; }
 
+  function riboClusters(pts){ return `<g data-o="ribo" class="org">${pts.map(([x,y])=>`<circle cx="${x}" cy="${y}" r="15" fill="transparent"/>`+[[0,0],[7,-4],[4,7],[-6,5],[12,4],[-3,-7]].map(([dx,dy])=>`<circle cx="${x+dx}" cy="${y+dy}" r="2.7" fill="#3A2B52"/>`).join("")).join("")}</g>`; }
+  function cytoskeleton(paths){ return `<g data-o="cytoskeleton" class="org" fill="none" stroke-linecap="round">${paths.map(d=>`<path d="${d}" stroke="transparent" stroke-width="14"/><path d="${d}" stroke="#7E8DA6" stroke-width="1.6" opacity=".8"/>`).join("")}</g>`; }
+  function centrosome(x,y){ return `<g data-o="centrosome" class="org" transform="translate(${x} ${y})"><circle r="24" fill="#E4EEF6" opacity=".7"/><g fill="#3E86A8" stroke="#235F7C" stroke-width="1.2"><rect x="-16" y="-5.5" width="32" height="11" rx="3"/><rect x="-5.5" y="-16" width="11" height="32" rx="3" opacity=".9"/></g><g stroke="#235F7C" stroke-width="1" opacity=".6">${[-10,-4,2,8].map(v=>`<path d="M${v} -5.5v11"/>`).join("")}</g></g>`; }
+  function lysosomes(p,pts){ return `<g data-o="lysosome" class="org" filter="url(#${p}soft)">${pts.map(([x,y,r])=>`<circle cx="${x}" cy="${y}" r="${r}" fill="#B58BE0" stroke="#6E46A0" stroke-width="2"/><circle cx="${x-r*0.3}" cy="${y-r*0.3}" r="${r*0.3}" fill="#fff" opacity=".45"/>`).join("")}</g>`; }
+
   function dots(R,n,inside){ let s=""; for(let i=0;i<n;){ const x=40+R()*720, y=30+R()*500; if(!inside(x,y)) continue; s+=`<circle cx="${f1(x)}" cy="${f1(y)}" r="1.5"/>`; i++; } return s; }
 
   const PINS = {
-    plant:{wall:[33,300],membrane:[750,302],cytoplasm:[318,82],vacuole:[520,280],nucleus:[140,312],er:[287,292],golgi:[110,447],mito:[100,120],chloro:[420,78]},
-    animal:{membrane:[54,330],cytoplasm:[612,186],nucleus:[365,292],er:[395,150],golgi:[630,343],mito:[165,175],vacuole:[110,290]}
+    plant:{wall:[33,300],membrane:[750,302],cytoplasm:[318,82],vacuole:[520,280],nucleus:[140,312],nucenv:[117,241],nucleolus:[183,281],rer:[287,292],ser:[242,437],ribo:[300,198],golgi:[110,447],mito:[100,120],chloro:[420,78],cytoskeleton:[294,152]},
+    animal:{membrane:[54,330],cytoplasm:[612,186],nucleus:[365,292],nucenv:[332,333],nucleolus:[410,265],rer:[395,162],ser:[298,404],ribo:[578,214],golgi:[630,343],mito:[165,175],vacuole:[110,290],centrosome:[255,272],lysosome:[540,418]}
   };
-  function pins(type,sc){ sc=sc||1; const order=Object.keys(ORG).filter(k=>type==="plant"||!ORG[k].plant);
-    return `<g class="pins" pointer-events="none">${order.map((k,i)=>{ const [x,y]=PINS[type][k]; return `<g><circle cx="${x}" cy="${y}" r="${f1(13*sc)}" fill="#202126" stroke="#fff" stroke-width="2.5"/><text x="${x}" y="${f1(y+5*sc)}" text-anchor="middle" font-size="${f1(14*sc)}" font-weight="700" fill="#fff" font-family="Inter,system-ui,sans-serif">${i+1}</text></g>`; }).join("")}</g>`; }
+  /* worksheet parts in reading order (top to bottom), so the numbers don't give anything away */
+  const order = type => SHEET[type].slice().sort((a,b)=>{ const A=PINS[type][a],B=PINS[type][b]; return Math.round(A[1]/40)-Math.round(B[1]/40)||A[0]-B[0]; });
+  function pins(type,sc,marks){ sc=sc||1; const ord=order(type);
+    if(marks) return `<g class="pins">${ord.map((k,i)=>{ const [x,y]=PINS[type][k], m=marks[i+1]||{}; return `<g data-n="${i+1}" style="cursor:pointer"><circle cx="${x}" cy="${y}" r="${f1(14*sc)}" fill="${m.fill||"#202126"}" stroke="${m.ring||"#fff"}" stroke-width="${m.ring?4:2.5}"/><text x="${x}" y="${f1(y+5*sc)}" text-anchor="middle" font-size="${f1(14*sc)}" font-weight="700" fill="#fff" font-family="Inter,system-ui,sans-serif" pointer-events="none">${i+1}</text></g>`; }).join("")}</g>`;
+    const order_=ord;
+    return `<g class="pins" pointer-events="none">${order_.map((k,i)=>{ const [x,y]=PINS[type][k]; return `<g><circle cx="${x}" cy="${y}" r="${f1(13*sc)}" fill="#202126" stroke="#fff" stroke-width="2.5"/><text x="${x}" y="${f1(y+5*sc)}" text-anchor="middle" font-size="${f1(14*sc)}" font-weight="700" fill="#fff" font-family="Inter,system-ui,sans-serif">${i+1}</text></g>`; }).join("")}</g>`; }
 
   function plantSVG(){
     const p="pc", R=rng(11);
@@ -107,12 +132,14 @@
     s+=`<g data-o="wall" class="org"><path d="${inner}" fill="#EDF5E1"/><path d="${outer} ${inner}" fill-rule="evenodd" fill="url(#${p}fib)" stroke="#7FA55A" stroke-width="1.6"/></g>`;
     s+=`<g data-o="cytoplasm" class="org"><path d="${mem}" fill="url(#${p}cyto)"/><g fill="#8DA57E" opacity=".75">${dots(R,190,(x,y)=>x>58&&x<742&&y>58&&y<502)}</g></g>`;
     s+=`<g data-o="membrane" class="org" fill="none"><path d="${mem}" stroke="transparent" stroke-width="16"/><path d="${mem}" stroke="#2F7A4C" stroke-width="4.5"/><path d="${mem}" stroke="#B8E2C6" stroke-width="1.6"/></g>`;
+    s+=cytoskeleton(["M262 150 C 290 140, 318 152, 344 140","M276 128 L 312 176","M300 135 L 290 168","M120 500 C 180 470, 240 505, 300 470","M700 430 L 742 470","M560 470 C 590 455, 620 470, 650 455"]);
     s+=`<g data-o="vacuole" class="org" filter="url(#${p}soft)"><path d="${vac}" fill="url(#${p}vac)" stroke="#5E9CC2" stroke-width="3"/><ellipse cx="450" cy="168" rx="78" ry="24" transform="rotate(-8 450 168)" fill="#fff" opacity=".5"/><ellipse cx="610" cy="400" rx="30" ry="9" transform="rotate(-30 610 400)" fill="#fff" opacity=".35"/></g>`;
     s+=er(170,290,78,72,-1.25,1.25,["M214 440 C 232 424, 250 452, 268 436 S 300 450, 296 470","M222 470 C 240 458, 258 486, 278 474","M200 418 C 214 404, 236 410, 244 398"]);
     s+=nucleus(p,170,290,78,72,R);
     s+=golgi(p,112,456,0);
     s+=mito(p,100,120,25)+mito(p,255,104,-15)+mito(p,330,488,5)+mito(p,690,490,-4)+mito(p,726,276,90);
     s+=chloro(p,180,80,0)+chloro(p,420,78,0)+chloro(p,590,75,4)+chloro(p,728,190,88)+chloro(p,728,362,92)+chloro(p,480,487,0)+chloro(p,606,488,-3);
+    s+=riboClusters([[300,198],[404,500],[690,108],[310,330]]);
     return s;
   }
 
@@ -127,19 +154,21 @@
     s+=nucleus(p,395,275,92,84,R);
     s+=golgi(p,630,345,-18);
     s+=mito(p,165,175,35)+mito(p,560,126,12)+mito(p,682,228,75)+mito(p,180,402,-25)+mito(p,478,470,5)+mito(p,600,452,-30);
+    s+=centrosome(255,272)+lysosomes(p,[[212,232,10],[540,418,11],[318,96,9]]);
+    s+=riboClusters([[578,214],[192,318],[420,505]]);
     return s;
   }
-  function cellSVG(type,showPins,k){ return (type==="plant"?plantSVG():animalSVG())+(showPins?pins(type,k):"")+`</svg>`; }
+  function cellSVG(type,showPins,k,marks){ return (type==="plant"?plantSVG():animalSVG())+(showPins||marks?pins(type,k,marks):"")+`</svg>`; }
 
   const NICK = {nucleus:"the “brain” of the cell", mito:"the “powerhouse of the cell”", golgi:"the “post office” of the cell", vacuole:"the “storage unit” of the cell"};
 
   window.HUB.tools = window.HUB.tools || {};
   function explorer(el){
-    let type="plant", mode="explore", labels=false, sel=null, target=null, score=0, tries=0;
+    let type="plant", mode="explore", labels=false, sel=null, target=null, score=0, tries=0, lab=null;
     el.innerHTML = `<div class="eyebrow">Interactive diagram</div><h2>Cell Explorer</h2>
       <div class="cx-row" id="cellctl" style="margin:10px 0 12px">
         <span class="cx-seg"><button id="t-plant">Plant cell</button><button id="t-animal">Animal cell</button></span>
-        <span class="cx-seg"><button id="m-explore">Explore</button><button id="m-quiz">Quiz</button></span>
+        <span class="cx-seg"><button id="m-explore">Explore</button><button id="m-quiz">Quiz</button><button id="m-label">Label it</button></span>
         <button class="cx-toggle" id="m-labels" aria-pressed="false"><span></span>Labels</button>
       </div>
       <div id="cellbox"></div><div id="legend"></div><div id="cellinfo" aria-live="polite" style="min-height:96px;margin-top:12px"></div>
@@ -163,21 +192,31 @@
         #legend b{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:#202126;color:#fff;font-size:12px;flex:none}
         #legend button{background:none;border:0;padding:2px 0;cursor:pointer;text-align:left;font-size:15px}
         #legend button:hover{text-decoration:underline}
+        .lb-rows{list-style:none;margin:12px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:6px}
+        .lb-row{display:flex;gap:9px;align-items:center;width:100%;text-align:left;background:var(--paper);border:1.5px solid var(--rule);border-radius:8px;padding:6px 9px;font-size:15px;cursor:pointer;min-height:38px;color:var(--ink)}
+        .lb-row b{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:#202126;color:#fff;font-size:12px;flex:none}
+        .lb-row.act{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent)}.lb-row.ok{border-color:var(--good)}.lb-row.ok b{background:var(--good)}.lb-row.no{border-color:var(--bad)}.lb-row.no b{background:var(--bad)}
+        .lb-bank{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}.lb-bank .opt{font-size:14.5px;padding:6px 11px}.lb-bank .opt.used{opacity:.35}
         @media (prefers-reduced-motion:reduce){#cellbox .org{transition:none}}
       </style>`;
     const box=el.querySelector("#cellbox"), info=el.querySelector("#cellinfo"), legend=el.querySelector("#legend");
-    const present=()=>Object.keys(ORG).filter(k=>type==="plant"||!ORG[k].plant);
+    const present=()=>order(type);
     function newTarget(){ const list=present().filter(k=>k!==target); target=list[Math.floor(Math.random()*list.length)]; }
     function draw(){
       const w=box.clientWidth||480, k=Math.max(1,Math.min(1.7,(800/w)*0.55));
-      box.innerHTML=cellSVG(type, mode==="explore"&&labels, k);
+      let marks=null;
+      if(mode==="label"){ if(!lab) lab={filled:{},active:1,checked:false}; marks={};
+        present().forEach((key,i)=>{ const n=i+1, f=lab.filled[n]; marks[n]={fill:lab.checked&&f?(f===key?"var(--good)":"var(--bad)"):(f?"#5A5D72":"#202126"),ring:lab.active===n?"var(--accent)":null}; }); }
+      box.innerHTML=cellSVG(type, mode==="explore"&&labels, k, marks);
       const svg=box.querySelector("svg");
       ["plant","animal"].forEach(t=>el.querySelector("#t-"+t).classList.toggle("seg-on",type===t));
       el.querySelector("#m-explore").classList.toggle("seg-on",mode==="explore");
       el.querySelector("#m-quiz").classList.toggle("seg-on",mode==="quiz");
+      el.querySelector("#m-label").classList.toggle("seg-on",mode==="label");
       const lb=el.querySelector("#m-labels"); lb.hidden=mode!=="explore"; lb.setAttribute("aria-pressed",String(labels));
+      box.querySelectorAll(".pins [data-n]").forEach(g=>g.addEventListener("click",ev=>{ev.stopPropagation(); lab.active=+g.dataset.n; lab.checked=false; draw();}));
       box.querySelectorAll(".org").forEach(g=>{
-        g.addEventListener("click",ev=>{ev.stopPropagation(); pick(g.dataset.o);});
+        g.addEventListener("click",ev=>{ev.stopPropagation(); if(mode==="label") return; pick(g.dataset.o);});
         if(sel&&g.dataset.o===sel&&mode==="explore") g.classList.add("on");
       });
       svg.classList.toggle("has-sel",!!sel&&mode==="explore");
@@ -193,14 +232,36 @@
         <p class="note" style="margin:8px 0 0">Score ${score} of ${tries} · <button class="btn ghost" id="nextq" style="padding:5px 12px">Next</button></p>`;
       el.querySelector("#nextq").onclick=()=>{newTarget(); showInfo();};
     }
+    function labelInfo(){
+      const keys=present(), used=new Set(Object.values(lab.filled)), n=keys.length;
+      const right=lab.checked?keys.filter((k,i)=>lab.filled[i+1]===k).length:0;
+      const bank=keys.slice().sort((a,b)=>ORG[a].name.localeCompare(ORG[b].name));
+      info.innerHTML=`<p class="note" style="margin:0">Just like the labelling worksheet: pick a number, then pick the part it points to. Tap a number on the diagram or in the list.</p>
+        <ol class="lb-rows">${keys.map((k,i)=>{const f=lab.filled[i+1], st=lab.checked&&f?(f===k?" ok":" no"):""; return `<li><button class="lb-row${st}${lab.active===i+1?" act":""}" data-n="${i+1}"><b>${i+1}</b><span>${f?esc(ORG[f].short||ORG[f].name):""}</span></button></li>`;}).join("")}</ol>
+        <p class="note" style="margin:12px 0 0">${lab.active?`Label for number <b>${lab.active}</b>:`:"Pick a number first."}</p>
+        <div class="lb-bank">${bank.map(k=>`<button class="opt${used.has(k)?" used":""}" data-k="${k}">${esc(ORG[k].name)}</button>`).join("")}</div>
+        <div class="cx-row" style="margin-top:12px"><button class="btn" id="lb-check">Check my labels</button><button class="btn ghost" id="lb-show">Show answers</button><button class="btn ghost" id="lb-clear">Start over</button></div>
+        ${lab.checked?`<p style="margin:10px 0 0;font-weight:700">${right} of ${n} correct${right===n?". Perfect!":". Red ones need another look."}</p>`:""}`;
+      info.querySelectorAll(".lb-row").forEach(b=>b.onclick=()=>{lab.active=+b.dataset.n;lab.checked=false;draw();});
+      info.querySelectorAll("[data-k]").forEach(b=>b.onclick=()=>{
+        if(!lab.active) return; const k=b.dataset.k;
+        for(const m in lab.filled) if(lab.filled[m]===k) delete lab.filled[m];
+        lab.filled[lab.active]=k; lab.checked=false;
+        let nx=null; for(let i=1;i<=n;i++){ const j=(lab.active+i-1)%n+1; if(!lab.filled[j]){nx=j;break;} } lab.active=nx; draw(); });
+      info.querySelector("#lb-check").onclick=()=>{lab.checked=true;lab.active=null;draw();};
+      info.querySelector("#lb-show").onclick=()=>{keys.forEach((k,i)=>lab.filled[i+1]=k);lab.checked=true;lab.active=null;draw();};
+      info.querySelector("#lb-clear").onclick=()=>{lab=null;draw();};
+    }
     function showInfo(){
+      if(mode==="label"){ labelInfo(); return; }
       if(mode==="quiz"){ if(!target||!present().includes(target)) newTarget();
         info.innerHTML=`<p style="margin:0" class="note">Click the part of the ${type} cell that is the…</p><p style="margin:2px 0 0;font-family:var(--f-title);font-size:26px;font-weight:700">${esc(ORG[target].name)}</p><p class="note" style="margin:6px 0 0">Score ${score} of ${tries}</p>`; return; }
-      if(!sel){ info.innerHTML=`<p class="note" style="margin:0">Click any part of the cell to see what it is and what it does. ${type==="plant"?"A plant":"An animal"} cell has ${present().length} major organelles.${labels?"":" Turn on Labels to number them."}</p>`; return; }
-      info.innerHTML=`<p style="margin:0;font-family:var(--f-title);font-size:24px;font-weight:700">${esc(ORG[sel].name)}</p><p style="margin:4px 0 0">${esc(JOB[sel])}</p>${NICK[sel]?`<p class="note" style="margin:6px 0 0">Nickname: ${esc(NICK[sel])}.</p>`:""}${ORG[sel].plant?`<p class="note" style="margin:6px 0 0">Found in plant cells, not animal cells.</p>`:""}`;
+      if(!sel){ info.innerHTML=`<p class="note" style="margin:0">Click any part of the cell to see what it is and what it does. This ${type} cell shows all ${present().length} parts from the labelling worksheet.${labels?"":" Turn on Labels to number them."}</p>`; return; }
+      info.innerHTML=`<p style="margin:0;font-family:var(--f-title);font-size:24px;font-weight:700">${esc(ORG[sel].name)}</p>${ORG[sel].alt?`<p class="note" style="margin:0">Also called the ${esc(ORG[sel].alt)}.</p>`:""}<p style="margin:4px 0 0">${esc(JOB[sel])}</p>${NICK[sel]?`<p class="note" style="margin:6px 0 0">Nickname: ${esc(NICK[sel])}.</p>`:""}${ORG[sel].plant?`<p class="note" style="margin:6px 0 0">Found in plant cells, not animal cells.</p>`:""}`;
     }
-    el.querySelector("#t-plant").onclick=()=>{type="plant";sel=null;draw();};
-    el.querySelector("#t-animal").onclick=()=>{type="animal";sel=null;if(ORG[target]&&ORG[target].plant)target=null;draw();};
+    el.querySelector("#t-plant").onclick=()=>{type="plant";sel=null;lab=null;draw();};
+    el.querySelector("#t-animal").onclick=()=>{type="animal";sel=null;lab=null;if(target&&!SHEET.animal.includes(target))target=null;draw();};
+    el.querySelector("#m-label").onclick=()=>{mode="label";sel=null;lab=null;draw();};
     el.querySelector("#m-explore").onclick=()=>{mode="explore";draw();};
     el.querySelector("#m-labels").onclick=()=>{mode="explore";labels=!labels;draw();};
     el.querySelector("#m-quiz").onclick=()=>{mode="quiz";sel=null;target=null;score=0;tries=0;draw();};
@@ -217,7 +278,15 @@
     chloro:"Structure where photosynthesis takes place.",
     vacuole:"Balloon-like storage space for water, nutrients and wastes.",
     er:"Folded membranes found near the nucleus that help build proteins.",
-    golgi:"Packs and transports materials around the cell."
+    golgi:"Packs and transports materials around the cell.",
+    nucenv:"Double membrane around the nucleus. Its pores let messages and materials in and out.",
+    nucleolus:"Dense spot inside the nucleus that makes ribosomes.",
+    rer:"ER covered in ribosomes (that's why it's “rough”). Builds proteins and moves them through the cell.",
+    ser:"ER with no ribosomes. Makes fats (lipids) and helps break down harmful substances.",
+    ribo:"Tiny dots that build proteins. Some float free in the cytoplasm; others sit on the rough ER.",
+    cytoskeleton:"Network of protein fibres that gives the cell its shape and helps move things around inside it.",
+    centrosome:"Holds two centrioles that help pull chromosomes apart when an animal cell divides.",
+    lysosome:"Small sac of enzymes that breaks down wastes and worn-out cell parts. The cell's clean-up crew."
   };
   const CLUES = {
     wall:["Thick, rigid wall around the cell that adds structural support.","In plants it's made of cellulose. In fungi it's made of chitin.","Lets a plant stay upright against gravity, since plants can't move.","Found in plants and fungi, but never in animal cells."],
@@ -239,7 +308,7 @@
   function matcher(el){
     let type="plant", pairs, jobs, picked=null, done, misses, start, timer=null, flash=null, bestMsg="";
     function reset(){
-      const keys=Object.keys(ORG).filter(k=>type==="plant"||!ORG[k].plant);
+      const keys=BOOK.filter(k=>type==="plant"||!ORG[k].plant);
       pairs=shuffle(keys); jobs=shuffle(keys); picked=null; done=new Set(); misses=0; start=Date.now(); flash=null; bestMsg="";
       clearInterval(timer); timer=setInterval(()=>{ if(!document.body.contains(el)){clearInterval(timer);return;} const t=el.querySelector("#mt-clock"); if(t&&done.size<pairs.length) t.textContent=mmss(Math.round((Date.now()-start)/1000)); },1000);
       draw();
