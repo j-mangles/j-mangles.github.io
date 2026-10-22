@@ -59,6 +59,7 @@ body[data-subject="math"] .big{border-left:0;padding:18px 22px;border-radius:var
 body[data-subject="math"] .big p{font-weight:400;letter-spacing:-.01em}
 body[data-subject="math"] .tool{border:0}
 body[data-subject="math"] ol.lessons .n{font-family:var(--f-label);font-weight:500}
+body[data-subject="math"] ol.lessons button{grid-template-columns:58px 1fr auto}
 /* ---------- Critical Thinking: dark, mint + ultraviolet, League Gothic ---------- */
 body[data-subject="ct"]{
   --bg:#131313; --paper:#131313; --soft:#2D2D2D; --ink:#FFFFFF; --navy:#FFFFFF; --muted:#949494; --rule:#313131;

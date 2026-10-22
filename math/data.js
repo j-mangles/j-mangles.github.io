@@ -2,8 +2,9 @@ window.HUB = {
   subject: "math",
   units: [
   {
-    id:"fdp", n:"1", name:"Fractions, Decimals and Percents", status:"done", when:"September – October",
-    intro:"One amount can be written three ways. We learned to switch between fractions, decimals and percents, find percents of numbers, work with sales and tax, and compare numbers in any form.",
+    id:"fdp", n:"1", name:"Fractions, Decimals and Percents", status:"now", when:"September – November 2",
+    intro:"One amount can be written three ways. We are learning to switch between fractions, decimals and percents, find percents of numbers, work with sales and tax, and compare numbers in any form.",
+    after:"Coming up in this unit: percent problems in context (Oct 23); discounts, tax and money (Oct 26); comparing and ordering (Oct 27–29); Percent Skill Check and review (Oct 30); Unit 1 test (Mon Nov 2).",
     lessons:[
       {id:"l01", n:"1", title:"Same Value, Different Clothes",
        big:"A fraction, a decimal and a percent can all name the same amount. They're the same value wearing different clothes.",
@@ -65,105 +66,6 @@ window.HUB = {
        check:[
          {q:"10% of 360 is…", a:["3.6","36","360"], c:1, why:"Divide by 10."},
          {q:"Best way to find 5% of 240?", a:["240 ÷ 5","Half of 10%: 24 ÷ 2","240 × 5"], c:1, why:"10% is 24, so 5% is 12."}
-       ]},
-      {id:"l05", n:"5", title:"Percent of a Number",
-       big:"To find a percent of a number, change the percent to a decimal (or fraction) and multiply.",
-       notes:[
-         "\"Of\" means multiply. 30% of 50 = 0.30 × 50 = 15.",
-         "With a fraction: 25% of 44 = 1/4 of 44 = 44 ÷ 4 = 11.",
-         "Estimate first so you can tell if your answer is reasonable. 32% of 80 should be a bit less than a third of 80 (about 26).",
-         "The answer is part of the whole, so a percent under 100% always gives an answer smaller than the starting number."
-       ],
-       terms:[["Part","The amount the percent describes."],["Whole","The total amount, which is 100%."]],
-       work:"Lesson 5 practice sheet (Percent of a Number) and the extra Percent Review.",
-       check:[
-         {q:"30% of 70 =", a:["2.1","21","210"], c:1, why:"0.3 × 70 = 21."},
-         {q:"75% of 60 =", a:["45","15","80"], c:0, why:"60 ÷ 4 = 15, times 3 = 45."},
-         {q:"Which is a sensible estimate for 49% of 812?", a:["About 40","About 400","About 800"], c:1, why:"49% is almost half."}
-       ]},
-      {id:"l06", n:"6", title:"Working Backwards",
-       big:"If you know the part and the percent, you can find the whole. Find 1% (or 10%) first, then scale up to 100%.",
-       notes:[
-         "Example: 20% of a number is 14. If 20% is 14, then 10% is 7, so 100% is 70.",
-         "Unit-percent method: divide the part by the percent to get 1%, then multiply by 100. 12 is 30% of what? 12 ÷ 30 = 0.4, × 100 = 40.",
-         "Finding what percent: part ÷ whole × 100. 18 out of 24 = 0.75 = 75%.",
-         "Always ask which of the three you're missing: the part, the whole or the percent."
-       ],
-       terms:[["Part ÷ whole","Gives the percent as a decimal. Multiply by 100 for the percent."]],
-       work:"Lesson 6 practice: Working Backwards.",
-       check:[
-         {q:"25% of a number is 9. The number is…", a:["36","2.25","34"], c:0, why:"9 is a quarter, so the whole is 9 × 4."},
-         {q:"What percent of 40 is 10?", a:["4%","25%","40%"], c:1, why:"10 ÷ 40 = 0.25 = 25%."}
-       ]},
-      {id:"l07", n:"7", title:"Choosing an Efficient Strategy",
-       big:"There's more than one way to find a percent. Pick the fastest one for the numbers you're given.",
-       notes:[
-         "Easy fraction (F): 50%, 25%, 75%, 10%. 75% of 60 = 60 ÷ 4 × 3 = 45.",
-         "Benchmarks (B): build it. 35% of 80 = 25% (20) + 10% (8) = 28. 90% of 40 = 40 − 4 = 36.",
-         "Unit percent (U): find 1%, then multiply. 13% of 300: 1% = 3, so 13% = 39.",
-         "Decimal (D): when nothing is friendly, multiply by the decimal. 43% of 68 = 0.43 × 68 = 29.24.",
-         "In the Method Match-Up you sorted cards before solving. Choosing the method is part of the skill."
-       ],
-       work:"Lesson 7 practice and the Method Match-Up cards.",
-       check:[
-         {q:"Fastest way to find 62% of 200?", a:["Find 1% (2) and multiply by 62","Long multiplication","Guess and check"], c:0, why:"1% of 200 is 2, so 62% is 124."},
-         {q:"35% of 80 =", a:["28","24","35"], c:0, why:"25% is 20, 10% is 8, and 20 + 8 = 28."}
-       ]},
-      {id:"l08", n:"8", title:"Percent Problem Solving in Context",
-       big:"Read the problem, decide what's missing (part, whole or percent), solve, then ask whether the answer makes sense.",
-       notes:[
-         "Step 1: Underline what you know. Step 2: Name what's missing. Step 3: Estimate. Step 4: Solve. Step 5: Check if it's reasonable.",
-         "Counts of people or objects have to be whole numbers, so round sensibly. 60% of 198 houses is 118.8, which really means about 119 houses.",
-         "Class Snapshot: we took class data, turned it into percents, and predicted results for the whole grade.",
-         "A sample (one class) can be different from the whole group, so predictions are estimates, not guarantees."
-       ],
-       terms:[["Reasonable","An answer that fits the situation and your estimate."],["Sample","A smaller group used to predict something about a bigger group."]],
-       work:"Lesson 8 practice and Class Snapshot.",
-       check:[
-         {q:"40% of 25 students take the bus. How many?", a:["10","4","15"], c:0, why:"0.4 × 25 = 10."},
-         {q:"An answer says 12.6 buses are needed. What should it be?", a:["12","12.6","13"], c:2, why:"You can't have part of a bus, and 12 isn't enough."}
-       ]},
-      {id:"l09", n:"9", title:"Discounts and Sale Prices",
-       big:"The discount is how much you save. The sale price is what you pay. Sale price = regular price − discount.",
-       notes:[
-         "Discount: 30% off $90 = 0.30 × 90 = $27 saved.",
-         "Sale price: $90 − $27 = $63.",
-         "Shortcut: 30% off means you pay 70%. 0.70 × 90 = $63.",
-         "A bigger percent doesn't always save more. 50% off a $36 basketball saves $18, but 30% off $90 shoes saves $27.",
-         "Working backwards: a $45 sale price after 25% off is 75% of the regular price, so the regular price is $60."
-       ],
-       terms:[["Discount","The amount taken off the price."],["Sale price","The price after the discount."],["Regular price","The original price before the sale."]],
-       work:"Lesson 9 practice and the Flyer Challenge.",
-       check:[
-         {q:"A $40 yoga mat is 25% off. Sale price?", a:["$10","$30","$15"], c:1, why:"Discount is $10, so you pay $30."},
-         {q:"Which saves more money?", a:["50% off $20","20% off $80"], c:1, why:"$10 saved vs. $16 saved."}
-       ]},
-      {id:"l10", n:"10", title:"Tax, Money and Sensible Rounding",
-       big:"In Manitoba, tax is 12% (5% GST + 7% PST). Take the discount first, then add tax to the sale price.",
-       notes:[
-         "Tax = 12% of the price. Total = price + tax, or price × 1.12.",
-         "Order matters: discount first, then tax on the sale price. Taking tax on the original price is the most common mistake.",
-         "Money rounds to the nearest cent (two decimal places). $1.5588 rounds to $1.56, not $1.55.",
-         "Some items are PST-exempt in real life, but in class we use 12% unless told otherwise.",
-         "Receipt Detective: three of six receipts had mistakes. Wrong order, $ off instead of % off, and cutting off instead of rounding."
-       ],
-       terms:[["GST","Goods and Services Tax, federal, 5%."],["PST","Provincial Sales Tax, Manitoba, 7%."]],
-       work:"Lesson 10 practice (3 pages) and Receipt Detective.",
-       check:[
-         {q:"Tax on a $25 item in Manitoba (12%)?", a:["$2.50","$3.00","$1.25"], c:1, why:"0.12 × 25 = 3."},
-         {q:"$34 shoes are 25% off. What price do you pay tax on?", a:["$34.00","$25.50","$8.50"], c:1, why:"Take the discount first: 75% of $34 = $25.50."},
-         {q:"Round $1.5588 to the nearest cent.", a:["$1.55","$1.56","$1.50"], c:1, why:"The third decimal is 8, so round up."}
-       ]},
-      {id:"l11", n:"11", title:"Percent Lab and Skill Check",
-       big:"Percent Design lab, then the 24-mark Percent Skill Check.",
-       notes:[
-         "In the lab, each design is a grid. Every colour's percent has to add to 100%.",
-         "On a 200-square grid, each square is 0.5%, so 12.5% is 25 squares.",
-         "If you missed the Skill Check, see Mr. Mangles to book a time to write it."
-       ],
-       work:"Percent Design lab. Percent Skill Check (no calculator in Part 1).",
-       check:[
-         {q:"Blue 28%, green 17%, red 35%. What percent is yellow?", a:["20%","80%","25%"], c:0, why:"28 + 17 + 35 = 80, and 100 − 80 = 20."}
        ]},
       {id:"l12", n:"12", title:"A Fraction Is Also Division",
        big:"The fraction bar means divide. 3/4 is 3 ÷ 4, which is 0.75.",
@@ -233,6 +135,82 @@ window.HUB = {
        check:[
          {q:"Which will repeat?", a:["3/8","7/12","9/50"], c:1, why:"12 = 2 × 2 × 3. The 3 makes it repeat."}
        ]},
+      {id:"l05", n:"5", title:"Percent of a Number",
+       big:"To find a percent of a number, change the percent to a decimal (or fraction) and multiply.",
+       notes:[
+         "\"Of\" means multiply. 30% of 50 = 0.30 × 50 = 15.",
+         "With a fraction: 25% of 44 = 1/4 of 44 = 44 ÷ 4 = 11.",
+         "Estimate first so you can tell if your answer is reasonable. 32% of 80 should be a bit less than a third of 80 (about 26).",
+         "The answer is part of the whole, so a percent under 100% always gives an answer smaller than the starting number."
+       ],
+       terms:[["Part","The amount the percent describes."],["Whole","The total amount, which is 100%."]],
+       work:"Lesson 5 practice sheet (Percent of a Number) and the extra Percent Review.",
+       check:[
+         {q:"30% of 70 =", a:["2.1","21","210"], c:1, why:"0.3 × 70 = 21."},
+         {q:"75% of 60 =", a:["45","15","80"], c:0, why:"60 ÷ 4 = 15, times 3 = 45."},
+         {q:"Which is a sensible estimate for 49% of 812?", a:["About 40","About 400","About 800"], c:1, why:"49% is almost half."}
+       ]},
+      {id:"l06", n:"6", title:"Working Backwards",
+       big:"If you know the part and the percent, you can find the whole. Find 1% (or 10%) first, then scale up to 100%.",
+       notes:[
+         "Example: 20% of a number is 14. If 20% is 14, then 10% is 7, so 100% is 70.",
+         "Unit-percent method: divide the part by the percent to get 1%, then multiply by 100. 12 is 30% of what? 12 ÷ 30 = 0.4, × 100 = 40.",
+         "Finding what percent: part ÷ whole × 100. 18 out of 24 = 0.75 = 75%.",
+         "Always ask which of the three you're missing: the part, the whole or the percent."
+       ],
+       terms:[["Part ÷ whole","Gives the percent as a decimal. Multiply by 100 for the percent."]],
+       work:"Lesson 6 practice: Working Backwards.",
+       check:[
+         {q:"25% of a number is 9. The number is…", a:["36","2.25","34"], c:0, why:"9 is a quarter, so the whole is 9 × 4."},
+         {q:"What percent of 40 is 10?", a:["4%","25%","40%"], c:1, why:"10 ÷ 40 = 0.25 = 25%."}
+       ]},
+      {id:"l07", n:"7", title:"Choosing an Efficient Strategy",
+       big:"There's more than one way to find a percent. Pick the fastest one for the numbers you're given.",
+       notes:[
+         "Easy fraction (F): 50%, 25%, 75%, 10%. 75% of 60 = 60 ÷ 4 × 3 = 45.",
+         "Benchmarks (B): build it. 35% of 80 = 25% (20) + 10% (8) = 28. 90% of 40 = 40 − 4 = 36.",
+         "Unit percent (U): find 1%, then multiply. 13% of 300: 1% = 3, so 13% = 39.",
+         "Decimal (D): when nothing is friendly, multiply by the decimal. 43% of 68 = 0.43 × 68 = 29.24.",
+         "In the Method Match-Up you sorted cards before solving. Choosing the method is part of the skill."
+       ],
+       work:"Lesson 7 practice and the Method Match-Up cards.",
+       check:[
+         {q:"Fastest way to find 62% of 200?", a:["Find 1% (2) and multiply by 62","Long multiplication","Guess and check"], c:0, why:"1% of 200 is 2, so 62% is 124."},
+         {q:"35% of 80 =", a:["28","24","35"], c:0, why:"25% is 20, 10% is 8, and 20 + 8 = 28."}
+       ]},
+      {id:"l08", n:"8", title:"Percent Problem Solving in Context",
+       big:"Read the problem, decide what's missing (part, whole or percent), solve, then ask whether the answer makes sense.",
+       notes:[
+         "Step 1: Underline what you know. Step 2: Name what's missing. Step 3: Estimate. Step 4: Solve. Step 5: Check if it's reasonable.",
+         "Counts of people or objects have to be whole numbers, so round sensibly. 60% of 198 houses is 118.8, which really means about 119 houses.",
+         "Class Snapshot: we took class data, turned it into percents, and predicted results for the whole grade.",
+         "A sample (one class) can be different from the whole group, so predictions are estimates, not guarantees."
+       ],
+       terms:[["Reasonable","An answer that fits the situation and your estimate."],["Sample","A smaller group used to predict something about a bigger group."]],
+       work:"Lesson 8 practice and Class Snapshot.",
+       check:[
+         {q:"40% of 25 students take the bus. How many?", a:["10","4","15"], c:0, why:"0.4 × 25 = 10."},
+         {q:"An answer says 12.6 buses are needed. What should it be?", a:["12","12.6","13"], c:2, why:"You can't have part of a bus, and 12 isn't enough."}
+       ]},
+      {id:"l09", n:"9–10", title:"Discounts, Tax and Money",
+       big:"The discount is how much you save. Sale price = regular price − discount. Then add 12% Manitoba tax (5% GST + 7% PST) to the sale price.",
+       notes:[
+         "Discount: 30% off $90 = 0.30 × 90 = $27 saved. Sale price: $90 − $27 = $63.",
+         "Shortcut: 30% off means you pay 70%. 0.70 × 90 = $63.",
+         "A bigger percent doesn't always save more. 50% off a $36 basketball saves $18, but 30% off $90 shoes saves $27.",
+         "Tax = 12% of the price. Total = price + tax, or price × 1.12.",
+         "Order matters: discount first, then tax on the sale price. Taking tax on the original price is the most common mistake.",
+         "Money rounds to the nearest cent (two decimal places). $1.5588 rounds to $1.56, not $1.55.",
+         "Working backwards: a $45 sale price after 25% off is 75% of the regular price, so the regular price is $60."
+       ],
+       terms:[["Discount","The amount taken off the price."],["Sale price","The price after the discount."],["Regular price","The original price before the sale."],["GST","Goods and Services Tax, federal, 5%."],["PST","Provincial Sales Tax, Manitoba, 7%."]],
+       work:"Lesson 9–10 practice: discounts, tax and money.",
+       check:[
+         {q:"A $40 yoga mat is 25% off. Sale price?", a:["$10","$30","$15"], c:1, why:"Discount is $10, so you pay $30."},
+         {q:"Which saves more money?", a:["50% off $20","20% off $80"], c:1, why:"$10 saved vs. $16 saved."},
+         {q:"$34 shoes are 25% off. What price do you pay tax on?", a:["$34.00","$25.50","$8.50"], c:1, why:"Take the discount first: 75% of $34 = $25.50."},
+         {q:"Round $1.5588 to the nearest cent.", a:["$1.55","$1.56","$1.50"], c:1, why:"The third decimal is 8, so round up."}
+       ]},
       {id:"l17", n:"17", title:"Comparing Integers and Decimals",
        big:"On a number line, numbers get bigger as you move right. That's true for negatives too.",
        notes:[
@@ -262,41 +240,35 @@ window.HUB = {
          {q:"Which is greater: 4/9 or 5/8?", a:["4/9","5/8"], c:1, why:"4/9 is under half; 5/8 is over half."},
          {q:"Which is greater: 6/7 or 8/9?", a:["6/7","8/9"], c:1, why:"8/9 is only 1/9 away from 1, and 1/9 < 1/7."}
        ]},
-      {id:"l19", n:"19", title:"Comparing Mixed Representations",
-       big:"To compare a fraction, a decimal and a percent, change them all into the same form first. Decimals are usually easiest.",
+      {id:"l19", n:"19–20", title:"Comparing Mixed Forms and Number Lines",
+       big:"To compare a fraction, a decimal and a percent, change them all into the same form first. Number lines help you place them, and there's always another number in between.",
        notes:[
          "Order 3/5, 0.58 and 62%: 0.60, 0.58, 0.62. So 0.58 < 3/5 < 62%.",
          "Write each one in the same form, put them in order, then go back to the original forms for your answer.",
-         "Watch for percents over 100% and mixed numbers: 1 1/4 = 1.25 = 125%."
-       ],
-       work:"Lesson 19 practice.",
-       check:[
-         {q:"Order from least to greatest: 0.7, 2/3, 72%", a:["2/3, 0.7, 72%","0.7, 2/3, 72%","72%, 0.7, 2/3"], c:0, why:"0.667, 0.70, 0.72."}
-       ]},
-      {id:"l20", n:"20", title:"Number Lines, Between, and Error Analysis",
-       big:"There's always another number between any two numbers. Number lines help you place and compare them.",
-       notes:[
+         "Watch for percents over 100% and mixed numbers: 1 1/4 = 1.25 = 125%.",
          "Between 0.4 and 0.5 there's 0.45, 0.41, 0.499… infinitely many.",
-         "To find a number between two fractions, convert to decimals or common denominators.",
          "To place a number on a line, decide which two marks it falls between first, then estimate.",
          "Error analysis: find the mistake, explain why it's wrong, and fix it. That's how you prove you understand."
        ],
-       work:"Lesson 20 practice.",
+       work:"Lesson 19–20 practice.",
        check:[
+         {q:"Order from least to greatest: 0.7, 2/3, 72%", a:["2/3, 0.7, 72%","0.7, 2/3, 72%","72%, 0.7, 2/3"], c:0, why:"0.667, 0.70, 0.72."},
          {q:"Which number is between 1/4 and 1/3?", a:["0.2","0.3","0.35"], c:1, why:"1/4 = 0.25 and 1/3 = 0.333…"},
          {q:"A student says 0.25 > 0.3 because 25 > 3. What's the error?", a:["Nothing, they're right","Comparing digits instead of place value","They should have used percents"], c:1, why:"0.25 is 25 hundredths; 0.3 is 30 hundredths."}
        ]},
-      {id:"l21", n:"21", title:"Unit Review: Prove It",
-       big:"Review of the whole unit before the test.",
+      {id:"l21", n:"21", title:"Percent Skill Check and Unit Review",
+       big:"Short Percent Skill Check first, then a review of the whole unit before the test.",
        notes:[
+         "The Percent Skill Check covers percent of a number, working backwards, discounts and tax. If you missed it, see Mr. Mangles to book a time to write it.",
          "Percents: percent of a number, working backwards, discounts, tax (discount first).",
          "Fractions ↔ decimals: divide, the 2s-and-5s rule, bar notation, back to fractions.",
          "Comparing: benchmarks, same form, number lines.",
          "Use the practice tool on this page to make as many new questions as you want."
        ],
-       work:"Unit Review: Prove It.",
+       work:"Percent Skill Check, then Unit Review: Prove It.",
        check:[
-         {q:"A $50 game is 20% off. Total with 12% tax?", a:["$44.80","$46.00","$40.00"], c:0, why:"Sale price $40, tax $4.80, total $44.80."}
+         {q:"A $50 game is 20% off. Total with 12% tax?", a:["$44.80","$46.00","$40.00"], c:0, why:"Sale price $40, tax $4.80, total $44.80."},
+         {q:"Blue 28%, green 17%, red 35%. What percent is yellow?", a:["20%","80%","25%"], c:0, why:"28 + 17 + 35 = 80, and 100 − 80 = 20."}
        ]},
       {id:"l22", n:"22", title:"Unit Assessment",
        big:"Unit 1 test. If you were away, see Mr. Mangles to book a time to write it.",
@@ -305,9 +277,9 @@ window.HUB = {
     ]
   },
   {
-    id:"prob", n:"2", name:"Probability", status:"now", when:"October 19 – 30",
+    id:"prob", n:"2", name:"Probability", status:"next", when:"November 3 – 9",
     intro:"How likely is something to happen? We write probability as a fraction, decimal, percent or ratio, then compare what should happen with what actually happens.",
-    after:"Coming up in this unit: impossible, certain and \"not\"; spinners and fair games; experimental probability; experimental vs. theoretical; review; skill check (Oct 28).",
+    after:"Coming up in this unit: impossible, certain, \"not\" and spinners; experimental vs. theoretical probability; skill check (Nov 9).",
     lessons:[
       {id:"p1", n:"1", title:"Probability of an Outcome",
        big:"Probability = favourable outcomes ÷ ALL possible outcomes.",
@@ -340,8 +312,8 @@ window.HUB = {
        ]}
     ]
   },
-  {id:"div", n:"3", name:"Divisibility", status:"next", when:"November", intro:"Divisibility rules, factors and multiples.", lessons:[]},
-  {id:"fracops", n:"4", name:"Fraction Operations", status:"soon", when:"Later this year", intro:"Adding and subtracting fractions and mixed numbers.", lessons:[]},
+  {id:"div", n:"3", name:"Divisibility", status:"soon", when:"November 10 – 13", intro:"Divisibility rules, factors and multiples.", lessons:[]},
+  {id:"fracops", n:"4", name:"Fraction Operations", status:"soon", when:"Mid-November", intro:"Adding and subtracting fractions and mixed numbers.", lessons:[]},
   {id:"int", n:"5", name:"Integer Operations", status:"soon", when:"Later this year", intro:"Adding and subtracting integers.", lessons:[]},
   {id:"eq", n:"6", name:"Patterns and Equations", status:"soon", when:"Later this year", intro:"Patterns, expressions and one-step equations.", lessons:[]},
   {id:"lin", n:"7", name:"Linear Equations and the Coordinate Plane", status:"soon", when:"Later this year", intro:"", lessons:[]},
