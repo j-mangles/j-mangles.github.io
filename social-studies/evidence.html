@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Artifact Evidence Desk · Societies of the Past Atlas</title>
+<link rel="stylesheet" href="../assets/fonts.css">
+<style>
+:root{--ink:#2E2923;--muted:#766A5C;--coral:#B56C4C;--paper:#FFFCF6;--rule:#DAD0C2;--bg:#F5F0E6;font-family:Inter,system-ui,sans-serif}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-size:16px;line-height:1.5}
+header{padding:15px max(18px,calc((100vw - 1130px)/2));background:#29363A;color:white;display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+header small{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#D1D9D9}
+header a{color:#F4C4A4;text-decoration:none;font-weight:700}
+main{max-width:1130px;padding:30px 20px 75px;margin:auto}
+h1,h2,h3{font-family:"Cormorant Garamond",Georgia,serif;font-weight:600;line-height:1.1}
+h1{font-size:clamp(37px,5vw,58px);margin:8px 0}
+h2{font-size:31px;margin:0 0 13px}
+h3{font-size:25px;margin:10px 0}
+.eyebrow{font-size:11px;letter-spacing:.15em;color:var(--coral);font-weight:850;text-transform:uppercase}
+.intro{max-width:82ch;font-size:17px;color:var(--muted)}
+.notice{padding:13px 17px;background:#F4E5D6;border-left:4px solid var(--coral);max-width:86ch}
+.desk{display:grid;grid-template-columns:minmax(220px,260px) minmax(0,1fr);gap:18px;align-items:start;margin:29px 0}
+aside{padding:19px 15px;background:var(--paper);border:1px solid var(--rule);border-radius:10px;position:sticky;top:15px}
+aside h2{font-size:24px}
+.artifacts{display:grid;gap:7px}
+.artifacts button{border:1px solid var(--rule);color:var(--ink);padding:12px 11px;background:#FFF;cursor:pointer;text-align:left;border-radius:7px;font:inherit;min-height:47px}
+.artifacts button[aria-pressed=true]{background:#F2DDD0;border-color:var(--coral);font-weight:750}
+article,.synthesis{background:var(--paper);border:1px solid var(--rule);border-radius:11px;padding:clamp(17px,3vw,27px);min-width:0}
+.card-top{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;justify-content:space-between}
+.card-top small{color:var(--muted)}
+.diagram{max-width:640px;margin:15px auto;border:1px solid var(--rule);border-radius:8px;overflow:hidden}
+.evidence{background:#F1E8DC;padding:15px 17px;margin:15px 0 21px;border-radius:8px}
+.evidence p{margin:7px 0}
+label{display:grid;font-weight:700;font-size:14px;gap:7px;margin:16px 0 7px}
+label small,.hint,.note{color:var(--muted);font-weight:400;font-size:13px}
+textarea,select{font:inherit;font-size:15px;color:var(--ink);background:white;padding:11px;max-width:100%;border:1px solid #BAAC9A;border-radius:7px}
+textarea{width:100%;min-height:86px;resize:vertical}
+select{width:100%;min-height:45px}
+button:focus-visible,textarea:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid var(--coral);outline-offset:3px}
+.synthesis{margin:22px 0}
+button.primary{border:1px solid #854831;background:#854831;color:#fff;border-radius:7px;min-height:45px;padding:9px 15px;cursor:pointer;font:inherit;font-weight:700}
+button.primary:hover{background:#6D3626}
+#copy-status{color:#854831;font-weight:650;min-height:22px}
+.note{max-width:80ch}
+@media(max-width:760px){.desk{grid-template-columns:1fr}aside{position:static}.artifacts{grid-template-columns:repeat(2,minmax(0,1fr))}main{padding:25px 14px 60px}}
+@media(max-width:450px){.artifacts{grid-template-columns:1fr}}
+</style></head>
+<body>
+<header><div><small>Grade 8 Social Studies · Societies of the Past</small><strong>Historical Atlas</strong></div><a href="./#early-humans-l1">Return to Early Humans Lesson 1</a></header>
+<main>
+<div class="eyebrow">Historical inquiry · Observation → Inference → Confidence</div>
+<h1>Artifact Evidence Desk</h1>
+<p class="intro">Archaeologists uncover objects—not complete stories. Investigate five clues, record what each actually shows, then decide which conclusions are reasonable and which remain uncertain.</p>
+<p class="notice"><strong>Fictional practice site:</strong> The Kestrel Valley people and Site 14 are invented for your class's Artifact Detective exercise. These drawings are schematics, not photographs, reconstructions or real discoveries.</p>
+<div class="desk">
+ <aside aria-label="Five evidence objects">
+  <h2>Evidence tray</h2><p class="hint">Choose an object and write your analysis. Your responses stay here while you switch objects.</p>
+  <nav id="artifact-list" class="artifacts" aria-label="Artifacts"></nav>
+  <p class="hint" id="progress" aria-live="polite"></p>
+ </aside>
+ <article aria-labelledby="artifact-name">
+  <div class="card-top"><span class="eyebrow" id="artifact-type"></span><small>Site 14 · Kestrel Valley</small></div>
+  <h2 id="artifact-name"></h2>
+  <div class="diagram" id="artifact-art"></div>
+  <div class="evidence"><strong>Recorded evidence</strong><p id="artifact-facts"></p><p id="artifact-question" class="hint"></p></div>
+  <label for="observation">1. Observation · What does the evidence directly show?<small>Stick to what was found or described; avoid claiming a meaning you cannot prove.</small></label>
+  <textarea id="observation" placeholder="I can directly observe that…"></textarea>
+  <label for="inference">2. Inference · What might you reasonably conclude? Why?<small>Connect your interpretation to something you actually observed.</small></label>
+  <textarea id="inference" placeholder="This might suggest… because the evidence shows…"></textarea>
+  <label for="limits">3. Uncertainty · What is NOT established by this clue?</label>
+  <textarea id="limits" placeholder="This alone cannot prove…"></textarea>
+  <label for="confidence">4. How strongly is your inference supported?</label>
+  <select id="confidence"></select><p class="hint" id="confidence-help"></p>
+  <label for="next-clue">5. What additional evidence would help test your idea?</label>
+  <textarea id="next-clue" placeholder="A discovery that would strengthen or challenge my idea would be…"></textarea>
+ </article>
+</div>
+<section class="synthesis">
+<h2>Putting it together</h2>
+<p>Consider all five pieces of evidence. Write a cautious claim about the community's technology, beliefs, values or organization. Explain which evidence supports it and what remains unknown.</p>
+<label for="synthesis">Historical claim, evidence and limitations</label>
+<textarea id="synthesis" rows="6" placeholder="Taken together, the evidence suggests… I used evidence from… We still cannot determine…"></textarea>
+<button class="primary" id="copy-analysis" type="button">Copy my investigation</button>
+<p id="copy-status" role="status" aria-live="polite"></p>
+<p class="note">Your analysis is not stored, marked or submitted by this site. Copy your work before leaving the page. No teacher answer keys are displayed.</p>
+</section>
+</main>
+<script src="source-lab.js"></script>
+<script>window.ArtifactEvidenceCore.mount(document);</script>
+</body></html>
