@@ -51,6 +51,8 @@ assert.match(el.innerHTML,/Your prediction was 50%/);
 assert.equal(runButtons[1].focused,true);
 $("#pl-mode").value="spinner";$("#pl-mode").onchange();
 assert.match(el.innerHTML,/Eight equal spinner sections/);
+const spinnerSvg=el.innerHTML.match(/<svg class="pl-wheel"[\s\S]*?<\/svg>/)[0];
+assert.equal((spinnerSvg.match(/<path /g)||[]).length,8,"spinner must show eight equal sectors");
 assert.match(el.innerHTML,/No trials yet/);
 $("#pl-target").value="2";$("#pl-target").onchange();
 runButtons[2].onclick();
