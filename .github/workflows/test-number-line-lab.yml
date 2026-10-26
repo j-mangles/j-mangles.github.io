@@ -1,0 +1,25 @@
+name: Test Math Number Line Lab
+on:
+  pull_request:
+    paths:
+      - 'math/number-line-lab.js'
+      - 'math/index.html'
+      - 'tools/test_number_line_lab.cjs'
+      - '.github/workflows/test-number-line-lab.yml'
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Validate number line diagram and interactions
+        run: |
+          node --check math/number-line-lab.js
+          node --check tools/test_number_line_lab.cjs
+          node tools/test_number_line_lab.cjs
