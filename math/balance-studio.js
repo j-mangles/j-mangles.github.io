@@ -34,12 +34,13 @@ function balanceSVG(p,action){
   return '<circle cx="'+x+'" cy="'+y+'" r="12" fill="'+fill+'" stroke="#364055" stroke-width="1"/>'+
    '<text x="'+x+'" y="'+(y+4.5)+'" font-size="12" font-weight="700" text-anchor="middle" fill="#17222C">'+text+'</text>';
  }
- function tokens(total,cx,y){
+ function tokens(total,cx,y,columns,spacing){
   let s="";
   for(let i=0;i<total;i++){
-   const row=Math.floor(i/7),col=i%7;
-   const offset=(Math.min(total-row*7,7)-1)*16;
-   s+=token(cx-offset+col*32,y+row*27-18,"#F3C77E","●");
+   const row=Math.floor(i/columns),col=i%columns;
+   const count=Math.min(columns,total-row*columns);
+   const offset=(count-1)*spacing/2;
+   s+=token(cx-offset+col*spacing,y+row*25-18,"#F3C77E","•");
   }
   return s;
  }
@@ -59,8 +60,8 @@ function balanceSVG(p,action){
  svg+='<text x="588" y="65" fill="#20243C" text-anchor="middle" font-size="20" font-weight="700">'+s.rightConstant+'</text>';
  svg+='<rect x="110" y="'+(panLeft-71)+'" width="64" height="55" rx="11" fill="#9DB9E8" stroke="#37425F" stroke-width="2"/>';
  svg+='<text x="142" y="'+(panLeft-38)+'" fill="#1B2D5B" font-size="29" font-weight="700" text-anchor="middle">x</text>';
- svg+=tokens(Math.max(0,s.leftConstant),225,panLeft-35);
- svg+=tokens(Math.max(0,s.rightConstant),588,panRight-35);
+ svg+=tokens(Math.max(0,s.leftConstant),220,panLeft-48,4,27);
+ svg+=tokens(Math.max(0,s.rightConstant),588,panRight-48,7,27);
  svg+='<text x="390" y="333" text-anchor="middle" font-size="14" fill="#596171">'+
   (s.balanced?"The equation is still equal.":"The scale is no longer level.")+'</text>';
  svg+='</svg>';
