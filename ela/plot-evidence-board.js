@@ -18,7 +18,7 @@ const TEXTS=[
  {id:"snack",title:"Snack Attack (short film)",mode:"film",guidance:"Film evidence: identify a concrete action, expression, camera choice or sound. Don't invent dialogue."},
  {id:"thankyou",title:"Thank You, Ma’am",mode:"story",guidance:"Story evidence: accurately describe a moment or check a brief quotation against your own copy."}
 ];
-const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;',"\'":"&#39;"}[c]));
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const clamp=n=>Number.isFinite(n)?Math.max(0,Math.min(10,n)):0;
 function initial(){
  return STAGES.map(x=>({id:x.id,moment:"",evidence:"",tension:0}));
