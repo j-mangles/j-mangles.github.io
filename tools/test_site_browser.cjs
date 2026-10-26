@@ -129,6 +129,14 @@ async function checkNoHorizontalOverflow(page,label){
   assert.match(await page.locator('[data-output="3"]').innerText(),/9/);
   assert.ok((await page.locator("#pb-graph svg").getAttribute("aria-label")).includes("Climax 9 of 10"));
   await capture(page,"ela-plot-board-desktop");
+  stage="Social Studies comparative chronology";
+  await goto(page,"/social-studies/compare.html","#period-a");
+  await page.locator("#period-a").selectOption("greece");
+  await page.locator("#period-b").selectOption("rome");
+  assert.match(await page.locator("#overlap-description").innerText(),/overlap from approximately/);
+  await page.locator('[data-answer="greece"]').click();
+  assert.match(await page.locator("#feedback").innerText(),/Correct/);
+  await capture(page,"atlas-civilization-compare-desktop");
   stage="Social Studies atlas shell";
   const atlas=await page.request.get(origin+"/social-studies/");
   assert.equal(atlas.status(),200);
@@ -157,6 +165,9 @@ async function checkNoHorizontalOverflow(page,label){
   await capture(phone,"ela-plot-board-mobile");
   await goto(phone,"/critical-thinking/#games/g1","#pl-a");
   await capture(phone,"thinklab-payoff-mobile");
+  await goto(phone,"/social-studies/compare.html","#period-a");
+  await checkNoHorizontalOverflow(phone,"Civilization comparison mobile");
+  await capture(phone,"atlas-compare-mobile");
   await goto(phone,"/science/#earth","#ee-content");
   await checkNoHorizontalOverflow(phone,"Earth science mobile");
   await capture(phone,"earth-explorer-mobile");
