@@ -119,7 +119,7 @@ window.HUB = {
        notes:[
          "In 1665, Robert Hooke looked at a thin slice of cork under a microscope and saw tiny box-like spaces. He called them cellulae, Latin for \"small rooms.\"",
          "Cell theory has four points: 1) all living things are made of one or more cells; 2) cells are the basic units of structure and function in all organisms; 3) all cells come from pre-existing cells; 4) an organism's activity depends on the total activity of its cells.",
-         "Most cells are less than 5 micrometres (μm) wide. 1 cm = 10 000 μm.",
+         "Cell sizes vary. Many bacteria are about 0.1–5 μm across, while typical plant and animal cells are about 10–100 μm across. 1 cm = 10 000 μm.",
          "Anything too small to see without a microscope is microscopic. Our eyes can't tell two things apart once they're closer than about 100 μm.",
          "Magnification formula: (measurement in cm ÷ 5) × 10 000 = magnification.",
          "Unicellular organisms are one cell, like bacteria and yeast. Multicellular organisms are many cells, like animals, plants and most fungi."
@@ -168,11 +168,22 @@ window.HUB = {
          {q:"Where is the cell's DNA kept?", a:["Cell membrane","Nucleus","Cytoplasm"], c:1, why:"The nucleus is the control centre."}
        ]},
       {id:"transport", n:"4", title:"The Cell Membrane and Transport",
+        activity:{
+          title:"Membrane Lab investigation: predict, observe, explain",
+          context:"Use the Osmosis tab in the Membrane Lab above. Start with more dissolved solute outside than inside. Make a prediction BEFORE running the model. Then observe and explain the overall movement of water.",
+          prompts:[
+            {label:"Prediction: What will happen to water overall, and why?",hint:"Use water, solute and concentration.",rows:3},
+            {label:"Test: What settings did you use, and what did the model show?",hint:"Record the relative solute amounts on each side. This is a simplified model, not a real-cell measurement.",rows:4},
+            {label:"Explanation: Why does osmosis cause that net movement?",hint:"Explain water movement across a selectively permeable membrane.",rows:4},
+            {label:"Reflection: Was your prediction supported? What would you test next?",rows:3}
+          ],
+          checklist:["I predicted before observing.","I recorded the settings and results.","I explained the result using scientific vocabulary."]
+        },
        imgs:[{src:"img/transport.jpg",cap:"Simple diffusion, facilitated diffusion through proteins, and active transport using ATP. Image from the lesson slides."},
              {src:"img/osmosis.jpg",cap:"Osmosis: water moves across the membrane toward the side with more dissolved solute. Image from the lesson slides."}],
        big:"The cell membrane is selectively permeable. It lets some things through and keeps others out.",
        notes:[
-         "Permeable lets anything through (a window screen). Impermeable lets nothing through (plastic wrap). Selectively permeable lets only some things through (a coffee filter, the cell membrane).",
+         "Permeability depends on the substance. A permeable barrier lets that substance through, while an impermeable barrier blocks it. A selectively permeable membrane lets some substances cross but not others.",
          "The membrane is mostly phospholipids arranged in two rows: water-loving heads face out, water-fearing tails face in.",
          "Passive transport needs no energy. Simple diffusion moves molecules from high concentration to low.",
          "Facilitated diffusion also goes high to low, but through a special transport protein.",
