@@ -62,6 +62,16 @@ async function checkNoHorizontalOverflow(page,label){
   assert.match(await page.locator("#fl-feedback").innerText(),/Correct!/);
   await page.locator('[data-step="2"]').click();
   await capture(page,"fraction-strips-desktop");
+  stage="Math equation balance scale";
+  await goto(page,"/math/#eq","#bs-problem");
+  await page.locator('[data-op="leftRemove"]').click();
+  assert.match(await page.locator("#bs-reason").innerText(),/equality is no longer true/i);
+  await page.locator('[data-op="bothRemove"]').click();
+  assert.match(await page.locator("#bs-reason").innerText(),/leaves x on one side/i);
+  await page.locator("#bs-answer").fill("7");
+  await page.locator('#bs-form button[type="submit"]').click();
+  assert.match(await page.locator("#bs-feedback").innerText(),/Correct/i);
+  await capture(page,"equation-balance-desktop");
   stage="Science solar spectrum";
   await goto(page,"/science/#light","#se-content");
   await page.locator('[data-band="ultraviolet"]').click();
@@ -118,6 +128,9 @@ async function checkNoHorizontalOverflow(page,label){
   }
   await goto(phone,"/math/#int","#il-problem");
   await capture(phone,"integer-lab-mobile");
+  await goto(phone,"/math/#eq","#bs-problem");
+  await checkNoHorizontalOverflow(phone,"Equation Balance mobile");
+  await capture(phone,"equation-balance-mobile");
   await goto(phone,"/science/#light","#se-content");
   await capture(phone,"solar-spectrum-mobile");
   await goto(phone,"/science/#earth","#ee-content");
@@ -125,7 +138,7 @@ async function checkNoHorizontalOverflow(page,label){
   await capture(phone,"earth-explorer-mobile");
   await phone.close();
   assert.deepEqual(jsErrors,[],"Uncaught browser exceptions: "+JSON.stringify(jsErrors));
-  console.log("Browser QA passed: homepage, 4 maps, 4 libraries, integer/fraction/spectrum/albedo/Earth tools, ELA, CT, social atlas and mobile.");
+  console.log("Browser QA passed: homepage, 4 maps, 4 libraries, integer/fraction/equation/spectrum/albedo/Earth tools, ELA, CT, social atlas and mobile.");
  }catch(e){
   console.error("Browser QA failed at stage:",stage);
   console.error(e);
