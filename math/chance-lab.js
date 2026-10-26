@@ -124,6 +124,7 @@ function lab(el){
    const raw=get("#pl-predict").value.trim();prediction=raw===""?null:Number(raw);
    if(prediction!==null&&(!Number.isFinite(prediction)||prediction<0||prediction>100)){prediction=null;message="Enter a prediction between 0 and 100%.";render("#pl-predict");return;}
    const k=Number(this.dataset.plRun);
+   if(draws.length+k>5000){message="This model stops at 5,000 trials to keep charts responsive. Reset to try again.";render('[data-pl-run="'+k+'"]');return;}
    for(let i=0;i<k;i++)draws.push(sample(EXP[mode]));
    const s=summarize(EXP[mode],draws);
    message="Added "+k+" trial"+(k===1?'':'s')+". "+EXP[mode].labels[target]+" occurred "+s.counts[target]+" of "+s.total+" times."+(prediction===null?"":" Your prediction was "+prediction+"%; theoretical is "+fmt(s.theoretical[target])+".");
