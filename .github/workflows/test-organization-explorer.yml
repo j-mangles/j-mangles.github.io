@@ -1,0 +1,25 @@
+name: Test Science Organization Explorer
+on:
+  pull_request:
+    paths:
+      - 'science/organization-explorer.js'
+      - 'science/index.html'
+      - 'tools/test_organization_explorer.cjs'
+      - '.github/workflows/test-organization-explorer.yml'
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Test diagram, lesson integration and sequencing
+        run: |
+          node --check science/organization-explorer.js
+          node --check tools/test_organization_explorer.cjs
+          node tools/test_organization_explorer.cjs

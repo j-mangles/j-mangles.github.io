@@ -1,0 +1,24 @@
+name: Test Unit Review Retries
+on:
+  pull_request:
+    paths:
+      - 'assets/review.js'
+      - 'tools/test_review_retries.cjs'
+      - '.github/workflows/test-review-retries.yml'
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Test missed-question review loop
+        run: |
+          node --check assets/review.js
+          node --check tools/test_review_retries.cjs
+          node tools/test_review_retries.cjs

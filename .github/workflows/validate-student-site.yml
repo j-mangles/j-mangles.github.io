@@ -1,0 +1,22 @@
+name: Validate student website
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Check JavaScript syntax
+        run: |
+          for file in assets/*.js math/*.js ela/*.js science/*.js critical-thinking/*.js tools/*.cjs; do
+            node --check "$file"
+          done
+      - name: Validate lessons, questions, activities and images
+        run: node tools/check_content.cjs
