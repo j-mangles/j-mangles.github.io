@@ -49,7 +49,7 @@ async function checkNoHorizontalOverflow(page,label){
   await page.locator("#il-problem").selectOption("10"); // 4 - (-3)
   await page.locator("#il-answer").fill("7");
   await page.locator("#il-form button[type=submit]").click();
-  await page.locator("#il-feedback").getByText(/Correct!/).waitFor();
+  assert.match(await page.locator("#il-feedback").innerText(),/Correct!/);
   await page.locator('[data-mode="numberline"]').click();
   await page.locator('[data-stage="2"]').click();
   assert.ok(await page.locator("#il-visual svg[role=img]").count()>0);
@@ -59,7 +59,7 @@ async function checkNoHorizontalOverflow(page,label){
   await page.locator("#fl-denominator").fill("4");
   await page.locator("#fl-answer").fill("3/4");
   await page.locator("#fl-form button[type=submit]").click();
-  await page.locator("#fl-feedback").getByText(/Correct!/).waitFor();
+  assert.match(await page.locator("#fl-feedback").innerText(),/Correct!/);
   await page.locator('[data-step="2"]').click();
   await capture(page,"fraction-strips-desktop");
   stage="Science solar spectrum";
@@ -67,12 +67,12 @@ async function checkNoHorizontalOverflow(page,label){
   await page.locator('[data-band="ultraviolet"]').click();
   await page.locator("#se-reference").selectOption("visible");
   await page.locator('[data-relation="shorter"]').click();
-  await page.locator("#se-response").getByText(/Correct/).waitFor();
+  assert.match(await page.locator("#se-response").innerText(),/Correct/);
   await capture(page,"solar-spectrum-desktop");
   stage="Science albedo";
   await page.locator('[data-tab="albedo"]').click();
   await page.locator("#se-slider").fill("70");
-  await page.locator("#se-albedo-explain").getByText(/70 reflected, 30 absorbed/).waitFor();
+  assert.match(await page.locator("#se-albedo-explain").innerText(),/70 reflected, 30 absorbed/);
   await capture(page,"albedo-desktop");
   stage="ELA and Critical Thinking interactive modules";
   for(const [route,label] of [["/ela/#answering/day2","writer-studio"],["/critical-thinking/#lab/l4","evidence-inspector"]]){
@@ -97,7 +97,6 @@ async function checkNoHorizontalOverflow(page,label){
    await capture(phone,"map-"+subject+"-mobile");
   }
   await goto(phone,"/math/#int","#il-problem");
-  await page.locator("body").count();
   await capture(phone,"integer-lab-mobile");
   await goto(phone,"/science/#light","#se-content");
   await capture(phone,"solar-spectrum-mobile");
