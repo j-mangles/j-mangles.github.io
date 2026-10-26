@@ -29,7 +29,7 @@ function calculate(rows){
 function chart(data){
  const result=calculate(data),cx=188,cy=170,rad=125;
  let svg='<svg role="img" aria-label="Circle graph with '+result.total+
-  ' responses: '+result.rows.map(r=>r.label+' '+num(r.percent)+' percent').join(", ")+
+  ' responses: '+result.rows.map(r=>esc(r.label)+' '+num(r.percent)+' percent').join(", ")+
   '" viewBox="0 0 780 350" style="display:block;width:100%;height:auto;max-width:780px" xmlns="http://www.w3.org/2000/svg">';
  svg+='<rect width="780" height="350" rx="10" fill="#FBF6EE"/>';
  let a=-Math.PI/2;
