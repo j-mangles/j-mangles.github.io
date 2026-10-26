@@ -34,7 +34,8 @@ function studio(el){
  let mode="place",chosen=0,estimate=.5,submitted=false,selectedGap=0,candidate=null;
  const solved=new Set(),$=q=>el.querySelector(q),$$=q=>[...el.querySelectorAll(q)];
  const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
- const x=v=>60+(v+1)*200;
+ const bounds=()=>{if(mode==="place")return [-1,2];const d=gaps[selectedGap],w=d.hi-d.lo;return [d.lo-.25*w,d.hi+.25*w];};
+ const x=v=>{const [lo,hi]=bounds();return 60+(v-lo)/(hi-lo)*600;};
  el.innerHTML=`<section class="nl-lab">
  <style>
  .nl-lab{background:var(--paper);color:var(--ink);border:1px solid var(--rule);border-radius:var(--radius);padding:18px;line-height:1.55}
@@ -80,10 +81,22 @@ function studio(el){
  function line(){
   let body='<line x1="60" y1="112" x2="660" y2="112" stroke="var(--ink)" stroke-width="3"/>'+
     '<path d="M651 107 L662 112 L651 117" stroke="var(--ink)" stroke-width="2" fill="none"/>';
-  for(let n=-1;n<=2.001;n+=.25){
-   const v=Math.round(n*100)/100,p=x(v),isMajor=Math.abs(v*2-Math.round(v*2))<.001;
-   body+='<line x1="'+p+'" y1="'+(isMajor?100:105)+'" x2="'+p+'" y2="'+(isMajor?122:119)+'" stroke="var(--ink)"/>';
-   if(isMajor)body+='<text x="'+p+'" y="142" fill="var(--ink)" font-size="15" text-anchor="middle">'+fmt(v)+'</text>';
+  if(mode==="between"){
+   const d=gaps[selectedGap],w=d.hi-d.lo;
+   // This view deliberately zooms the tiny interval rather than falsely suggesting
+   // that 0.70 and 0.71 are far apart on the original −1-to-2 scale.
+   for(let j=0;j<=6;j++){
+    const v=d.lo-.25*w+j*w/4,p=x(v);
+    body+='<line x1="'+p+'" y1="102" x2="'+p+'" y2="122" stroke="var(--ink)"/>'+
+      '<text x="'+p+'" y="144" fill="var(--ink)" font-size="12" text-anchor="middle">'+fmt(v)+'</text>';
+   }
+   body+='<text x="360" y="179" fill="var(--muted)" font-size="14" text-anchor="middle">Zoomed-in interval (scale changes with each gap)</text>';
+  }else{
+   for(let n=-1;n<=2.001;n+=.25){
+    const v=Math.round(n*100)/100,p=x(v),isMajor=Math.abs(v*2-Math.round(v*2))<.001;
+    body+='<line x1="'+p+'" y1="'+(isMajor?100:105)+'" x2="'+p+'" y2="'+(isMajor?122:119)+'" stroke="var(--ink)"/>';
+    if(isMajor)body+='<text x="'+p+'" y="142" fill="var(--ink)" font-size="15" text-anchor="middle">'+fmt(v)+'</text>';
+   }
   }
   return body;
  }
@@ -93,7 +106,7 @@ function studio(el){
    '<text x="'+x(n)+'" y="'+y+'" text-anchor="middle" font-size="13" font-weight="650" fill="var(--ink)">'+esc(label)+'</text>';
  }
  function draw(){
-  let svg=line(),description="Number line from −1 to 2 with equally spaced quarter-unit ticks. ";
+  let svg=line(),description=mode==="place"?"Number line from −1 to 2 with equally spaced quarter-unit ticks. ":"Zoomed-in number line. Scale changes to show the interval accurately. ";
   if(mode==="place"){
    const c=cards[chosen];
    svg+=marker(estimate,"Your guess","var(--accent)",87);
@@ -133,7 +146,7 @@ function studio(el){
   candidate=Number.isFinite(v)?v:null;
   if(candidate===null){$("#nl-gap-feedback").textContent="Enter a valid decimal, fraction, mixed number or percent (not a calculation).";}
   else $("#nl-gap-feedback").textContent=(candidate>d.lo&&candidate<d.hi?"Yes! ":"Not quite. ")+
-   esc(raw)+" = "+fmt(candidate)+". Your number must be strictly greater than "+fmt(d.lo)+" and less than "+fmt(d.hi)+".";
+   raw+" = "+fmt(candidate)+". Your number must be strictly greater than "+fmt(d.lo)+" and less than "+fmt(d.hi)+".";
   draw();
  };
  cardButtons();setGap();
