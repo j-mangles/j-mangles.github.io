@@ -21,9 +21,20 @@
       if(mapView) mapLink.setAttribute("aria-current","page");
       else mapLink.removeAttribute("aria-current");
     }
+    const resourceLink=$("#course-resources-link");
+    if(resourceLink){
+      if(h==="resources") resourceLink.setAttribute("aria-current","page");
+      else resourceLink.removeAttribute("aria-current");
+    }
     if(mapView && window.CourseAtlas){
       renderTabs("");
       window.CourseAtlas.render($("#main"),H);
+      window.scrollTo(0,0);
+      return;
+    }
+    if(h==="resources" && window.StudentResources){
+      renderTabs("");
+      window.StudentResources.render($("#main"),H);
       window.scrollTo(0,0);
       return;
     }
