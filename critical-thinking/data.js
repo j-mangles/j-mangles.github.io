@@ -17,6 +17,17 @@ window.HUB = {
          {q:"What makes a theory strong in a mystery?", a:["It's the most dramatic","Every part is backed by a clue","Most of the class agrees with it"], c:1, why:"Evidence, not excitement or popularity."}
        ]},
       {id:"l2", n:"2", title:"Seeing vs. Assuming",
+       activity:{
+         title:"Case file: The cracked trophy case",
+         context:"At 3:20, a basketball is found near the trophy case. At 3:22, a teacher hears a bang in the hallway. At 3:25, someone notices a crack in the glass. No witness saw the glass break. New evidence: a dated photograph from 3:10 already shows the crack.",
+         prompts:[
+           {label:"Observations: List three confirmed details.",rows:3},
+           {label:"Initial inference: What might someone conclude? Why isn't it proven?",rows:4},
+           {label:"Revise: How does the earlier photograph change that theory?",hint:"Say what the evidence rules out and what remains unknown.",rows:4},
+           {label:"What additional evidence would you seek?",rows:3}
+         ],
+         checklist:["I separated facts from guesses.","I revised my theory when the facts changed.","I acknowledged what is still unknown."]
+       },
        big:"An inference can be reasonable AND wrong at the same time.",
        notes:[
          "Observation: something you (or a camera, or a record) could directly confirm. What was actually seen, heard, measured or written down.",
