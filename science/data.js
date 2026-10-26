@@ -332,8 +332,119 @@ window.HUB = {
        ]}
     ]
   },
-  {id:"matter", n:"2", name:"Matter, Density and Fluids", status:"soon", when:"December to January",
-   intro:"The particle theory of matter, density, and how fluids behave."},
+  {
+   id:"matter",n:"2",name:"Matter, Density and Fluids",status:"soon",when:"December to January",
+   intro:"Explore matter through density, temperature, viscosity, pressure, phase changes and the unusual properties of water. Predict, measure, explain and test with models.",
+   after:"The Density Studio on this unit page is a simplified model: it assumes a solid object in freshwater with density 1 g/cm³. Investigations should be connected to classroom observations and experiments.",
+   lessons:[
+    {id:"m1",n:"1",title:"What Is Density?",
+     big:"Density describes how much mass is packed into a given volume. Density = mass ÷ volume.",
+     notes:[
+      "Mass is the amount of matter in an object (g). Volume is the space it takes up (cm³ or mL).",
+      "Density = mass (g) ÷ volume (cm³), written d = m/v. Units: g/cm³.",
+      "Example: 180 g in 60 cm³ has a density of 180 ÷ 60 = 3 g/cm³.",
+      "Two objects can have the same size but different masses; the heavier one is denser.",
+      "To rearrange: mass = density × volume; volume = mass ÷ density. Always include units and check reasonableness."
+     ],
+     table:{title:"Density calculations",head:["Mass","Volume","Density"],rows:[["60 g","100 cm³","0.6 g/cm³"],["120 g","60 cm³","2 g/cm³"],["240 g","80 cm³","3 g/cm³"]]},
+     terms:[["Mass","Amount of matter in an object."],["Volume","Space occupied by an object."],["Density","Mass per unit volume."],["Displacement","Liquid moved aside by a submerged object, used to measure its volume."]],
+     work:"Use the Density Studio in this unit. Calculate density for 120 g/80 cm³, 225 g/75 cm³ and 90 g/150 cm³. Explain which is most dense.",
+     check:[
+      {q:"An object has mass 180 g and volume 60 cm³. Its density is…",a:["3 g/cm³","120 g/cm³","0.33 g/cm³"],c:0,why:"180 ÷ 60 = 3 g/cm³."},
+      {q:"Two blocks have equal volume but different mass. The one with more mass is…",a:["Less dense","More dense","Always the same density"],c:1,why:"Density = mass ÷ volume."}
+     ]},
+    {id:"m2",n:"2",title:"Floating, Sinking and Designing a Fair Test",
+     big:"A solid object tends to float in a fluid when its average density is lower than the fluid's density.",
+     notes:[
+      "Freshwater has density close to 1 g/cm³ under ordinary classroom conditions; this is an approximation.",
+      "A solid block with density 0.6 g/cm³ will float; a solid block with density 2 g/cm³ will sink in freshwater.",
+      "A floating object displaces enough water for the upward buoyant force to balance its weight.",
+      "Shape matters through the overall volume of displaced water: a hollow metal boat can float even though solid metal is denser than water.",
+      "For a fair test of materials, keep the liquid and conditions similar, measure mass and volume carefully, and record results."
+     ],
+     terms:[["Buoyancy","Upward force exerted by a fluid."],["Average density","Total mass divided by total volume of an object, including any trapped air."]],
+     work:"Use the Density Studio presets and choose Float or Sink before revealing. Then design a fair test for three classroom objects and describe what you would measure.",
+     check:[
+      {q:"A solid block is 0.8 g/cm³ in freshwater (~1 g/cm³). It will generally…",a:["Float","Sink"],c:0,why:"It is less dense than the water."},
+      {q:"Why can a steel ship float?",a:["Steel is less dense than water","The whole ship, including air, has a low average density","Ships have no mass"],c:1,why:"The hull displaces water and contains air, reducing overall average density."}
+     ]},
+    {id:"m3",n:"3",title:"Temperature and Density",
+     big:"Heating usually spreads particles farther apart, increasing volume and lowering density; water is an important exception near freezing.",
+     notes:[
+      "When matter warms, particles generally move faster and many substances expand. If mass stays the same and volume increases, density decreases.",
+      "Warm air is generally less dense than cool air at the same pressure. This helps explain convection.",
+      "Water behaves unusually: liquid water is densest around 4°C, and ice is less dense than liquid water.",
+      "Because ice floats, it forms a top layer that insulates the water below and helps aquatic life survive winter.",
+      "Particle diagrams show spacing and movement, not literal particle size changes."
+     ],
+     terms:[["Thermal expansion","Increase in volume associated with warming."],["Convection","Movement of fluids driven by density differences."],["Anomalous expansion of water","Water expands as it freezes, making ice less dense than liquid water."]],
+     work:"Sketch particle models of a heated gas and cooled gas. Explain why ice floats and predict how heating most liquids changes density.",
+     check:[
+      {q:"Mass stays constant; volume increases. What happens to density?",a:["Increases","Decreases","Stays the same"],c:1,why:"The same mass is spread through more volume."},
+      {q:"Why does ice float on liquid water?",a:["Ice is less dense","Ice has no mass","Water molecules disappear"],c:0,why:"Water forms a more open structure when freezing."}
+     ]},
+    {id:"m4",n:"4",title:"Viscosity: Why Do Some Fluids Flow Slowly?",
+     big:"Viscosity is resistance to flow. Honey typically flows more slowly than water under similar conditions.",
+     notes:[
+      "High-viscosity fluids resist flowing; low-viscosity fluids flow more easily.",
+      "Viscosity is a property of fluids, including liquids and gases.",
+      "For many liquids, warming decreases viscosity. Warm syrup flows more easily than cold syrup.",
+      "A fair comparison uses the same ramp angle, sample amount, surface, starting line and measurement method.",
+      "Density and viscosity are different. A fluid can be dense but still flow fairly easily."
+     ],
+     terms:[["Viscosity","Resistance of a fluid to flowing."],["Fluid","A substance that flows, such as a liquid or gas."]],
+     work:"Plan or conduct a water-versus-syrup ramp test. Identify the independent, dependent and three controlled variables. Predict the effect of warming the syrup.",
+     check:[
+      {q:"Which is a measure of resistance to flow?",a:["Density","Viscosity","Mass"],c:1,why:"Viscosity describes how easily a fluid flows."},
+      {q:"What typically happens when syrup is warmed?",a:["It flows more easily","It always becomes solid","Its mass disappears"],c:0,why:"For many liquids, viscosity decreases with temperature."}
+     ]},
+    {id:"m5",n:"5",title:"Temperature, Pressure and Compressibility",
+     big:"Particle motion and spacing help explain changes in gas pressure, volume and temperature.",
+     notes:[
+      "Particles of gases are farther apart than particles of liquids or solids, so gases are much more compressible.",
+      "If the volume of a sealed gas is held fixed, heating it usually raises pressure because particles collide more energetically with the container walls.",
+      "If pressure remains roughly constant, heating a gas tends to increase its volume.",
+      "Liquids are far less compressible than gases under everyday conditions.",
+      "Water may be ice, liquid water, or water vapour depending on temperature and pressure; 'steam' commonly refers to water vapour, which is invisible, although visible mist contains tiny droplets."
+     ],
+     terms:[["Pressure","Force acting per unit area."],["Compressible","Can have its volume decreased substantially under pressure."],["Water vapour","Water in the gas state."]],
+     work:"Draw a sealed syringe before and after compression, and explain how the particle spacing and pressure change. Explain a sealed-container heating example.",
+     check:[
+      {q:"Which is easiest to compress?",a:["Air","Liquid water","Ice"],c:0,why:"Gas particles have much more empty space between them."},
+      {q:"Heat a sealed rigid gas container. Pressure usually…",a:["Goes up","Goes to zero","Cannot change"],c:0,why:"At fixed volume, warmer particles collide with the walls more energetically."}
+     ]},
+    {id:"m6",n:"6",title:"Changing State: Energy and Particle Attractions",
+     big:"Particles attract each other. Adding energy can increase temperature or change a substance's state.",
+     notes:[
+      "Melting, freezing, boiling and condensation involve changing particle arrangements and attractions.",
+      "During melting or boiling of a pure substance at a constant pressure, added energy goes toward changing state rather than raising temperature during the transition.",
+      "Stronger attractive forces between particles generally require more energy to separate them during phase changes.",
+      "A cooling curve can show flat sections when condensation or freezing occurs.",
+      "Particles do not vanish during phase changes: matter is conserved in a closed system."
+     ],
+     terms:[["Phase change","A change of state, such as melting or evaporation."],["Melting point","Temperature at which solid and liquid phases coexist at a given pressure."],["Boiling point","Temperature at which a liquid boils at a given pressure."]],
+     work:"Sketch a heating curve with two flat sections. Label solid, melting, liquid, boiling and gas; explain where energy goes.",
+     check:[
+      {q:"During boiling of pure water at a fixed pressure, added energy mainly…",a:["Raises the temperature without limit","Changes water from liquid to gas","Destroys water particles"],c:1,why:"Energy supports the phase change while temperature stays roughly constant."},
+      {q:"If particle attractions are stronger, separating particles generally requires…",a:["Less energy","More energy","No energy"],c:1,why:"More energy is needed to overcome stronger attractions."}
+     ]},
+    {id:"m7",n:"7",title:"Why Is Water So Important?",
+     big:"Water's unusual density, heat capacity and ability to dissolve substances help shape climate and sustain life.",
+     notes:[
+      "Water has a high specific heat capacity: it can absorb or release considerable energy with a relatively small temperature change.",
+      "Ice is less dense than liquid water. Floating ice insulates lakes in winter.",
+      "Water is often called a 'universal solvent' because it dissolves many substances, but it does not dissolve everything.",
+      "Water carries dissolved nutrients and wastes through organisms and the environment.",
+      "Evaporation, condensation, humidity and precipitation help move water and energy around Earth."
+     ],
+     terms:[["Heat capacity","Amount of energy needed to change an object's temperature."],["Solvent","A substance that dissolves another substance."],["Humidity","Amount of water vapour in air."],["Precipitation","Water falling from the atmosphere, such as rain or snow."]],
+     work:"Write a short explanation: How do three unusual water properties support living things or affect Manitoba's climate? Include a specific example for each.",
+     check:[
+      {q:"Which property helps large lakes moderate nearby temperatures?",a:["Water's high specific heat capacity","Water's colour","Water has no density"],c:0,why:"Water absorbs and releases energy slowly compared with many materials."},
+      {q:"Why is 'universal solvent' a nickname, not a literal claim?",a:["Water dissolves many but not all substances","Water dissolves nothing","Water turns all substances into gases"],c:0,why:"Oil, for example, does not simply dissolve in water."}
+     ]}
+   ]
+  },
   {id:"light", n:"3", name:"Solar Energy and Light", status:"soon", when:"February to March",
    intro:"Light, the electromagnetic spectrum and energy from the sun."},
   {id:"earth", n:"4", name:"Earth's Interior and Tectonics", status:"soon", when:"March to May",
