@@ -121,7 +121,7 @@ window.HUB = {
          "Cell theory has four points: 1) all living things are made of one or more cells; 2) cells are the basic units of structure and function in all organisms; 3) all cells come from pre-existing cells; 4) an organism's activity depends on the total activity of its cells.",
          "Cell sizes vary. Many bacteria are about 0.1–5 μm across, while typical plant and animal cells are about 10–100 μm across. 1 cm = 10 000 μm.",
          "Anything too small to see without a microscope is microscopic. Our eyes can't tell two things apart once they're closer than about 100 μm.",
-         "Magnification formula: (measurement in cm ÷ 5) × 10 000 = magnification.",
+         "Magnification = image size ÷ actual size, using the same units for both. A measurement-based example needs the actual size of the specimen; there is no one fixed denominator for every cell.",
          "Unicellular organisms are one cell, like bacteria and yeast. Multicellular organisms are many cells, like animals, plants and most fungi."
        ],
        table:{title:"One cell or many?", head:["Group","Unicellular or multicellular","Examples"], rows:[["Animals","All multicellular","humans, insects, fish"],["Plants","All multicellular","trees, grasses, mosses"],["Fungi","Most multicellular, some unicellular","mushrooms, mould; yeast"],["Bacteria","All unicellular","E. coli, Streptococcus"]]},
