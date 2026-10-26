@@ -74,6 +74,26 @@ async function checkNoHorizontalOverflow(page,label){
   await page.locator("#se-slider").fill("70");
   assert.match(await page.locator("#se-albedo-explain").innerText(),/70 reflected, 30 absorbed/);
   await capture(page,"albedo-desktop");
+  stage="Science Earth layers";
+  await goto(page,"/science/#earth","#ee-content");
+  await page.locator('[data-layer="outer"]').click();
+  assert.match(await page.locator("#ee-content").innerText(),/liquid iron-rich/i);
+  await capture(page,"earth-layers-desktop");
+  stage="Science plate boundaries";
+  await page.locator('[data-tab="boundaries"]').click();
+  await page.locator('[data-boundary="subduction"]').click();
+  await page.locator("#ee-movement").fill("80");
+  assert.ok((await page.locator("#ee-boundary-picture svg").getAttribute("aria-label")).includes("Subduction"));
+  await page.locator('[data-choice="0"]').click();
+  assert.match(await page.locator("#ee-response").innerText(),/Correct/);
+  await page.locator("#ee-reflection").fill("The oceanic plate goes under the continent because it is denser.");
+  await capture(page,"earth-boundaries-desktop");
+  stage="Science continental drift evidence";
+  await page.locator('[data-tab="evidence"]').click();
+  await page.locator('[data-evidence="fossils"]').click();
+  await page.locator("#ee-reveal").click();
+  assert.match(await page.locator("#ee-interpretation").innerText(),/continents were connected/);
+  await capture(page,"earth-evidence-desktop");
   stage="ELA and Critical Thinking interactive modules";
   for(const [route,label] of [["/ela/#answering/day2","writer-studio"],["/critical-thinking/#lab/l4","evidence-inspector"]]){
    await goto(page,route,"#ltool");
@@ -100,9 +120,12 @@ async function checkNoHorizontalOverflow(page,label){
   await capture(phone,"integer-lab-mobile");
   await goto(phone,"/science/#light","#se-content");
   await capture(phone,"solar-spectrum-mobile");
+  await goto(phone,"/science/#earth","#ee-content");
+  await checkNoHorizontalOverflow(phone,"Earth science mobile");
+  await capture(phone,"earth-explorer-mobile");
   await phone.close();
   assert.deepEqual(jsErrors,[],"Uncaught browser exceptions: "+JSON.stringify(jsErrors));
-  console.log("Browser QA passed: homepage, 4 maps, 4 libraries, integer/fraction/spectrum/albedo tools, ELA, CT, social atlas and mobile.");
+  console.log("Browser QA passed: homepage, 4 maps, 4 libraries, integer/fraction/spectrum/albedo/Earth tools, ELA, CT, social atlas and mobile.");
  }catch(e){
   console.error("Browser QA failed at stage:",stage);
   console.error(e);
