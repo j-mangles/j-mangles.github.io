@@ -1,0 +1,22 @@
+name: Test Integer Tiles and Number Line
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  integer-lab:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Check integers and existing subject navigation
+        run: |
+          node --check math/integer-lab.js
+          node tools/test_integer_lab.cjs
+          node tools/test_fraction_strips.cjs
+          node tools/test_resource_library.cjs
+          node tools/test_site_integration.cjs
