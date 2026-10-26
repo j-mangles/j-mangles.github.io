@@ -1,10 +1,10 @@
 /* Browser QA for real subject pages and live tools, rather than isolated DOM mocks.
  * Run: python3 -m http.server 8765 &; node tools/test_site_browser.cjs
- * Requires: npm install --no-save playwright; npx playwright install chromium
+ * Requires: npm install --no-save playwright-core; uses preinstalled Google Chrome
  */
 "use strict";
 const assert=require("node:assert/strict"),fs=require("node:fs"),path=require("node:path");
-const {chromium}=require("playwright");
+const {chromium}=require("playwright-core");
 const root=path.resolve(__dirname,".."),artifacts=path.join(root,"browser-artifacts");
 fs.mkdirSync(artifacts,{recursive:true});
 const origin=process.env.SITE_TEST_ORIGIN||"http://127.0.0.1:8765";
@@ -22,7 +22,7 @@ async function checkNoHorizontalOverflow(page,label){
  assert.ok(o.scroll<=o.width+6,label+" overflows: "+JSON.stringify(o));
 }
 (async()=>{
- const browser=await chromium.launch({headless:true,args:["--disable-dev-shm-usage"]});
+ const browser=await chromium.launch({channel:"chrome",headless:true,args:["--disable-dev-shm-usage"]});
  let page=null,stage="initial";
  try{
   page=await browser.newPage({viewport:{width:1280,height:800},deviceScaleFactor:1});
