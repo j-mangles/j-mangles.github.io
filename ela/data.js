@@ -101,6 +101,18 @@ window.HUB = {
     after:"The plot arc on this page shows the six stages. Click any stage to see what it does.",
     lessons:[
       {id:"thankyou", n:"1", title:"Thank You, Ma'am",
+       activity:{
+         title:"Character analysis: Answer · Evidence · Explain",
+         context:"How does Mrs. Jones's decision to trust Roger help reveal her character? Use two specific moments from the story. Do not invent quotations.",
+         prompts:[
+           {label:"Answer: What does her choice reveal about Mrs. Jones?",hint:"Write a clear claim that answers the question.",rows:3},
+           {label:"Evidence 1: Describe or quote one specific moment.",hint:"Check any quotation against your copy of the story.",rows:3},
+           {label:"Explain 1: How does that evidence support your answer?",rows:4},
+           {label:"Evidence 2: Give a different specific moment.",rows:3},
+           {label:"Explain 2 and conclude: What does this detail add?",rows:4}
+         ],
+         checklist:["My opening makes a clear claim.","I used two details from the story.","I explained what each detail proves, not just what happened."]
+       },
        big:"Mrs. Jones's trust and respect change Roger more than punishment would have.",
        notes:[
          "By Langston Hughes. Roger tries to snatch Mrs. Jones's purse so he can buy blue suede shoes. She catches him and takes him home instead of calling the police.",

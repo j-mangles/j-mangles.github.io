@@ -1,0 +1,25 @@
+name: Test Math Percent Studio
+on:
+  pull_request:
+    paths:
+      - 'math/percent-strategy.js'
+      - 'math/index.html'
+      - 'tools/test_percent_strategy.cjs'
+      - '.github/workflows/test-percent-strategy.yml'
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Check syntax and lesson integration
+        run: |
+          node --check math/percent-strategy.js
+          node --check tools/test_percent_strategy.cjs
+          node tools/test_percent_strategy.cjs

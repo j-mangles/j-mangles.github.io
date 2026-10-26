@@ -12,6 +12,13 @@
     let test=null;
 
     function newTest(){ test={qs:shuffle(bank).slice(0,Math.min(12,bank.length)),i:0,ans:[]}; }
+    // Focused practice reuses the questions the student just missed, with fresh answers.
+    // Repeating this action narrows the round again until every question is correct.
+    function retryMissed(){
+      if(!test) return;
+      const missed=test.qs.filter((q,i)=>test.ans[i]!==q.c);
+      if(missed.length) test={qs:shuffle(missed),i:0,ans:[]};
+    }
     function shell(inner){
       return `<div class="rv">
         <div class="rv-tabs" role="tablist">
@@ -43,11 +50,15 @@
       if(!test) newTest();
       if(test.i>=test.qs.length){
         const right=test.ans.filter((a,i)=>a===test.qs[i].c).length, n=test.qs.length;
-        const missed=[...new Map(test.qs.filter((q,i)=>test.ans[i]!==q.c).map(q=>[q.l.id,q.l])).values()];
+        const missedQs=test.qs.filter((q,i)=>test.ans[i]!==q.c);
+        const missed=[...new Map(missedQs.map(q=>[q.l.id,q.l])).values()];
         return `<div class="rv-score"><span>${right}</span> / ${n}</div>
           <p>${right===n?"Perfect. You're ready.":right/n>=.75?"Strong. Look over what you missed.":"Worth another look before the test."}</p>
           ${missed.length?`<h4 class="rv-h">Go back to</h4><ol class="rv-ideas">${missed.map(l=>`<li><button class="rv-open" data-l="${esc(l.id)}"><span class="rv-n">${esc(l.n)}</span><span><b>${esc(l.title)}</b></span></button></li>`).join("")}</ol>`:""}
-          <button class="btn" id="rv-again">New practice test</button>`;
+          <div class="rv-row">
+            ${missedQs.length?`<button class="btn" id="rv-missed">Practice missed questions (${missedQs.length})</button>`:""}
+            <button class="btn ghost" id="rv-again">New practice test</button>
+          </div>`;
       }
       const q=test.qs[test.i], a=test.ans[test.i];
       return `<div class="rv-prog"><span style="width:${test.i/test.qs.length*100}%"></span></div>
@@ -70,6 +81,7 @@
       if($("rv-left")) $("rv-left").onclick=()=>{const left=cards.filter(c=>!known.has(c.t)); deck=left.length?shuffle(left):cards.slice(); ci=0;flipped=false;draw();};
       el.querySelectorAll(".rv [data-o]").forEach(b=>b.onclick=()=>{test.ans[test.i]=+b.dataset.o;draw();});
       if($("rv-nq")) $("rv-nq").onclick=()=>{test.i++;draw();};
+      if($("rv-missed")) $("rv-missed").onclick=()=>{retryMissed();draw();};
       if($("rv-again")) $("rv-again").onclick=()=>{newTest();draw();};
     }
     draw();

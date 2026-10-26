@@ -57,12 +57,68 @@
     return `<div class="tablewrap"><table class="data"><thead><tr>${t.head.map(h=>`<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>${t.rows.map(r=>`<tr>${r.map(c=>`<td>${esc(c)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
   }
 
+  const activityDrafts = {};
+
+  function activityHTML(u,l){
+ const a=l.activity;if(!a?.prompts?.length)return "";
+ const key=u.id+"/"+l.id, saved=activityDrafts[key]||{};
+ const fields=a.prompts.map((p,i)=>`<div style="margin-top:16px">
+  <label for="la-${i}" style="display:block;font-weight:700;margin-bottom:5px">${i+1}. ${esc(p.label)}</label>
+  ${p.hint?`<p class="note" style="margin:0 0 6px">${esc(p.hint)}</p>`:""}
+  <textarea id="la-${i}" data-field="${i}" rows="${Math.max(2,Math.min(8,p.rows||3))}" style="display:block;width:100%;min-height:78px;padding:10px 12px;background:var(--paper);color:var(--ink);font:inherit;border:1px solid var(--rule);border-radius:var(--btn-radius);resize:vertical" placeholder="Write your response here">${esc(saved[i]||"")}</textarea>
+ </div>`).join("");
+ return `<div class="task" id="lesson-activity" style="margin-top:10px">
+  <p style="font-weight:700;font-size:19px;margin:0">${esc(a.title)}</p>
+  <p style="margin-top:7px">${esc(a.context||"Use the lesson to support your response.")}</p>
+  ${fields}
+  ${a.checklist?.length?`<div style="margin-top:18px"><b>Before you finish</b><ul style="margin:6px 0 0;padding-left:20px">${a.checklist.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>`:""}
+  <div style="display:flex;flex-wrap:wrap;gap:9px;margin-top:18px">
+   <button class="btn" type="button" id="la-download">Download my responses</button>
+   <button class="btn ghost" type="button" id="la-copy">Copy my responses</button>
+   <button class="btn ghost" type="button" id="la-clear">Clear</button>
+  </div>
+  <p class="note" id="la-status" aria-live="polite" style="margin-top:10px">Not submitted or saved online. Download or copy your responses before leaving this page.</p>
+ </div>`;
+}
+
+  function bindActivity(u,l){
+ const root=$("#lesson-activity");if(!root||!l.activity)return;
+ const key=u.id+"/"+l.id,a=l.activity,fields=[...root.querySelectorAll("textarea[data-field]")],status=root.querySelector("#la-status");
+ fields.forEach((el,i)=>el.addEventListener("input",()=>{
+  if(!activityDrafts[key])activityDrafts[key]={};
+  activityDrafts[key][i]=el.value;
+  status.textContent="Draft held on this page only. Download or copy it before closing the tab.";
+ }));
+ const contents=()=>[u.name+" — "+l.title,a.title,a.context||"",
+   ...a.prompts.map((p,i)=>(i+1)+". "+p.label+"\n"+fields[i].value.trim()),
+   ...(a.checklist?.length?["Self-check:\n"+a.checklist.map(x=>"- "+x).join("\n")]:[])
+  ].filter(Boolean).join("\n\n")+"\n";
+ root.querySelector("#la-download").onclick=()=>{
+  const blob=new Blob([contents()],{type:"text/plain;charset=utf-8"});
+  const url=URL.createObjectURL(blob),link=document.createElement("a");
+  link.href=url;link.download=(H.subject+"-"+u.id+"-"+l.id+"-activity").replace(/[^a-z0-9-]/gi,"-")+".txt";
+  document.body.appendChild(link);link.click();link.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1500);
+  status.textContent="Responses downloaded. Keep the file if this is assigned work.";
+ };
+ root.querySelector("#la-copy").onclick=()=>{
+  if(!navigator.clipboard?.writeText){status.textContent="Copy isn't available in this browser. Use Download my responses instead.";return;}
+  navigator.clipboard.writeText(contents()).then(()=>{status.textContent="Responses copied. Paste them into a document.";})
+   .catch(()=>{status.textContent="Copy was blocked. Use Download my responses instead.";});
+ };
+ root.querySelector("#la-clear").onclick=()=>{
+  if(!window.confirm("Clear all responses for this activity?"))return;
+  fields.forEach(el=>el.value="");delete activityDrafts[key];
+  status.textContent="Responses cleared.";
+ };
+}
+
   function renderLesson(u,l){
     const ls=u.lessons, i=ls.indexOf(l), prev=ls[i-1], next=ls[i+1];
     const imgs=l.imgs||[];
     const qs=(l.check||[]).map((q,qi)=>{
       const a=answers[qi];
-      return `<div class="q"><div class="qt">${qi+1}. ${esc(q.q)}</div><div class="opts">${q.a.map((o,oi)=>{
+      return `<div class="q" role="group" aria-label="Question ${qi+1}: ${esc(q.q)}"><div class="qt">${qi+1}. ${esc(q.q)}</div><div class="opts">${q.a.map((o,oi)=>{
         let c="opt"; if(a!==undefined){ if(oi===q.c) c+=" right"; else if(oi===a) c+=" wrong"; }
         return `<button class="${c}" data-q="${qi}" data-o="${oi}" ${a!==undefined?"disabled":""}>${esc(o)}</button>`;}).join("")}</div>
         ${a!==undefined?`<div class="why">${a===q.c?"Right. ":"Not quite. "}${esc(q.why)}</div>`:""}</div>`;}).join("");
@@ -82,6 +138,7 @@
       ${l.terms&&l.terms.length?`<h3>Key terms</h3><dl class="terms">${l.terms.map(t=>`<dt>${esc(t[0])}</dt><dd>${esc(t[1])}</dd>`).join("")}</dl>`:""}
       ${imgs.length>1?`<h3>Pictures from the lesson</h3><div class="gal">${imgs.slice(1).map(m=>`<figure><img src="${m.src}" alt="" loading="lazy" data-cap="${esc(m.cap)}"><figcaption>${esc(m.cap)}</figcaption></figure>`).join("")}</div>`:""}
       ${l.work?`<h3>Your work</h3><div class="task"><p>${esc(l.work)}</p><p class="note">Get the handout from Mr. Mangles if you don't have it.</p></div>`:""}
+      ${l.activity?`<h3>Complete the activity</h3>${activityHTML(u,l)}`:""}
       ${qs?`<h3>Check yourself</h3>${qs}`:""}
       ${n&&n===l.check.length?`<div class="score">${right} out of ${l.check.length}${right===l.check.length?". Nice, you've got this lesson.":". Have another look at the notes, then try again."} <button class="btn ghost" id="retry" style="margin-left:8px">Try again</button></div>`:""}
       <div class="pager">${prev?`<button class="btn ghost" data-go="${u.id}/${prev.id}">&larr; Lesson ${esc(prev.n)}</button>`:"<span></span>"}${next?`<button class="btn ghost" data-go="${u.id}/${next.id}">Lesson ${esc(next.n)} &rarr;</button>`:(ls.length>1?`<button class="btn" data-go="${u.id}/review">Unit review &rarr;</button>`:"")}</div>
@@ -95,12 +152,17 @@
     }
     (l.charts||[]).forEach((c,ci)=>{ if(window.LineChart) window.LineChart($("#lc-"+ci),c); });
     document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>go(b.dataset.go));
-    document.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{
+    // Bind only lesson quiz choices; tool controls may also use the .opt style.
+    document.querySelectorAll("article.lesson > .q .opts button[data-q][data-o]").forEach(b=>b.onclick=()=>{
       answers[+b.dataset.q]=+b.dataset.o;
       if(l.check.every((q,qi)=>answers[qi]===q.c)) markDone(u.id+"/"+l.id);
       const y=window.scrollY; renderLesson(u,l); window.scrollTo(0,y);
+      const next=(l.check||[]).findIndex((q,qi)=>answers[qi]===undefined);
+      const focusTarget=next>=0?document.querySelector(`article.lesson > .q .opts button[data-q="${next}"][data-o]`):document.querySelector("#retry");
+      if(focusTarget) focusTarget.focus({preventScroll:true});
     });
     const r=$("#retry"); if(r) r.onclick=()=>{answers={}; const y=window.scrollY; renderLesson(u,l); window.scrollTo(0,y);};
+    bindActivity(u,l);
   }
 
   function renderReview(u){
