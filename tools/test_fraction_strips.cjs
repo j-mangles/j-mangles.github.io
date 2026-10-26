@@ -1,0 +1,36 @@
+/* Grade 7 Manitoba 7.N.5: validate exact fraction arithmetic, diagrams, and unit registration. */
+"use strict";
+const fs=require("node:fs"),vm=require("node:vm"),path=require("node:path"),assert=require("node:assert/strict");
+const root=path.resolve(__dirname,".."),read=p=>fs.readFileSync(path.join(root,p),"utf8");
+const ctx={window:{HUB:{subject:"math",units:[],tools:{}}}};
+vm.runInNewContext(read("math/fraction-strips.js"),ctx,{filename:"math/fraction-strips.js"});
+const F=ctx.window.FractionStripCore;
+assert.equal(typeof ctx.window.HUB.tools.fracops,"function","Unit 4 tool not registered");
+assert.equal(F.gcd(42,30),6);assert.equal(F.lcm(4,6),12);
+assert.equal(F.format(7,3),"2 1/3");assert.equal(F.format(2,4),"1/2");
+assert.equal(F.format(4,4),"1");assert.equal(F.format(0,9),"0");
+assert.equal(F.fracInput("2 1/3").n,7);assert.equal(F.fracInput("2 1/3").d,3);
+assert.equal(F.fracInput("10/20").n,1);assert.equal(F.fracInput("10/20").d,2);
+assert.equal(F.fracInput("1/0"),null);assert.equal(F.fracInput("xyz"),null);
+assert.equal(F.fracInput("-1/2"),null);assert.equal(F.fracInput("3.5"),null);
+assert.equal(F.scenarios.length,10);
+const expected=["3/4","5/6","1/4","5/6","1/2","1 3/4","1 1/2","2/3","1 5/6","1 11/15"];
+F.scenarios.forEach((p,i)=>{
+ const result=F.solve(p);
+ assert.ok(result.positive&&result.n>0,"Only positive results allowed "+p.label);
+ assert.equal(F.format(result.n,result.d),expected[i],p.label);
+ assert.ok(result.d%p.a[1]===0&&result.d%p.b[1]===0);
+ const svg0=F.fractionStripSVG(p,0),svg1=F.fractionStripSVG(p,1),svg2=F.fractionStripSVG(p,2);
+ assert.ok(svg0.includes('role="img"')&&svg2.includes('aria-label="Fraction strips'));
+ assert.ok(svg0.includes('A: ')&&svg0.includes('B: '));
+ assert.ok(svg1.includes("A: ")&&!svg1.includes("Result"));
+ assert.ok(svg2.includes("Result")&&svg2.includes(p.op==="+"?"Combine":"Remove"));
+});
+const main=read("math/index.html"),scripts=[...main.matchAll(/<script src="([^"]+)"/g)].map(m=>m[1]);
+assert.ok(scripts.includes("fraction-strips.js")&&scripts.indexOf("tools.js")<scripts.indexOf("fraction-strips.js")&&scripts.indexOf("fraction-strips.js")<scripts.indexOf("../assets/course-map.js"));
+const datCtx={window:{}};
+vm.runInNewContext(read("math/data.js"),datCtx);
+const fractionUnit=datCtx.window.HUB.units.find(u=>u.id==="fracops");
+assert.ok(fractionUnit&&fractionUnit.name==="Fraction Operations");
+assert.equal(fractionUnit.lessons.length,0,"This is an early visual; do not invent lesson entries");
+console.log("Grade 7 fraction strip models passed: 10 exact cases, common denominators, positive results, mixed fractions and registration.");
