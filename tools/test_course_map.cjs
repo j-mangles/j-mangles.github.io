@@ -22,6 +22,9 @@ for(const subject of ["math","science","ela","critical-thinking"]){
   "critical-thinking":["lab/l4"]
  };
  H.lessonTools=Object.fromEntries(models[subject].map(x=>[x,()=>{}]));
+ const unitToolKeys=[...read(subject+"/tools.js").matchAll(/window\.HUB\.tools\.(\w+)\s*=/g)].map(x=>x[1]);
+ H.tools=Object.fromEntries(unitToolKeys.map(x=>[x,()=>{}]));
+ for(const k of unitToolKeys)assert.ok(H.units.some(u=>u.id===k),"Unit-level tool not linked to a unit: "+subject+"/"+k);
  for(const route of models[subject]){
   const [uid,lid]=route.split("/");
   assert.ok(H.units.some(u=>u.id===uid&&(u.lessons||[]).some(l=>l.id===lid)),subject+" model route is invalid: "+route);
@@ -32,6 +35,11 @@ for(const subject of ["math","science","ela","critical-thinking"]){
  assert.equal((markup.match(/class="atlas-unit" /g)||[]).length,H.units.length,"unit count mismatch");
  for(const u of H.units)assert.ok(markup.includes('href="#'+encodeURIComponent(u.id)+'"'),"Missing unit "+u.id);
  for(const route of models[subject])assert.ok(markup.includes('href="#'+route+'"'),"Missing model "+route);
+ for(const unitId of unitToolKeys){
+  assert.ok(markup.includes('href="#'+unitId+'"'),"Unit practice deep link missing "+unitId);
+ }
+ assert.equal(ctx.window.CourseAtlas.modelItems(H).length,models[subject].length+unitToolKeys.length,
+   "Both unit tools and lesson studios must be visible");
  const poisoned={subject:"math",units:[{id:"x",n:"1",name:'<script>alert("X")</script>',intro:"<img src=x onerror=alert(1)>",status:"now",lessons:[]}]};
  const safe=ctx.window.CourseAtlas.createMarkup(poisoned);
  assert.ok(!safe.includes("<script>")&&!safe.includes("<img src=x"),"Unsafe subject data reached HTML");

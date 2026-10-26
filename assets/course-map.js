@@ -4,15 +4,25 @@
  "use strict";
  const escapeHTML=value=>String(value==null?"":value).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
  const statuses={done:"Completed",now:"Current unit",next:"Up next",soon:"Planned"};
+ // Labels follow the existing, already-published tool names in each subject's tools.js.
+ const unitToolNames={
+  math:{fdp:"Percent & Decimal Practice",prob:"Probability Bag"},
+  sci:{cells:"Cell Explorer & Organelle Games",skills:"Metric Converter"},
+  ela:{grammar:"Grammar Quick-Fire",stories:"Plot Arc Explorer"},
+  ct:{lab:"Spot It Challenge",games:"Prisoner's Dilemma"}
+ };
  function modelItems(H){
-  const t=H.lessonTools||{};
-  return H.units.flatMap(unit=>(unit.lessons||[])
-   .filter(lesson=>typeof t[unit.id+"/"+lesson.id]==="function")
-   .map(lesson=>({unit,lesson})));
+  const t=H.lessonTools||{},ut=H.tools||{},names=unitToolNames[H.subject]||{};
+  return H.units.flatMap(unit=>[
+   ...(typeof ut[unit.id]==="function"?[{unit,lesson:null,title:names[unit.id]||unit.name+" practice"}]:[]),
+   ...(unit.lessons||[]).filter(lesson=>typeof t[unit.id+"/"+lesson.id]==="function")
+    .map(lesson=>({unit,lesson,title:lesson.title}))
+  ]);
  }
- function unitCard(u,index,tools){
+ function unitCard(u,index,lessonTools,unitTools){
   const count=(u.lessons||[]).length;
-  const modelCount=(u.lessons||[]).filter(l=>typeof tools[u.id+"/"+l.id]==="function").length;
+  const modelCount=(u.lessons||[]).filter(l=>typeof lessonTools[u.id+"/"+l.id]==="function").length+
+    (typeof unitTools[u.id]==="function"?1:0);
   const chapter=String(u.n||index+1);
   const intro=u.intro||"Explore the lessons and key ideas in this unit.";
   const status=statuses[u.status]||"Unit";
@@ -36,10 +46,10 @@
    H.subject==="sci"?"Investigate ideas through lessons, diagrams and models.":
    H.subject==="ela"?"Explore texts, writing strategies and evidence-based thinking.":
    "Explore puzzles, reasoning, strategy and real-world decisions.";
-  const modelLinks=models.map(({unit,lesson})=>
-    '<li><a href="#'+encodeURIComponent(unit.id)+"/"+encodeURIComponent(lesson.id)+'">'+
+  const modelLinks=models.map(({unit,lesson,title})=>
+    '<li><a href="#'+encodeURIComponent(unit.id)+(lesson?"/"+encodeURIComponent(lesson.id):"")+'">'+
       '<span class="atlas-model-unit">'+escapeHTML(unit.name)+'</span>'+
-      '<strong>'+escapeHTML(lesson.title)+'</strong><span aria-hidden="true"> ↗</span></a></li>').join("");
+      '<strong>'+escapeHTML(title)+'</strong><span aria-hidden="true"> ↗</span></a></li>').join("");
   return '<div class="wrap course-atlas" id="course-atlas">'+
     '<section class="atlas-hero" aria-labelledby="atlas-heading"><div class="atlas-hero-copy">'+
       '<div class="eyebrow">Course guide · 2026–27</div><h2 id="atlas-heading">'+escapeHTML(title)+'</h2>'+
@@ -51,11 +61,11 @@
       '<p>Choose a unit to find class notes, activities and self-checks.</p></div>'+
       '<label class="atlas-filter-label">Find a topic <input id="atlas-filter" type="search" autocomplete="off" placeholder="Search units and lessons" aria-controls="atlas-unit-grid"></label></div>'+
     '<div class="atlas-result-count" id="atlas-result-count" role="status" aria-live="polite">'+units.length+' units</div>'+
-    '<div class="atlas-grid" id="atlas-unit-grid">'+units.map((u,i)=>unitCard(u,i,H.lessonTools||{})).join("")+'</div>'+
+    '<div class="atlas-grid" id="atlas-unit-grid">'+units.map((u,i)=>unitCard(u,i,H.lessonTools||{},H.tools||{})).join("")+'</div>'+
     '<p id="atlas-empty" class="atlas-empty" hidden>No units match that search. Try another word.</p>'+
     '<section id="atlas-tools" class="atlas-tools" aria-labelledby="atlas-tools-heading">'+
       '<div><div class="eyebrow">Try something interactive</div><h2 id="atlas-tools-heading">Learning studios</h2>'+
-      '<p>These interactive activities live inside their related lessons. Open one to explore.</p>'+
+      '<p>Find unit-level practice and lesson-specific investigations in one place. Open one to explore.</p>'+
       '<p class="atlas-disclaimer">Practice here is not submitted to your teacher. Any saved checkmarks belong only to this device.</p></div>'+
       '<ul>'+ (modelLinks||'<li>New interactive tools will appear here when they are added.</li>')+'</ul></section>'+
     '</div>';
