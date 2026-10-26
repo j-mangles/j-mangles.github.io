@@ -11,7 +11,7 @@ const origin=process.env.SITE_TEST_ORIGIN||"http://127.0.0.1:8765";
 const courses=["math","science","ela","critical-thinking"];
 async function goto(page,route,selector){
  const response=await page.goto(origin+route,{waitUntil:"domcontentloaded",timeout:30000});
- assert.equal(response.status(),200,"HTTP error at "+route);
+ if(response)assert.equal(response.status(),200,"HTTP error at "+route); // hash-only navigation has no HTTP response
  await page.locator(selector).first().waitFor({state:"visible",timeout:20000});
 }
 async function capture(page,label){
