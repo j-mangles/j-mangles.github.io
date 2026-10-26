@@ -137,6 +137,17 @@ async function checkNoHorizontalOverflow(page,label){
   await page.locator('[data-answer="greece"]').click();
   assert.match(await page.locator("#feedback").innerText(),/Correct/);
   await capture(page,"atlas-civilization-compare-desktop");
+  stage="ELA camera shot visualizer";
+  await goto(page,"/ela/#film","#ss-shots");
+  await page.locator('[data-shot="extreme-close"]').click();
+  assert.match(await page.locator("#ss-explain").innerText(),/detail/);
+  await page.locator('[data-scene="1"]').click();
+  await page.locator("#ss-choice").selectOption("extreme-close");
+  await page.locator("#ss-reason").fill("I want viewers to notice what is written without seeing the whole room.");
+  await page.locator('[data-scene="0"]').click();
+  await page.locator('[data-scene="1"]').click();
+  assert.match(await page.locator("#ss-reason").inputValue(),/what is written/);
+  await capture(page,"ela-camera-shot-studio-desktop");
   stage="Social Studies atlas shell";
   const atlas=await page.request.get(origin+"/social-studies/");
   assert.equal(atlas.status(),200);
@@ -160,6 +171,9 @@ async function checkNoHorizontalOverflow(page,label){
   await capture(phone,"equation-balance-mobile");
   await goto(phone,"/science/#light","#se-content");
   await capture(phone,"solar-spectrum-mobile");
+  await goto(phone,"/ela/#film","#ss-shots");
+  await checkNoHorizontalOverflow(phone,"ELA Camera Studio mobile");
+  await capture(phone,"ela-camera-mobile");
   await goto(phone,"/ela/#stories/plot","#pb-text");
   await checkNoHorizontalOverflow(phone,"ELA Plot Board mobile");
   await capture(phone,"ela-plot-board-mobile");
