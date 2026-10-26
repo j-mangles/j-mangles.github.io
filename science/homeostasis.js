@@ -14,6 +14,7 @@ function simulateStep(temperature, ambient, active, regulated){
 H.thermoModel={simulateStep,setPoint:SET}; // pure function for regression tests
 function render(el){
  let ambient=22,active=false,regulated=true,temperature=SET,minutes=0,trace=[[0,SET]],prediction=null;
+ const history=[];
  const scenarios=[[8,"Cold air"],[22,"Room temperature"],[35,"Hot air"]];
  el.innerHTML=`<div class="hx-lab">
   <style>
@@ -76,7 +77,13 @@ function render(el){
    <div class="hx-caption" id="hx-hypothesis" aria-live="polite"></div>
   </div>
   <div class="hx-panel">
-   <b>4 · Explain your investigation</b>
+   <b>4 · Compare previous trials</b>
+   <p class="note">Changing conditions after a run records that trial here. Compare the same air temperature and activity with feedback on and off.</p>
+   <div id="hx-history" aria-live="polite"></div>
+   <button type="button" class="btn ghost" id="hx-clear-history">Clear trial records</button>
+  </div>
+  <div class="hx-panel">
+   <b>5 · Explain your investigation</b>
    <p class="note">Repeat the experiment with feedback off while keeping the other conditions the same. Describe the difference.</p>
    <label for="hx-observation"><b>Observation</b> — What happened in your trial and comparison?</label>
    <textarea id="hx-observation" rows="3" placeholder="Record the conditions and temperature changes for both trials."></textarea>
@@ -93,7 +100,16 @@ function render(el){
  const $=q=>el.querySelector(q);
  const $$=q=>[...el.querySelectorAll(q)];
  const fmt=t=>t.toFixed(2)+"°C";
- const start=()=>{temperature=SET;minutes=0;trace=[[0,SET]];prediction=null;paint();};
+ const record=()=>{if(minutes>0){history.push({ambient,active,regulated,temperature,minutes,prediction});if(history.length>12)history.shift();}};
+ const start=(changes={})=>{record();if(Object.prototype.hasOwnProperty.call(changes,"ambient"))ambient=changes.ambient;
+  if(Object.prototype.hasOwnProperty.call(changes,"active"))active=changes.active;
+  if(Object.prototype.hasOwnProperty.call(changes,"regulated"))regulated=changes.regulated;
+  temperature=SET;minutes=0;trace=[[0,SET]];prediction=null;paint();};
+ function renderHistory(){
+  if(!history.length){$("#hx-history").innerHTML='<p class="note">No completed trials recorded yet. Run a trial, then change one setting to save it.</p>';return;}
+  $("#hx-history").innerHTML='<div class="tablewrap"><table class="data"><caption>Up to twelve recent simulated trials</caption><thead><tr><th scope="col">Air</th><th scope="col">Activity</th><th scope="col">Feedback</th><th scope="col">Minutes</th><th scope="col">Final core temp.</th></tr></thead><tbody>'+
+  history.map(t=>'<tr><td>'+t.ambient+'°C</td><td>'+(t.active?'Exercise':'Rest')+'</td><td>'+(t.regulated?'On':'Off')+'</td><td>'+t.minutes+'</td><td>'+fmt(t.temperature)+'</td></tr>').join("")+'</tbody></table></div>';
+ }
  function plot(){
   const W=600,H=245,L=48,R=582,T=16,B=205;
   const x=t=>L+(R-L)*t/40,y=v=>B-(v-35)/5*(B-T);
@@ -126,7 +142,7 @@ function render(el){
   $$("#hx-feedback [data-regulated]").forEach(b=>b.setAttribute("aria-pressed",String((b.dataset.regulated==="true")===regulated)));
   $$("#hx-pred [data-predict]").forEach(b=>{b.setAttribute("aria-pressed",String(b.dataset.predict===prediction));b.disabled=minutes>0;});
   $("#hx-temp").textContent=fmt(temperature);$("#hx-time").textContent="Minute "+minutes;
-  $("#hx-plot").innerHTML=plot();$("#hx-reading").textContent=interpretation();
+  $("#hx-plot").innerHTML=plot();$("#hx-reading").textContent=interpretation();renderHistory();
   $("#hx-one").disabled=minutes>=40;$("#hx-ten").disabled=minutes>=40;
   const actual=trace.length>1?(trace[1][1]>37.02?"rise":trace[1][1]<36.98?"fall":"steady"):null;
   $("#hx-hypothesis").textContent=minutes===0?"Choose a prediction before running a trial.":prediction?
@@ -134,19 +150,22 @@ function render(el){
     "No prediction was recorded for this trial. Try one on the next run.";
  }
  function advance(n){for(let i=0;i<n&&minutes<40;i++){const r=simulateStep(temperature,ambient,active,regulated);temperature=r.temperature;minutes++;trace.push([minutes,temperature]);}paint();}
- $$("#hx-env [data-env]").forEach(b=>b.onclick=()=>{ambient=+b.dataset.env;start();});
- $$("#hx-activity [data-active]").forEach(b=>b.onclick=()=>{active=b.dataset.active==="true";start();});
- $$("#hx-feedback [data-regulated]").forEach(b=>b.onclick=()=>{regulated=b.dataset.regulated==="true";start();});
+ $$("#hx-env [data-env]").forEach(b=>b.onclick=()=>{start({ambient:+b.dataset.env});});
+ $$("#hx-activity [data-active]").forEach(b=>b.onclick=()=>{start({active:b.dataset.active==="true"});});
+ $$("#hx-feedback [data-regulated]").forEach(b=>b.onclick=()=>{start({regulated:b.dataset.regulated==="true"});});
  $$("#hx-pred [data-predict]").forEach(b=>b.onclick=()=>{if(minutes===0){prediction=b.dataset.predict;paint();}});
  $("#hx-one").onclick=()=>advance(1);
  $("#hx-ten").onclick=()=>advance(10);
- $("#hx-reset").onclick=start;
+ $("#hx-reset").onclick=()=>start();
+ $("#hx-clear-history").onclick=()=>{history.length=0;renderHistory();};
  function report(){
   return ["Homeostasis Lab — Investigation",
    "Environment: "+ambient+"°C; activity: "+(active?"exercising":"resting")+
    "; feedback: "+(regulated?"on":"off"),
    "Prediction: "+(prediction||"not selected"),
    "Simulated temperature after "+minutes+" minute(s): "+fmt(temperature),
+   "Previous trial records (illustrative, not actual physiology):\n"+
+    (history.length?history.map((t,i)=>(i+1)+". Air "+t.ambient+"°C, "+(t.active?"exercise":"rest")+", feedback "+(t.regulated?"on":"off")+", "+t.minutes+" minutes, "+fmt(t.temperature)).join("\n"):"No prior trials recorded"),
    "Observation:\n"+$("#hx-observation").value.trim(),
    "Explanation:\n"+$("#hx-explanation").value.trim(),
    "Model limitation: simplified teaching illustration; not actual physiology."
