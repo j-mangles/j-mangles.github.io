@@ -28,6 +28,7 @@ for(const subject of ["math","science","ela","critical-thinking"]){
  }
  const markup=ctx.window.CourseAtlas.createMarkup(H);
  assert.ok(markup.includes('id="atlas-unit-grid"')&&markup.includes('id="atlas-tools"'));
+ assert.ok(markup.includes('id="atlas-tools-jump"')&&!markup.includes('href="#atlas-tools"'),"In-page tool navigation must not hijack hash routing");
  assert.equal((markup.match(/class="atlas-unit" /g)||[]).length,H.units.length,"unit count mismatch");
  for(const u of H.units)assert.ok(markup.includes('href="#'+encodeURIComponent(u.id)+'"'),"Missing unit "+u.id);
  for(const route of models[subject])assert.ok(markup.includes('href="#'+route+'"'),"Missing model "+route);
