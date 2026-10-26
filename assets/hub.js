@@ -15,6 +15,18 @@
 
   function route(){
     const h = decodeURIComponent((location.hash||"").slice(1));
+    const mapView = !h || h==="overview";
+    const mapLink=$("#course-map-link");
+    if(mapLink){
+      if(mapView) mapLink.setAttribute("aria-current","page");
+      else mapLink.removeAttribute("aria-current");
+    }
+    if(mapView && window.CourseAtlas){
+      renderTabs("");
+      window.CourseAtlas.render($("#main"),H);
+      window.scrollTo(0,0);
+      return;
+    }
     const [uid, lid] = h.split("/");
     const u = unit(uid) || unit(defaultUnit());
     const l = u && lid && (u.lessons||[]).find(x=>x.id===lid);
