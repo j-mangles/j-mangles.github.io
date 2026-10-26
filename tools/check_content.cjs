@@ -48,6 +48,13 @@ for(const subject of subjects){
     }
   }
 }
+/* Guard lesson-tool controls from broad quiz event binding. Both use .opt styling. */
+const hubScript=fs.readFileSync(path.join(root,"assets","hub.js"),"utf8");
+check(!/document\.querySelectorAll\(\s*["']\.opt["']\s*\)/.test(hubScript),
+  "hub quiz handlers must not hijack interactive-tool .opt buttons");
+check(hubScript.includes('document.querySelectorAll(".q .opt")'),
+  "hub quiz handling must be scoped to the lesson question containers");
+
 /* Check atlas assets without attempting to execute the large D3-based browser application. */
 const atlas=fs.readFileSync(path.join(root,"social-studies","index.html"),"utf8");
 const imagePaths=[...atlas.matchAll(/(?:img:|src:)"(img\/[^"]+\.(?:png|jpe?g|webp))"/g)];
