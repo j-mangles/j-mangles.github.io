@@ -153,7 +153,7 @@
     (l.charts||[]).forEach((c,ci)=>{ if(window.LineChart) window.LineChart($("#lc-"+ci),c); });
     document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>go(b.dataset.go));
     // Bind only lesson quiz choices; tool controls may also use the .opt style.
-    document.querySelectorAll(".q .opt").forEach(b=>b.onclick=()=>{
+    document.querySelectorAll("article.lesson > .q .opts button[data-q][data-o]").forEach(b=>b.onclick=()=>{
       answers[+b.dataset.q]=+b.dataset.o;
       if(l.check.every((q,qi)=>answers[qi]===q.c)) markDone(u.id+"/"+l.id);
       const y=window.scrollY; renderLesson(u,l); window.scrollTo(0,y);
