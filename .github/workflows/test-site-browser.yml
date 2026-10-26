@@ -1,0 +1,40 @@
+name: Chromium Classroom Browser QA
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 16
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install pinned browser QA dependencies
+        run: |
+          npm install --no-save --no-package-lock playwright-core@1.56.1
+          google-chrome --version
+      - name: Start static classroom site
+        run: |
+          python3 -m http.server 8765 --bind 127.0.0.1 > /tmp/mangles-site-http.log 2>&1 &
+          echo $! > /tmp/mangles-site-http.pid
+          for i in {1..20}; do
+            if curl --fail -s http://127.0.0.1:8765/ > /dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/mangles-site-http.log
+          exit 1
+      - name: Run real Chrome interaction and responsive visual smoke tests
+        run: node tools/test_site_browser.cjs
+      - name: Upload visual QA screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: grade-7-8-browser-qa
+          path: browser-artifacts/
+          if-no-files-found: ignore
+          retention-days: 14
