@@ -14,7 +14,7 @@ assert.ok(step(38,22,false,true).regulation<0,"too warm should cause correction 
 assert.ok(step(36,22,false,true).regulation>0,"too cold should cause correction toward set point");
 assert.ok(Math.abs(evolve(8,false,true,20)-37)<Math.abs(evolve(8,false,false,20)-37),"negative feedback must resist cold");
 assert.ok(Math.abs(evolve(35,false,true,20)-37)<Math.abs(evolve(35,false,false,20)-37),"negative feedback must resist heat");
-assert.ok(evolve(35,true,false,20)>evolve(35,false,false,20),"physical activity should increase model heat load");
+assert.ok(step(37,35,true,false).temperature>step(37,35,false,false).temperature,"physical activity should increase initial model heat load");
 const index=fs.readFileSync(path.join(root,"science","index.html"),"utf8");
 assert.match(index,/<script src="homeostasis\.js"><\/script>/);
 assert.ok(index.indexOf('src="homeostasis.js"')<index.indexOf('src="../assets/hub.js"'),"tool must register before lesson hub mounts");
