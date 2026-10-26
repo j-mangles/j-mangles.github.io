@@ -27,9 +27,10 @@ function wheel(e){
  if(e!==EXP.spinner)return "";
  const cx=110,cy=110,r=88;let angle=-Math.PI/2;
  const pieces=[];
- e.weights.forEach((w,i)=>{
-  const end=angle+2*Math.PI*w/total(e),x1=cx+r*Math.cos(angle),y1=cy+r*Math.sin(angle),x2=cx+r*Math.cos(end),y2=cy+r*Math.sin(end);
-  pieces.push('<path d="M'+cx+' '+cy+' L'+x1.toFixed(2)+' '+y1.toFixed(2)+' A'+r+' '+r+' 0 '+(end-angle>Math.PI?1:0)+' 1 '+x2.toFixed(2)+' '+y2.toFixed(2)+' Z" fill="'+COLORS[i]+'" stroke="white" stroke-width="3"/>');
+ const sectionColours=e.weights.flatMap((count,i)=>Array(count).fill(COLORS[i]));
+ sectionColours.forEach(colour=>{
+  const end=angle+2*Math.PI/sectionColours.length,x1=cx+r*Math.cos(angle),y1=cy+r*Math.sin(angle),x2=cx+r*Math.cos(end),y2=cy+r*Math.sin(end);
+  pieces.push('<path d="M'+cx+' '+cy+' L'+x1.toFixed(2)+' '+y1.toFixed(2)+' A'+r+' '+r+' 0 0 1 '+x2.toFixed(2)+' '+y2.toFixed(2)+' Z" fill="'+colour+'" stroke="white" stroke-width="3"/>');
   angle=end;
  });
  return '<svg class="pl-wheel" viewBox="0 0 220 220" role="img" aria-label="Eight equal spinner sections: red three, blue two, green one, yellow two">'+pieces.join("")+'</svg>';
