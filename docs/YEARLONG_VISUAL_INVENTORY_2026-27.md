@@ -6,19 +6,19 @@ Last reviewed: 2026-10-26. **This is a planning inventory, not a claim that plan
 
 | Course | Existing on main | Draft, not live | Next candidate (not built) |
 | --- | --- | --- | --- |
-| Grade 7 Math | Percent/decimal practice; configurable Probability Bag; lesson charts | Percent Strategy Studio [#6](../pull/6); Number Line Lab [#8](../pull/8); Chance Lab [#10](../pull/10) | Unit 3 divisibility sorter; Unit 4 fraction area models; Unit 5 integer chips |
-| Grade 8 Science | Cell Explorer; membrane transport models; metric converter | Homeostasis Lab [#4](../pull/4); Levels of Organization Explorer [#9](../pull/9) | Light-ray tracing; tectonic cross-sections; particle-state models |
-| Grade 8 ELA | Grammar Quick-Fire; six-stage Plot Arc diagram | Thank You, Ma'am evidence activity [#2](../pull/2); Writer's Studio [#5](../pull/5) | Student-authored plot-stage evidence board (extend existing arc, don't duplicate it); media evidence comparison |
-| Grade 8 Social Studies | Atlas with map, timeline, period-specific units | Three Early Humans lessons [#3](../pull/3) | Mesopotamian river/city network overlay; Nile flood/agriculture cycle; Greece/Rome map comparisons |
-| Critical Thinking | Observation/inference and persuasion quick-fire; Prisoner's Dilemma | Evidence Inspector [#7](../pull/7) | Lesson 9 Ultimatum payoff visualizer; Lesson 10 decision matrix; Lesson 11 evidence timeline |
+| Grade 7 Math | Percent/decimal practice; configurable Probability Bag; lesson charts | Percent Strategy Studio [#6](https://github.com/j-mangles/j-mangles.github.io/pull/6); Number Line Lab [#8](https://github.com/j-mangles/j-mangles.github.io/pull/8); Chance Lab [#10](https://github.com/j-mangles/j-mangles.github.io/pull/10) | Unit 3 divisibility sorter; Unit 4 fraction area models; Unit 5 integer chips |
+| Grade 8 Science | Cell Explorer; membrane transport models; metric converter | Homeostasis Lab [#4](https://github.com/j-mangles/j-mangles.github.io/pull/4); Levels of Organization Explorer [#9](https://github.com/j-mangles/j-mangles.github.io/pull/9) | Light-ray tracing; tectonic cross-sections; particle-state models |
+| Grade 8 ELA | Grammar Quick-Fire; six-stage Plot Arc diagram | Thank You, Ma'am evidence activity [#2](https://github.com/j-mangles/j-mangles.github.io/pull/2); Writer's Studio [#5](https://github.com/j-mangles/j-mangles.github.io/pull/5) | Student-authored plot-stage evidence board (extend existing arc, don't duplicate it); media evidence comparison |
+| Grade 8 Social Studies | Atlas with map, timeline, period-specific units | Three Early Humans lessons [#3](https://github.com/j-mangles/j-mangles.github.io/pull/3) | Mesopotamian river/city network overlay; Nile flood/agriculture cycle; Greece/Rome map comparisons |
+| Critical Thinking | Observation/inference and persuasion quick-fire; Prisoner's Dilemma | Evidence Inspector [#7](https://github.com/j-mangles/j-mangles.github.io/pull/7) | Lesson 9 Ultimatum payoff visualizer; Lesson 10 decision matrix; Lesson 11 evidence timeline |
 
-**Also in draft:** [#1](../pull/1) focused review retries and [#2](../pull/2) shared hub fixes. The hub fixes are important for the safety of interactive buttons.
+**Also in draft:** [#1](https://github.com/j-mangles/j-mangles.github.io/pull/1) focused review retries and [#2](https://github.com/j-mangles/j-mangles.github.io/pull/2) shared hub fixes. The hub fixes are important for the safety of interactive buttons.
 
 ## Unit-by-unit candidate sequence
 
 ### Math 7
-- **Unit 1 — fractions/decimals/percents:** [#6](../pull/6) and [#8](../pull/8) cover distinct skills. Test percent and number-line lessons independently.
-- **Unit 2 — probability:** existing Probability Bag explores changing counter compositions. [#10](../pull/10) adds a **different** experiment: fair coin, die, and an eight-equal-section spinner, comparing theoretical/experimental bar charts and a cumulative trend. Source: [Lesson 4 Design a Spinner](https://docs.google.com/document/d/1wZiT2WojJG1jQh8xRPvGtWWeZP4rpAbfKsl0vGz1B-s/edit) and [Lesson 5 Tally Lab](https://docs.google.com/document/d/1mCQ15iX7IUglnjBfs7joi715GnwhAUArQXOm3YzT8vk/edit).
+- **Unit 1 — fractions/decimals/percents:** [#6](https://github.com/j-mangles/j-mangles.github.io/pull/6) and [#8](https://github.com/j-mangles/j-mangles.github.io/pull/8) cover distinct skills. Test percent and number-line lessons independently.
+- **Unit 2 — probability:** existing Probability Bag explores changing counter compositions. [#10](https://github.com/j-mangles/j-mangles.github.io/pull/10) adds a **different** experiment: fair coin, die, and an eight-equal-section spinner, comparing theoretical/experimental bar charts and a cumulative trend. Source: [Lesson 4 Design a Spinner](https://docs.google.com/document/d/1wZiT2WojJG1jQh8xRPvGtWWeZP4rpAbfKsl0vGz1B-s/edit) and [Lesson 5 Tally Lab](https://docs.google.com/document/d/1mCQ15iX7IUglnjBfs7joi715GnwhAUArQXOm3YzT8vk/edit).
 - **Unit 3 — divisibility:** rule-based sorting diagram, factor/multiple overlays. [Drive lesson folder](https://drive.google.com/drive/folders/1Gk0Yv4V6sBg-k720tobMbyPvHEBByVP_).
 - **Unit 4 — fraction operations:** common-denominator area bars and number-line steps. Confirm actual lesson tasks first.
 - **Unit 5 — integer operations:** two-colour counter model with zero pairs.
@@ -28,20 +28,20 @@ Last reviewed: 2026-10-26. **This is a planning inventory, not a claim that plan
 
 ### Science 8
 - **Skills:** existing observation/inference and metric tools; next candidate is fair-test variable organizer.
-- **Cells & Systems:** existing cell/membrane tools; [#9](../pull/9) organization diagram and [#4](../pull/4) homeostasis simulation. Source [Cells & Systems folder](https://drive.google.com/drive/folders/1GtIp_Iu47ibQh91DgkQjFpP1lM1tw0kt).
+- **Cells & Systems:** existing cell/membrane tools; [#9](https://github.com/j-mangles/j-mangles.github.io/pull/9) organization diagram and [#4](https://github.com/j-mangles/j-mangles.github.io/pull/4) homeostasis simulation. Source [Cells & Systems folder](https://drive.google.com/drive/folders/1GtIp_Iu47ibQh91DgkQjFpP1lM1tw0kt).
 - **Energy & Light:** potential reflection/refraction ray diagram and solar-energy path model. Source [Drive folder](https://drive.google.com/drive/folders/1X29V7HcTy_scs8sqMh_xME_YH7pDqQ7D).
 - **Earth Science:** layered Earth cutaway, plate-boundary motion and evidence overlay. Confirm specific booklet first.
 - **Particle Theory of Matter:** particle spacing/motion comparison and heating/cooling graph. Source [Drive folder](https://drive.google.com/drive/folders/1DKn2JqmFlF12ZU7bHHEq7mx2HchzzJcE).
 - **Sequence discrepancy to resolve:** website labels future units Matter/Density/Fluids, Solar Energy/Light, Earth; Drive folders currently list Energy/Light, Earth Science and Particle Theory. Do not silently rename or reorder either source.
 
 ### ELA 8
-- **Answering Well:** [#5](../pull/5) builds student evidence and revision practice.
+- **Answering Well:** [#5](https://github.com/j-mangles/j-mangles.github.io/pull/5) builds student evidence and revision practice.
 - **Grammar:** existing quick-fire; next a sentence-building and clause-highlighting model.
 - **Short Stories:** existing Plot Arc already explains six stages; improve it with a student-generated evidence map **rather than building another passive arc**. Source [Plot Structure Student Sheet](https://docs.google.com/document/d/1jNG8sF1PGbLV5Ru8XT1bB33j155kBiMlU6_ON6zJDs4/edit), using *Snack Attack* and *Thank You, Ma'am* as classroom prompts without copying copyrighted story text.
 - **Media/Film, Novel, Essays/Research:** evidence sequence, point-of-view comparison, claim/counterclaim revision visual. Check current Drive lesson availability before coding.
 
 ### Social Studies 8
-- **Atlas:** preserve its current map + timeline architecture and period themes. [#3](../pull/3) adds Early Humans lessons.
+- **Atlas:** preserve its current map + timeline architecture and period themes. [#3](https://github.com/j-mangles/j-mangles.github.io/pull/3) adds Early Humans lessons.
 - **First Civilizations/Mesopotamia:** irrigation and settlement-location layers tied to evidence.
 - **Egypt:** Nile seasonal agricultural calendar and chronological comparisons.
 - **Greece/Rome:** city-state and empire spatial comparisons; political system flowcharts.
