@@ -45,7 +45,7 @@
       '<div class="eyebrow">Course guide · 2026–27</div><h2 id="atlas-heading">'+escapeHTML(title)+'</h2>'+
       '<p>'+escapeHTML(tagline)+'</p>'+
       '<div class="atlas-hero-actions">'+(now?'<a class="atlas-primary" href="#'+encodeURIComponent(now.id)+'">Go to current unit <span aria-hidden="true">↗</span></a>':"")+
-      '<a class="atlas-secondary" href="#atlas-tools">Find an interactive tool</a></div></div>'+
+      '<button class="atlas-secondary" type="button" id="atlas-tools-jump">Find an interactive tool</button></div></div>'+
     '<div class="atlas-hero-art" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div></section>'+
     '<div class="atlas-content-head"><div><span class="eyebrow">The full year</span><h2>Units & lessons</h2>'+
       '<p>Choose a unit to find class notes, activities and self-checks.</p></div>'+
@@ -64,6 +64,8 @@
   target.innerHTML=createMarkup(H);
   const search=target.querySelector("#atlas-filter"),cards=[...target.querySelectorAll("[data-atlas-card]")];
   const count=target.querySelector("#atlas-result-count"),empty=target.querySelector("#atlas-empty");
+  const jump=target.querySelector("#atlas-tools-jump");
+  if(jump)jump.addEventListener("click",()=>target.querySelector("#atlas-tools").scrollIntoView({behavior:"smooth",block:"start"}));
   if(search)search.addEventListener("input",()=>{
    const term=search.value.trim().toLowerCase();
    let visible=0;
