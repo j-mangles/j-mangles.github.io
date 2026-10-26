@@ -120,6 +120,15 @@ async function checkNoHorizontalOverflow(page,label){
   await page.locator('[data-cell="BC"]').click();
   assert.match(await page.locator("#pl-explain").innerText(),/5 points/);
   await capture(page,"thinklab-payoff-matrix-desktop");
+  stage="ELA plot evidence board";
+  await goto(page,"/ela/#stories/plot","#pb-text");
+  await page.locator("#pb-text").selectOption("thankyou");
+  await page.locator('[data-moment="3"]').fill("Roger changes his decision.");
+  await page.locator('[data-evidence="3"]').fill("A specific moment from the assigned story copy.");
+  await page.locator('[data-tension="3"]').fill("9");
+  assert.match(await page.locator('[data-output="3"]').innerText(),/9/);
+  assert.ok((await page.locator("#pb-graph svg").getAttribute("aria-label")).includes("Climax 9 of 10"));
+  await capture(page,"ela-plot-board-desktop");
   stage="Social Studies atlas shell";
   const atlas=await page.request.get(origin+"/social-studies/");
   assert.equal(atlas.status(),200);
@@ -143,6 +152,9 @@ async function checkNoHorizontalOverflow(page,label){
   await capture(phone,"equation-balance-mobile");
   await goto(phone,"/science/#light","#se-content");
   await capture(phone,"solar-spectrum-mobile");
+  await goto(phone,"/ela/#stories/plot","#pb-text");
+  await checkNoHorizontalOverflow(phone,"ELA Plot Board mobile");
+  await capture(phone,"ela-plot-board-mobile");
   await goto(phone,"/critical-thinking/#games/g1","#pl-a");
   await capture(phone,"thinklab-payoff-mobile");
   await goto(phone,"/science/#earth","#ee-content");
