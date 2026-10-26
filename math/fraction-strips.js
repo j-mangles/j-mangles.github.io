@@ -104,7 +104,7 @@ function render(el){
  '<button type="button" data-step="2">3. Combine or remove</button></div>'+
  '<div class="fl-visual" id="fl-visual"></div>'+
  '<p class="note" id="fl-explain" aria-live="polite"></p>'+
- '<form id="fl-form"><div class="fl-fields"><label>Common denominator<input id="fl-denominator" inputmode="numeric" placeholder="e.g. 12" required></label>'+
+ '<form id="fl-form"><div class="fl-fields"><label>Least common denominator<input id="fl-denominator" inputmode="numeric" placeholder="e.g. 12" required></label>'+
  '<label>Your final answer<input id="fl-answer" placeholder="e.g. 1 1/2" required></label>'+
  '<button class="btn" type="submit">Check both</button></div></form>'+
  '<div id="fl-feedback" class="fl-feedback" role="status" aria-live="polite"></div>'+
