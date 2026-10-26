@@ -1,0 +1,23 @@
+name: Validate Student Resource Library
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  resources:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Check resource library and preserved site integrations
+        run: |
+          node --check assets/resource-library.js
+          node --check assets/hub.js
+          node --check assets/course-map.js
+          node tools/test_resource_library.cjs
+          node tools/test_course_map.cjs
+          node tools/test_site_integration.cjs
