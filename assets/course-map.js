@@ -6,7 +6,7 @@
  const statuses={done:"Completed",now:"Current unit",next:"Up next",soon:"Planned"};
  // Labels follow the existing, already-published tool names in each subject's tools.js.
  const unitToolNames={
-  math:{fdp:"Percent & Decimal Practice",prob:"Probability Bag",fracops:"Fraction Strip Lab",int:"Integer Tiles & Number Line"},
+  math:{fdp:"Percent & Decimal Practice",prob:"Probability Bag",fracops:"Fraction Strip Lab",int:"Integer Tiles & Number Line",eq:"Equation Balance Studio"},
   sci:{cells:"Cell Explorer & Organelle Games",skills:"Metric Converter",light:"Solar Spectrum & Albedo Explorer",earth:"Earth & Plate Tectonics Explorer"},
   ela:{grammar:"Grammar Quick-Fire",stories:"Plot Arc Explorer"},
   ct:{lab:"Spot It Challenge",games:"Prisoner's Dilemma"}
