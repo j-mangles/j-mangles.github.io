@@ -34,7 +34,7 @@ const make=(dataset={})=>({dataset,value:"",focus(){this.focused=true;}});
 const runButtons=[1,20,100,500].map(k=>make({plRun:String(k)}));
 const el={
  innerHTML:"",
- querySelector(q){if(!nodes.has(q))nodes.set(q,make());return nodes.get(q);},
+ querySelector(q){const m=q.match(/^\[data-pl-run="(\d+)"\]$/);if(m)return runButtons.find(b=>b.dataset.plRun===m[1]);if(!nodes.has(q))nodes.set(q,make());return nodes.get(q);},
  querySelectorAll(q){assert.equal(q,"[data-pl-run]");return runButtons;}
 };
 const $=q=>el.querySelector(q);
@@ -46,7 +46,7 @@ assert.match(el.innerHTML,/aria-live="polite"/);
 assert.match(el.innerHTML,/Exact probability and frequency values/);
 $("#pl-predict").value="50";
 runButtons[1].onclick();
-assert.match(el.innerHTML,/20 independent trials/);
+assert.match(el.innerHTML,/<strong>20<\/strong> independent trials/);
 assert.match(el.innerHTML,/Your prediction was 50%/);
 assert.equal(runButtons[1].focused,true);
 $("#pl-mode").value="spinner";$("#pl-mode").onchange();
@@ -54,7 +54,7 @@ assert.match(el.innerHTML,/Eight equal spinner sections/);
 assert.match(el.innerHTML,/No trials yet/);
 $("#pl-target").value="2";$("#pl-target").onchange();
 runButtons[2].onclick();
-assert.match(el.innerHTML,/100 independent trials/);
+assert.match(el.innerHTML,/<strong>100<\/strong> independent trials/);
 assert.match(el.innerHTML,/How does the chance settle\? · Green/);
 assert.match(el.innerHTML,/12\.5%/);
 $("#pl-reset").onclick();
