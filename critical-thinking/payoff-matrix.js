@@ -141,6 +141,6 @@ function render(el){
  };
  showMatrix();$("#pl-run").click();
 }
-H.tools=H.tools||{};H.tools.games=render;
+H.lessonTools=H.lessonTools||{};H.lessonTools["games/g1"]=render;
 window.PayoffMatrixCore={SCORES,STRATEGIES,move,play,comparePayoffs,chart};
 })();
