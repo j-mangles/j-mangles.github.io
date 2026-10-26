@@ -12,11 +12,11 @@ const quote=[
 ];
 const prompts=[
  "Why did Maya choose the desk in the third row?",
- "By the end of the passage, has Maya's nervousness completely disappeared?",
- "What does Ms. Alvarez's comment suggest about her classroom?"
+ "What does Ms. Alvarez's comment suggest about her classroom?",
+ "By the end of the passage, has Maya's nervousness completely disappeared?"
 ];
 function studio(el){
- let chosen=0, drafts=Object.create(null);
+ let chosen=0, drafts=Object.create(null), snapshots=Object.create(null);
  const esc=s=>String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
  el.innerHTML=`<div class="ws">
  <style>
@@ -88,6 +88,18 @@ function studio(el){
     </div>
     <p class="note" id="ws-status" aria-live="polite">Your work is not collected or saved online. Download or copy it before leaving this page.</p>
    </section>
+   <section class="ws-paper" style="margin-top:16px" aria-label="Revision checkpoint">
+    <div class="ws-lbl">Step 3 · Revision checkpoint</div>
+    <p class="note">Save an early draft, improve at least one sentence, and compare what changed. Revision is about making your reasoning clearer, not simply adding more words.</p>
+    <button class="btn ghost" id="ws-snapshot" type="button">Save this draft for comparison</button>
+    <p class="note" id="ws-snapshot-status" aria-live="polite">No comparison draft saved for this question yet.</p>
+    <div class="ws-grid" style="gap:10px">
+     <div><b>Before revision</b><div id="ws-before" class="ws-preview" style="font-size:15px"></div></div>
+     <div><b>Current draft</b><div id="ws-after" class="ws-preview" style="font-size:15px"></div></div>
+    </div>
+    <label for="ws-reflection" class="ws-label">What did you change, and why is the new version clearer?</label>
+    <textarea id="ws-reflection" rows="3" placeholder="I revised… because…"></textarea>
+   </section>
   </div>
  </div>
  </div>`;
@@ -95,13 +107,20 @@ function studio(el){
  const inputs=[$("#ws-answer"),$("#ws-evidence"),$("#ws-explain")];
  const checks=$$("[data-check]");
  const qEl=$("#ws-q");
- function draft(){return {text:inputs.map(x=>x.value),checks:checks.map(x=>x.checked)};}
- function populate(d){inputs.forEach((x,i)=>{x.value=d?.text?.[i]||"";});checks.forEach((x,i)=>{x.checked=!!d?.checks?.[i];});renderPreview();}
+ function draft(){return {text:inputs.map(x=>x.value),checks:checks.map(x=>x.checked),reflection:$("#ws-reflection").value};}
+ function populate(d){inputs.forEach((x,i)=>{x.value=d?.text?.[i]||"";});checks.forEach((x,i)=>{x.checked=!!d?.checks?.[i];});$("#ws-reflection").value=d?.reflection||"";renderPreview();}
  function paragraph(){return inputs.map(x=>x.value.trim()).filter(Boolean).join(" ");}
+ function renderRevision(){
+  const before=snapshots[chosen]||"";
+  $("#ws-before").textContent=before||"Save an early draft to compare.";
+  $("#ws-after").textContent=paragraph()||"No current draft yet.";
+  $("#ws-snapshot-status").textContent=before?"Early draft saved for this question. Revise above to compare.":"No comparison draft saved for this question yet.";
+ }
  function renderPreview(){
   const txt=paragraph();
   $("#ws-preview").textContent=txt||"Your draft will appear here as you write.";
   $("#ws-count").textContent=(txt?txt.split(/\s+/).length:0)+" words · "+inputs.filter(x=>x.value.trim()).length+" of 3 parts drafted";
+  renderRevision();
  }
  function report(){
   return ["Writer's Studio · New Room",prompts[chosen],
@@ -109,6 +128,8 @@ function studio(el){
     "Evidence:\n"+inputs[1].value.trim(),
     "Explain:\n"+inputs[2].value.trim(),
     "Paragraph:\n"+paragraph(),
+    "Before revision:\n"+(snapshots[chosen]||"No earlier version saved"),
+    "Revision reflection:\n"+$("#ws-reflection").value.trim(),
     "Self-check:\n"+checks.map((x,i)=>(x.checked?"[x] ":"[ ] ")+["Answer responds to question","Specific evidence","Explanation supports claim","Revised for clarity"][i]).join("\n")
   ].join("\n\n")+"\n";
  }
@@ -125,9 +146,14 @@ function studio(el){
   $("#ws-evidence").focus();
   $("#ws-status").textContent="Quotation added to Evidence. Check that it actually supports the answer you wrote.";
  });
+ $("#ws-snapshot").onclick=()=>{
+  const text=paragraph();
+  if(!text){$("#ws-snapshot-status").textContent="Write an initial paragraph before saving a comparison.";return;}
+  snapshots[chosen]=text;renderRevision();
+ };
  $("#ws-clear").onclick=()=>{
   if(!window.confirm("Clear this question's draft and checkboxes?"))return;
-  delete drafts[chosen];populate(null);
+  delete drafts[chosen];delete snapshots[chosen];populate(null);
   $("#ws-status").textContent="Current draft cleared.";
  };
  $("#ws-download").onclick=()=>{
