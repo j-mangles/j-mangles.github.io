@@ -1,0 +1,25 @@
+name: Test Math Chance Lab
+on:
+  pull_request:
+    paths:
+      - 'math/chance-lab.js'
+      - 'math/index.html'
+      - 'tools/test_chance_lab.cjs'
+      - '.github/workflows/test-chance-lab.yml'
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Validate Chance Lab and simulated data
+        run: |
+          node --check math/chance-lab.js
+          node --check tools/test_chance_lab.cjs
+          node tools/test_chance_lab.cjs
