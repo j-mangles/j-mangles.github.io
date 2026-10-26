@@ -52,7 +52,7 @@ for(const subject of subjects){
 const hubScript=fs.readFileSync(path.join(root,"assets","hub.js"),"utf8");
 check(!/document\.querySelectorAll\(\s*["']\.opt["']\s*\)/.test(hubScript),
   "hub quiz handlers must not hijack interactive-tool .opt buttons");
-check(hubScript.includes('document.querySelectorAll(".q .opt")'),
+check(hubScript.includes('document.querySelectorAll("article.lesson > .q .opts button[data-q][data-o]")'),
   "hub quiz handling must be scoped to the lesson question containers");
 
 /* Check atlas assets without attempting to execute the large D3-based browser application. */
