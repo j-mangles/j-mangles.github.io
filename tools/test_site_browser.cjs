@@ -110,6 +110,16 @@ async function checkNoHorizontalOverflow(page,label){
    assert.ok((await page.locator("#ltool").innerText()).length>20,label+" not rendered");
    await capture(page,label+"-desktop");
   }
+  stage="Critical Thinking payoff matrix";
+  await goto(page,"/critical-thinking/#games/g1","#pl-a");
+  await page.locator("#pl-a").selectOption("alwaysC");
+  await page.locator("#pl-b").selectOption("alwaysC");
+  await page.locator("#pl-run").click();
+  assert.match(await page.locator("#pl-output").innerText(),/Player A 30.*Player B 30/);
+  assert.ok(await page.locator("#pl-output svg[role=img]").count()>0);
+  await page.locator('[data-cell="BC"]').click();
+  assert.match(await page.locator("#pl-explain").innerText(),/5 points/);
+  await capture(page,"thinklab-payoff-matrix-desktop");
   stage="Social Studies atlas shell";
   const atlas=await page.request.get(origin+"/social-studies/");
   assert.equal(atlas.status(),200);
@@ -133,6 +143,8 @@ async function checkNoHorizontalOverflow(page,label){
   await capture(phone,"equation-balance-mobile");
   await goto(phone,"/science/#light","#se-content");
   await capture(phone,"solar-spectrum-mobile");
+  await goto(phone,"/critical-thinking/#games/g1","#pl-a");
+  await capture(phone,"thinklab-payoff-mobile");
   await goto(phone,"/science/#earth","#ee-content");
   await checkNoHorizontalOverflow(phone,"Earth science mobile");
   await capture(phone,"earth-explorer-mobile");
