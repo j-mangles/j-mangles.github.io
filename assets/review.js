@@ -56,7 +56,7 @@
           <p>${right===n?"Perfect. You're ready.":right/n>=.75?"Strong. Look over what you missed.":"Worth another look before the test."}</p>
           ${missed.length?`<h4 class="rv-h">Go back to</h4><ol class="rv-ideas">${missed.map(l=>`<li><button class="rv-open" data-l="${esc(l.id)}"><span class="rv-n">${esc(l.n)}</span><span><b>${esc(l.title)}</b></span></button></li>`).join("")}</ol>`:""}
           <div class="rv-row">
-            ${missedQs.length?`<button class="btn" id="rv-missed">Practise missed questions (${missedQs.length})</button>`:""}
+            ${missedQs.length?`<button class="btn" id="rv-missed">Practice missed questions (${missedQs.length})</button>`:""}
             <button class="btn ghost" id="rv-again">New practice test</button>
           </div>`;
       }
