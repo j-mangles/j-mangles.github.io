@@ -38,9 +38,7 @@ window.UnitReview.render(el,unit);
 function tab(){const nodes=el.querySelectorAll("[data-tab]");nodes[2].onclick();} 
 // The test re-creates nodes during every draw; call the latest handler by parsing the current HTML.
 function choose(o){
- const buttons=el.querySelectorAll(".rv [data-o]");
- // Re-bind happens inside draw, so use an instrumented selector below instead.
- assert.ok(buttons.length>=2);
+ assert.ok(el._answerButtons.length>=2);
  el._answerButtons.find(b=>Number(b.dataset.o)===o).onclick();
 }
 const originalAll=el.querySelectorAll.bind(el);
