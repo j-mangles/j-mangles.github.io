@@ -1,0 +1,53 @@
+/* Number Line Lab regression checks: conversions, source cards, scales and events. */
+"use strict";
+const assert=require("node:assert/strict"),fs=require("node:fs"),vm=require("node:vm"),path=require("node:path");
+const root=path.resolve(__dirname,".."),code=fs.readFileSync(path.join(root,"math/number-line-lab.js"),"utf8");
+const window={HUB:{subject:"math",lessonTools:{}}};
+vm.runInNewContext(code,{window},{filename:"math/number-line-lab.js",timeout:2000});
+const H=window.HUB,model=H.numberLineModel;
+assert.equal(model.cards.length,10);
+assert.equal(model.gaps.length,5);
+assert.equal(typeof H.lessonTools["fdp/l19"],"function");
+for(const [input,expected] of [["65%",.65],["−3/4",-.75],["1 1/2",1.5],["110%",1.1],["5/4",1.25],["−1/4",-.25],["-1 1/2",-1.5],[".35",.35],["35%",.35],["3/8",.375]]){
+ assert.ok(Math.abs(model.parseValue(input)-expected)<1e-9,input);
+}
+for(const input of ["1/0","0/0","3/","not a number","2+3","1 2/0"])assert.equal(model.parseValue(input),null,input);
+const index=fs.readFileSync(path.join(root,"math/index.html"),"utf8");
+assert.ok(index.indexOf('src="number-line-lab.js"')>=0&&index.indexOf('src="number-line-lab.js"')<index.indexOf('src="../assets/hub.js"'));
+const make=(dataset={})=>({dataset,innerHTML:"",textContent:"",value:"",hidden:false,attrs:{},setAttribute(k,v){this.attrs[k]=v;}});
+const nodes=new Map(),modes=[make({mode:"place"}),make({mode:"between"})],cardNodes=Array.from({length:10},(_,i)=>make({card:String(i)}));
+const rootEl={innerHTML:"",querySelector(k){if(!nodes.has(k))nodes.set(k,make());return nodes.get(k);},querySelectorAll(k){
+  if(k==="[data-mode]")return modes;
+  if(k==="#nl-cards [data-card]")return cardNodes;
+  throw Error("Unexpected selector "+k);
+}};
+H.lessonTools["fdp/l19"](rootEl);
+const $=k=>rootEl.querySelector(k);
+assert.match(rootEl.innerHTML,/Human Number Line/);
+assert.match($("#nl-svg").innerHTML,/−1|0/);
+assert.match($("#nl-cards").innerHTML,/65%/);
+cardNodes[0].onclick();
+$("#nl-slider").value="0.65";$("#nl-slider").oninput();$("#nl-check").onclick();
+assert.match($("#nl-feedback").textContent,/Good placement/);
+assert.match($("#nl-score").textContent,/1 of 10/);
+$("#nl-check").onclick();
+assert.match($("#nl-score").textContent,/1 of 10/);
+modes[1].onclick();
+assert.equal($("#nl-place").hidden,true);
+assert.equal($("#nl-between").hidden,false);
+assert.match($("#nl-svg").innerHTML,/Zoomed-in interval/);
+$("#nl-input").value="0.35";$("#nl-verify").onclick();
+assert.match($("#nl-gap-feedback").textContent,/Yes!/);
+assert.match($("#nl-svg").attrs["aria-label"],/Zoomed-in/);
+$("#nl-gap").value="4";$("#nl-gap").onchange();
+assert.match($("#nl-svg").innerHTML,/0.7/);
+$("#nl-input").value="70.5%";$("#nl-verify").onclick();
+assert.match($("#nl-gap-feedback").textContent,/Yes!/);
+$("#nl-input").value="71%";$("#nl-verify").onclick();
+assert.match($("#nl-gap-feedback").textContent,/Not quite/);
+$("#nl-next").onclick();
+assert.match($("#nl-task").textContent,/0.3/);
+modes[0].onclick();
+$("#nl-reset").onclick();
+assert.match($("#nl-score").textContent,/0 of 10/);
+console.log("Number Line Lab passed: forms, plotting, accurate zoom, inputs, session checks, reset and integration.");
