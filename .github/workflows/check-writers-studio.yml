@@ -1,0 +1,26 @@
+name: Test Writer's Studio
+on:
+  pull_request:
+    paths:
+      - 'ela/writer-studio.js'
+      - 'ela/index.html'
+      - 'tools/test_writer_studio.cjs'
+      - '.github/workflows/check-writers-studio.yml'
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Check JavaScript syntax
+        run: |
+          node --check ela/writer-studio.js
+          node --check tools/test_writer_studio.cjs
+      - name: Test student writing interactions
+        run: node tools/test_writer_studio.cjs
