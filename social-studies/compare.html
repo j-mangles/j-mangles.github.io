@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Compare Civilizations · Societies of the Past Atlas</title>
+<link rel="stylesheet" href="../assets/fonts.css">
+<style>
+:root{--ink:#302B26;--muted:#74675D;--coral:#BD7657;--rule:#DCD1C2;--paper:#FFFDF9;--bg:#F5F0E6;font-family:Inter,system-ui,sans-serif}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);line-height:1.5;font-size:16px}
+header{display:flex;justify-content:space-between;gap:20px;align-items:center;flex-wrap:wrap;padding:16px max(20px,calc((100vw - 1120px)/2));background:#2D373B;color:#fff}
+header a{color:#F8D0B6;text-decoration:none;font-weight:650}
+header span{font-size:12px;text-transform:uppercase;letter-spacing:.12em}
+main{max-width:1120px;padding:30px 22px 80px;margin:auto}
+h1,h2{font-family:"Cormorant Garamond",Georgia,serif;font-weight:600;line-height:1.1}h1{font-size:clamp(35px,6vw,57px);margin:5px 0 13px}h2{font-size:31px;margin:0 0 12px}
+.eyebrow{color:var(--coral);font-weight:800;letter-spacing:.13em;font-size:12px;text-transform:uppercase}
+.lede{max-width:78ch;color:var(--muted);font-size:17px}
+.controls{display:flex;flex-wrap:wrap;gap:18px;margin:26px 0;padding:21px;background:var(--paper);border:1px solid var(--rule);border-radius:10px}
+label{display:grid;gap:6px;flex:1;min-width:min(100%,230px);font-weight:700;font-size:14px}
+select,textarea{font:inherit;padding:11px;border:1px solid #B6A899;border-radius:6px;background:#fff;color:var(--ink);max-width:100%;min-height:44px}
+select:focus-visible,textarea:focus-visible,button:focus-visible{outline:3px solid var(--coral);outline-offset:3px}
+.timeline-graph{border:1px solid var(--rule);background:var(--paper);border-radius:12px;overflow-x:auto;padding:10px}
+.timeline-graph svg{display:block;min-width:750px;width:100%;height:auto}
+.panels{display:grid;grid-template-columns:1.1fr 1fr;gap:18px;margin:22px 0}
+.panel{background:var(--paper);border:1px solid var(--rule);padding:22px;border-radius:10px;min-width:0}
+.panel p{margin:8px 0 14px}
+.panel button,.actions button{border:1px solid var(--coral);border-radius:7px;padding:10px 15px;cursor:pointer;font:inherit;font-weight:700;background:#fff;color:#603725;min-height:44px}
+.panel button:hover,.actions button:hover{background:#FAE9DE}
+.panel button[aria-pressed=true]{background:#F4D9C9}
+.guess{display:flex;gap:9px;flex-wrap:wrap;margin:12px 0}
+#feedback,#copy-status{font-weight:650;color:#85472F;min-height:28px}
+.write{padding:23px;border-radius:10px;background:#EDE7DC}
+textarea{width:100%;min-height:120px;resize:vertical}
+.actions{display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin:13px 0}
+.actions a{color:#85472F;font-weight:650}
+.note{font-size:13px;color:var(--muted);max-width:90ch}
+@media(max-width:750px){.panels{grid-template-columns:1fr}main{padding:25px 14px 54px}.panel{padding:18px}}
+</style></head>
+<body>
+<header><div><span>Mr. Mangles’ Class · Grade 8 Social Studies</span><div>Societies of the Past Atlas</div></div><a href="./">Return to interactive atlas</a></header>
+<main>
+<div class="eyebrow">Historical reasoning · comparative chronology</div>
+<h1>When Did Civilizations Overlap?</h1>
+<p class="lede">The ancient world did not happen one civilization at a time. Compare two periods, find their overlap, and explain what the timeline can—and cannot—tell us.</p>
+<div class="controls"><label>Society A <select id="period-a"></select></label><label>Society B <select id="period-b"></select></label></div>
+<div class="timeline-graph" id="timeline-graph"></div>
+<div class="panels">
+<section class="panel"><h2>What overlaps?</h2><p id="overlap-description" aria-live="polite"></p><strong>Which selected period begins earlier?</strong><div class="guess" id="guess" role="group" aria-label="Choose the earlier starting period"></div><p id="feedback" role="status" aria-live="polite"></p></section>
+<section class="panel"><h2>Use dates carefully</h2><p id="caveat"></p><p>A longer bar does <strong>not</strong> prove a society was more advanced. Time overlap alone does not prove that two peoples traded or communicated.</p></section>
+</div>
+<section class="write"><h2>Your historical claim</h2><p>Use dates from the visual to compare the societies. Include one important limitation of the evidence.</p>
+<label for="student-reason">Claim · evidence · explanation</label><textarea id="student-reason" placeholder="I can tell these periods overlapped because… This graph does not prove…"></textarea>
+<div class="actions"><button id="copy-reason" type="button">Copy my reasoning</button><a href="./">Back to Atlas lessons and maps</a></div><p id="copy-status" aria-live="polite" role="status"></p></section>
+<p class="note">Historical dates match the broad spans used in the class atlas. “Mesopotamia” includes multiple civilizations rather than one empire; “Middle Ages” is a European period label. Early Humans began much earlier and is not shown on this compressed graph. Year zero is an axis boundary only. Your writing is not saved or submitted.</p>
+</main>
+<script src="chronology.js"></script>
+<script>window.ChronologyCore.mount(document);</script>
+</body></html>
