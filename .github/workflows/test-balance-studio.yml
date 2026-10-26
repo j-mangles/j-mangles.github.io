@@ -1,0 +1,23 @@
+name: Test Equation Balance Studio
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  equations:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Check equality models, Earth visuals and course integration
+        run: |
+          node --check math/balance-studio.js
+          node tools/test_balance_studio.cjs
+          node tools/test_earth_explorer.cjs
+          node tools/test_integer_lab.cjs
+          node tools/test_resource_library.cjs
+          node tools/test_site_integration.cjs
