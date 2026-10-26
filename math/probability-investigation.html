@@ -24,19 +24,32 @@
 <table><thead><tr><th>Outcome</th><th>Number of draws</th><th>Experimental probability</th></tr></thead><tbody><tr><td>Red</td><td id="redcount">0</td><td id="redpct">—</td></tr><tr><td>Blue</td><td id="bluecount">0</td><td id="bluepct">—</td></tr></tbody></table>
 <p class="tiny">Random results vary each time. A larger sample often gets closer to the predicted proportion, but that is not guaranteed on every run.</p>
 </section>
-<section class="panel"><h2>3. Make a claim using evidence</h2>
+<section class="panel"><h2>3. Try two independent draws</h2>
+<p>Draw a counter, <strong>put it back</strong>, and draw again. Replacing it means the second draw is not affected by the first. Predict the chance of red then red (RR).</p>
+<p class="tiny">For example, with 3 red and 7 blue, P(RR) = 3/10 × 3/10 = 9/100 = 9%. The table groups the four possible <em>colour sequences</em>; they are not necessarily equally likely.</p>
+<div class="controls"><button class="btn" data-pair="10">Run 10 pairs</button><button class="btn" data-pair="90">Run 90 more</button><button class="btn" data-pair="900">Run 900 more</button><button class="btn ghost" id="reset-pairs">Reset pairs</button></div>
+<p id="pairsummary" aria-live="polite">No pairs yet.</p>
+<table><thead><tr><th>Two-draw colour sequence</th><th>Theoretical probability</th><th>Observed / pairs</th><th>Experimental probability</th></tr></thead><tbody>
+<tr><td>RR (red, red)</td><td id="th-0"></td><td id="count-0"></td><td id="ex-0"></td></tr>
+<tr><td>RB (red, blue)</td><td id="th-1"></td><td id="count-1"></td><td id="ex-1"></td></tr>
+<tr><td>BR (blue, red)</td><td id="th-2"></td><td id="count-2"></td><td id="ex-2"></td></tr>
+<tr><td>BB (blue, blue)</td><td id="th-3"></td><td id="count-3"></td><td id="ex-3"></td></tr>
+</tbody></table>
+<p class="tiny">These are two independent events. Compare RR with RB + BR: order matters when naming individual outcomes, even if both combinations contain one red and one blue.</p>
+</section>
+<section class="panel"><h2>4. Make a claim using evidence</h2>
 <p>Complete these after 10, 100 and 1000 draws. Reset and repeat if you want another trial.</p>
-<ol><li class="question">Was your prediction close after 10 draws? Use a number from your results.</li><li class="question">What changed after 100 and 1000 draws? Did the results get closer to the theoretical probability?</li><li class="question">If you changed the bag to 1 red and 9 blue, what would you expect in 100 draws? Test it.</li><li class="question">Could a bag with 3 red and 7 blue produce 7 red draws in a row? Explain why this is possible or impossible.</li></ol>
+<ol><li class="question">Was your prediction close after 10 draws? Use a number from your results.</li><li class="question">What changed after 100 and 1000 draws? Did the results get closer to the theoretical probability?</li><li class="question">If you changed the bag to 1 red and 9 blue, what would you expect in 100 draws? Test it.</li><li class="question">Look at the two-draw experiment. Was RR close to its predicted probability? Compare 10 and 1000 pairs.</li><li class="question">Could a bag with 3 red and 7 blue produce 7 red draws in a row? Explain why this is possible or impossible.</li></ol>
 <textarea id="conclusion" aria-label="Your claim and evidence" placeholder="My claim is… My evidence is… This suggests…"></textarea>
 <div class="controls print-hide" style="margin-top:12px"><button class="btn ghost" id="print">Print investigation</button><button class="btn ghost" id="copy">Copy results and response</button><span id="copy-status" role="status"></span></div>
 </section>
-<section class="panel"><h2>Teacher notes</h2><p><strong>Suggested timing:</strong> 5 minutes prediction, 15 minutes trials, 10 minutes discussion, 10 minutes claim/evidence, 5 minutes exit reflection. Works as a pair activity or projector demonstration.</p><p><strong>Outcome connection:</strong> Grade 7 probability: express probability as a fraction or percent, compare theoretical and experimental probabilities, and reason about experimental sample size. For the full curriculum sequence, return to the Probability unit.</p><p><strong>Exit slip:</strong> “Why can 10 draws be misleading even when we know the probability?”</p></section>
+<section class="panel"><h2>Teacher notes</h2><p><strong>Suggested timing:</strong> 5 minutes prediction, 15 minutes trials, 10 minutes discussion, 10 minutes claim/evidence, 5 minutes exit reflection. Works as a pair activity or projector demonstration.</p><p><strong>Outcome connection:</strong> Manitoba 7.SP.4 (ratios, fractions and percents), 7.SP.5 (two-event sample spaces), and 7.SP.6 (experimental versus theoretical probability for two independent events). The first experiment builds single-draw understanding; the paired draws directly explore the two-event outcomes. For the full curriculum sequence, return to the Probability unit.</p><p><strong>Exit slip:</strong> “Why can 10 draws be misleading even when we know the probability?”</p></section>
 </main><footer class="site"><div class="wrap">Mr. Mangles' Class · 2026–27</div></footer>
 <script>
 (function(){
 "use strict";
 const $=id=>document.getElementById(id);
-let red=3,blue=7,draws=0,hits=0;
+let red=3,blue=7,draws=0,hits=0,pairs=0,pairCounts=[0,0,0,0];
 const percentage=(n,d)=>d?((100*n/d).toFixed(1).replace(/\.0$/,"")+"%"):"—";
 function show(){
  const total=red+blue, expected=100*red/total;
@@ -48,12 +61,16 @@ function show(){
  $("redcount").textContent=hits;$("bluecount").textContent=draws-hits;
  $("redpct").textContent=percentage(hits,draws);$("bluepct").textContent=percentage(draws-hits,draws);
  $("compare").textContent=draws?`After ${draws} draws, the experimental red percentage is ${percentage(hits,draws)}. Difference from theoretical: ${Math.abs(100*hits/draws-expected).toFixed(1)} percentage points.`:"Run at least 10 draws to compare your results.";
+ const p=red/total,q=blue/total,weights=[p*p,p*q,q*p,q*q];
+ for(let i=0;i<4;i++){$("th-"+i).textContent=percentage(weights[i]*100,100);$("count-"+i).textContent=pairs?pairCounts[i]+" / "+pairs:"0 / 0";$("ex-"+i).textContent=percentage(pairCounts[i],pairs);}
+ $("pairsummary").textContent=pairs?`After ${pairs} pairs, RR appeared ${pairCounts[0]} times (${percentage(pairCounts[0],pairs)}). Theoretical RR: ${percentage(red*red,total*total)}.`:"No pairs yet. Predict the chance of RR before starting.";
 }
 function reset(){draws=0;hits=0;show();}
+function resetPairs(){pairs=0;pairCounts=[0,0,0,0];show();}
 $("apply").addEventListener("click",()=>{
  const r=Number($("red").value),b=Number($("blue").value);
  if(!Number.isInteger(r)||!Number.isInteger(b)||r<0||b<0||r>20||b>20||r+b===0){$("bagdesc").textContent="Enter whole numbers from 0 to 20, with at least one counter.";return;}
- red=r;blue=b;reset();
+ red=r;blue=b;draws=0;hits=0;pairs=0;pairCounts=[0,0,0,0];show();
 });
 document.querySelectorAll("[data-draw]").forEach(btn=>btn.addEventListener("click",()=>{
  const n=Number(btn.dataset.draw),total=red+blue;
@@ -61,9 +78,15 @@ document.querySelectorAll("[data-draw]").forEach(btn=>btn.addEventListener("clic
  draws+=n;show();
 }));
 $("reset").addEventListener("click",reset);
+document.querySelectorAll("[data-pair]").forEach(btn=>btn.addEventListener("click",()=>{
+ const n=Number(btn.dataset.pair),p=red/(red+blue);
+ for(let i=0;i<n;i++){const first=Math.random()<p,second=Math.random()<p;pairCounts[first?(second?0:1):(second?2:3)]++;}
+ pairs+=n;show();
+}));
+$("reset-pairs").addEventListener("click",resetPairs);
 $("print").addEventListener("click",()=>window.print());
 $("copy").addEventListener("click",()=>{
- const message=`Probability investigation\nBag: ${red} red, ${blue} blue\nPrediction out of 100: ${$("prediction").value}\nPrediction reasoning: ${$("reason").value}\nDraws: ${draws}; red: ${hits}; experimental: ${percentage(hits,draws)}; theoretical: ${percentage(red,red+blue)}\nConclusion: ${$("conclusion").value}`;
+ const message=`Probability investigation\nBag: ${red} red, ${blue} blue\nPrediction out of 100: ${$("prediction").value}\nPrediction reasoning: ${$("reason").value}\nDraws: ${draws}; red: ${hits}; experimental: ${percentage(hits,draws)}; theoretical: ${percentage(red,red+blue)}\nPairs: ${pairs}; RR: ${pairCounts[0]}; RR experimental: ${percentage(pairCounts[0],pairs)}; RR theoretical: ${percentage(red*red,(red+blue)*(red+blue))}\nConclusion: ${$("conclusion").value}`;
  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(message).then(()=>$("copy-status").textContent="Copied.",()=>$("copy-status").textContent="Copy unavailable. Use Print instead.");}
  else $("copy-status").textContent="Copy unavailable. Use Print instead.";
 });
