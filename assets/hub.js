@@ -118,7 +118,7 @@
     const imgs=l.imgs||[];
     const qs=(l.check||[]).map((q,qi)=>{
       const a=answers[qi];
-      return `<div class="q"><div class="qt">${qi+1}. ${esc(q.q)}</div><div class="opts">${q.a.map((o,oi)=>{
+      return `<div class="q" role="group" aria-label="Question ${qi+1}: ${esc(q.q)}"><div class="qt">${qi+1}. ${esc(q.q)}</div><div class="opts">${q.a.map((o,oi)=>{
         let c="opt"; if(a!==undefined){ if(oi===q.c) c+=" right"; else if(oi===a) c+=" wrong"; }
         return `<button class="${c}" data-q="${qi}" data-o="${oi}" ${a!==undefined?"disabled":""}>${esc(o)}</button>`;}).join("")}</div>
         ${a!==undefined?`<div class="why">${a===q.c?"Right. ":"Not quite. "}${esc(q.why)}</div>`:""}</div>`;}).join("");
@@ -157,6 +157,9 @@
       answers[+b.dataset.q]=+b.dataset.o;
       if(l.check.every((q,qi)=>answers[qi]===q.c)) markDone(u.id+"/"+l.id);
       const y=window.scrollY; renderLesson(u,l); window.scrollTo(0,y);
+      const next=(l.check||[]).findIndex((q,qi)=>answers[qi]===undefined);
+      const focusTarget=next>=0?document.querySelector(`article.lesson > .q .opts button[data-q="${next}"][data-o]`):document.querySelector("#retry");
+      if(focusTarget) focusTarget.focus({preventScroll:true});
     });
     const r=$("#retry"); if(r) r.onclick=()=>{answers={}; const y=window.scrollY; renderLesson(u,l); window.scrollTo(0,y);};
     bindActivity(u,l);
