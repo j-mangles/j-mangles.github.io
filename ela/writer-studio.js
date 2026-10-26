@@ -83,7 +83,7 @@ function studio(el){
     </div>
     <div class="ws-actions">
      <button class="btn" id="ws-download" type="button">Download draft</button>
-     <button class="btn ghost" id="ws-copy" type="button">Copy paragraph</button>
+     <button class="btn ghost" id="ws-copy" type="button">Copy draft</button>
      <button class="btn ghost" id="ws-clear" type="button">Start over</button>
     </div>
     <p class="note" id="ws-status" aria-live="polite">Your work is not collected or saved online. Download or copy it before leaving this page.</p>
@@ -119,7 +119,6 @@ function studio(el){
   $("#ws-status").textContent="Question changed. The previous question's draft is kept while you stay on this page.";
  };
  inputs.forEach(x=>x.addEventListener("input",renderPreview));
- $$("#ws-quote").forEach(()=>{}); // harmless if no matching element
  $$("[data-quote]").forEach(b=>b.onclick=()=>{
   $("#ws-evidence").value="“"+quote[Number(b.dataset.quote)]+"”";
   renderPreview();
