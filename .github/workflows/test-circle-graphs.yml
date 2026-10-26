@@ -1,0 +1,22 @@
+name: Test Math 7 Circle Graph Lab
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  circle-graphs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Check Manitoba 7.SP.3 mathematics and integration
+        run: |
+          node --check math/circle-graph-lab.js
+          node tools/test_circle_graph_lab.cjs
+          node tools/test_fraction_strips.cjs
+          node tools/test_resource_library.cjs
+          node tools/test_site_integration.cjs

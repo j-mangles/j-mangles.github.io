@@ -160,6 +160,15 @@ async function checkNoHorizontalOverflow(page,label){
   assert.match(await page.locator("#inference").inputValue(),/spiral's exact meaning/);
   assert.ok(await page.locator("#artifact-art svg[role=img]").count()>0);
   await capture(page,"social-artifact-evidence-desktop");
+  stage="Math circle graph model";
+  await goto(page,"/math/#area","#cg-inputs");
+  assert.match(await page.locator("#cg-method").innerText(),/144°/);
+  await page.locator('[data-count="0"]').fill("15");
+  assert.match(await page.locator("#cg-method").innerText(),/360°/);
+  await page.locator('[data-label="1"]').fill("Painting and music");
+  assert.match(await page.locator("#cg-table-wrap").innerText(),/Painting and music/);
+  assert.ok(await page.locator("#cg-picture svg[role=img]").count()>0);
+  await capture(page,"math-circle-graph-desktop");
   stage="Social Studies atlas shell";
   const atlas=await page.request.get(origin+"/social-studies/");
   assert.equal(atlas.status(),200);
@@ -178,6 +187,9 @@ async function checkNoHorizontalOverflow(page,label){
   }
   await goto(phone,"/math/#int","#il-problem");
   await capture(phone,"integer-lab-mobile");
+  await goto(phone,"/math/#area","#cg-inputs");
+  await checkNoHorizontalOverflow(phone,"Circle graph lab mobile");
+  await capture(phone,"math-circle-graph-mobile");
   await goto(phone,"/math/#eq","#bs-problem");
   await checkNoHorizontalOverflow(phone,"Equation Balance mobile");
   await capture(phone,"equation-balance-mobile");
