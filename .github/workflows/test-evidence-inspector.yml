@@ -1,0 +1,25 @@
+name: Test Evidence Inspector
+on:
+  pull_request:
+    paths:
+      - 'critical-thinking/evidence-inspector.js'
+      - 'critical-thinking/index.html'
+      - 'tools/test_evidence_inspector.cjs'
+      - '.github/workflows/test-evidence-inspector.yml'
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Test evidence reasoning interaction
+        run: |
+          node --check critical-thinking/evidence-inspector.js
+          node --check tools/test_evidence_inspector.cjs
+          node tools/test_evidence_inspector.cjs
