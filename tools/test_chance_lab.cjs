@@ -1,0 +1,66 @@
+/* Chance Lab regression checks: distribution math, charts, input and event wiring. */
+"use strict";
+const assert=require("node:assert/strict");
+const fs=require("node:fs"),vm=require("node:vm"),path=require("node:path");
+const root=path.resolve(__dirname,"..");
+const code=fs.readFileSync(path.join(root,"math/chance-lab.js"),"utf8");
+const window={HUB:{subject:"math",lessonTools:{}}};
+vm.runInNewContext(code,{window,Math},{filename:"math/chance-lab.js",timeout:3000});
+const H=window.HUB,m=H.probabilityModel;
+assert.equal(typeof H.lessonTools["prob/p2"],"function");
+assert.equal(Object.keys(m.experiments).length,3);
+const coin=m.experiments.coin,die=m.experiments.die,spin=m.experiments.spinner;
+assert.deepEqual(Array.from(m.probabilities(coin)),[.5,.5]);
+assert.deepEqual(Array.from(m.probabilities(die)),Array(6).fill(1/6));
+assert.deepEqual(Array.from(m.probabilities(spin)),[3/8,2/8,1/8,2/8]);
+assert.equal(m.sample(coin,()=>0),0);
+assert.equal(m.sample(coin,()=>.9999),1);
+assert.equal(m.sample(spin,()=>0),0);
+assert.equal(m.sample(spin,()=>.3749),0);
+assert.equal(m.sample(spin,()=>.375),1);
+assert.equal(m.sample(spin,()=>.75),3);
+const eight=Array.from({length:8},(_,i)=>m.sample(spin,()=>(i+.5)/8));
+const counts=m.summarize(spin,eight);
+assert.deepEqual(Array.from(counts.counts),[3,2,1,2]);
+assert.equal(counts.total,8);
+assert.equal(counts.experimental[0],.375);
+assert.equal(m.summarize(spin,[]).experimental[0],null);
+assert.throws(()=>m.summarize(spin,[99]),/Invalid draw/);
+const html=fs.readFileSync(path.join(root,"math/index.html"),"utf8");
+assert.ok(html.includes('src="chance-lab.js"'));
+assert.ok(html.indexOf('src="chance-lab.js"')<html.indexOf('src="../assets/hub.js"'));
+const nodes=new Map();
+const make=(dataset={})=>({dataset,value:"",focus(){this.focused=true;}});
+const runButtons=[1,20,100,500].map(k=>make({plRun:String(k)}));
+const el={
+ innerHTML:"",
+ querySelector(q){if(!nodes.has(q))nodes.set(q,make());return nodes.get(q);},
+ querySelectorAll(q){assert.equal(q,"[data-pl-run]");return runButtons;}
+};
+const $=q=>el.querySelector(q);
+H.lessonTools["prob/p2"](el);
+assert.match(el.innerHTML,/Chance Lab: prediction vs. results/);
+assert.match(el.innerHTML,/Fair coin/);
+assert.match(el.innerHTML,/Line graph|How does the chance settle/);
+assert.match(el.innerHTML,/aria-live="polite"/);
+assert.match(el.innerHTML,/Exact probability and frequency values/);
+$("#pl-predict").value="50";
+runButtons[1].onclick();
+assert.match(el.innerHTML,/20 independent trials/);
+assert.match(el.innerHTML,/Your prediction was 50%/);
+assert.equal(runButtons[1].focused,true);
+$("#pl-mode").value="spinner";$("#pl-mode").onchange();
+assert.match(el.innerHTML,/Eight equal spinner sections/);
+assert.match(el.innerHTML,/No trials yet/);
+$("#pl-target").value="2";$("#pl-target").onchange();
+runButtons[2].onclick();
+assert.match(el.innerHTML,/100 independent trials/);
+assert.match(el.innerHTML,/How does the chance settle\? · Green/);
+assert.match(el.innerHTML,/12\.5%/);
+$("#pl-reset").onclick();
+assert.match(el.innerHTML,/Trials cleared/);
+assert.match(el.innerHTML,/No trials yet/);
+$("#pl-predict").value="150";runButtons[0].onclick();
+assert.match(el.innerHTML,/between 0 and 100%/);
+assert.match(el.innerHTML,/No trials yet/);
+console.log("Chance Lab model, visualization, input and event tests passed.");
