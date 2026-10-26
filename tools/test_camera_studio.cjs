@@ -1,0 +1,36 @@
+/* Grade 8 ELA original media study: shot distances from The Present viewing guide. */
+"use strict";
+const assert=require("node:assert/strict"),fs=require("node:fs"),vm=require("node:vm"),path=require("node:path");
+const root=path.resolve(__dirname,".."),read=p=>fs.readFileSync(path.join(root,p),"utf8");
+const context={window:{HUB:{subject:"ela",tools:{stories:()=>{}},lessonTools:{}}}};
+const original=context.window.HUB.tools.stories;
+vm.runInNewContext(read("ela/camera-studio.js"),context,{filename:"ela/camera-studio.js"});
+const M=context.window.CameraStudioCore;
+assert.equal(typeof context.window.HUB.tools.film,"function");
+assert.equal(context.window.HUB.tools.stories,original,"Existing plot explorer must remain intact");
+assert.deepEqual(Array.from(M.SHOTS,x=>x.name),["Extreme long shot","Long shot","Medium shot","Close-up","Extreme close-up"]);
+assert.equal(M.SCENES.length,4);
+assert.deepEqual(Array.from(M.SCENES,x=>x.id),["alone","text","lockers","reaction"]);
+const diagrams=M.SHOTS.map(x=>M.shotSVG(x.id));
+assert.equal(new Set(diagrams).size,5,"Each camera distance should produce distinct framing");
+diagrams.forEach((svg,i)=>{
+ assert.ok(svg.includes('role="img"')&&svg.includes(M.SHOTS[i].name));
+ assert.ok(svg.includes("not a frame from The Present"));
+ assert.ok(!svg.includes("NaN")&&!svg.includes("undefined"));
+});
+assert.throws(()=>M.shotSVG("unknown"));
+const responses=Array.from(M.SCENES,x=>({shot:"",reason:""}));
+responses[0]={shot:"extreme-long",reason:"The huge space emphasizes isolation."};
+const exported=M.exportResponse(responses);
+assert.ok(exported.includes("Scene A")&&exported.includes("Extreme long shot"));
+assert.ok(exported.includes("The huge space emphasizes isolation."));
+assert.ok(exported.includes("[choose a shot]"));
+const page=read("ela/index.html"),scripts=[...page.matchAll(/<script src="([^"]+)"/g)].map(m=>m[1]);
+assert.ok(scripts.includes("camera-studio.js")&&scripts.indexOf("tools.js")<scripts.indexOf("camera-studio.js")&&scripts.indexOf("camera-studio.js")<scripts.indexOf("../assets/hub.js"));
+const data={window:{}};vm.runInNewContext(read("ela/data.js"),data);
+const u=data.window.HUB.units.find(x=>x.id==="film");
+assert.ok(u&&u.name==="Media and Film");
+assert.ok(!u.lessons||u.lessons.length===0,"Do not fabricate future lesson pages");
+assert.ok(read("assets/course-map.js").includes('film:"Camera Framing Studio"'));
+assert.ok(read("index.html").includes('href="ela/#film"'));
+console.log("Camera Studio tests passed: five distinct shots, four grounded directing scenarios, existing unit and original tools preserved.");
