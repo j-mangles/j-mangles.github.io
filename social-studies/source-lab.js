@@ -19,7 +19,7 @@ const LEVELS=[
 ];
 function blank(){return {observation:"",inference:"",limits:"",followUp:"",level:"possible"};}
 function newEntries(){return Object.fromEntries(CARDS.map(x=>[x.id,blank()]));}
-const safe=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;',"'" :"&#39;"}[c]));
+const safe=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 function artifactSVG(id){
  if(!CARDS.some(x=>x.id===id))throw Error("Unknown Site 14 artifact");
  let body="";
