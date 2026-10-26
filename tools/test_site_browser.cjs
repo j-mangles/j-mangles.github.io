@@ -148,6 +148,18 @@ async function checkNoHorizontalOverflow(page,label){
   await page.locator('[data-scene="1"]').click();
   assert.match(await page.locator("#ss-reason").inputValue(),/what is written/);
   await capture(page,"ela-camera-shot-studio-desktop");
+  stage="Social Studies Site 14 evidence desk";
+  await goto(page,"/social-studies/evidence.html","#artifact-list button");
+  await page.locator("#observation").fill("Several decorated vessels were found together near a hearth.");
+  await page.locator("#inference").fill("They likely made pottery; the spiral's exact meaning is uncertain.");
+  await page.locator("#confidence").selectOption("possible");
+  await page.locator('[data-artifact="pouch"]').click();
+  await page.locator("#observation").fill("A leather pouch contains three different objects.");
+  await page.locator('[data-artifact="vessel"]').click();
+  assert.match(await page.locator("#observation").inputValue(),/Several decorated vessels/);
+  assert.match(await page.locator("#inference").inputValue(),/spiral's exact meaning/);
+  assert.ok(await page.locator("#artifact-art svg[role=img]").count()>0);
+  await capture(page,"social-artifact-evidence-desktop");
   stage="Social Studies atlas shell";
   const atlas=await page.request.get(origin+"/social-studies/");
   assert.equal(atlas.status(),200);
@@ -179,6 +191,9 @@ async function checkNoHorizontalOverflow(page,label){
   await capture(phone,"ela-plot-board-mobile");
   await goto(phone,"/critical-thinking/#games/g1","#pl-a");
   await capture(phone,"thinklab-payoff-mobile");
+  await goto(phone,"/social-studies/evidence.html","#artifact-list button");
+  await checkNoHorizontalOverflow(phone,"Site 14 Evidence Desk mobile");
+  await capture(phone,"social-artifact-evidence-mobile");
   await goto(phone,"/social-studies/compare.html","#period-a");
   await checkNoHorizontalOverflow(phone,"Civilization comparison mobile");
   await capture(phone,"atlas-compare-mobile");
