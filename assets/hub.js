@@ -27,6 +27,12 @@
       window.scrollTo(0,0);
       return;
     }
+    if(h==="resources" && window.StudentResources){
+      renderTabs("");
+      window.StudentResources.render($("#main"),H);
+      window.scrollTo(0,0);
+      return;
+    }
     const [uid, lid] = h.split("/");
     const u = unit(uid) || unit(defaultUnit());
     const l = u && lid && (u.lessons||[]).find(x=>x.id===lid);
