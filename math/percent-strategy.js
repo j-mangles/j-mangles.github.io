@@ -37,7 +37,7 @@ function makeProblem(kind,p,whole){
 H.percentStrategy={makeProblem};
 const lessons=[["fdp/l05","part"],["fdp/l06","whole"],["fdp/l09","discount"]];
 function studio(el,kind){
- let level="friendly",current=null,attempts=0,solved=0,questions=0,hint=0,feedback="";
+ let level="friendly",current=null,attempts=0,solved=0,questions=0,hint=0,counted=false;
  const friendly=[10,20,25,30,40,50,60,75],stretch=[12,15,18,35,42,45,62,85];
  const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
  el.innerHTML='<section class="ps-lab">'+
@@ -58,7 +58,7 @@ function studio(el,kind){
  '@media(max-width:540px){.ps-lab .ps-layout{grid-template-columns:1fr}.ps-lab .ps-grid{width:130px;height:130px}}'+
  '</style>'+
  '<div class="eyebrow">Number Workshop · Unit 1</div>'+
- '<div class="ps-top"><div><h3 style="margin:4px 0">Percent Strategy Studio</h3><p class="note" style="margin:0">Estimate, solve, check, and explain your method. Practice is unlimited.</p></div><div class="note" id="ps-score">0 solved · 0 tried</div></div>'+
+ '<div class="ps-top"><div><h3 style="margin:4px 0">Percent Strategy Studio</h3><p class="note" style="margin:0">Estimate, solve, check, and explain your method. Practice is unlimited.</p></div><div class="note" id="ps-score">0 solved · 0 questions shown</div></div>'+
  '<div class="ps-choice" role="group" aria-label="Question difficulty"><button class="btn ghost" type="button" data-level="friendly" aria-pressed="true">Start with friendly numbers</button><button class="btn ghost" type="button" data-level="stretch" aria-pressed="false">Stretch my thinking</button></div>'+
  '<div class="ps-layout"><div><p id="ps-question" class="ps-question"></p><p id="ps-meaning" class="note"></p>'+
  '<form id="ps-form"><label for="ps-answer"><b>My answer</b> (round to the nearest hundredth if needed)</label><div class="ps-actions"><input id="ps-answer" type="text" inputmode="decimal" autocomplete="off" aria-describedby="ps-feedback" placeholder="Type a number"><button class="btn" type="submit">Check answer</button></div></form>'+
@@ -69,11 +69,11 @@ function studio(el,kind){
  '<p class="note" style="margin-top:16px">Use scratch paper for your steps. This is practice, not a submitted assignment or a gradebook record.</p></section>';
  const $=s=>el.querySelector(s);
  const $$=s=>[...el.querySelectorAll(s)];
- const updateScore=()=>{$("#ps-score").textContent=solved+" solved · "+questions+" tried";};
+ const updateScore=()=>{$("#ps-score").textContent=solved+" solved · "+questions+" questions shown";};
  function next(){
   const options=level==="friendly"?friendly:stretch, p=pick(options);
   const whole=kind==="whole"?(level==="friendly"?pick([40,60,80,100,120,160]):pick([35,50,75,125,180])):(level==="friendly"?pick([40,60,80,100,120,160]):randomInt(20,170));
-  current=makeProblem(kind,p,whole);attempts=0;hint=0;feedback="";questions++;
+  current=makeProblem(kind,p,whole);attempts=0;hint=0;counted=false;questions++;
   $("#ps-question").textContent=current.question;
   $("#ps-meaning").textContent=current.meaning;
   $("#ps-answer").value="";$("#ps-feedback").textContent="";
@@ -89,7 +89,7 @@ function studio(el,kind){
   const n=Number(raw);if(!Number.isFinite(n)){ $("#ps-feedback").textContent="That number could not be checked.";return;}
   attempts++;
   if(Math.abs(n-current.answer)<0.005){
-   if(attempts===1)solved++;
+   if(!counted){solved++;counted=true;}
    $("#ps-feedback").textContent="Correct. "+current.steps;
    updateScore();
   }else $("#ps-feedback").textContent="Not yet. Check whether you found the part, whole or sale price. You can request a hint.";
