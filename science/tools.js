@@ -455,6 +455,10 @@
     }
     el.querySelectorAll("[data-tab]").forEach(b=>b.onclick=()=>show(b.dataset.tab));
     show(cur);
+    const rg=document.createElement("p");
+    rg.className="cx-row"; rg.style.marginTop="16px";
+    rg.innerHTML=`<a class="btn ghost" href="review-game.html">Open the Cells &amp; Transport review game</a><span class="cx-stat">Team game for the board: Topics 1 and 2</span>`;
+    el.appendChild(rg);
   };
 
   /* ---------- Membrane Lab: live particle models for the transport lesson (booklet Topic 2) ---------- */
