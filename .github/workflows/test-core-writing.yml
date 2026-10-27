@@ -1,0 +1,26 @@
+name: Test ELA Core Writing Workshop
+on:
+  pull_request:
+    paths:
+      - 'ela/core-writing-workshop.js'
+      - 'ela/index.html'
+      - 'ela/data.js'
+      - 'tools/test_core_writing.cjs'
+      - '.github/workflows/test-core-writing.yml'
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Validate four Grade 8 ELA writing tasks
+        run: |
+          node --check ela/core-writing-workshop.js
+          node --check tools/test_core_writing.cjs
+          node tools/test_core_writing.cjs
