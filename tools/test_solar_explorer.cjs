@@ -44,5 +44,7 @@ assert.ok(read("assets/course-map.js").includes('light:"Solar Spectrum & Albedo 
 const h={window:{}};vm.runInNewContext(read("science/data.js"),h);
 const light=h.window.HUB.units.find(u=>u.id==="light");
 assert.ok(light&&light.name==="Solar Energy and Light");
-assert.ok(!(light.lessons||[]).length,"Do not invent future lessons");
+assert.equal(light.lessons.length,14,"Solar unit now has fourteen topic-based lesson guides");
+assert.ok(light.lessons.some(l=>l.id==="u3t4-chains"),"Energy pathways lesson exists");
+assert.ok(light.after.includes("24-class"),"Guides supplement, not replace, the classroom teaching plan");
 console.log("Science solar explorer tests passed: spectrum ranking, 49 comparisons, albedo budget and navigation.");
