@@ -320,7 +320,10 @@ window.EgyptLessons = [
       ]
     ],
     "work": "Choose Giza or Abu Simbel. Explain how the site shows at least two of technology, religious practice, government, social hierarchy and environment.",
-    "activity": {"href": "temple-walkthrough.html", "title": "Explore the Egyptian Temple Walkthrough"},
+    "activity": {
+      "href": "temple-walkthrough.html",
+      "title": "Explore the Egyptian Temple Walkthrough"
+    },
     "check": [
       {
         "q": "The Great Pyramid is most closely associated with…",
@@ -559,6 +562,228 @@ window.EgyptLessons = [
         ],
         "c": 0,
         "why": "Archaeological and written sources document Kushite kingdoms and Egypt's 25th Dynasty."
+      }
+    ]
+  },
+  {
+    "id": "l9",
+    "n": "9",
+    "title": "Trade, Technology and Innovation",
+    "released": true,
+    "places": [
+      "thebes",
+      "amarna",
+      "aswan",
+      "nubia",
+      "punt"
+    ],
+    "big": "Egypt's deserts and seas created barriers, but they did not isolate it: people exchanged resources, technologies and ideas across connected regions.",
+    "notes": [
+      "Egypt had grain, linen, papyrus, stone and access to gold, but some resources were harder to obtain locally, including high-quality cedar timber and certain metals.",
+      "Trade and diplomatic exchange connected Egypt to Nubia, the Levant, the eastern Mediterranean and other regions. The location of Punt remains debated, so do not put a precise dot on a map as if it were certain.",
+      "Hatshepsut's expedition to Punt, shown in reliefs at Deir el-Bahari, brought valued goods such as incense materials. Royal images also promote the ruler's achievements and must be interpreted critically.",
+      "New Kingdom texts sometimes used the deben, a standard weight, to express value. A price stated in deben did not mean people necessarily paid with coins.",
+      "The Amarna letters, written in cuneiform, record diplomatic relationships and exchanges between rulers around the 14th century BCE. They show elite voices, not every trader's experience.",
+      "The Uluburun shipwreck, dated to around the late 14th century BCE, carried goods from several regions. It is evidence of connected trade networks, not proof that every item on the ship was headed for Egypt.",
+      "Technologies and practices moved in more than one direction. Egyptians adapted ideas and materials from neighbours while Egyptian goods and techniques travelled outward."
+    ],
+    "terms": [
+      [
+        "Trade network",
+        "Interconnected routes along which people exchange goods, ideas and knowledge."
+      ],
+      [
+        "Deben",
+        "A historical Egyptian unit of weight used as a measure of value."
+      ],
+      [
+        "Diplomacy",
+        "Communication and negotiation between rulers or states."
+      ],
+      [
+        "Corroboration",
+        "Checking a claim against other evidence."
+      ]
+    ],
+    "work": "Plan a royal trade mission: choose a resource Egypt needed, identify a possible trading region, and explain what a letter, shipwreck or temple relief could—and could not—prove about the exchange.",
+    "check": [
+      {
+        "q": "What do the Amarna letters reveal especially well?",
+        "a": [
+          "Diplomatic exchanges among rulers",
+          "Every farmer's daily conversations",
+          "Modern Egyptian elections"
+        ],
+        "c": 0,
+        "why": "They are written diplomatic records from elite networks."
+      },
+      {
+        "q": "Why is the Uluburun shipwreck important?",
+        "a": [
+          "Its mixed cargo provides evidence of long-distance connections",
+          "It proves every item was headed for Egypt",
+          "It proves no one traded by land"
+        ],
+        "c": 0,
+        "why": "Cargo from several regions shows wide exchange, but the ship's exact itinerary is not fully known."
+      },
+      {
+        "q": "A price expressed in deben means…",
+        "a": [
+          "It was necessarily paid with minted coins",
+          "It used a standard of weight or value",
+          "It was always free"
+        ],
+        "c": 1,
+        "why": "A unit of account need not be a coin."
+      }
+    ]
+  },
+  {
+    "id": "l10",
+    "n": "10",
+    "title": "Pharaohs Who Changed Egypt",
+    "released": true,
+    "places": [
+      "thebes",
+      "amarna",
+      "abusimbel",
+      "alexandria",
+      "punt"
+    ],
+    "big": "A ruler's achievements and reputation are not the same thing. Historians compare actions, sources and who controlled the story afterward.",
+    "notes": [
+      "Pharaohs were expected to maintain order, defend the kingdom, support religious institutions and organize resources, but their actual power varied by period.",
+      "Hatshepsut ruled as pharaoh in the 15th century BCE and sponsored trade and monumental building. Later removal of some of her images and names makes her surviving record uneven.",
+      "Akhenaten promoted the Aten and shifted the royal capital to Akhetaten (modern Amarna). Many of his religious and political changes were reversed after his death.",
+      "Ramesses II ruled in the 13th century BCE and commissioned extensive monuments. His inscriptions portray the Battle of Kadesh as a major triumph, but other evidence complicates that royal message; a later peace treaty was concluded with the Hittites.",
+      "Cleopatra VII ruled in the 1st century BCE as a member of the Greek-speaking Ptolemaic dynasty. Much of the narrative about her survives through later Roman writers, who had their own perspectives.",
+      "Royal monuments, later histories and surviving documents have different purposes. Ask who created each source, when, and which voices are missing.",
+      "Long-lasting change depended on more than one person's orders. Institutions, communities and later rulers could continue, adapt or reverse a policy."
+    ],
+    "terms": [
+      [
+        "Ma'at",
+        "An Egyptian concept of order, justice and proper balance."
+      ],
+      [
+        "Royal propaganda",
+        "Messaging intended to present a ruler favourably."
+      ],
+      [
+        "Ptolemaic dynasty",
+        "The Macedonian Greek royal family that governed Egypt after Alexander."
+      ],
+      [
+        "Historical interpretation",
+        "A reasoned account built from evidence that may be revised."
+      ]
+    ],
+    "work": "Create a short evidence-based 'report card' for one ruler: identify two actions, a possible effect, a limitation of a surviving source, and one question you would investigate further.",
+    "check": [
+      {
+        "q": "Which ruler established a new royal centre at Amarna?",
+        "a": [
+          "Akhenaten",
+          "Khufu",
+          "Cleopatra VII"
+        ],
+        "c": 0,
+        "why": "Akhenaten moved the royal court to Akhetaten, near modern Amarna."
+      },
+      {
+        "q": "Why should historians question Ramesses II's victory scenes?",
+        "a": [
+          "Royal monuments can promote a ruler's preferred version of events",
+          "Every carved scene is a photograph",
+          "The Hittites did not exist"
+        ],
+        "c": 0,
+        "why": "Claims of victory should be checked against other records and the later diplomatic settlement."
+      },
+      {
+        "q": "What is a limitation of many accounts about Cleopatra?",
+        "a": [
+          "They were written by later Roman authors with their own interests",
+          "They are all contemporary Egyptian diaries",
+          "No accounts survive"
+        ],
+        "c": 0,
+        "why": "Who writes a history affects which perspectives survive."
+      }
+    ]
+  },
+  {
+    "id": "l11",
+    "n": "11",
+    "title": "Decline, Change and Legacy",
+    "released": true,
+    "places": [
+      "nile",
+      "thebes",
+      "napata",
+      "alexandria"
+    ],
+    "big": "Egypt did not disappear on one date. Political authority changed repeatedly while people, language, religious practices and cultural traditions also continued and changed.",
+    "notes": [
+      "Egypt experienced periods of internal division and pressure from wars, resource demands and changing regional trade. Historians debate how these causes interacted; no single explanation fits all centuries.",
+      "Around the end of the New Kingdom, political authority fragmented. Priests at Thebes and rulers in the north exercised power in different regions.",
+      "Kushite rulers from the south governed Egypt during the 25th Dynasty. Later Assyrian and Persian interventions also changed who controlled parts of the country.",
+      "Alexander of Macedon took control in 332 BCE. The Ptolemaic dynasty ruled afterward, until Egypt became a Roman province in 30 BCE.",
+      "Some foreign rulers adopted Egyptian titles and supported temples. Conquest did not immediately erase Egyptian institutions or cultural practices.",
+      "What counts as the 'end' depends on the question: political independence, a dynasty, a writing system and cultural continuity have different timelines.",
+      "The Egyptian language continued to develop, including into Coptic. Modern Egyptians are not separate from this history; people and culture persisted through major changes.",
+      "Egyptian practices and objects influenced later societies, but claims of a direct modern 'invention' should be supported rather than assumed."
+    ],
+    "terms": [
+      [
+        "Continuity",
+        "Something that persists across change."
+      ],
+      [
+        "Conquest",
+        "The taking of territory by force."
+      ],
+      [
+        "Political independence",
+        "A state governing itself rather than being ruled by another power."
+      ],
+      [
+        "Legacy",
+        "A lasting influence or inheritance from the past."
+      ]
+    ],
+    "work": "Choose a turning point (for example 1070 BCE, 332 BCE or 30 BCE). Explain why it matters, then give one piece of evidence that Egyptian society also continued afterward. Respond to a possible counterargument.",
+    "check": [
+      {
+        "q": "Which statement is best supported?",
+        "a": [
+          "Egypt lost all its culture on one day",
+          "Political rule changed many times while cultural traditions also persisted",
+          "Egypt had no foreign contacts"
+        ],
+        "c": 1,
+        "why": "Political and cultural timelines are not identical."
+      },
+      {
+        "q": "What happened in 30 BCE?",
+        "a": [
+          "Egypt became a Roman province",
+          "The Great Pyramid was built",
+          "Hieroglyphs were first invented"
+        ],
+        "c": 0,
+        "why": "After Cleopatra VII's death, Egypt came under Roman rule."
+      },
+      {
+        "q": "Why might historians disagree about when 'ancient Egypt ended'?",
+        "a": [
+          "They may be using different definitions of political and cultural change",
+          "No evidence survives from Egypt",
+          "Every date is equally accurate for every question"
+        ],
+        "c": 0,
+        "why": "The answer depends on what kind of change is being investigated."
       }
     ]
   }
