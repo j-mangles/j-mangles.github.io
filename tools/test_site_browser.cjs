@@ -211,7 +211,7 @@ async function checkNoHorizontalOverflow(page,label){
   await page.locator('#panel .lessons [data-l="l1"]').click();
   await page.locator("#sheetcard h2").waitFor({state:"visible"});
   assert.match(await page.locator("#sheetcard h2").innerText(),/Nile/);
-  assert.match(await page.locator("#sheetcard .eyebrow").first().innerText(),/Study topic 1/);
+  assert.match(await page.locator("#sheetcard .eyebrow").first().innerText(),/Study topic 1/i);
   assert.ok(await page.locator('#sheetcard a[href^="river-valley-lab.html"]').count()===1);
   await page.locator("#sheet-x").click();
   await capture(page,"atlas-egypt-lessons-desktop");
