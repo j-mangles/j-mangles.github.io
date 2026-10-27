@@ -1,0 +1,27 @@
+name: Test Science 8 Energy & Light Unit
+on:
+  push:
+    branches: [main]
+  pull_request:
+    paths:
+      - 'science/data.js'
+      - 'science/energy-pathway.js'
+      - 'science/index.html'
+      - 'tools/test_energy_light_unit.cjs'
+      - '.github/workflows/test-energy-light.yml'
+permissions:
+  contents: read
+jobs:
+  energy-light:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Verify Grade 8 Energy & Light lessons and model
+        run: |
+          node --check science/data.js
+          node --check science/energy-pathway.js
+          node --check tools/test_energy_light_unit.cjs
+          node tools/test_energy_light_unit.cjs
