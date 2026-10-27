@@ -140,6 +140,7 @@ async function checkNoHorizontalOverflow(page,label){
   stage="ELA headline framing and verification";
   await goto(page,"/ela/media-framing.html","#headlines button");
   assert.equal(await page.locator("#headlines button").count(),3);
+  assert.match(await page.locator(".mf-layout").innerText(),/always uses the invented garden scene/);
   assert.match(await page.locator("#facts").innerText(),/eight-week trial/);
   await page.locator('[data-headline="1"]').click();
   assert.match(await page.locator("#headline-feedback").innerText(),/temporary/);
@@ -206,9 +207,11 @@ async function checkNoHorizontalOverflow(page,label){
   await goto(page,"/social-studies/#egypt",'#tabs [data-id="egypt"]');
   await page.locator("#tab-lessons").click();
   assert.equal(await page.locator("#panel .lessons [data-l]").count(),8);
+  assert.match(await page.locator("#panel .fine").first().innerText(),/13 classroom Egypt slide lessons/);
   await page.locator('#panel .lessons [data-l="l1"]').click();
   await page.locator("#sheetcard h2").waitFor({state:"visible"});
   assert.match(await page.locator("#sheetcard h2").innerText(),/Nile/);
+  assert.match(await page.locator("#sheetcard .eyebrow").innerText(),/Study topic 1/);
   assert.ok(await page.locator('#sheetcard a[href^="river-valley-lab.html"]').count()===1);
   await page.locator("#sheet-x").click();
   await capture(page,"atlas-egypt-lessons-desktop");
