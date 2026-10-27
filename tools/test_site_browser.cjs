@@ -240,7 +240,7 @@ async function checkNoHorizontalOverflow(page,label){
   await capture(phone,"solar-spectrum-mobile");
   await goto(phone,"/ela/media-framing.html","#headlines button");
   await checkNoHorizontalOverflow(phone,"ELA Headline Framing mobile");
-  await page.locator('[data-crop="2"]').click();
+  await phone.locator('[data-crop="2"]').click();
   assert.equal(await phone.locator("#scene").getAttribute("viewBox"),"340 172 300 118");
   await capture(phone,"ela-headline-framing-mobile");
   await goto(phone,"/ela/#film","#ss-shots");
