@@ -445,8 +445,797 @@ window.HUB = {
      ]}
    ]
   },
-  {id:"light", n:"3", name:"Solar Energy and Light", status:"soon", when:"February to March",
-   intro:"Light, the electromagnetic spectrum and energy from the sun."},
+  {
+  "id": "light",
+  "n": "3",
+  "name": "Solar Energy and Light",
+  "status": "soon",
+  "when": "February to March",
+  "intro": "Energy & Light: five topics, 24-class teaching plan, existing Spectrum & Albedo Explorer, and a food-chain energy investigation.",
+  "after": "Student booklet pages 2–19 and five topic slide decks match this learning sequence. The 14 study guides group multiple class periods, rather than replacing the teacher's full 24-class schedule. Models are simplified; your teacher provides any printed assignments and labs.",
+  "lessons": [
+    {
+      "id": "u3t1-energy",
+      "n": "1",
+      "title": "Energy: What Can Make Things Change?",
+      "big": "Energy is transferred and transformed rather than created or destroyed. Identify what changes and where the energy goes.",
+      "notes": [
+        "Energy is a quantity we use to describe the capacity to cause changes or do work. We measure energy in joules (J).",
+        "The law of conservation of energy says that energy is not created or destroyed. It transfers between objects or changes form.",
+        "When gasoline burns, stored chemical energy is transformed into thermal energy, movement, light and sound; it is not newly created.",
+        "The Sun releases energy through nuclear fusion. Sunlight carries some of that energy through space to Earth.",
+        "For each change, describe the energy source, the process and the useful and less useful outcomes. Energy often spreads into the surroundings as heat.",
+        "Class materials: Energy & Light student booklet, Topic 1, pages 2–3; Topic 1 energy slides."
+      ],
+      "terms": [
+        [
+          "Energy",
+          "A quantity describing the capacity to cause change."
+        ],
+        [
+          "Transformation",
+          "Energy changing from one form to another."
+        ],
+        [
+          "Conservation of energy",
+          "Total energy is not created or destroyed during a process."
+        ]
+      ],
+      "work": "Booklet pp. 2–3. Draw a before/during/after energy-pathway diagram for a flashlight, a bike ride and a toaster. Complete your Topic 1 Energy Pre-Assignment when handed out.",
+      "check": [
+        {
+          "q": "A flashlight turns on. Which description best fits conservation of energy?",
+          "a": [
+            "The flashlight creates energy",
+            "Stored battery energy is transferred and transformed",
+            "The light energy appears from nothing"
+          ],
+          "c": 1,
+          "why": "Chemical energy stored in the battery transfers and changes into light and heat."
+        },
+        {
+          "q": "Which unit commonly measures energy?",
+          "a": [
+            "Joule (J)",
+            "Litre (L)",
+            "Kilometre (km)"
+          ],
+          "c": 0,
+          "why": "Energy is measured in joules."
+        },
+        {
+          "q": "Where does energy go when a bouncing ball eventually stops?",
+          "a": [
+            "It is destroyed",
+            "It mostly spreads as thermal energy and sound",
+            "It vanishes into empty space immediately"
+          ],
+          "c": 1,
+          "why": "The energy is transferred to the environment, not destroyed."
+        }
+      ]
+    },
+    {
+      "id": "u3t1-stores",
+      "n": "2",
+      "title": "Potential and Kinetic Energy",
+      "big": "Stored energy and energy of motion help explain everyday transformations.",
+      "notes": [
+        "Potential energy is energy stored due to position, condition or arrangement. A raised object and a stretched spring are examples.",
+        "Kinetic energy is energy of motion. A rolling skateboard and moving river water have kinetic energy.",
+        "Stored chemical energy in food or fuel can be transferred to motion and other energy outputs.",
+        "Energy labels are useful models. Track changes rather than assuming energy exists in only one form.",
+        "A falling object loses gravitational potential energy while gaining kinetic energy; air resistance transfers some energy into the surroundings.",
+        "Class materials: booklet p. 3 and Topic 1 slides 7–8."
+      ],
+      "terms": [
+        [
+          "Potential energy",
+          "Energy stored due to position or arrangement."
+        ],
+        [
+          "Kinetic energy",
+          "Energy associated with motion."
+        ]
+      ],
+      "work": "Booklet p. 3. Make a two-column list of potential and kinetic examples, then explain the changes in a roller-coaster hill and hydroelectric dam.",
+      "check": [
+        {
+          "q": "A spring is compressed but not released. The energy is mainly…",
+          "a": [
+            "Kinetic",
+            "Stored potential",
+            "Non-existent"
+          ],
+          "c": 1,
+          "why": "Deforming the spring stores elastic potential energy."
+        },
+        {
+          "q": "A skateboard rolling across the floor has…",
+          "a": [
+            "Kinetic energy",
+            "Only gravitational potential energy",
+            "No energy"
+          ],
+          "c": 0,
+          "why": "Moving objects have kinetic energy."
+        }
+      ]
+    },
+    {
+      "id": "u3t1-resources",
+      "n": "3",
+      "title": "Energy Resources and Trade-Offs",
+      "big": "Energy sources offer benefits and costs; strong decisions compare their effects instead of claiming one is perfect.",
+      "notes": [
+        "Renewable sources replenish on human timescales, such as sunlight, flowing water and wind. Non-renewable resources replenish extremely slowly.",
+        "Fossil fuels contain chemical energy from ancient organic matter. Burning them releases carbon dioxide and other pollution.",
+        "Nuclear fission releases energy from heavy nuclei. It can produce electricity with low operating emissions but requires safety planning and radioactive-waste management.",
+        "Hydroelectric power uses moving water to drive generators. Manitoba generates much of its electricity using hydropower.",
+        "Wind turbines convert moving air's energy into electricity; solar panels convert sunlight into electricity.",
+        "Compare reliability, cost, local land and water impacts, emissions and long-term consequences; renewable does not mean impact-free.",
+        "Class materials: booklet pp. 4–5; Topic 1 Energy Resources slides and the Energy Transformations Storyboard."
+      ],
+      "terms": [
+        [
+          "Renewable resource",
+          "Energy source replenished at a useful rate for humans."
+        ],
+        [
+          "Non-renewable resource",
+          "Energy source not replaced quickly enough on human timescales."
+        ],
+        [
+          "Trade-off",
+          "A benefit gained while accepting a cost or limitation."
+        ]
+      ],
+      "work": "Booklet pp. 4–5. Choose Manitoba hydropower and one other source. Draw both energy transformations and justify a trade-off using two criteria. Work on the Storyboard Project when assigned.",
+      "check": [
+        {
+          "q": "In a wind turbine, the input that drives the generator is…",
+          "a": [
+            "Wind's kinetic energy",
+            "Chemical energy from coal",
+            "Potential energy in a battery"
+          ],
+          "c": 0,
+          "why": "Moving air spins the turbine."
+        },
+        {
+          "q": "Which is a responsible comparison?",
+          "a": [
+            "Renewable sources have no drawbacks",
+            "All electricity sources involve advantages and trade-offs",
+            "Fossil fuels produce no emissions"
+          ],
+          "c": 1,
+          "why": "A balanced choice weighs evidence and local impacts."
+        }
+      ]
+    },
+    {
+      "id": "u3t1-budget",
+      "n": "4",
+      "title": "Earth's Energy Budget",
+      "big": "Sunlight brings energy to Earth. Some is reflected; absorbed energy warms the planet and ultimately leaves as outgoing radiation.",
+      "notes": [
+        "Radiation can cross the vacuum of space because electromagnetic waves do not require matter.",
+        "Of all incoming solar energy, roughly 30% is reflected by clouds, atmosphere and Earth's bright surfaces; about 70% is absorbed. These are broad averages, not fixed measurements for every place.",
+        "Earth emits energy back toward space mainly as infrared radiation. Temperature depends on incoming and outgoing energy flows.",
+        "If incoming and outgoing energy are equal over time, average global temperature can remain approximately steady. An imbalance changes stored energy and temperature.",
+        "Albedo is a fraction or percentage of incoming light reflected by a surface. Ice and snow often have higher albedo than dark water or soil.",
+        "The surface-only Albedo Explorer simplifies this picture. It does not model all atmospheric absorption or greenhouse effects.",
+        "Class materials: booklet p. 6 and Topic 1 slides 15–16."
+      ],
+      "terms": [
+        [
+          "Energy budget",
+          "The comparison of energy entering and leaving a system."
+        ],
+        [
+          "Albedo",
+          "The fraction of incoming light a surface reflects."
+        ],
+        [
+          "Infrared",
+          "Electromagnetic radiation emitted strongly by objects at Earth's temperatures."
+        ]
+      ],
+      "work": "Booklet p. 6. Open the unit's Solar Spectrum & Albedo Explorer. Set a surface to 20% and then 70% albedo; describe the change in absorbed energy per 100 incoming units.",
+      "check": [
+        {
+          "q": "What happens to sunlight that a surface reflects?",
+          "a": [
+            "It must be absorbed by that surface",
+            "It travels away from that surface",
+            "It is destroyed"
+          ],
+          "c": 1,
+          "why": "Reflected light is redirected; it is not absorbed by the surface."
+        },
+        {
+          "q": "At 60% albedo, a simplified surface receiving 100 units reflects…",
+          "a": [
+            "40 units",
+            "60 units",
+            "160 units"
+          ],
+          "c": 1,
+          "why": "60% of 100 = 60 units."
+        },
+        {
+          "q": "Which kind of radiation mainly carries Earth's outgoing thermal energy?",
+          "a": [
+            "Infrared",
+            "X-rays",
+            "Gamma rays"
+          ],
+          "c": 0,
+          "why": "Earth emits mostly infrared due to its temperature."
+        }
+      ]
+    },
+    {
+      "id": "u3t2-light",
+      "n": "5",
+      "title": "How Light Travels and Interacts",
+      "big": "Light is electromagnetic radiation. It travels through empty space and can be transmitted, absorbed or reflected when it meets matter.",
+      "notes": [
+        "Sunlight reaches Earth across approximately 150 million kilometres of space. No air or other medium is needed for this radiation to travel.",
+        "A transparent material transmits most visible light with little scattering, such as clear glass.",
+        "A translucent material lets some light through but scatters it, such as frosted glass.",
+        "An opaque material does not transmit visible light, such as a wooden board.",
+        "Light generally travels in straight lines through a uniform medium, but it can reflect or change direction at an interface.",
+        "Absorbed sunlight can increase an object's thermal energy or be transformed into chemical or electrical energy.",
+        "Class materials: student booklet p. 7, Topic 2 Light slides and the Light Sources textbook assignment (if assigned)."
+      ],
+      "terms": [
+        [
+          "Transparent",
+          "Transmits light clearly."
+        ],
+        [
+          "Translucent",
+          "Transmits but scatters some light."
+        ],
+        [
+          "Opaque",
+          "Does not transmit visible light."
+        ],
+        [
+          "Radiation",
+          "Energy carried by electromagnetic waves."
+        ]
+      ],
+      "work": "Booklet p. 7. Sort five classroom objects as transparent, translucent or opaque and justify one tricky example with an observation.",
+      "check": [
+        {
+          "q": "Frosted glass is generally…",
+          "a": [
+            "Opaque",
+            "Translucent",
+            "A light source"
+          ],
+          "c": 1,
+          "why": "It transmits and scatters light, so you do not see clearly through it."
+        },
+        {
+          "q": "How does sunlight cross the vacuum of space?",
+          "a": [
+            "As sound waves",
+            "As electromagnetic radiation",
+            "By heating air in space"
+          ],
+          "c": 1,
+          "why": "Electromagnetic radiation can travel through a vacuum."
+        }
+      ]
+    },
+    {
+      "id": "u3t2-albedo",
+      "n": "6",
+      "title": "Reflection, Albedo and Surface Heating",
+      "big": "Light and dark surfaces often reflect different amounts of sunlight, but heating also depends on each material's thermal properties.",
+      "notes": [
+        "Reflection occurs when light bounces from a surface; absorption transfers light energy into the material.",
+        "Bright surfaces such as snow often have relatively high albedo. Dark ocean water usually has lower albedo.",
+        "Loss of sea ice can expose darker water, increasing sunlight absorption and amplifying warming through an ice–albedo feedback.",
+        "Water changes temperature more slowly than dry sand partly because of its greater heat capacity and mixing.",
+        "In the classroom Heating Earth's Surface Lab, use the same starting conditions and light source for a fair comparison. Different surfaces can respond differently.",
+        "The unit's Albedo Explorer illustrates reflected and absorbed amounts out of 100 units, not exact real-world rates of warming.",
+        "Class materials: booklet pp. 8–9, Topic 2 slides 5–10 and Heating Earth's Surface Lab."
+      ],
+      "terms": [
+        [
+          "Reflection",
+          "Light changing direction as it bounces off a surface."
+        ],
+        [
+          "Ice–albedo feedback",
+          "Warming melts reflective ice, exposing darker surfaces that absorb more energy."
+        ],
+        [
+          "Heat capacity",
+          "Energy required to increase an object's temperature."
+        ]
+      ],
+      "work": "Booklet pp. 8–9. Complete the teacher-provided Heating Earth's Surface Lab or use the Albedo Explorer for a prediction/claim/evidence/explanation. List controlled variables.",
+      "check": [
+        {
+          "q": "Two similar surfaces receive the same sunlight. Which usually reflects more?",
+          "a": [
+            "Fresh snow",
+            "Dark asphalt",
+            "Both always reflect equally"
+          ],
+          "c": 0,
+          "why": "Snow usually has higher albedo."
+        },
+        {
+          "q": "Why might wet soil warm more slowly than dry soil?",
+          "a": [
+            "It cannot absorb sunlight",
+            "Water has a high specific heat capacity and evaporation can cool it",
+            "Wet soil creates no heat"
+          ],
+          "c": 1,
+          "why": "Material properties, including water's thermal behaviour, affect temperature change."
+        },
+        {
+          "q": "Melting sea ice can amplify warming because…",
+          "a": [
+            "More dark ocean absorbs sunlight",
+            "Dark water reflects more than ice",
+            "Albedo stops existing"
+          ],
+          "c": 0,
+          "why": "Replacing bright ice with darker water increases absorption."
+        }
+      ]
+    },
+    {
+      "id": "u3t2-refraction",
+      "n": "7",
+      "title": "Refraction: Why Things Look Bent",
+      "big": "Light can change speed and direction when it moves between different transparent materials.",
+      "notes": [
+        "Refraction is a change in direction when light enters another material at an angle and changes speed.",
+        "A straw may appear bent at the surface of water because rays leaving the water bend before reaching your eyes.",
+        "A fish underwater can appear closer to the surface than it really is. Aiming directly where it appears may miss it.",
+        "The amount of bending depends on each material's optical refractive index and the angle of the ray, not only its ordinary mass density.",
+        "A ray travelling along the normal (straight toward the boundary) changes speed but does not bend sideways.",
+        "Never use a laser beam toward anyone's eyes; classroom light activities should use teacher-approved equipment.",
+        "Class materials: booklet p. 10, Topic 2 slides 11–13 and Light Lab."
+      ],
+      "terms": [
+        [
+          "Refraction",
+          "Light changing direction as its speed changes across a boundary."
+        ],
+        [
+          "Normal",
+          "An imaginary line perpendicular to the surface."
+        ],
+        [
+          "Refractive index",
+          "An optical quantity related to light speed in a material."
+        ]
+      ],
+      "work": "Booklet p. 10. Sketch a straw viewed across air and water. Draw a ray path and explain why a submerged object can appear too shallow. Complete the Light Lab when assigned.",
+      "check": [
+        {
+          "q": "A straw appears bent at water's surface mainly because of…",
+          "a": [
+            "Refraction",
+            "Sound",
+            "Evaporation"
+          ],
+          "c": 0,
+          "why": "The light changes direction across water and air."
+        },
+        {
+          "q": "Light entering a new medium exactly along the normal…",
+          "a": [
+            "Must bend to the side",
+            "Can change speed without changing direction",
+            "Always reflects all light"
+          ],
+          "c": 1,
+          "why": "At normal incidence the refracted ray stays on the normal."
+        }
+      ]
+    },
+    {
+      "id": "u3t3-colour",
+      "n": "8",
+      "title": "Prisms, White Light and Colour",
+      "big": "White light contains many wavelengths; a prism separates them because different colours refract by different amounts.",
+      "notes": [
+        "Newton's prism experiments demonstrated that sunlight contains a spectrum of colours; the prism did not have to create the colours.",
+        "An additional optical arrangement can recombine the separated colours into white light.",
+        "Visible light ranges from red (longer wavelength) to violet (shorter wavelength). The colour categories blend continuously.",
+        "Objects appear coloured because they absorb some wavelengths and reflect or transmit others. Appearance also depends on lighting.",
+        "Rods help us see in low light; cone cells support colour vision.",
+        "Class materials: booklet pp. 11–12 and Topic 3 Colour & the Electromagnetic Spectrum slides 2–5."
+      ],
+      "terms": [
+        [
+          "Dispersion",
+          "Separation of light into component wavelengths."
+        ],
+        [
+          "Visible spectrum",
+          "Part of electromagnetic radiation humans can see."
+        ],
+        [
+          "Cones",
+          "Photoreceptor cells that help detect colours."
+        ]
+      ],
+      "work": "Booklet pp. 11–12. Draw what happens when white light enters a prism and explain how Newton's follow-up experiment tested his idea. Sort object colour observations by light absorbed or reflected.",
+      "check": [
+        {
+          "q": "What did Newton's prism experiments demonstrate?",
+          "a": [
+            "A prism invents colour",
+            "White light includes many colours",
+            "The Sun only emits violet light"
+          ],
+          "c": 1,
+          "why": "Different wavelengths already exist in white light."
+        },
+        {
+          "q": "Which visible colour has the longer wavelength?",
+          "a": [
+            "Red",
+            "Violet"
+          ],
+          "c": 0,
+          "why": "Red is toward the longer-wavelength end of the visible spectrum."
+        }
+      ]
+    },
+    {
+      "id": "u3t3-em",
+      "n": "9",
+      "title": "Electromagnetic Waves and Sun Safety",
+      "big": "All electromagnetic waves travel through vacuum; shorter wavelengths correspond to higher frequency and higher photon energy.",
+      "notes": [
+        "From longer wavelength to shorter: radio, microwaves, infrared, visible light, ultraviolet, X-rays and gamma rays.",
+        "As wavelength decreases, frequency increases. Photon energy also increases with frequency.",
+        "Visible light occupies only a small part of the electromagnetic spectrum; sunlight also contains infrared and a small ultraviolet component.",
+        "Different EM bands have practical applications: radio communication, microwave cooking, infrared cameras, visible light, UV disinfection and X-ray imaging.",
+        "Ultraviolet light can damage skin-cell DNA. Sunscreen, shade, protective clothes and sunglasses reduce exposure.",
+        "When comparing EM waves, distinguish the energy of an individual photon from how much radiation or total power reaches an object.",
+        "Class materials: booklet pp. 13–14, Topic 3 slides 6–11 and the EM Radiation Reading."
+      ],
+      "terms": [
+        [
+          "Wavelength",
+          "Distance between repeating points on a wave."
+        ],
+        [
+          "Frequency",
+          "How often a wave oscillates per second."
+        ],
+        [
+          "Ultraviolet (UV)",
+          "EM radiation with shorter wavelengths than visible violet light."
+        ]
+      ],
+      "work": "Booklet pp. 13–14. Use the unit's Spectrum Explorer to rank three radiation bands and identify one application plus one safety issue. Complete the EM Radiation Reading and uses table.",
+      "check": [
+        {
+          "q": "Which has higher photon energy?",
+          "a": [
+            "Radio waves",
+            "X-rays"
+          ],
+          "c": 1,
+          "why": "X-rays have shorter wavelength and greater frequency than radio."
+        },
+        {
+          "q": "In the electromagnetic spectrum, wavelength decreases while frequency…",
+          "a": [
+            "Increases",
+            "Decreases",
+            "Always stays the same"
+          ],
+          "c": 0,
+          "why": "In vacuum, wavelength and frequency are inversely related."
+        },
+        {
+          "q": "Which is an effective UV safety step?",
+          "a": [
+            "Seek shade and wear protective clothing",
+            "Stare at the Sun",
+            "Skip eye protection"
+          ],
+          "c": 0,
+          "why": "Shade and protective clothing reduce harmful UV exposure."
+        }
+      ]
+    },
+    {
+      "id": "u3t4-photosynthesis",
+      "n": "10",
+      "title": "Photosynthesis: Capturing Solar Energy",
+      "big": "Producers transfer energy from sunlight into chemical energy stored in glucose.",
+      "notes": [
+        "Chloroplasts in plant cells contain chlorophyll, which absorbs light used in photosynthesis.",
+        "In a simplified description, carbon dioxide plus water plus light energy produce glucose and oxygen.",
+        "Photosynthesis stores some incoming solar energy in sugars. Plants make their own organic food; soil provides water and minerals rather than ready-made food.",
+        "Plants use glucose for growth and respiration. Photosynthesis and respiration are related but not exact reverses in all details.",
+        "The carbon in glucose comes primarily from carbon dioxide in the air, not the soil.",
+        "Class materials: student booklet p. 15 and Topic 4 Photosynthesis and Food Chains slides 2–4."
+      ],
+      "terms": [
+        [
+          "Photosynthesis",
+          "Process converting light energy to chemical energy in sugars."
+        ],
+        [
+          "Chlorophyll",
+          "Pigment that absorbs light in photosynthesis."
+        ],
+        [
+          "Glucose",
+          "A sugar in which chemical energy is stored."
+        ],
+        [
+          "Producer",
+          "Organism that makes organic food from inorganic materials using an energy source."
+        ]
+      ],
+      "work": "Booklet p. 15. Write a word-equation with inputs and outputs, explain the role of chloroplasts and use the Energy Pathway Studio on this lesson.",
+      "check": [
+        {
+          "q": "What is the energy input for photosynthesis in most plants?",
+          "a": [
+            "Sunlight",
+            "Soil nutrients alone",
+            "The Moon's light"
+          ],
+          "c": 0,
+          "why": "Photosynthesis captures light energy, usually from the Sun."
+        },
+        {
+          "q": "Where does most of the carbon in plant glucose come from?",
+          "a": [
+            "Carbon dioxide in air",
+            "Dissolved rock",
+            "The roots' wood"
+          ],
+          "c": 0,
+          "why": "Plants take up carbon dioxide and build sugars from its carbon."
+        }
+      ]
+    },
+    {
+      "id": "u3t4-chains",
+      "n": "11",
+      "title": "Food Chains and Energy Pyramids",
+      "big": "Energy flows from producers to consumers. Only a fraction of the chemical energy available at each trophic level becomes available at the next.",
+      "notes": [
+        "A food chain shows energy transfer between feeding relationships. Arrows point from the organism eaten to the eater.",
+        "Producers such as prairie grasses or algae use solar energy to form chemical energy in food.",
+        "Primary consumers eat producers, secondary consumers eat primary consumers, and so on.",
+        "A common introductory model transfers about 10% of energy to the next trophic level; this is a broad rule of thumb, not an exact ecological law.",
+        "Energy is used for metabolism and released as heat or remains in material not eaten or digested. This explains why less usable energy is available at higher levels.",
+        "An energy pyramid describes energy flow or availability, not necessarily population counts or exact sizes.",
+        "Class materials: booklet p. 16, Topic 4 slides 5–8 and Topic 4 Practice Questions."
+      ],
+      "terms": [
+        [
+          "Food chain",
+          "A sequence of feeding relationships showing energy transfer."
+        ],
+        [
+          "Trophic level",
+          "Position in a feeding relationship such as producer or consumer."
+        ],
+        [
+          "Energy pyramid",
+          "Diagram showing declining available energy along a food chain."
+        ]
+      ],
+      "work": "Booklet p. 16. Use the Energy Pathway Studio to test 10,000 J from grass to grasshopper, frog and hawk, then write why 90% is not 'destroyed'. Complete the Topic 4 practice.",
+      "check": [
+        {
+          "q": "Which direction should an arrow point in grass → grasshopper?",
+          "a": [
+            "Grass to grasshopper",
+            "Grasshopper to grass",
+            "Arrows never show energy transfer"
+          ],
+          "c": 0,
+          "why": "Arrows show the direction energy is transferred by eating."
+        },
+        {
+          "q": "With 10,000 J at grass and a 10% transfer model, about how much reaches the frog (two transfers)?",
+          "a": [
+            "1,000 J",
+            "100 J",
+            "10 J"
+          ],
+          "c": 1,
+          "why": "10,000 → 1,000 at grasshopper → 100 at frog."
+        },
+        {
+          "q": "Does unused energy disappear?",
+          "a": [
+            "Yes",
+            "No, it transfers to the environment and other pathways"
+          ],
+          "c": 1,
+          "why": "Energy conservation still applies to ecosystems."
+        }
+      ]
+    },
+    {
+      "id": "u3t5-greenhouse",
+      "n": "12",
+      "title": "The Natural Greenhouse Effect",
+      "big": "Earth's atmosphere absorbs and re-emits infrared radiation, warming the surface compared with a planet without greenhouse gases.",
+      "notes": [
+        "Incoming solar radiation passes through the atmosphere; some is reflected, and some is absorbed by the surface and atmosphere.",
+        "The warmed surface emits infrared radiation. Greenhouse gases absorb and re-emit some of this energy in different directions.",
+        "Carbon dioxide, methane and water vapour are important greenhouse gases; nitrogen and oxygen are not strong infrared absorbers.",
+        "The natural greenhouse effect makes Earth warm enough for much of its existing life.",
+        "Not all infrared radiation is trapped: Earth loses energy to space continuously. The greenhouse effect changes the rate and altitude at which energy escapes.",
+        "This is a physical energy-transfer mechanism; an actual glass greenhouse mainly reduces heat loss by convection and is not the same process.",
+        "Class materials: booklet p. 17 and Topic 5 Greenhouse Effect slides 2–3."
+      ],
+      "terms": [
+        [
+          "Greenhouse gas",
+          "Gas that absorbs and emits infrared radiation."
+        ],
+        [
+          "Infrared emission",
+          "Radiation released by objects due to their temperature."
+        ],
+        [
+          "Atmosphere",
+          "Layer of gases surrounding Earth."
+        ]
+      ],
+      "work": "Booklet p. 17. Draw three labelled arrows: incoming sunlight, outgoing infrared from the surface and re-emitted infrared in both upward and downward directions.",
+      "check": [
+        {
+          "q": "Which Earth radiation is absorbed by greenhouse gases?",
+          "a": [
+            "Only visible red light",
+            "Infrared radiation emitted by Earth",
+            "All radio broadcasts"
+          ],
+          "c": 1,
+          "why": "Greenhouse gases absorb particular bands of infrared radiation."
+        },
+        {
+          "q": "Is the natural greenhouse effect necessary for Earth's usual climate?",
+          "a": [
+            "Yes",
+            "No, it is entirely human-made"
+          ],
+          "c": 0,
+          "why": "The greenhouse effect is natural; human activities amplify it."
+        }
+      ]
+    },
+    {
+      "id": "u3t5-balance",
+      "n": "13",
+      "title": "Human-Accelerated Warming and Feedback",
+      "big": "Adding greenhouse gases changes Earth's energy balance. Interacting processes can amplify or reduce changes.",
+      "notes": [
+        "Burning fossil fuels increases atmospheric carbon dioxide, strengthening absorption and re-emission of infrared radiation.",
+        "When Earth receives more energy than it sends back to space, energy accumulates and the climate warms until a new balance can be approached.",
+        "Ice melt reduces the area covered by bright snow and sea ice. Darker land and water absorb more sunlight and can amplify warming.",
+        "Feedback loops link multiple causes and consequences. A feedback is not proof that every change will continue at the same rate.",
+        "Climate research combines observations, physical laws and models to estimate trends and uncertainties.",
+        "When discussing solutions, compare practical benefits, costs and impacts of different energy choices.",
+        "Class materials: booklet p. 18, Topic 5 slides 4–7 and Topic 5 Practice Questions."
+      ],
+      "terms": [
+        [
+          "Energy imbalance",
+          "Incoming and outgoing energy flows that do not match."
+        ],
+        [
+          "Climate feedback",
+          "A process that changes the magnitude of an initial climate change."
+        ],
+        [
+          "Human-accelerated greenhouse effect",
+          "Additional warming due to human-driven increases in greenhouse gases."
+        ]
+      ],
+      "work": "Booklet p. 18. Make a causal-loop diagram: more greenhouse gases → warming → sea ice loss → lower albedo → more absorption. Discuss one energy choice and its trade-off.",
+      "check": [
+        {
+          "q": "Why does extra atmospheric CO₂ affect global temperature?",
+          "a": [
+            "It destroys sunlight",
+            "It alters infrared absorption and Earth's energy balance",
+            "It stops all clouds from forming"
+          ],
+          "c": 1,
+          "why": "More greenhouse gases slow outgoing energy loss until the climate readjusts."
+        },
+        {
+          "q": "How is melting sea ice an amplifying feedback?",
+          "a": [
+            "Open water usually absorbs more sunlight than ice",
+            "Open water always has higher albedo",
+            "Sea ice cannot affect energy flows"
+          ],
+          "c": 0,
+          "why": "Replacing reflective ice with dark water increases absorption."
+        },
+        {
+          "q": "What separates natural greenhouse warming from human acceleration?",
+          "a": [
+            "Only one exists",
+            "Human activities increase greenhouse gas levels beyond the natural background",
+            "The natural effect started last decade"
+          ],
+          "c": 1,
+          "why": "Natural warming is part of Earth's normal climate; added gases strengthen it."
+        }
+      ]
+    },
+    {
+      "id": "u3-review",
+      "n": "14",
+      "title": "Energy & Light: Review and Investigation",
+      "big": "Use evidence to trace energy from the Sun into surfaces, living systems and Earth's atmosphere—and explain where it transfers next.",
+      "notes": [
+        "Topic 1: explain conservation, potential/kinetic energy, resource trade-offs and incoming/outgoing energy.",
+        "Topic 2: distinguish reflection, absorption, transmission, albedo and refraction. Use lab variables to support a fair test.",
+        "Topic 3: rank the electromagnetic spectrum from radio to gamma, explain frequency/wavelength and identify sun-safety measures.",
+        "Topic 4: connect photons captured in photosynthesis to stored sugars and declining energy availability across food-chain levels.",
+        "Topic 5: distinguish the natural and human-accelerated greenhouse effects, and describe the role of infrared radiation and albedo feedback.",
+        "In a strong scientific explanation, make a claim, cite a specific observation or model result, and explain why the evidence supports it.",
+        "Class materials: student booklet pp. 2–19, Topic 1–5 practice, teacher-provided unit review and test outline."
+      ],
+      "terms": [
+        [
+          "Model limitation",
+          "An aspect of a representation that leaves out real-world complexity."
+        ],
+        [
+          "Evidence-based claim",
+          "Conclusion supported by observations, calculations or established science."
+        ]
+      ],
+      "work": "Create a one-page diagram connecting the Sun, an icy surface, a plant, a consumer and the atmosphere. Mark energy transfers using arrows. Use the Spectrum & Albedo Explorer and Energy Pathway Studio, then write a 5-sentence claim/evidence/explanation.",
+      "check": [
+        {
+          "q": "Which is a valid chain of energy transformations?",
+          "a": [
+            "Sunlight → plant chemical energy → consumer movement and heat",
+            "Sunlight → destroyed energy → food",
+            "Heat → nothing"
+          ],
+          "c": 0,
+          "why": "Sunlight can be stored by plants and later transferred through food webs."
+        },
+        {
+          "q": "Which shows responsible model interpretation?",
+          "a": [
+            "Our simple model perfectly predicts local climate",
+            "This model illustrates a pattern while leaving out real-world factors",
+            "Models never need evidence"
+          ],
+          "c": 1,
+          "why": "Models help explain processes but have defined limitations."
+        }
+      ]
+    }
+  ]
+}
   {id:"earth", n:"4", name:"Earth's Interior and Tectonics", status:"soon", when:"March to May",
    intro:"What's under our feet: layers of the Earth, plate tectonics, earthquakes and volcanoes."}
   ]
