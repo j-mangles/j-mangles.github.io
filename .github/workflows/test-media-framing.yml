@@ -1,0 +1,24 @@
+name: Test ELA Media Framing Lab
+on:
+  push:
+    branches: [main, "feature/**", "chatgpt/**"]
+    paths:
+      - "ela/media-framing.html"
+      - "ela/index.html"
+      - "tools/test_media_framing.cjs"
+      - ".github/workflows/test-media-framing.yml"
+  pull_request:
+    paths:
+      - "ela/media-framing.html"
+      - "ela/index.html"
+      - "tools/test_media_framing.cjs"
+      - ".github/workflows/test-media-framing.yml"
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: node tools/test_media_framing.cjs

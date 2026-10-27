@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#FAF8F4"><title>Headline Framing Lab · English 8</title>
+<link rel="stylesheet" href="../assets/fonts.css"><link rel="stylesheet" href="../assets/site.css">
+<style>
+body{background:var(--bg);color:var(--ink);line-height:1.55}
+.mf-wrap{max-width:1080px;margin:0 auto;padding:25px 18px 70px}
+.mf-kicker{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-ink);font-weight:800}
+.mf-wrap h1{font-family:var(--f-title,Georgia,serif);font-size:clamp(36px,5vw,58px);margin:5px 0 10px}
+.mf-wrap h2{font-family:var(--f-title,Georgia,serif);font-size:29px;margin:5px 0 12px}
+.mf-wrap h3{font-size:17px;margin:12px 0 8px}
+.mf-intro{font-size:18px;max-width:78ch;color:var(--muted)}
+.mf-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:17px;align-items:start;margin-top:20px}
+.mf-card{background:var(--paper);border:1px solid var(--rule);border-radius:var(--radius);padding:20px;min-width:0}
+.mf-card p{margin:8px 0 12px}
+.mf-facts{padding-left:21px}.mf-facts li{margin:8px 0}
+.mf-options{display:grid;gap:9px;margin:10px 0 15px}
+.mf-wrap button,.mf-wrap select{font:inherit;min-height:44px;border:1px solid var(--rule);background:var(--paper);color:var(--ink);padding:10px 12px;border-radius:var(--btn-radius);cursor:pointer}
+.mf-wrap button:hover{background:var(--accent-soft)}
+.mf-wrap button[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);box-shadow:inset 4px 0 var(--accent)}
+.mf-wrap button:focus-visible,.mf-wrap textarea:focus-visible,.mf-wrap select:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.mf-wrap select{width:100%}.mf-wrap label{font-weight:700;display:block;margin:13px 0 6px}
+.mf-wrap textarea{width:100%;min-height:86px;padding:12px;font:inherit;background:var(--paper);color:var(--ink);border:1px solid var(--rule);border-radius:var(--btn-radius);resize:vertical}
+.mf-explain{border-left:4px solid var(--accent);padding:13px 16px;background:var(--accent-soft);margin:13px 0}
+.mf-crops{display:flex;gap:7px;flex-wrap:wrap;margin:11px 0}
+.mf-crops button{font-size:14px}
+.mf-art{background:#f2eee8;border:1px solid var(--rule);border-radius:8px;overflow:hidden}
+.mf-art svg{display:block;width:100%;height:auto}
+.mf-caption{font-size:13px;color:var(--muted);padding:8px 10px}
+.mf-foot{font-size:13px;color:var(--muted)}
+.mf-verification{margin-top:19px}
+.mf-actions{display:flex;flex-wrap:wrap;gap:9px;margin:14px 0}
+.mf-actions .primary{background:var(--btn);color:var(--on-btn);border-color:var(--btn);font-weight:700}
+.mf-status{min-height:24px;color:var(--accent-ink);font-size:14px}
+@media(max-width:760px){.mf-layout{grid-template-columns:1fr}.mf-card{padding:15px}.mf-wrap{padding:20px 14px 55px}}
+@media print{header,.mf-actions,.mf-options,.mf-crops{display:none!important}.mf-card{break-inside:avoid}.mf-layout{display:block}.mf-wrap{max-width:none}}
+</style></head>
+<body data-subject="ela">
+<header class="topbar"><div class="wrap"><a class="home" href="../">Mr. Mangles' Class</a><nav class="subnav" aria-label="Course navigation"><a href="./">Back to ELA</a><a href="../social-studies/">Social Studies</a><a href="../science/">Science</a><a href="../math/">Math 7</a><a href="../critical-thinking/">Critical Thinking</a></nav></div></header>
+<main class="mf-wrap">
+<div class="mf-kicker">English 8 · Media & Film · practice preview</div>
+<h1>Headline Framing Lab</h1>
+<p class="mf-intro">The same facts can produce very different headlines and images. Experiment with emphasis, check what's missing, and practise verifying a claim before sharing it.</p>
+<p class="mf-foot"><b>All events, headlines and images on this page are invented for practice.</b> Nothing here reports an actual school decision. This is not a graded assessment; your writing stays in this tab until you choose to copy it.</p>
+<div class="mf-layout">
+<section class="mf-card" aria-label="Headline comparison">
+<div class="mf-kicker">Part 1 · Read the source</div><h2>What actually happened?</h2>
+<label for="case">Choose a fictional event</label><select id="case"></select>
+<ul id="facts" class="mf-facts"></ul>
+<h3>Pick a headline for the same facts</h3>
+<div id="headlines" class="mf-options" role="group" aria-label="Headline choices"></div>
+<div id="headline-feedback" class="mf-explain" aria-live="polite"></div>
+<label for="omission">Which fact or perspective might the headline leave out?</label>
+<textarea id="omission" placeholder="The headline leaves out…"></textarea>
+<label for="perspective">Write an alternative headline that is accurate and fair.</label>
+<textarea id="perspective" placeholder="My headline: …"></textarea>
+</section>
+<section class="mf-card" aria-label="Visual framing">
+<div class="mf-kicker">Part 2 · Crop the same scene</div><h2>What's outside the frame?</h2>
+<p>The illustration is an invented school scene. Compare a wide view with two tighter crops. Notice how selecting part of a scene can change what a viewer thinks matters.</p>
+<div class="mf-crops" id="crops" role="group" aria-label="Crop options">
+<button type="button" data-crop="0" aria-pressed="true">Full scene</button>
+<button type="button" data-crop="1" aria-pressed="false">Parking only</button>
+<button type="button" data-crop="2" aria-pressed="false">Garden only</button>
+</div>
+<div class="mf-art">
+<svg id="scene" viewBox="0 0 640 290" role="img" aria-label="Invented illustration showing a school, parking spaces and garden beds.">
+<rect width="640" height="290" fill="#f3eee8"/><rect y="204" width="640" height="86" fill="#ddd5c9"/>
+<rect x="178" y="28" width="284" height="171" rx="4" fill="#d5c4ad" stroke="#8b7767" stroke-width="2"/>
+<rect x="200" y="47" width="240" height="29" fill="#e8dfd2"/><text x="320" y="67" font-size="18" text-anchor="middle" fill="#54463f" font-family="Georgia,serif">SCHOOL</text>
+<rect x="286" y="116" width="66" height="83" fill="#806d5f"/><rect x="303" y="134" width="32" height="44" fill="#d9e4e3"/>
+<g fill="#8bb0b9" stroke="#597c88" stroke-width="2"><rect x="205" y="93" width="51" height="44"/><rect x="385" y="93" width="51" height="44"/></g>
+<g stroke="#fafafa" stroke-width="3"><line x1="23" y1="238" x2="23" y2="286"/><line x1="63" y1="238" x2="63" y2="286"/><line x1="103" y1="238" x2="103" y2="286"/><line x1="143" y1="238" x2="143" y2="286"/><line x1="183" y1="238" x2="183" y2="286"/><line x1="223" y1="238" x2="223" y2="286"/></g>
+<rect x="27" y="248" width="96" height="28" rx="7" fill="#718b99"/><rect x="44" y="237" width="62" height="20" rx="9" fill="#718b99"/><circle cx="50" cy="275" r="9" fill="#343c40"/><circle cx="105" cy="275" r="9" fill="#343c40"/>
+<g fill="#9c684e" stroke="#704a35" stroke-width="2"><rect x="365" y="221" width="102" height="44" rx="5"/><rect x="490" y="221" width="110" height="44" rx="5"/></g>
+<g fill="#64865a" stroke="#446d43" stroke-width="3"><path d="M388 223v-36m0 21l-12-11m12 2l13-10"/><path d="M435 223v-31m0 17l-11-10m11 2l12-12"/><path d="M512 223v-38m0 20l-10-10m10 1l12-12"/><path d="M562 223v-33m0 17l-11-9m11 1l12-12"/></g>
+<g font-size="14" font-family="system-ui,sans-serif" font-weight="700" fill="#5c5147"><text x="70" y="220" text-anchor="middle">Parking area</text><text x="495" y="286" text-anchor="middle">Proposed beds</text></g>
+</svg>
+<div id="crop-feedback" class="mf-caption" aria-live="polite"></div>
+</div>
+<label for="image-reflection">What could the cropped image make a viewer assume?</label>
+<textarea id="image-reflection" placeholder="Someone seeing only this crop might assume…"></textarea>
+</section></div>
+<section class="mf-card mf-verification" aria-label="Claim verification">
+<div class="mf-kicker">Part 3 · Verify before sharing</div><h2>Does the claim match the source?</h2>
+<p>A viral post is not proof. Choose a fictional claim and the most useful first check. Then explain which evidence you would trust and why.</p>
+<label for="claim">Choose a claim</label><select id="claim"></select>
+<div id="checks" class="mf-options" role="group" aria-label="Verification choices"></div>
+<div id="check-feedback" class="mf-explain" aria-live="polite">Choose a step to see what it can and cannot tell you.</div>
+<label for="evidence">What would you check next, and how would you know your source is reliable?</label>
+<textarea id="evidence" placeholder="I would check the original notice, its date and…"></textarea>
+<label for="reflection">Exit slip: What is one habit you'll use when you see a dramatic headline?</label>
+<textarea id="reflection" placeholder="Before sharing a headline, I will…"></textarea>
+<div class="mf-actions"><button id="copy" type="button" class="primary">Copy my investigation</button><button id="reset" type="button">Start again</button><button id="print" type="button">Print</button></div>
+<div class="mf-status" id="status" role="status" aria-live="polite"></div>
+<p class="mf-foot">Manitoba ELA connections: reading/viewing multimodal texts, audience and purpose, recognizing viewpoint and bias, assessing information reliability, and supporting interpretations with evidence. Based on the class Media & Film unit plan, especially lessons 15–16.</p>
+</section>
+</main>
+<script>
+(function(){
+"use strict";
+const CASES=[
+ {name:"School garden pilot",facts:["A fictional school council approved an eight-week trial.","Six parking spaces will temporarily become raised garden beds.","Feedback will be reviewed after the trial.","No permanent decision has been made."],headlines:[
+ ["School approves eight-week garden trial","Information-first: gives the scope and the temporary timeline."],
+ ["Six parking spaces lost to garden plan","Concern-first: emphasizes a cost and leaves out that the change is temporary."],
+ ["School finally makes space for greener future","Celebration-first: 'finally' and 'greener future' express a viewpoint."]]},
+ {name:"Library opening trial",facts:["A fictional library will open 30 minutes earlier on Tuesdays.","The trial lasts six weeks.","Other weekday and weekend hours remain unchanged.","The library will decide whether to continue after collecting feedback."],headlines:[
+ ["Library tests earlier Tuesday opening","Information-first: states the limited schedule change."],
+ ["Library finally listens to early visitors","Celebration-first: implies staff previously ignored visitors, which the facts do not establish."],
+ ["New library hours leave most days unchanged","Concern-first: emphasizes how limited the change is."]]},
+ {name:"Cafeteria menu change",facts:["A fictional cafeteria will add one plant-based lunch option each Friday.","The option is a four-week trial.","Other menu choices remain available.","Student feedback will be collected before any permanent decision."],headlines:[
+ ["Cafeteria pilots Friday plant-based option","Information-first: states the addition and the trial."],
+ ["Students gain a fresh Friday lunch choice","Celebration-first: 'fresh' is a positive description not established by the facts."],
+ ["Cafeteria changes lunch menu again","Concern-first: 'again' suggests a pattern not established by the facts."]]}
+];
+const CHECKS=[
+ {claim:"All school parking is being removed permanently.",truth:"Only six spaces are affected, for an eight-week trial. No permanent decision has been made.",actions:[
+ ["Find the original council announcement or minutes","Strong first step: a dated original source can confirm the number and timeline.",true],
+ ["Count how often the post was shared","Popularity cannot verify the number of spaces or the timeline.",false],
+ ["Trust the most emotional comments","Strong reactions are not proof of a claim.",false]]},
+ {claim:"The library is opening earlier every day.",truth:"The fictional trial changes Tuesday opening time only, for six weeks.",actions:[
+ ["Check the dated library schedule","Strong first step: confirm the days and dates with the organization responsible.",true],
+ ["Read only the first reply under the post","A reply may be mistaken or lack the full schedule.",false],
+ ["Assume the headline tells the whole story","Short headlines can omit important limits.",false]]},
+ {claim:"The cafeteria has banned all other lunch options.",truth:"One new option is being added on Fridays; other choices remain available.",actions:[
+ ["Compare the full menu and original trial notice","Strong first step: check the menu and full context, not a cropped screenshot.",true],
+ ["Choose the most confident-sounding headline","Confidence is not evidence.",false],
+ ["Count the likes on the post","Likes measure attention, not accuracy.",false]]}
+];
+const CROPS=[
+ ["0 0 640 290","A wide frame shows the parking, school and garden beds together."],
+ ["0 172 255 118","A tight crop of parking can make the loss of spaces seem like the entire story."],
+ ["340 172 300 118","A tight crop of garden beds can make the benefit seem like the entire story."]
+];
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+let eventIndex=0,headlineIndex=0,cropIndex=0,claimIndex=0,checkIndex=-1;
+function renderEvent(){
+ const e=CASES[eventIndex];
+ $("facts").innerHTML=e.facts.map(f=>"<li>"+esc(f)+"</li>").join("");
+ $("headlines").innerHTML=e.headlines.map((h,i)=>'<button type="button" data-headline="'+i+'" aria-pressed="'+(i===headlineIndex)+'">'+esc(h[0])+"</button>").join("");
+ $("headlines").querySelectorAll("button").forEach(b=>b.onclick=()=>{headlineIndex=Number(b.dataset.headline);renderEvent();});
+ $("headline-feedback").textContent=e.headlines[headlineIndex][1]+" Emphasis alone does not make a headline false; compare it to the complete facts.";
+}
+function renderCrop(){
+ $("scene").setAttribute("viewBox",CROPS[cropIndex][0]);
+ $("crop-feedback").textContent=CROPS[cropIndex][1];
+ document.querySelectorAll("[data-crop]").forEach(b=>b.setAttribute("aria-pressed",String(Number(b.dataset.crop)===cropIndex)));
+}
+function renderClaim(){
+ const c=CHECKS[claimIndex];
+ $("checks").innerHTML=c.actions.map((a,i)=>'<button type="button" data-check="'+i+'" aria-pressed="'+(i===checkIndex)+'">'+esc(a[0])+"</button>").join("");
+ $("checks").querySelectorAll("button").forEach(b=>b.onclick=()=>{checkIndex=Number(b.dataset.check);renderClaim();});
+ $("check-feedback").textContent=checkIndex<0?"Choose a step to see what it can and cannot tell you.":(c.actions[checkIndex][2]?"Useful verification: ":"Not enough evidence: ")+c.actions[checkIndex][1]+" Source context: "+c.truth;
+}
+function reset(){
+ eventIndex=0;headlineIndex=0;cropIndex=0;claimIndex=0;checkIndex=-1;
+ $("case").value="0";$("claim").value="0";
+ ["omission","perspective","image-reflection","evidence","reflection"].forEach(id=>$(id).value="");
+ $("status").textContent="";renderEvent();renderCrop();renderClaim();
+}
+function report(){
+ const e=CASES[eventIndex],c=CHECKS[claimIndex];
+ return ["English 8 — Headline Framing Lab (fictional practice)", "Event: "+e.name,
+ "Known facts: "+e.facts.join(" | "), "Chosen headline: "+e.headlines[headlineIndex][0],
+ "How it frames the event: "+e.headlines[headlineIndex][1],
+ "Possible omission: "+$("omission").value,
+ "My alternative headline: "+$("perspective").value,
+ "Image crop: "+["Full scene","Parking only","Garden only"][cropIndex],
+ "Image reflection: "+$("image-reflection").value,
+ "Claim to check: "+c.claim,
+ "Verification action: "+(checkIndex<0?"Not chosen":c.actions[checkIndex][0]),
+ "Evidence I would check: "+$("evidence").value,
+ "Exit slip: "+$("reflection").value,
+ "All events are fictional. This is not an assessment."].join("\n\n");
+}
+$("case").innerHTML=CASES.map((c,i)=>'<option value="'+i+'">'+esc(c.name)+"</option>").join("");
+$("claim").innerHTML=CHECKS.map((c,i)=>'<option value="'+i+'">'+esc(c.claim)+"</option>").join("");
+$("case").onchange=e=>{eventIndex=Number(e.target.value);headlineIndex=0;renderEvent();};
+$("claim").onchange=e=>{claimIndex=Number(e.target.value);checkIndex=-1;renderClaim();};
+document.querySelectorAll("[data-crop]").forEach(b=>b.onclick=()=>{cropIndex=Number(b.dataset.crop);renderCrop();});
+$("reset").onclick=reset;$("print").onclick=()=>window.print();
+$("copy").onclick=()=>{
+ if(!$("omission").value.trim()||!$("evidence").value.trim()){$("status").textContent="Write an omission and a source to check before copying.";return;}
+ if(!navigator.clipboard?.writeText){$("status").textContent="Clipboard unavailable. Select and copy your writing manually.";return;}
+ navigator.clipboard.writeText(report()).then(()=>$("status").textContent="Copied. Paste into your class document.",()=>$("status").textContent="Clipboard blocked. Select and copy your writing manually.");
+};
+reset();
+})();
+</script></body></html>

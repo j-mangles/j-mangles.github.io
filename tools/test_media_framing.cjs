@@ -1,0 +1,24 @@
+/* Structural checks for the Grade 8 ELA Headline Framing Lab. */
+"use strict";
+const assert=require("node:assert/strict"),fs=require("node:fs"),path=require("node:path"),vm=require("node:vm");
+const root=path.resolve(__dirname,"..");
+const html=fs.readFileSync(path.join(root,"ela/media-framing.html"),"utf8");
+const ela=fs.readFileSync(path.join(root,"ela/index.html"),"utf8");
+assert.match(html,/<title>Headline Framing Lab/);
+assert.match(ela,/href="media-framing.html"/);
+assert.match(html,/fictional school council/);
+assert.match(html,/fictional library/);
+assert.match(html,/fictional cafeteria/);
+assert.match(html,/data-crop="0"/);
+assert.match(html,/data-crop="1"/);
+assert.match(html,/data-crop="2"/);
+assert.match(html,/aria-pressed=/);
+assert.match(html,/role="status"/);
+assert.match(html,/navigator.clipboard.writeText/);
+assert.doesNotMatch(html,/localStorage|sessionStorage|fetch\(|XMLHttpRequest|mailto:/);
+const scripts=[...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/g)];
+assert.equal(scripts.length,1);
+new vm.Script(scripts[0][1],{filename:"ela/media-framing.html inline JS"});
+assert.match(html,/source is reliable/i);
+assert.match(html,/before sharing/i);
+console.log("Media framing lab structural and script checks passed.");
