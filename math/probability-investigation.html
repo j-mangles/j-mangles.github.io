@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Probability Investigation · Math 7</title><link rel="stylesheet" href="../assets/fonts.css"><link rel="stylesheet" href="../assets/site.css">
+<style>
+.lab{max-width:890px;margin:2rem auto;padding:0 18px 4rem}.panel{background:var(--paper,#fff);border:1px solid var(--rule,#ccc);border-radius:12px;padding:22px;margin:20px 0}.controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center}button{cursor:pointer}.choices{display:flex;gap:10px;flex-wrap:wrap}.choices label{border:1px solid var(--rule,#ccc);padding:10px 14px;border-radius:8px}.stat{font-variant-numeric:tabular-nums;font-size:1.2rem}.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}.meter{height:20px;background:#e4e9ee;border-radius:12px;overflow:hidden}.meter span{height:100%;display:block;background:#286da1;transition:width .2s}textarea{width:100%;min-height:85px;font:inherit;padding:8px;box-sizing:border-box}table{border-collapse:collapse;width:100%}th,td{text-align:left;padding:8px;border-bottom:1px solid #bcc7d1}button:focus-visible,input:focus-visible{outline:3px solid #b47b0a;outline-offset:3px}.tiny{font-size:.9rem}.result{font-weight:700}.question{margin:14px 0}input[type=number]{max-width:80px;padding:6px;font:inherit}
+@media print{.topbar,.controls button,.print-hide{display:none!important}.panel{break-inside:avoid}.lab{margin:0;max-width:none}}
+</style></head><body data-subject="math">
+<header class="topbar"><div class="wrap"><a class="home" href="../">Mr. Mangles' Class</a><nav class="subnav" aria-label="Subjects"><a href="./">Math 7</a><a href="../science/">Science</a><a href="../ela/">ELA</a><a href="../social-studies/">Social Studies</a><a href="../critical-thinking/">Critical Thinking</a></nav></div></header>
+<main class="lab">
+<p><a href="./">← Back to Math 7</a></p><div class="eyebrow">Grade 7 · Probability investigation</div><h1>Can you trust a small sample?</h1>
+<p class="lede">Build a bag, predict what will happen, then test your prediction. Each draw puts the counter back before the next draw. No login or personal data needed.</p>
+<section class="panel"><h2>1. Make a prediction</h2>
+<p>Start with 3 red and 7 blue counters. What fraction of draws do you expect to be red?</p>
+<div class="controls"><label>Red <input id="red" aria-label="Number of red counters" type="number" min="0" max="20" value="3"></label><label>Blue <input id="blue" aria-label="Number of blue counters" type="number" min="0" max="20" value="7"></label><button id="apply" class="btn">Set bag</button></div>
+<p id="bagdesc" aria-live="polite"></p>
+<div class="question"><label for="prediction">Your prediction: In 100 draws, how many will be red?</label> <input id="prediction" type="number" min="0" max="100" placeholder="0–100"></div>
+<p class="tiny">Explain your thinking before running the simulation. Theoretical probability = red counters ÷ total counters.</p>
+<textarea id="reason" aria-label="Explain your prediction" placeholder="I predict this because…"></textarea>
+</section>
+<section class="panel"><h2>2. Run the experiment</h2>
+<div class="controls"><button class="btn" data-draw="10">Draw 10</button><button class="btn" data-draw="90">Draw 90 more</button><button class="btn" data-draw="900">Draw 900 more</button><button class="btn ghost" id="reset">Reset experiment</button></div>
+<div class="grid2"><div><p>Actual red draws</p><p class="stat" id="actual" aria-live="polite">0 of 0 (—)</p><div class="meter" role="img" aria-label="Experimental red percentage"><span id="bar" style="width:0%"></span></div></div><div><p>Expected red draws</p><p class="stat" id="expected">30%</p><p class="tiny">Theoretical probability stays the same even when the experiment changes.</p></div></div>
+<div aria-live="polite" id="compare"></div>
+<table><thead><tr><th>Outcome</th><th>Number of draws</th><th>Experimental probability</th></tr></thead><tbody><tr><td>Red</td><td id="redcount">0</td><td id="redpct">—</td></tr><tr><td>Blue</td><td id="bluecount">0</td><td id="bluepct">—</td></tr></tbody></table>
+<p class="tiny">Random results vary each time. A larger sample often gets closer to the predicted proportion, but that is not guaranteed on every run.</p>
+</section>
+<section class="panel"><h2>3. Try two independent draws</h2>
+<p>Draw a counter, <strong>put it back</strong>, and draw again. Replacing it means the second draw is not affected by the first. Predict the chance of red then red (RR).</p>
+<p class="tiny">For example, with 3 red and 7 blue, P(RR) = 3/10 × 3/10 = 9/100 = 9%. The table groups the four possible <em>colour sequences</em>; they are not necessarily equally likely.</p>
+<div class="controls"><button class="btn" data-pair="10">Run 10 pairs</button><button class="btn" data-pair="90">Run 90 more</button><button class="btn" data-pair="900">Run 900 more</button><button class="btn ghost" id="reset-pairs">Reset pairs</button></div>
+<p id="pairsummary" aria-live="polite">No pairs yet.</p>
+<table><thead><tr><th>Two-draw colour sequence</th><th>Theoretical probability</th><th>Observed / pairs</th><th>Experimental probability</th></tr></thead><tbody>
+<tr><td>RR (red, red)</td><td id="th-0"></td><td id="count-0"></td><td id="ex-0"></td></tr>
+<tr><td>RB (red, blue)</td><td id="th-1"></td><td id="count-1"></td><td id="ex-1"></td></tr>
+<tr><td>BR (blue, red)</td><td id="th-2"></td><td id="count-2"></td><td id="ex-2"></td></tr>
+<tr><td>BB (blue, blue)</td><td id="th-3"></td><td id="count-3"></td><td id="ex-3"></td></tr>
+</tbody></table>
+<p class="tiny">These are two independent events. Compare RR with RB + BR: order matters when naming individual outcomes, even if both combinations contain one red and one blue.</p>
+</section>
+<section class="panel"><h2>4. Make a claim using evidence</h2>
+<p>Complete these after 10, 100 and 1000 draws. Reset and repeat if you want another trial.</p>
+<ol><li class="question">Was your prediction close after 10 draws? Use a number from your results.</li><li class="question">What changed after 100 and 1000 draws? Did the results get closer to the theoretical probability?</li><li class="question">If you changed the bag to 1 red and 9 blue, what would you expect in 100 draws? Test it.</li><li class="question">Look at the two-draw experiment. Was RR close to its predicted probability? Compare 10 and 1000 pairs.</li><li class="question">Could a bag with 3 red and 7 blue produce 7 red draws in a row? Explain why this is possible or impossible.</li></ol>
+<textarea id="conclusion" aria-label="Your claim and evidence" placeholder="My claim is… My evidence is… This suggests…"></textarea>
+<div class="controls print-hide" style="margin-top:12px"><button class="btn ghost" id="print">Print investigation</button><button class="btn ghost" id="copy">Copy results and response</button><span id="copy-status" role="status"></span></div>
+</section>
+<section class="panel"><h2>Teacher notes</h2><p><strong>Suggested timing:</strong> 5 minutes prediction, 15 minutes trials, 10 minutes discussion, 10 minutes claim/evidence, 5 minutes exit reflection. Works as a pair activity or projector demonstration.</p><p><strong>Outcome connection:</strong> Manitoba 7.SP.4 (ratios, fractions and percents), 7.SP.5 (two-event sample spaces), and 7.SP.6 (experimental versus theoretical probability for two independent events). The first experiment builds single-draw understanding; the paired draws directly explore the two-event outcomes. For the full curriculum sequence, return to the Probability unit.</p><p><strong>Exit slip:</strong> “Why can 10 draws be misleading even when we know the probability?”</p></section>
+</main><footer class="site"><div class="wrap">Mr. Mangles' Class · 2026–27</div></footer>
+<script>
+(function(){
+"use strict";
+const $=id=>document.getElementById(id);
+let red=3,blue=7,draws=0,hits=0,pairs=0,pairCounts=[0,0,0,0];
+const percentage=(n,d)=>d?((100*n/d).toFixed(1).replace(/\.0$/,"")+"%"):"—";
+function show(){
+ const total=red+blue, expected=100*red/total;
+ $("bagdesc").textContent=`Your bag has ${red} red and ${blue} blue counters (${total} total). P(red) = ${red}/${total} = ${percentage(red,total)}.`;
+ $("actual").textContent=`${hits} of ${draws} (${percentage(hits,draws)})`;
+ $("expected").textContent=percentage(red,total);
+ $("bar").style.width=(draws?100*hits/draws:0)+"%";
+ $("bar").setAttribute("aria-label",percentage(hits,draws)+" red draws");
+ $("redcount").textContent=hits;$("bluecount").textContent=draws-hits;
+ $("redpct").textContent=percentage(hits,draws);$("bluepct").textContent=percentage(draws-hits,draws);
+ $("compare").textContent=draws?`After ${draws} draws, the experimental red percentage is ${percentage(hits,draws)}. Difference from theoretical: ${Math.abs(100*hits/draws-expected).toFixed(1)} percentage points.`:"Run at least 10 draws to compare your results.";
+ const p=red/total,q=blue/total,weights=[p*p,p*q,q*p,q*q];
+ for(let i=0;i<4;i++){$("th-"+i).textContent=percentage(weights[i]*100,100);$("count-"+i).textContent=pairs?pairCounts[i]+" / "+pairs:"0 / 0";$("ex-"+i).textContent=percentage(pairCounts[i],pairs);}
+ $("pairsummary").textContent=pairs?`After ${pairs} pairs, RR appeared ${pairCounts[0]} times (${percentage(pairCounts[0],pairs)}). Theoretical RR: ${percentage(red*red,total*total)}.`:"No pairs yet. Predict the chance of RR before starting.";
+}
+function reset(){draws=0;hits=0;show();}
+function resetPairs(){pairs=0;pairCounts=[0,0,0,0];show();}
+$("apply").addEventListener("click",()=>{
+ const r=Number($("red").value),b=Number($("blue").value);
+ if(!Number.isInteger(r)||!Number.isInteger(b)||r<0||b<0||r>20||b>20||r+b===0){$("bagdesc").textContent="Enter whole numbers from 0 to 20, with at least one counter.";return;}
+ red=r;blue=b;draws=0;hits=0;pairs=0;pairCounts=[0,0,0,0];show();
+});
+document.querySelectorAll("[data-draw]").forEach(btn=>btn.addEventListener("click",()=>{
+ const n=Number(btn.dataset.draw),total=red+blue;
+ for(let i=0;i<n;i++){if(Math.random()<red/total)hits++;}
+ draws+=n;show();
+}));
+$("reset").addEventListener("click",reset);
+document.querySelectorAll("[data-pair]").forEach(btn=>btn.addEventListener("click",()=>{
+ const n=Number(btn.dataset.pair),p=red/(red+blue);
+ for(let i=0;i<n;i++){const first=Math.random()<p,second=Math.random()<p;pairCounts[first?(second?0:1):(second?2:3)]++;}
+ pairs+=n;show();
+}));
+$("reset-pairs").addEventListener("click",resetPairs);
+$("print").addEventListener("click",()=>window.print());
+$("copy").addEventListener("click",()=>{
+ const message=`Probability investigation\nBag: ${red} red, ${blue} blue\nPrediction out of 100: ${$("prediction").value}\nPrediction reasoning: ${$("reason").value}\nDraws: ${draws}; red: ${hits}; experimental: ${percentage(hits,draws)}; theoretical: ${percentage(red,red+blue)}\nPairs: ${pairs}; RR: ${pairCounts[0]}; RR experimental: ${percentage(pairCounts[0],pairs)}; RR theoretical: ${percentage(red*red,(red+blue)*(red+blue))}\nConclusion: ${$("conclusion").value}`;
+ if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(message).then(()=>$("copy-status").textContent="Copied.",()=>$("copy-status").textContent="Copy unavailable. Use Print instead.");}
+ else $("copy-status").textContent="Copy unavailable. Use Print instead.";
+});
+show();
+})();
+</script></body></html>
