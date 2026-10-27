@@ -309,10 +309,139 @@ window.HUB = {
        check:[
          {q:"P = 3/4. As a percent?", a:["34%","75%","43%"], c:1, why:"3 ÷ 4 = 0.75 = 75%."},
          {q:"P(rolling a 1 or 2) on a die, as a percent?", a:["about 33%","about 12%","20%"], c:0, why:"2/6 = 1/3 ≈ 33%."}
+       ]},
+      {id:"p3", n:"3", title:"Impossible, Certain and 'Not'",
+       big:"Probability runs from 0 (impossible) to 1 (certain). The chance an event does NOT happen is 1 minus the chance it does.",
+       notes:[
+         "P(impossible) = 0 = 0%. P(certain) = 1 = 100%. Every probability is between 0 and 1.",
+         "A fair die cannot roll a 7: P(7) = 0. A fair die always shows a number 1 through 6: probability 1.",
+         "To find the opposite event, subtract from 1. If P(red) = 3/10, P(not red) = 7/10.",
+         "Changing the sample space changes the probabilities. A spinner with two equal colours is different from one with eight sections, six of them blue.",
+         "A chance of 25% does not promise one success in every four trials. It is a long-run prediction."
+       ],
+       terms:[["Certain event","An event with probability 1 or 100%."],["Impossible event","An event with probability 0 or 0%."],["Complement","The 'not' version of an event; their probabilities add to 1."]],
+       work:"Notebook: order six events from impossible to certain, then calculate P(not red) for three bags. Optional: explore the Probability Bag on the unit page.",
+       check:[
+         {q:"A bag has 2 green and 6 yellow. P(not green) is…", a:["2/8","6/8","2/6"], c:1, why:"Six of the eight counters are not green."},
+         {q:"An event has a 45% chance. Its opposite has…", a:["55%","45%","145%"], c:0, why:"Together they total 100%."},
+         {q:"If P(A) = 0, the event is…", a:["Certain","Impossible","Equally likely"], c:1, why:"Zero means it cannot occur."}
+       ]},
+      {id:"p4", n:"4", title:"Two Independent Events and Sample Spaces",
+       big:"When events do not affect each other, list ALL ordered outcomes using a table or tree diagram; multiply the chances to find a pair.",
+       notes:[
+         "Flip a fair coin twice. The complete sample space is HH, HT, TH, TT: four equally likely outcomes.",
+         "P(HH) = 1/2 × 1/2 = 1/4 = 25%. P(exactly one head) = 2/4 = 50%, because HT and TH both count.",
+         "Roll a die and flip a coin: 6 × 2 = 12 equally likely ordered pairs. A 6 and heads is just one of those twelve.",
+         "Two events are independent when the first does not change the chance of the second. Replacing a drawn counter before the next draw keeps probabilities the same.",
+         "For two dice there are 6 × 6 = 36 equally likely ordered pairs, including (1,2) and (2,1). Make a 6-by-6 table so you do not miss any.",
+         "If colour groups have different counts, colour outcomes RR, RB, BR, BB need not be equally likely. Multiply each event's chance rather than assigning 1/4 automatically."
+       ],
+       table:{title:"Two coin flips: complete sample space",head:["First flip","Second flip","Ordered outcome"],rows:[["H","H","HH"],["H","T","HT"],["T","H","TH"],["T","T","TT"]]},
+       terms:[["Sample space","Every possible outcome of an experiment."],["Independent events","Events where one result does not change the chance of the other."],["Ordered pair","Two results in sequence, such as (heads, tails)."]],
+       work:"Draw a tree diagram for two coin flips, then a 2-by-6 table for a coin and die. Find P(two heads), P(one head) and P(heads and six).",
+       check:[
+         {q:"Flip a coin twice. P(exactly one head) is…", a:["1/4","1/2","3/4"], c:1, why:"HT and TH: 2 outcomes out of 4."},
+         {q:"Roll a die and flip a coin. How many equally likely pairs?", a:["6","8","12"], c:2, why:"6 die faces × 2 coin faces = 12."},
+         {q:"Two dice: How many ordered outcomes?", a:["12","36","18"], c:1, why:"6 rows by 6 columns = 36."}
+       ]},
+      {id:"p5", n:"5", title:"Prediction vs. Experiment: Two Events",
+       big:"A theoretical probability comes from the sample space. Experimental probability comes from what actually happened.",
+       notes:[
+         "First make a table or tree diagram of the possible pair outcomes. That gives theoretical probabilities.",
+         "For two fair coin flips, P(HH) = 1/4. After 20 pairs, 3 HH results would give an experimental probability of 3/20 = 15%.",
+         "With more trials, the experimental proportion often approaches the theoretical chance, but it can move away over short stretches.",
+         "Drawing a counter twice WITH replacement is independent. Without replacement the second draw changes, so these are not independent events.",
+         "Compare your prediction to the experiment using counts and percents. A difference is not proof that the model is wrong."
+       ],
+       terms:[["Theoretical probability","A prediction based on all possible outcomes and their chances."],["Experimental probability","The number of successful trials divided by all trials."]],
+       work:"Open 'Probability Investigation' from the Math 7 course shortcuts. Complete both single-draw and two-draw experiments, then write a claim supported by your results.",
+       check:[
+         {q:"Theory predicts 25%. You saw 7 successes in 20 pairs. Experimental chance?", a:["25%","35%","7%"], c:1, why:"7 ÷ 20 = 0.35 = 35%."},
+         {q:"Why replace the counter between two draws?", a:["To make the events independent","To increase the number of counters","To make red more likely"], c:0, why:"The bag returns to its original composition before the second draw."},
+         {q:"Which experiment is more likely to reflect a 25% theoretical chance?", a:["10 independent trials","1,000 independent trials","Both always equal 25%"], c:1, why:"Larger samples tend to be more stable, but are not guaranteed exact."}
+       ]},
+      {id:"p6", n:"6", title:"Probability Review and Skill Check",
+       big:"Explain the sample space and show why your probability is reasonable; don't just guess an answer.",
+       notes:[
+         "Review 7.SP.4: write probabilities as ratios, fractions and percents.",
+         "Review 7.SP.5: list at most 36 outcomes for two independent events with a table or tree diagram.",
+         "Review 7.SP.6: conduct two-event experiments and compare the theoretical result to your experimental result.",
+         "For your evidence, show the favourable outcomes and the entire sample space. Explain whether events are independent."
+       ],
+       work:"Use the unit review and the Chance Lab. Teacher provides the skill check when ready.",
+       check:[
+         {q:"Two coins: P(at least one tail) =", a:["1/4","2/4","3/4"], c:2, why:"HT, TH and TT are three of the four outcomes."},
+         {q:"A 6-sided die and a coin yield…", a:["8 ordered pairs","12 ordered pairs","36 ordered pairs"], c:1, why:"6 × 2 = 12."}
        ]}
     ]
   },
-  {id:"div", n:"3", name:"Divisibility", status:"soon", when:"November 10 – 13", intro:"Divisibility rules, factors and multiples.", lessons:[]},
+  {
+   id:"div", n:"3", name:"Divisibility", status:"soon", when:"November 10 – 13",
+   intro:"Explain WHY a number is or is not divisible by 2, 3, 4, 5, 6, 8, 9 or 10. Test each rule with examples, not guesses.",
+   after:"Use the Divisibility Detective on this unit page for unlimited practice. Curriculum outcome 7.N.1.",
+   lessons:[
+    {id:"d1",n:"1",title:"Divisibility by 2, 5 and 10",
+     big:"Divisibility means a whole-number quotient with no remainder. The last digit reveals divisibility by 2, 5 and 10.",
+     notes:[
+      "Divisible by 2: last digit is 0, 2, 4, 6 or 8. Example: 348 ends in 8.",
+      "Divisible by 5: last digit is 0 or 5. Example: 735 ends in 5.",
+      "Divisible by 10: last digit is 0. Example: 240 ends in 0.",
+      "A number ending in 0 is divisible by 2, 5 and 10. A number ending in 5 is divisible by 5 but not 2 or 10.",
+      "A number is divisible by a divisor when there is no remainder after dividing."
+     ],
+     terms:[["Divisible","Gives a whole-number answer with no remainder."],["Remainder","The amount left after grouping equally."]],
+     work:"Notebook: test 128, 345, 600, 729 and 410 by 2, 5 and 10. Explain each decision.",
+     check:[
+      {q:"Which number is divisible by both 2 and 5?",a:["135","250","128"],c:1,why:"250 ends in 0, so 2, 5 and 10 all divide it."},
+      {q:"Is 718 divisible by 10?",a:["Yes","No"],c:1,why:"718 ends in 8, not 0."}
+     ]},
+    {id:"d2",n:"2",title:"Divisibility by 3 and 9",
+     big:"For 3 and 9, add the digits. If the digit sum is divisible by 3 or 9, so is the original number.",
+     notes:[
+      "For 462, the digit sum is 4 + 6 + 2 = 12. Twelve is divisible by 3, so 462 is too.",
+      "For 729, the sum is 7 + 2 + 9 = 18. Eighteen is divisible by 9, so 729 is too.",
+      "Divisible by 9 always means divisible by 3. The reverse is not always true: 111 has digit sum 3, so it is divisible by 3 but not 9.",
+      "The rule works because each place value (10, 100, 1000) is one more than a multiple of 9, and therefore of 3.",
+      "Always explain using the digit sum instead of relying on a calculator."
+     ],
+     terms:[["Digit sum","The total of the digits in a whole number."]],
+     work:"Find digit sums for 234, 327, 648, 1,245 and 2,016. Classify them as divisible by 3, 9, both or neither.",
+     check:[
+      {q:"Which is divisible by 9?",a:["234","513","444"],c:1,why:"5 + 1 + 3 = 9."},
+      {q:"A number is divisible by 9. Is it always divisible by 3?",a:["Yes","No"],c:0,why:"Every multiple of 9 is also a multiple of 3."}
+     ]},
+    {id:"d3",n:"3",title:"Divisibility by 4 and 8",
+     big:"Only the final two digits matter for 4, and the final three digits matter for 8.",
+     notes:[
+      "Divisible by 4: check the last two digits. 1,316 ends in 16, and 16 ÷ 4 = 4, so 1,316 is divisible by 4.",
+      "Divisible by 8: check the last three digits. 2,128 ends in 128, and 128 ÷ 8 = 16, so 2,128 is divisible by 8.",
+      "Why it works: 100 is a multiple of 4, while 1000 is a multiple of 8. Earlier digits cannot change the remainder.",
+      "Every multiple of 8 is a multiple of 4 and 2. A multiple of 4 need not be a multiple of 8.",
+      "A number ending in 00 is divisible by 4; a number ending in 000 is divisible by 8."
+     ],
+     work:"Test 624, 1,112, 2,340, 3,216 and 5,718 using the final two or three digits. Explain.",
+     check:[
+      {q:"Is 1,124 divisible by 4?",a:["Yes","No"],c:0,why:"The final two digits, 24, divide evenly by 4."},
+      {q:"Is 1,124 divisible by 8?",a:["Yes","No"],c:1,why:"124 ÷ 8 leaves a remainder of 4."}
+     ]},
+    {id:"d4",n:"4",title:"The Rule of 6, Zero and Divisibility Review",
+     big:"Divisible by 6 means divisible by BOTH 2 and 3. Division by zero is undefined.",
+     notes:[
+      "A number is divisible by 6 when it is even AND its digits add to a multiple of 3: 426 is even and 4 + 2 + 6 = 12, so it is divisible by 6.",
+      "It is not enough to pass only one test. 222 passes both; 224 passes 2 but fails 3; 225 passes 3 but fails 2.",
+      "Division by 0 is undefined. No number can be multiplied by 0 to produce a nonzero number. Even 0 ÷ 0 has no single answer.",
+      "Use a table to decide which of 2, 3, 4, 5, 6, 8, 9 and 10 divide a given number.",
+      "Explain the rule you used. In Grade 7, a correct 'no' with clear reasoning is as valuable as a correct 'yes'."
+     ],
+     terms:[["Undefined","An operation that does not have a valid numerical result in this context."]],
+     work:"Open Divisibility Detective on this unit page. Check 360, 648 and 1,245, then write your own three mystery numbers.",
+     check:[
+      {q:"Which number is divisible by 6?",a:["225","224","234"],c:2,why:"234 is even and its digit sum is 9."},
+      {q:"What is 14 ÷ 0?",a:["0","14","Undefined"],c:2,why:"Zero times any number is zero; it cannot produce 14."},
+      {q:"If a number divides evenly by 8, must it divide evenly by 4?",a:["Yes","No"],c:0,why:"Every multiple of 8 is also a multiple of 4."}
+     ]}
+   ]
+  },
   {id:"fracops", n:"4", name:"Fraction Operations", status:"soon", when:"Mid-November", intro:"Adding and subtracting fractions and mixed numbers.", lessons:[]},
   {id:"int", n:"5", name:"Integer Operations", status:"soon", when:"Later this year", intro:"Adding and subtracting integers.", lessons:[]},
   {id:"eq", n:"6", name:"Patterns and Equations", status:"soon", when:"Later this year", intro:"Patterns, expressions and one-step equations.", lessons:[]},
