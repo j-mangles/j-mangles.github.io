@@ -1,0 +1,26 @@
+name: Test Egyptian Temple Walkthrough
+on:
+  push:
+    branches: [main, "feature/**", "chatgpt/**"]
+    paths:
+      - "social-studies/temple-walkthrough.html"
+      - "social-studies/index.html"
+      - "social-studies/egypt-lessons.js"
+      - "tools/test_temple_walkthrough.cjs"
+      - ".github/workflows/test-temple-walkthrough.yml"
+  pull_request:
+    paths:
+      - "social-studies/temple-walkthrough.html"
+      - "social-studies/index.html"
+      - "social-studies/egypt-lessons.js"
+      - "tools/test_temple_walkthrough.cjs"
+      - ".github/workflows/test-temple-walkthrough.yml"
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: node tools/test_temple_walkthrough.cjs

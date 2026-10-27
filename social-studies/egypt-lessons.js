@@ -320,6 +320,7 @@ window.EgyptLessons = [
       ]
     ],
     "work": "Choose Giza or Abu Simbel. Explain how the site shows at least two of technology, religious practice, government, social hierarchy and environment.",
+    "activity": {"href": "temple-walkthrough.html", "title": "Explore the Egyptian Temple Walkthrough"},
     "check": [
       {
         "q": "The Great Pyramid is most closely associated with…",
