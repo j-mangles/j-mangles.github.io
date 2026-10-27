@@ -169,6 +169,32 @@ async function checkNoHorizontalOverflow(page,label){
   assert.match(await page.locator("#cg-table-wrap").innerText(),/Painting and music/);
   assert.ok(await page.locator("#cg-picture svg[role=img]").count()>0);
   await capture(page,"math-circle-graph-desktop");
+  stage="River Valley Decision Lab desktop";
+  await goto(page,"/social-studies/river-valley-lab.html?civilization=egypt","#game .decision");
+  assert.match(await page.locator("#game h2").innerText(),/flood/i);
+  for(let i=0;i<3;i++){
+    await page.locator('[data-choice="0"]').click();
+    await page.locator("#reason").fill("I would collect evidence and ask whose needs are affected.");
+    await page.locator("#next").click();
+  }
+  assert.match(await page.locator("#game").innerText(),/Build your historical argument/);
+  assert.equal(await page.locator(".summary-list article").count(),3);
+  await page.locator("#final").fill("Rivers shaped settlement, while human choices shaped fairness.");
+  await capture(page,"river-valley-egypt-desktop");
+  await page.locator('[data-world="mesopotamia"]').click();
+  assert.match(await page.locator("#game h2").innerText(),/canal/i);
+  assert.match(await page.locator("#game").innerText(),/Irrigation|canal/i);
+  await capture(page,"river-valley-mesopotamia-desktop");
+  stage="Ancient Egypt atlas lesson navigation";
+  await goto(page,"/social-studies/#egypt",'#tabs [data-id="egypt"]');
+  await page.locator("#tab-lessons").click();
+  assert.equal(await page.locator("#panel .lessons [data-l]").count(),8);
+  await page.locator('#panel .lessons [data-l="l1"]').click();
+  await page.locator("#sheetcard h2").waitFor({state:"visible"});
+  assert.match(await page.locator("#sheetcard h2").innerText(),/Nile/);
+  assert.ok(await page.locator('#sheetcard a[href^="river-valley-lab.html"]').count()===1);
+  await page.locator("#sheet-x").click();
+  await capture(page,"atlas-egypt-lessons-desktop");
   stage="Social Studies atlas shell";
   const atlas=await page.request.get(origin+"/social-studies/");
   assert.equal(atlas.status(),200);
@@ -206,6 +232,9 @@ async function checkNoHorizontalOverflow(page,label){
   await goto(phone,"/social-studies/evidence.html","#artifact-list button");
   await checkNoHorizontalOverflow(phone,"Site 14 Evidence Desk mobile");
   await capture(phone,"social-artifact-evidence-mobile");
+  await goto(phone,"/social-studies/river-valley-lab.html?civilization=egypt","#game .decision");
+  await checkNoHorizontalOverflow(phone,"River Valley Lab mobile");
+  await capture(phone,"river-valley-egypt-mobile");
   await goto(phone,"/social-studies/compare.html","#period-a");
   await checkNoHorizontalOverflow(phone,"Civilization comparison mobile");
   await capture(phone,"atlas-compare-mobile");
