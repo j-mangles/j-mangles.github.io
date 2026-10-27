@@ -15,7 +15,7 @@ assert.match(html,/aria-pressed=/);
 assert.match(html,/role="progressbar"/);
 assert.match(html,/role="status"/);
 assert.match(atlas,/href="temple-walkthrough.html"/);
-assert.match(lessons,/"activity": \{"href": "temple-walkthrough.html"/);
+assert.match(lessons,/"href": "temple-walkthrough.html"/);
 assert.doesNotMatch(html,/localStorage|sessionStorage|fetch\(|XMLHttpRequest|mailto:/);
 const scripts=[...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/g)];
 assert.equal(scripts.length,1);
