@@ -1047,7 +1047,7 @@ function renderPanel(){
   let body;
   if(hasL&&S.ptab==="lessons"){
     const done=getDone();
-    body=`<p class="fine">${u.id==="egypt"?"These eight study topics are organized for review, not numbered to match the 13 classroom Egypt slide lessons. Check the class handout or ask Mr. Mangles which topic fits the day.":"Missed a class? Open the lesson, read the notes, try the self-check, then get the handout from Mr. Mangles. Looking ahead is fine too."}</p>
+    body=`<p class="fine">${u.id==="egypt"?"These eight study topics are organized for review, not numbered to match the classroom slide lessons. Check the class handout or ask Mr. Mangles which topic fits the day.":"Missed a class? Open the lesson, read the notes, try the self-check, then get the handout from Mr. Mangles. Looking ahead is fine too."}</p>
       <ul class="lessons">${u.lessons.map(l=>{
         const ok=done.has(u.id+":"+l.id);
         return `<li class="${l.released?"":"locked"}"><button data-l="${l.id}" ${l.released?"":'aria-disabled="true"'}><span class="ln">${esc(l.n)}</span><span class="nm">${esc(l.title)}</span><span class="st ${ok?"ok":""}">${l.released?(ok?"Checked ✓":""):"After class"}</span></button></li>`;}).join("")}</ul>
