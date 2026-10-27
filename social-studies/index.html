@@ -257,6 +257,7 @@ figcaption{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.35}
       <a class="atlas-compare-link" href="evidence.html">Artifact Evidence Desk</a>
       <a class="atlas-compare-link" href="river-valley-lab.html">River Valley Lab</a>
       <a class="atlas-compare-link" href="temple-walkthrough.html">Temple Walkthrough</a>
+      <a class="atlas-compare-link" href="giza-expedition.html">Walkable Giza Game</a>
       <button class="tog" id="t-labels" aria-pressed="true">Labels</button>
       <button class="tog" id="t-borders" aria-pressed="false">Modern borders</button>
     </div>
@@ -1117,7 +1118,7 @@ function renderSheet(){
     ${l.terms.length?`<h3>Key terms</h3><dl class="terms">${l.terms.map(t=>`<dt>${esc(t[0])}</dt><dd>${esc(t[1])}</dd>`).join("")}</dl>`:""}
     ${places.length?`<h3>On the map</h3><div class="chips">${places.map(p=>`<button class="chip" data-place="${p.id}">${glyph(p.kind)}${esc(p.name)}</button>`).join("")}</div>`:""}
     <h3>${u.id==="egypt"?"Practice":"Your work"}</h3><p>${esc(l.work)}</p>
-    ${activity?`<p><a class="atlas-compare-link" href="${esc(activity.href)}">${esc(activity.title||"Open investigation")}</a></p>`:""}<p class="fine">${u.id==="egypt"?"This study topic is not the same as a numbered classroom lesson. Use the handout your teacher assigned.":"Get the handout from Mr. Mangles if you don't have it."}</p>
+    ${activity?`<p><a class="atlas-compare-link" href="${esc(activity.href)}">${esc(activity.title||"Open investigation")}</a></p>`:""}${u.id==="egypt"&&(l.id==="l3"||l.id==="l5")?`<p><a class="atlas-compare-link" href="giza-expedition.html">Explore the Giza 3D Field Expedition ↗</a></p>`:""}<p class="fine">${u.id==="egypt"?"This study topic is not the same as a numbered classroom lesson. Use the handout your teacher assigned.":"Get the handout from Mr. Mangles if you don't have it."}</p>
     <h3>Check yourself</h3>${qs}
     ${nAns===l.check.length?`<div class="qscore">${nRight} out of ${l.check.length}${nRight===l.check.length?". Nice, you've got this lesson.":". Have another look at the notes above, then try again."} <button class="btn ghost" id="retry" style="margin-left:8px">Try again</button></div>`:""}
     <div class="sheet-nav">${prev?`<button class="btn ghost" id="lprev">&larr; ${lessonLabel} ${esc(prev.n)}</button>`:"<span></span>"}${next?`<button class="btn ghost" id="lnext">${lessonLabel} ${esc(next.n)} &rarr;</button>`:""}</div>`;

@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#132b30">
+<title>Giza Field Expedition · Grade 8 Ancient Egypt</title>
+<meta name="description" content="Explore a stylized 3D Giza Plateau, speak with historical-role characters and investigate six evidence-based challenges.">
+<link rel="stylesheet" href="../assets/fonts.css">
+<style>
+:root{color-scheme:dark;--ink:#f3eddf;--muted:#b9c5c4;--sand:#e7bd7b;--gold:#f8d790;--bg:#102b2c;--panel:#19383b;--line:#436062;--green:#abdfb7}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 "Inter",system-ui,sans-serif}button,input,textarea{font:inherit}button{cursor:pointer}button:focus-visible,textarea:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+a{color:var(--gold)}.top{min-height:65px;display:flex;align-items:center;gap:15px;flex-wrap:wrap;padding:10px clamp(12px,2vw,26px);border-bottom:1px solid var(--line);background:#10292c}
+.back{color:var(--gold);text-decoration:none;white-space:nowrap;font-size:13px;font-weight:750}.brand{display:grid;flex:1;min-width:170px;line-height:1.15}.brand small{color:var(--gold);font:700 10px/1.5 ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase}.brand strong{font-family:Georgia,serif;font-size:clamp(22px,2.4vw,31px)}
+.actions,.controls{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.btn{background:#315658;border:1px solid #638785;color:#fff;border-radius:8px;padding:9px 13px;min-height:40px;font-weight:750}.btn:hover{background:#477073}.btn.primary{background:#d8a968;color:#182726;border-color:#ecc88e}.btn.primary:hover{background:#ebc485}.btn.ghost{background:transparent}.btn[aria-pressed=true]{background:#ead19c;color:#182726}.btn:disabled{cursor:default;opacity:.5}
+.app{display:grid;grid-template-columns:minmax(0,1fr) 340px;height:calc(100dvh - 65px);min-height:600px}.world{position:relative;overflow:hidden;background:linear-gradient(#83b8c4 0 53%,#c99c68 54% 100%);min-height:360px;touch-action:none}
+#render{position:absolute;inset:0}#render canvas{display:block;width:100%;height:100%;outline:0}#hud{position:absolute;top:15px;left:15px;max-width:min(410px,calc(100% - 30px));pointer-events:none;display:grid;gap:7px}.glass{background:#102a2ce8;color:#fff;border:1px solid #71908c99;box-shadow:0 12px 30px #0004;backdrop-filter:blur(7px);border-radius:11px;padding:11px 13px}.eyebrow{color:var(--gold);font:800 11px ui-monospace,monospace;letter-spacing:.12em;text-transform:uppercase}.glass h2{font:700 23px/1.2 Georgia,serif;margin:4px 0}.glass p{margin:4px 0;color:#e7e5dc;font-size:13px}.meter{height:7px;background:#456263;border-radius:8px;overflow:hidden;margin-top:8px}.meter span{display:block;width:0;height:100%;background:#e8bd75;transition:width .2s}
+#crosshair{position:absolute;top:50%;left:50%;width:9px;height:9px;border:2px solid #fff9;border-radius:100%;transform:translate(-50%,-50%);pointer-events:none;display:none}#crosshair.show{display:block}
+#minimap{position:absolute;right:14px;top:15px;width:150px;height:135px;pointer-events:none;background:#102b2bd9;border:1px solid #7a8d84;border-radius:11px;box-shadow:0 6px 20px #0004}
+#status{position:absolute;left:15px;bottom:93px;max-width:min(480px,calc(100% - 30px));font-size:13px;padding:9px 13px;background:#173739ef;border-radius:8px;color:white;border:1px solid #6f898a;pointer-events:none}
+#near-action{position:absolute;left:50%;bottom:28px;transform:translateX(-50%);white-space:normal;max-width:calc(100% - 26px);min-width:215px;z-index:4}
+#help{position:absolute;left:13px;bottom:12px;color:#fff;background:#122d30ad;font-size:11px;padding:5px 9px;border-radius:6px;pointer-events:none}#look-label{position:absolute;right:14px;bottom:18px;font-size:11px;color:#fff9;pointer-events:none}
+#loading{position:absolute;inset:0;z-index:12;background:#112e31eb;display:flex;flex-direction:column;gap:10px;align-items:center;justify-content:center;padding:24px;text-align:center}#loading strong{font:700 28px Georgia,serif}#loading p{max-width:43ch;color:#e4d8c8}#loading[hidden],.modal[hidden],#pad[hidden]{display:none!important}
+.sidebar{background:#1c383a;border-left:1px solid var(--line);overflow:auto;padding:18px 17px 25px;min-width:0}.sidebar h2{font:700 27px Georgia,serif;margin:0 0 7px}.sidebar p{color:var(--muted);font-size:13px;margin:0 0 12px}
+.notice{font-size:12px;background:#294649;border-left:3px solid var(--gold);border-radius:4px;padding:10px 11px;color:#f5e8cf;margin:14px 0}
+#mission-list{padding:0;list-style:none;display:grid;gap:8px;margin:12px 0 21px}
+#mission-list li{border:1px solid #4d6968;border-radius:10px;padding:10px 11px;background:#224245;display:grid;gap:4px}
+#mission-list li.done{border-color:#649d79;background:#244939}
+.m-head{display:flex;align-items:center;gap:8px}.m-icon{color:#f3c775;width:23px;flex:0 0 23px;font-weight:900}.m-head strong{font-size:13px;flex:1}.m-meta{font-size:11px;color:#b9c9c3}.m-row{display:flex;justify-content:space-between;gap:9px;align-items:center}.mini{font-size:12px;border-radius:6px;border:1px solid #7f978e;background:#315759;color:#fff;padding:5px 9px;min-height:31px}
+.note-box{width:100%;min-height:98px;padding:10px;resize:vertical;background:#0d292b;border:1px solid #6f8181;border-radius:8px;color:white}.sidebar h3{font:700 20px Georgia,serif;margin:13px 0 8px}
+.small{font-size:12px;color:var(--muted)}.sources{font-size:12px;padding-left:18px;display:grid;gap:7px}
+.modal{position:absolute;inset:0;background:#07191bba;z-index:16;display:flex;justify-content:center;align-items:center;padding:15px;overflow:auto;touch-action:pan-y}
+.dialog{width:min(585px,100%);max-height:min(92dvh,800px);overflow-y:auto;background:#f8f1e4;color:#192f33;border:2px solid #e4c088;border-radius:15px;padding:clamp(17px,3vw,28px);box-shadow:0 22px 70px #000a}
+.dialog .eyebrow{color:#80602e}.dialog h2{font:700 clamp(25px,3vw,34px)/1.2 Georgia,serif;margin:5px 0 11px}
+.dialog p{line-height:1.6}.dialog .evidence{padding:12px;background:#e7e4d8;border-left:4px solid #8e6938;border-radius:5px}
+.dialog .infer{border-left-color:#587b79;background:#e7ece8}.dialog .micro{font-size:12px;color:#526666}
+.dialog button.option{width:100%;display:block;text-align:left;background:#fff;border:1px solid #aab9b6;border-radius:8px;margin:8px 0;padding:11px 12px;color:#213438}.dialog button.option:hover{background:#ecf1ea}.dialog button.option:focus-visible{outline-color:#a66a19}
+.dialog .btn{color:white}.dialog .btn.primary{color:#25312d}.dialog a{color:#295b60}
+#dialog-feedback{font-weight:700;min-height:23px}.dialog-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+#dialog-close{background:transparent;border:1px solid #91a09a;border-radius:50%;width:38px;height:38px;flex:0 0 38px;color:#162d30}
+.endcap{display:none;margin:20px 0 10px;padding:14px;background:#294d40;border:1px solid #8db39a;border-radius:10px}.endcap.show{display:block}.endcap h3{margin:5px 0;color:#fff}
+#pad{position:absolute;left:12px;bottom:130px;z-index:5;display:grid;grid-template-columns:repeat(3,44px);grid-template-rows:repeat(2,44px);gap:4px;opacity:.94;touch-action:none}
+#pad button{background:#112f32cc;color:white;border:1px solid #cae3dbb8;border-radius:10px;font-size:22px;touch-action:none}#pad [data-move=forward]{grid-column:2}#pad [data-move=left]{grid-row:2;grid-column:1}#pad [data-move=back]{grid-row:2;grid-column:2}#pad [data-move=right]{grid-row:2;grid-column:3}
+@media(max-width:1050px){.app{grid-template-columns:minmax(0,1fr) 285px}}@media(max-width:750px){.app{display:flex;flex-direction:column;height:auto}.world{height:min(70dvh,620px);min-height:390px;flex:none}.sidebar{overflow:visible;min-height:300px}.glass h2{font-size:18px}#hud{max-width:calc(100% - 180px)}#minimap{width:117px;height:108px}#status{bottom:72px;left:10px;max-width:calc(100% - 20px);padding:7px 8px;font-size:12px}#near-action{bottom:19px;padding:7px 9px;min-height:35px}#help{display:none}#look-label{bottom:58px;font-size:10px}#pad{bottom:120px}}
+@media(max-width:370px){#hud{max-width:calc(100% - 130px)}#minimap{width:108px;height:102px;right:7px;top:10px}.glass{padding:8px}.glass p{display:none}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}
+</style></head>
+<body>
+<header class="top">
+<a class="back" href="index.html#egypt">← Ancient Egypt Atlas</a>
+<div class="brand"><small>Grade 8 · Societies of the Past</small><strong>Giza Field Expedition</strong></div>
+<div class="actions"><button type="button" class="btn" id="view-mode" aria-pressed="false">Third person</button><button type="button" class="btn ghost" id="pause-game" aria-pressed="false">Pause</button><button type="button" class="btn ghost" id="instructions">Controls</button></div>
+</header>
+<main class="app">
+<section class="world" id="world" aria-label="Interactive three-dimensional Giza expedition. Use the accessible travel buttons in the quest journal if keyboard or touch navigation is difficult.">
+<div id="render" aria-hidden="true"></div>
+<div id="hud"><div class="glass"><div class="eyebrow">Fieldwork · Fourth Dynasty · c. 2550–2500 BCE</div><h2 id="area">Giza Plateau</h2><p>Inspect six sites, collect evidence, and talk with historical-role characters.</p><div class="meter" aria-label="Six discoveries"><span id="meter-fill"></span></div><p id="counter">0 / 6 investigations completed</p></div></div>
+<canvas id="minimap" width="300" height="270" role="img" aria-label="Approximate site diagram showing expedition locations and your position. Travel buttons are in the quest list."></canvas>
+<div id="crosshair" aria-hidden="true"></div>
+<div id="status" role="status" aria-live="polite">Use WASD or the arrow keys to move. Drag the world to turn. Visit a marker and press E.</div>
+<button type="button" id="near-action" class="btn primary" disabled>Walk toward a golden site marker to investigate</button>
+<div id="help">WASD · walk  |  drag · turn  |  E · investigate  |  V · camera</div>
+<div id="look-label">Drag on the scene to look around</div>
+<div id="pad" hidden aria-label="Touch movement controls"><button type="button" data-move="forward" aria-label="Move forward">↑</button><button type="button" data-move="left" aria-label="Move left">←</button><button type="button" data-move="back" aria-label="Move backward">↓</button><button type="button" data-move="right" aria-label="Move right">→</button></div>
+<div id="loading"><strong>Preparing Giza…</strong><p id="load-message">Loading a stylized three-dimensional landscape. The monument layout is schematic, not a surveyed reconstruction.</p><button type="button" class="btn" id="retry" hidden>Try 3D again</button></div>
+<div class="modal" id="dialog" hidden role="dialog" aria-modal="true" aria-labelledby="dialog-title">
+<div class="dialog"><div class="dialog-top"><div><div class="eyebrow" id="dialog-kicker">Field investigation</div><h2 id="dialog-title">Site</h2></div><button type="button" id="dialog-close" aria-label="Close investigation">×</button></div>
+<div id="dialog-body"></div><div id="dialog-questions"></div><p id="dialog-feedback" role="status" aria-live="polite"></p>
+<div class="controls"><button type="button" id="dialog-done" class="btn primary" hidden>Continue exploring</button><button type="button" id="dialog-back" class="btn ghost">Back to world</button></div></div></div>
+</section>
+<aside class="sidebar" aria-label="Expedition journal">
+<div class="eyebrow">Your field notebook</div><h2>Expedition journal</h2><p>Explore the sites in any order. Find the evidence and answer a question at each stop.</p>
+<div class="notice"><strong>Historian's warning:</strong> This is a fictional, stylized reconstruction of <em>different moments</em> in Egypt's Fourth Dynasty. Building positions and sizes are approximate. NPCs and conversations are invented; monuments and historical claims are evidence-informed.</div>
+<h3>Locations to investigate</h3><ol id="mission-list"></ol>
+<section class="endcap" id="endcap" aria-live="polite"><div class="eyebrow">Expedition complete</div><h3>You've investigated all six sites.</h3><p>Final task: Which is the strongest piece of evidence that the pyramids were a project involving more than a single king? Support your argument using at least two sites.</p></section>
+<label for="notes"><strong>My own field notes</strong></label><p class="small">Write what you observed and how it supports a claim. This notebook exists only while the page is open.</p>
+<textarea id="notes" class="note-box" placeholder="I noticed… This is evidence that… One detail we cannot know exactly is…"></textarea>
+<div class="controls" style="margin-top:9px"><button type="button" class="btn" id="copy-report">Copy field report</button><button type="button" class="btn ghost" id="download-report">Download report</button></div>
+<p id="report-status" class="small" role="status" aria-live="polite">No accounts, tracking or automatic submissions.</p>
+<h3>Historical source trail</h3><ul class="sources">
+<li><a href="https://egymonuments.gov.eg/archaeological-sites/giza-plateau/" target="_blank" rel="noopener noreferrer">Egyptian Ministry — Giza Plateau</a></li>
+<li><a href="https://egymonuments.gov.eg/en/monuments/the-great-sphinx/" target="_blank" rel="noopener noreferrer">Egyptian Ministry — Great Sphinx</a></li>
+<li><a href="https://egymonuments.gov.eg/monuments/workers-town-and-cemetery/" target="_blank" rel="noopener noreferrer">Egyptian Ministry — Workers’ Town</a></li>
+<li><a href="https://giza.fas.harvard.edu/lessons/royal-pyramid-complexes/" target="_blank" rel="noopener noreferrer">Harvard — Royal Pyramid Complexes</a></li></ul>
+<p class="small">Curriculum: Manitoba Grade 8 Social Studies, Cluster 2: 8-KI-013, 8-KI-014, 8-KH-029, 8-KH-030, 8-KP-045, 8-KE-054. Map not to scale. No teacher keys or student data are transmitted.</p>
+</aside>
+</main>
+<script src="giza-expedition-core.js"></script>
+<script type="module" src="giza-expedition.js"></script>
+</body></html>
