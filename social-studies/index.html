@@ -255,6 +255,7 @@ figcaption{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.35}
       </div>
       <a class="atlas-compare-link" href="compare.html">Compare civilizations</a>
       <a class="atlas-compare-link" href="evidence.html">Artifact Evidence Desk</a>
+      <a class="atlas-compare-link" href="river-valley-lab.html">River Valley Lab</a>
       <button class="tog" id="t-labels" aria-pressed="true">Labels</button>
       <button class="tog" id="t-borders" aria-pressed="false">Modern borders</button>
     </div>
@@ -282,6 +283,7 @@ figcaption{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.35}
 </div>
 
 <script src="../assets/review.js"></script>
+<script src="egypt-lessons.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
 <script>
@@ -742,7 +744,8 @@ const UNITS = [
     {d:"331 BCE", t:"Alexander founds Alexandria", p:"alexandria"},
     {d:"30 BCE", t:"Cleopatra dies; Rome takes over", p:"alexandria"},
     {d:"1799 CE", t:"Rosetta Stone found", p:"rosetta"}
-  ]
+  ],
+  lessons: window.EgyptLessons || []
 },
 
 { id:"greece", n:4, name:"Ancient Greece", status:"soon", span:"c. 800 – 146 BCE", bbox:[19,34.5,29.5,42], anchor:[22.5,38.6],
@@ -1090,6 +1093,7 @@ function openReview(u){
 function closeLesson(){ $("#sheet").hidden=true; sheetCtx=null; if(lastFocus&&lastFocus.focus) lastFocus.focus(); }
 function renderSheet(){
   const {u,l,answers}=sheetCtx;
+  const activity=l.activity || (u.id==="mesopotamia" && ["l1","l5"].includes(l.id) ? {href:"river-valley-lab.html?civilization=mesopotamia",title:"Try the River Valley Decision Lab"} : null);
   const rel=u.lessons.filter(x=>x.released); const i=rel.indexOf(l);
   const prev=rel[i-1], next=rel[i+1];
   const places=l.places.map(id=>placeById(u,id)).filter(Boolean);
@@ -1110,7 +1114,8 @@ function renderSheet(){
     ${l.imgs&&l.imgs.length>1?`<h3>Pictures from the lesson</h3><div class="gal">${l.imgs.slice(1).map(im=>`<figure><img src="${im.src}" alt="" loading="lazy" data-cap="${esc(im.cap)}"><figcaption>${esc(im.cap)}</figcaption></figure>`).join("")}</div>`:""}
     ${l.terms.length?`<h3>Key terms</h3><dl class="terms">${l.terms.map(t=>`<dt>${esc(t[0])}</dt><dd>${esc(t[1])}</dd>`).join("")}</dl>`:""}
     ${places.length?`<h3>On the map</h3><div class="chips">${places.map(p=>`<button class="chip" data-place="${p.id}">${glyph(p.kind)}${esc(p.name)}</button>`).join("")}</div>`:""}
-    <h3>Your work</h3><p>${esc(l.work)}</p><p class="fine">Get the handout from Mr. Mangles if you don't have it.</p>
+    <h3>Your work</h3><p>${esc(l.work)}</p>
+    ${activity?`<p><a class="atlas-compare-link" href="${esc(activity.href)}">${esc(activity.title||"Open investigation")}</a></p>`:""}<p class="fine">Get the handout from Mr. Mangles if you don't have it.</p>
     <h3>Check yourself</h3>${qs}
     ${nAns===l.check.length?`<div class="qscore">${nRight} out of ${l.check.length}${nRight===l.check.length?". Nice, you've got this lesson.":". Have another look at the notes above, then try again."} <button class="btn ghost" id="retry" style="margin-left:8px">Try again</button></div>`:""}
     <div class="sheet-nav">${prev?`<button class="btn ghost" id="lprev">&larr; Lesson ${esc(prev.n)}</button>`:"<span></span>"}${next?`<button class="btn ghost" id="lnext">Lesson ${esc(next.n)} &rarr;</button>`:""}</div>`;
