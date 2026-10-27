@@ -21,7 +21,6 @@ for(const l of unit.lessons){
 assert.deepEqual(coverage,{t1:4,t2:3,t3:2,t4:2,t5:2});
 assert.equal(checks,34);
 assert.match(unit.after,/24-class/);
-assert.ok(read("science/data.js").includes("SCI.8")===false||true);
 const script=read("science/energy-pathway.js");
 const p={window:{HUB:{lessonTools:{}}}};vm.runInNewContext(script,p,{filename:"science/energy-pathway.js",timeout:3000});
 const model=p.window.EnergyPathwayCore;
