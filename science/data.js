@@ -1235,7 +1235,7 @@ window.HUB = {
       ]
     }
   ]
-}
+},
   {id:"earth", n:"4", name:"Earth's Interior and Tectonics", status:"soon", when:"March to May",
    intro:"What's under our feet: layers of the Earth, plate tectonics, earthquakes and volcanoes."}
   ]
