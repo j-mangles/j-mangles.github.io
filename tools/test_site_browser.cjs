@@ -349,6 +349,12 @@ async function checkNoHorizontalOverflow(page,label){
    assert.match(await page.locator("#prompt-title").innerText(),new RegExp(id==="tracks"?"Sledge":id==="manifest"?"Scribe":id==="water"?"North":id==="scribe"?"Ipu":"Paheri","i"),"Fast travel must target intended clue or speaker");
    await page.locator("#prompt").click();
    await page.locator("#conversation").waitFor({state:"visible"});
+   if(id==="tracks"){
+     await page.locator("#haul-water").fill("43");
+     for(let i=0;i<4;i++)await page.locator("#haul-pull").click();
+     assert.match(await page.locator("#haul-progress").innerText(),/100 \/ 100/);
+     assert.ok(await page.locator("#haul-pull").isDisabled());
+   }
    await page.locator("#dialog-exit").click();
   };
   await travel("water");
