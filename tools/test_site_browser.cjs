@@ -346,6 +346,7 @@ async function checkNoHorizontalOverflow(page,label){
    if(!await page.locator("#travel-list").isVisible())await page.locator("#travel-tools").click();
    await page.locator('[data-fast="'+id+'"]').click();
    await page.locator("#prompt").waitFor({state:"visible"});
+   assert.match(await page.locator("#prompt-title").innerText(),new RegExp(id==="tracks"?"Sledge":id==="manifest"?"Scribe":id==="water"?"North":id==="scribe"?"Ipu":"Paheri","i"),"Fast travel must target intended clue or speaker");
    await page.locator("#prompt").click();
    await page.locator("#conversation").waitFor({state:"visible"});
    await page.locator("#dialog-exit").click();
