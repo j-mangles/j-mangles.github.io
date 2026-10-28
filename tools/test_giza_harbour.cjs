@@ -20,6 +20,11 @@ for(const p of q.CHARACTERS){
  assert.ok(p.role==="fictional composite"&&p.options.length===3);
  assert.ok(p.options.every(x=>x.text&&x.reply));
 }
+const dry=q.haul(q.newHaul(),0),wetted=q.haul(q.newHaul(),43),flooded=q.haul(q.newHaul(),100);
+assert.ok(wetted.advanced>dry.advanced&&wetted.advanced>flooded.advanced);
+const practice=q.newHaul();for(let i=0;i<4;i++)q.haul(practice,43);
+assert.equal(practice.progress,100);
+assert.throws(()=>q.haul(practice,101));
 const state=q.start();
 assert.equal(q.canConclude(state),false);
 assert.equal(q.inspect(state,"water").newCount,1);
