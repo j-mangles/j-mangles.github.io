@@ -287,6 +287,8 @@ figcaption{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.35}
 
 <script src="../assets/review.js"></script>
 <script src="egypt-lessons.js"></script>
+<script src="greece-lessons.js"></script>
+<script src="greece-atlas.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
 <script>
@@ -751,8 +753,10 @@ const UNITS = [
   lessons: window.EgyptLessons || []
 },
 
-{ id:"greece", n:4, name:"Ancient Greece", status:"soon", span:"c. 800 – 146 BCE", bbox:[19,34.5,29.5,42], anchor:[22.5,38.6],
-  intro:"Independent city-states, Athens and Sparta, the first democracy, and ideas we still use." },
+{ id:"greece", n:4, name:"Ancient Greece", status:"next", span:"c. 800 – 146 BCE", bbox:[19,34.5,29.5,42], anchor:[22.5,38.6], tol:22,
+  intro:"Explore the 13-lesson Ancient Greece unit from our class slides and tasks: geography, gods and games, Athens and Sparta, democracy, war, thinkers and Alexander.",
+  footnote:"Places are located approximately for study and do not imply exact ancient urban boundaries. Historical place names and modern boundaries differ.",
+  places:window.GreeceAtlas.places, timeline:window.GreeceAtlas.timeline, lessons:window.GreeceLessons },
 { id:"rome", n:5, name:"Ancient Rome", status:"soon", span:"753 BCE – 476 CE", bbox:[-10,28,42,52], anchor:[12.5,41.9],
   intro:"How one city grew into an empire around the whole Mediterranean, and why it fell apart." },
 { id:"middle-ages", n:6, name:"Middle Ages", status:"soon", span:"c. 500 – 1500 CE", bbox:[-12,30,45,62], anchor:[3,48.5],
