@@ -1,0 +1,26 @@
+name: Test Giza Harbour Mystery
+on:
+  pull_request:
+    paths:
+      - 'social-studies/giza-harbour*'
+      - 'social-studies/index.html'
+      - 'tools/test_giza_harbour.cjs'
+      - '.github/workflows/test-giza-harbour.yml'
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  historical-quest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Verify complete Giza harbour mystery and source guardrails
+        run: |
+          node --check social-studies/giza-harbour-core.js
+          node --check social-studies/giza-harbour-world.js
+          node --check social-studies/giza-harbour.js
+          node tools/test_giza_harbour.cjs
