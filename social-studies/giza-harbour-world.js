@@ -282,6 +282,19 @@ function create(T,holder,interactables){
   scene.add(g);
  }
  cargo(39,58,Math.PI*.24);cargo(22,63,Math.PI*.14);
+ // Hands-on hauling activity: small sledge visibly advances along a model track.
+ const trainingSled=new T.Group();
+ box(trainingSled,0,.42,0,5,.63,6.8,wood);
+ for(const q of [-1.5,1.5])cylinder(trainingSled,q,.4,0,.4,.4,8,wood);
+ const practiceStone=box(trainingSled,0,1.49,0,4.7,1.65,5.8,stone);
+ box(trainingSled,0,2.36,0,2.6,.035,.16,cargoMark,{shadow:false});
+ trainingSled.rotation.y=-.44;
+ trainingSled.position.set(-28,0,24);
+ scene.add(trainingSled);
+ function setHaulProgress(ratio){
+  const t=Math.max(0,Math.min(1,Number(ratio)||0));
+  trainingSled.position.set(-28+13*t,0,24-12*t);
+ }
  function storage(){
   const g=new T.Group();g.position.set(40,0,7);
   box(g,0,1.7,-8,9,3.3,3.8,wood);
@@ -436,7 +449,7 @@ function create(T,holder,interactables){
   const hit=raycaster.intersectObjects(scene.children,true).find(x=>x.object.userData.interactId);
   return hit?.object.userData.interactId||null;
  }
- return{scene,camera,renderer,render,resize,pick,canvas:renderer.domElement};
+ return{scene,camera,renderer,render,resize,pick,setHaulProgress,canvas:renderer.domElement};
 }
 g.HarbourWorld={create};
 })(window);
