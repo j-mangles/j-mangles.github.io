@@ -63,7 +63,7 @@ function siteGame(){
    for(const [v,t] of [["","Rate 1–3"],["1","1 · Problem"],["2","2 · Fine"],["3","3 · Excellent"]]){
     const o=document.createElement("option");o.value=v;o.textContent=t;sel.append(o);
    }
-   const key=c[0]+":"+need;sel.value=scores[key]||"";
+   const key=c[0]+":"+need;sel.dataset.rating=key;sel.value=scores[key]||"";
    sel.setAttribute("aria-label","Site "+c[0]+" "+need);
    sel.onchange=()=>scores[key]=sel.value;
    label.append(sel);node.append(label);
