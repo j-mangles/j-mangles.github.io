@@ -1,0 +1,34 @@
+"use strict";
+const assert=require("node:assert/strict"),fs=require("node:fs"),path=require("node:path"),vm=require("node:vm");
+const root=path.resolve(__dirname,".."),read=p=>fs.readFileSync(path.join(root,p),"utf8");
+const c={window:{}};vm.runInNewContext(read("social-studies/greece-lessons.js"),c);
+vm.runInNewContext(read("social-studies/greece-atlas.js"),c);
+const l=c.window.GreeceLessons,g=c.window.GreeceAtlas;
+assert.equal(l.length,13,"Greece should follow U3L01–U3L13");
+assert.equal(g.places.length,29,"Expected a geographic unit map");
+assert.ok(g.timeline.length>=20);
+assert.deepEqual(Array.from(l,x=>x.id),Array.from({length:13},(_,i)=>"l"+(i+1)));
+const ids=new Set(Array.from(g.places,x=>x.id)),total=l.reduce((s,x)=>s+x.check.length,0);
+assert.ok(total>=30);
+for(const lesson of l){
+ assert.equal(lesson.released,true,lesson.id);
+ assert.ok(lesson.big&&lesson.notes.length>=5&&lesson.terms.length>=3&&lesson.work&&lesson.places.length>0,lesson.id);
+ for(const pid of lesson.places)assert.ok(ids.has(pid),lesson.id+" references missing place "+pid);
+ for(const q of lesson.check)assert.ok(q.q&&q.why&&q.a.length>=3&&Number.isInteger(q.c)&&q.c>=0&&q.c<q.a.length,lesson.id);
+}
+for(const p of g.places)assert.ok(p.name&&p.text&&Number.isFinite(p.ll[0])&&Number.isFinite(p.ll[1])&&p.ll[0]>=-180&&p.ll[0]<=180&&p.ll[1]>=-90&&p.ll[1]<=90,p.id);
+for(const event of g.timeline)assert.ok(!event.p||ids.has(event.p),"Missing mapped timeline place "+event.p);
+const act=l.filter(x=>x.activity);assert.deepEqual(Array.from(act,x=>x.id),["l1","l5","l6"]);
+for(const x of act)assert.ok(x.activity.href.startsWith("greek-inquiry-lab.html#"));
+const html=read("social-studies/index.html");
+assert.ok(html.indexOf('src="greece-lessons.js"')>html.indexOf('src="egypt-lessons.js"'));
+assert.ok(html.indexOf('src="greece-atlas.js"')<html.indexOf('<script src="https://cdnjs.cloudflare'));
+assert.match(html,/status:"next", span:"c. 800 – 146 BCE"/);
+assert.match(html,/places:window\.GreeceAtlas\.places, timeline:window\.GreeceAtlas\.timeline, lessons:window\.GreeceLessons/);
+assert.ok(read("social-studies/greek-inquiry-lab.html").includes('src="greek-inquiry.js"'));
+const source=read("social-studies/greek-inquiry.js");
+new Function(source);
+assert.ok(/scores/.test(source)&&/voters/.test(source)&&/lives/.test(source));
+assert.ok(!/localStorage|sessionStorage|fetch\(/.test(source),"Classwork must not be transmitted or persisted");
+assert.ok(!/UnitTest|ANSWERKEY|TeacherGuide|AnswerKey/.test(JSON.stringify(l)),"Do not publish restricted assessment content");
+console.log("Ancient Greece PASS: "+l.length+" lessons, "+total+" self-checks, "+g.places.length+" places, "+g.timeline.length+" timeline events and 3 inquiry labs.");
