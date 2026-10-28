@@ -142,7 +142,8 @@ $("#travel-tools").onclick=()=>{
  refs.map(x=>'<button type="button" class="choice" data-fast="'+x.id+'">'+esc(x.name)+' · '+(x.type==="person"?"Interview":"Inspect")+'</button>').join("");
  box.querySelectorAll("[data-fast]").forEach(button=>button.onclick=()=>{
   const o=refs.find(x=>x.id===button.dataset.fast);
-  const next=Q.safeMove(player,o.x+4-player.x,o.z+4-player.z);
+  const offset=o.id==="tracks"?{x:-4,z:0}:{x:4,z:4};
+  const next=Q.safeMove(player,o.x+offset.x-player.x,o.z+offset.z-player.z);
   player.x=next.x;player.z=next.z;heading=Math.atan2(o.x-player.x,player.z-o.z);
   closeJournal();updateNear();toast("Arrived near "+o.name+". Use Inspect or Talk.");
  });
