@@ -1,0 +1,116 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#091d24">
+<title>The Missing Stone Shipment · Giza 3D History Quest</title>
+<meta name="description" content="Walk through a reconstructed Old Kingdom river landing, question people, investigate a missing shipment, and build an evidence-based historical explanation.">
+<link rel="stylesheet" href="../assets/fonts.css">
+<style>
+:root{color-scheme:dark;--bg:#081e25;--panel:#102a32;--panel2:#172f35;--line:#53716d;--gold:#e7c58a;--cream:#f5eee0;--faint:#b7c6c4;--mint:#aad7bf}
+*{box-sizing:border-box}html,body{height:100%;margin:0}body{background:var(--bg);font-family:"Inter",ui-sans-serif,system-ui,sans-serif;color:var(--cream);overflow:hidden}button,input,textarea{font:inherit}button{cursor:pointer;color:inherit}button:focus-visible,textarea:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+[hidden]{display:none!important}
+#game{width:100vw;height:100dvh;position:relative;overflow:hidden;background:linear-gradient(#6a9aa2,#cba16c);touch-action:none}
+#scene{position:absolute;inset:0}#scene canvas{width:100%;height:100%;display:block;touch-action:none}
+#vignette{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,#06191ac2 0%,transparent 24%,transparent 66%,#061b1ec0 100%),radial-gradient(ellipse at center,transparent 50%,#071b2444)}
+h1,h2,h3{font-family:Georgia,"Cormorant Garamond",serif;font-weight:600}
+#top{position:absolute;z-index:4;top:0;left:0;right:0;display:flex;align-items:center;gap:13px;padding:clamp(10px,2vw,21px) clamp(12px,3vw,38px);pointer-events:none}
+#top a,#top button{pointer-events:auto}.back{font-size:12px;color:#f7d59b;text-decoration:none;border-bottom:1px solid #e7c58a6b;padding-bottom:3px;white-space:nowrap}
+.wordmark{display:grid;line-height:1.2;min-width:0;flex:1}.wordmark b{font:700 11px ui-monospace,monospace;letter-spacing:.16em;color:var(--gold);text-transform:uppercase}.wordmark strong{font:600 clamp(19px,2vw,26px) Georgia,serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-shadow:0 2px 9px #0008}
+.pill{border:1px solid #e9d5ad79;border-radius:999px;background:#102a2fc7;padding:9px 13px;min-height:42px;color:#fff;font-size:12px;font-weight:760;backdrop-filter:blur(8px)}
+.pill:hover,.pill[aria-pressed=true]{background:#d7b47c;color:#10282b}
+#objective{position:absolute;z-index:3;left:clamp(12px,3vw,40px);top:100px;max-width:315px;pointer-events:none;padding:14px 18px;border-left:3px solid var(--gold);background:linear-gradient(90deg,#102529e3,#0b242b91);border-radius:0 12px 12px 0;backdrop-filter:blur(7px)}
+.label{font:750 10px ui-monospace,monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+#objective h2{font:600 24px/1.2 Georgia,serif;margin:6px 0 8px}#objective p{font-size:12px;line-height:1.55;color:#deede9;margin:0}
+#progress{display:flex;gap:6px;margin-top:11px}#progress span{height:5px;width:29px;border-radius:6px;background:#65817bb1}#progress span.ok{background:var(--gold)}
+#prompt{position:absolute;z-index:5;left:50%;bottom:clamp(65px,9vh,98px);transform:translateX(-50%);background:#10292fe6;border:1px solid #f6d49a9a;border-radius:8px;min-width:min(350px,calc(100% - 24px));max-width:500px;padding:12px 16px;text-align:center;box-shadow:0 8px 30px #071a1bcc;backdrop-filter:blur(8px);display:grid;gap:3px}
+#prompt .label{color:#edcc90}#prompt span:last-child{font-weight:760;font-size:15px}
+#prompt[disabled]{display:none}
+#bottom{position:absolute;z-index:4;bottom:12px;left:clamp(12px,3vw,40px);right:clamp(12px,3vw,40px);display:flex;align-items:end;gap:10px;pointer-events:none}
+#bottom>*{pointer-events:auto}.hud-small{font-size:11px;color:#f6eacec7;background:#10282da8;padding:7px 11px;border-radius:7px}
+#bottom .flex{flex:1}#map{width:140px;height:126px;background:#0c2b31b9;border:1px solid #c6b58891;border-radius:12px;box-shadow:0 5px 23px #0006}
+#touch{position:absolute;z-index:8;bottom:66px;left:15px;display:grid;grid-template-columns:repeat(3,48px);grid-template-rows:repeat(2,48px);gap:5px;touch-action:none}#touch button{border:1px solid #d7d8cb9e;background:#10292dcf;border-radius:13px;font-size:22px;touch-action:none;backdrop-filter:blur(6px)}
+#touch [data-move=forward]{grid-column:2}#touch [data-move=left]{grid-row:2;grid-column:1}#touch [data-move=back]{grid-row:2;grid-column:2}#touch [data-move=right]{grid-row:2;grid-column:3}
+#interact-mobile{position:absolute;z-index:8;bottom:100px;right:16px;min-height:53px;padding:12px 17px;border-radius:50px;border:2px solid #e0c48c;background:#d6b178;color:#1b3133;font-weight:850;touch-action:manipulation}
+#interact-mobile:disabled{opacity:.4}
+.overlay{position:absolute;z-index:20;inset:0;display:flex;align-items:center;justify-content:center;padding:14px;overflow:auto;background:#071c20c9;backdrop-filter:blur(13px);touch-action:pan-y}
+.sheet{width:min(580px,100%);max-height:min(91dvh,780px);overflow:auto;border:1px solid #9b977c94;background:linear-gradient(155deg,#132f36,#0b262e);box-shadow:0 28px 90px #00181aeb;border-radius:17px;padding:clamp(19px,4vw,35px)}
+.sheet h2{font:600 clamp(28px,4vw,40px)/1.1 Georgia,serif;margin:8px 0 15px}.sheet p{line-height:1.66;color:#d9e4df}.sheet .small{font-size:12px;color:#b1c9c4}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:20px}
+.btn{border-radius:7px;background:#365a5c;border:1px solid #849d95;min-height:44px;padding:10px 15px;font-size:13px;font-weight:750}
+.btn.primary{background:var(--gold);border-color:#efd7a8;color:#142c30}.btn:hover{filter:brightness(1.16)}.btn:disabled{opacity:.45;cursor:not-allowed}
+#start{background:linear-gradient(105deg,#091d23f2,#122f36c5),radial-gradient(ellipse at 75% 45%,#d0a6756a,transparent 45%)}
+#start .sheet{width:min(760px,100%);border:none;background:transparent;box-shadow:none;max-height:100%}
+#start h1{font:500 clamp(48px,9vw,98px)/.97 Georgia,serif;letter-spacing:-.055em;margin:12px 0 23px;max-width:9ch}
+#start .lede{max-width:58ch;color:#f5ead2;font-size:clamp(16px,1.8vw,20px);line-height:1.6}
+#start .teaser{border-left:2px solid var(--gold);padding:12px 16px;font-size:13px;max-width:61ch;color:#cbd8d2;background:#ffffff08;margin:23px 0}
+#start .btn{font-size:16px;padding:15px 23px;min-height:54px}
+#start #ready{font-size:12px;color:var(--gold)}
+#journal{position:absolute;z-index:12;right:0;top:0;bottom:0;width:min(440px,100%);background:#0c272ff1;border-left:1px solid #a5b3a162;box-shadow:-15px 0 45px #041b1bc9;backdrop-filter:blur(15px);padding:30px 25px;overflow:auto;touch-action:pan-y}
+#journal h2{font-size:35px;margin:12px 0 4px}#journal p{font-size:13px;color:#cbdbd5;line-height:1.55}.note{font-size:12px;border-left:2px solid #c4a870;padding:9px 13px;background:#30424576;color:#d4dfd5}
+#clues{padding:0;list-style:none;display:grid;gap:9px}#clues li{padding:12px 13px;background:#1c383f;border:1px solid #4d6567;border-radius:9px}#clues li.seen{border-color:#8aae94;background:#193b3b}#clues b{display:block;margin-bottom:5px;font-size:13px}#clues small{display:block;color:#abbeb5;margin-top:4px;line-height:1.5}
+#journal textarea,#reason{background:#09222a;border:1px solid #789087;color:#f7f4e9;min-height:88px;resize:vertical;width:100%;padding:11px;border-radius:8px}
+#journal-close{float:right}
+.dialogue-identity{display:flex;gap:13px;align-items:center;margin-bottom:14px}
+.portrait{width:72px;height:72px;border:1px solid #bd9864;border-radius:12px;background:radial-gradient(circle at 50% 33%,#b68660 0 19%,transparent 20%),linear-gradient(165deg,#b59069 45%,#28474b 46%);flex:none}
+.dialogue-identity h2{font-size:30px;margin:0}.dialogue-identity .small{margin:3px 0}
+.talk{background:#1b3b40;border-left:3px solid #dbc18c;padding:14px 16px;margin:13px 0;line-height:1.7}
+.talk button,.choice{display:block;width:100%;border-radius:8px;margin:8px 0;text-align:left;padding:11px 14px;background:#26434a;border:1px solid #66827a;color:#f3f4eb}
+.talk button:hover,.choice:hover{background:#3d6060}
+.evidence-box{border:1px solid #8a9c7e;padding:13px 15px;margin:12px 0;border-radius:8px;background:#263c37}
+.evidence-box strong{color:#efd39c;display:block;margin-bottom:7px}.evidence-box .tag{font-size:10px;text-transform:uppercase;letter-spacing:.09em;color:#bcd1c8}
+#case-file{display:grid;gap:8px}#case-file label{padding:11px 13px;border:1px solid #789089;border-radius:8px;background:#1c3639;display:flex;align-items:flex-start;gap:9px;font-size:13px;line-height:1.4}#case-file input{accent-color:var(--gold);margin-top:3px}
+#verdicts{display:grid;gap:9px}#verdicts label{display:flex;align-items:flex-start;gap:9px;padding:10px;background:#234048;border:1px solid #65807f;border-radius:8px;font-size:13px;line-height:1.4}#verdicts input{accent-color:var(--gold);margin-top:3px}
+#feedback{background:#18383b;padding:11px 13px;border-left:3px solid var(--gold);margin-top:13px}
+#conclude h3{font-size:22px;margin:20px 0 9px}#conclude label{cursor:pointer}
+#credits{font-size:11px;color:#bdccc5;margin-top:25px;line-height:1.7}#credits a{color:#e4c188}
+#fade{position:absolute;inset:0;background:#0d2532;z-index:9;pointer-events:none;opacity:0;transition:opacity .35s}#toast{position:absolute;z-index:9;top:26%;left:50%;transform:translate(-50%,-10px);font-family:Georgia,serif;font-size:clamp(18px,3vw,27px);color:#fce0a9;background:#071f27cc;border:1px solid #d9b77c;padding:16px 24px;border-radius:8px;max-width:85vw;text-align:center;pointer-events:none}
+@media(max-width:760px){#objective{top:82px;max-width:min(270px,72vw);padding:10px 12px}#objective h2{font-size:20px}#objective p{font-size:11px}#top{padding:10px 13px;gap:9px}.wordmark strong{font-size:17px}.back{font-size:11px}#top .pill{padding:8px 10px;font-size:11px}#bottom .hud-small{display:none}#bottom{bottom:10px}#map{width:109px;height:104px}#touch{bottom:35px}#interact-mobile{bottom:59px;right:12px}#prompt{bottom:170px;width:calc(100% - 36px);min-width:0;font-size:12px;padding:9px}#start h1{font-size:52px}}
+@media(max-width:420px){.wordmark strong{font-size:15px}#top .back{max-width:83px;white-space:normal}#objective{max-width:64vw}#objective h2{font-size:17px}}
+@media(prefers-reduced-motion:reduce){#fade{transition:none}}
+</style></head>
+<body>
+<main id="game" aria-label="Walkable immersive educational game: The Missing Stone Shipment">
+<div id="scene" aria-label="Rendered ancient Egyptian harbour"></div><div id="vignette"></div>
+<header id="top"><a href="index.html#egypt" class="back">← Egyptian Atlas</a>
+<div class="wordmark"><b>Giza · Fourth Dynasty · c. 2550 BCE</b><strong>The Missing Stone Shipment</strong></div>
+<button type="button" class="pill" id="camera" aria-pressed="false">Third person</button>
+<button type="button" class="pill" id="journal-open">Journal <span id="badge-count">0/5</span></button>
+</header>
+<section id="objective" aria-label="Current quest"><span class="label">Your investigation</span><h2 id="objective-title">Find the missing limestone</h2><p id="objective-detail">Investigate the dock and speak to the people who worked there.</p><div id="progress" aria-label="Evidence collected"></div></section>
+<button id="prompt" type="button" hidden><span class="label">Press E · interact</span><span id="prompt-title">Inspect</span></button>
+<div id="bottom"><div class="hud-small">WASD / arrows · walk &nbsp; | &nbsp; drag · look &nbsp; | &nbsp; E · interact &nbsp; | &nbsp; J · journal</div><div class="flex"></div><canvas id="map" width="280" height="252" role="img" aria-label="Minimap of the north landing, south berth, stores and workers"></canvas></div>
+<div id="touch" hidden aria-label="Touch movement controls"><button data-move="forward" aria-label="Walk forward">↑</button><button data-move="left" aria-label="Walk left">←</button><button data-move="back" aria-label="Walk backward">↓</button><button data-move="right" aria-label="Walk right">→</button></div>
+<button id="interact-mobile" type="button" hidden disabled>Inspect</button><div id="fade"></div>
+<div class="overlay" id="start"><section class="sheet"><div class="label">An immersive historical investigation · Grade 8 Social Studies</div>
+<h1>The missing stone shipment.</h1>
+<p class="lede">A boat carrying fine limestone was expected at the northern landing. The builders say it never arrived. Your job isn't to guess who is guilty—it's to find out what really happened.</p>
+<div class="teaser"><strong>A living world, a fictional mystery.</strong> Walk along the river, inspect physical traces, speak with a scribe and hauling crew, and reach a conclusion using evidence. The reconstructed landscape and characters are interpretations, not a photograph of the past.</div>
+<div class="actions"><button id="start-button" class="btn primary" disabled>Preparing world…</button><button id="start-help" class="btn">How to play</button></div><p id="ready">Preparing the scene</p></section></div>
+<section id="journal" hidden aria-label="Field journal">
+<button id="journal-close" class="btn">Close ×</button><div class="label">Historical inquiry</div><h2>Field journal</h2>
+<p>Evidence matters more than speed. Find at least three clues, speak with two people, and then present a conclusion supported by two observations.</p>
+<div class="note">This is a fictional case, set within documented Old Kingdom river transport. Items, dialogue and the day's events are teaching reconstructions.</div>
+<h3>Evidence <span id="clue-count">0/5</span></h3><ol id="clues"></ol>
+<h3>People interviewed <span id="talk-count">0/3</span></h3><ul id="interviews"></ul>
+<button class="btn primary" id="start-verdict" disabled>Present your findings</button>
+<p style="margin-top:18px"><button id="travel-tools" class="btn">Accessible travel / site list</button></p>
+<div id="travel-list" hidden></div>
+<h3>Your field notes</h3><textarea id="field-notes" placeholder="I observed… This supports… A limitation of this evidence is…"></textarea>
+<div class="actions"><button id="copy-notes" class="btn">Copy notes</button><button id="download-notes" class="btn">Download report</button></div><p id="report-status" class="small" role="status"></p>
+<section id="credits"><strong>Historical background and limitations</strong><p>No specific harbour dimensions, original dialogue, cargo records or itinerary are claimed. The reconstructed scene is illustrative. Classroom evidence was inspired by research into Fourth Dynasty settlement, water transport and administration.</p>
+<a href="https://aera.net/" rel="noopener noreferrer" target="_blank">Ancient Egypt Research Associates</a> ·
+<a href="https://doi.org/10.1111/apaa.12111" rel="noopener noreferrer" target="_blank">Lehner (2019)</a> ·
+<a href="https://doi.org/10.1016/j.jasrep.2023.104303" rel="noopener noreferrer" target="_blank">Younes et al. (2024)</a> ·
+<a href="https://giza.fas.harvard.edu/" rel="noopener noreferrer" target="_blank">Digital Giza / Harvard</a>.
+</section></section>
+<div id="conversation" class="overlay" hidden role="dialog" aria-modal="true" aria-labelledby="dialog-title"><section class="sheet"><div class="label" id="dialog-tag">Investigation</div><div class="dialogue-identity"><div class="portrait" id="dialog-portrait"></div><div><h2 id="dialog-title">Evidence</h2><p id="dialog-role" class="small"></p></div></div>
+<div id="dialog-copy"></div><div id="dialog-actions"></div><div class="actions"><button id="dialog-exit" class="btn">Return to harbour</button></div></section></div>
+<div id="conclude" class="overlay" hidden role="dialog" aria-modal="true" aria-labelledby="conclude-title"><section class="sheet"><div class="label">Case file · Final investigation</div><h2 id="conclude-title">What happened to the shipment?</h2><p>Choose the explanation that best fits your findings. Then select two pieces of evidence and explain your reasoning.</p>
+<div id="verdicts"></div><h3>Use at least two different clues</h3><div id="case-file"></div>
+<h3>Explain your conclusion</h3><textarea id="reason" aria-label="Explain the evidence supporting your conclusion" placeholder="My conclusion is… I observed… This supports the explanation because…"></textarea>
+<div id="feedback" aria-live="polite" hidden></div>
+<div class="actions"><button id="submit-case" class="btn primary">Submit explanation</button><button id="back-journal" class="btn">Back to investigation</button></div></section></div>
+<div id="toast" role="status" hidden></div>
+</main>
+<script src="giza-harbour-core.js"></script>
+<script type="module" src="giza-harbour.js"></script>
+</body></html>
