@@ -37,6 +37,7 @@ function report(){
  "My explanation: "+(Q.VERDICTS.find(v=>v.id===state.verdict)?.label||"Not submitted"),
  "Evidence cited: "+state.selected.map(id=>Q.find(id)?.name).join(", "),
  "Reasoning: "+(state.reason||"Not submitted"),
+ "Sledge hauling experiment: "+(state.haulCompleted?"Completed":"Not yet completed"),
  "My field notes: "+($("#field-notes").value||"None"),
  "Historical limitation: No dialogue, cargo record or day-of-shipment event in this simulation is an original ancient source.",
  ...Q.RESEARCH.map(r=>r.title+" — "+r.url)];
@@ -74,6 +75,29 @@ function inspect(e){
   $("#dialog-copy").insertAdjacentHTML("beforeend",'<div class="talk"><strong>Possible inference:</strong> '+esc(e.lead)+'</div>');
   $("#dialog-actions").innerHTML="";
  };
+ if(e.id==="tracks"){
+  const sledge=Q.newHaul();
+  const html='<section class="evidence-box" id="haul-lab"><span class="tag">Playable engineering experiment · optional</span>'+
+    '<h3>Help haul a limestone block</h3>'+
+    '<p>Experiment with wetting the sand and pulling the sledge. Some water can reduce sliding resistance, but too much is not better. This is a <strong>qualitative game model</strong>, not a measurement from 2550 BCE.</p>'+
+    '<label for="haul-water">Water added: <strong id="haul-reading">0%</strong></label>'+
+    '<input style="display:block;width:100%;accent-color:#e7c58a" id="haul-water" type="range" min="0" max="100" step="1" value="0">'+
+    '<p id="haul-progress" role="status">Sledge distance: 0 / 100 units</p>'+
+    '<div style="height:16px;border:1px solid #8b9f92;border-radius:8px;overflow:hidden;background:#203d3e"><div id="haul-bar" style="height:100%;width:0;background:#ddb97b"></div></div>'+
+    '<button type="button" id="haul-pull" class="btn primary" style="margin-top:12px">Pull the rope</button>'+
+    '<p id="haul-feedback" class="small">Try dry sand first. How many pulls does it take?</p>'+
+    '<p class="small"><a style="color:#efd39c" href="https://doi.org/10.1103/PhysRevLett.112.175502" target="_blank" rel="noopener noreferrer">Fall et al. (2014) — friction experiments on wet and dry sand</a></p></section>';
+  $("#dialog-copy").insertAdjacentHTML("beforeend",html);
+  $("#haul-water").oninput=e=>$("#haul-reading").textContent=e.target.value+"%";
+  $("#haul-pull").onclick=()=>{
+    const result=Q.haul(sledge,Number($("#haul-water").value));
+    $("#haul-progress").textContent="Sledge distance: "+result.progress+" / 100 units after "+sledge.pulls+" pulls";
+    $("#haul-bar").style.width=result.progress+"%";
+    $("#haul-feedback").textContent=result.note;
+    if(world?.setHaulProgress)world.setHaulProgress(result.progress/100);
+    if(result.done){$("#haul-pull").disabled=true;$("#haul-pull").textContent="Sledge moved ✓";state.haulCompleted=true;toast("ENGINEERING CHALLENGE COMPLETE");}
+  };
+ }
  show("#conversation");$("#dialog-exit").focus();
 }
 function speak(p){
