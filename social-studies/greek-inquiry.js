@@ -92,7 +92,7 @@ function citizenGame(){
    votes[i]=yes;feedback.textContent=(yes===p[1]?"Supported. ":"Reconsider. ")+p[2];
    count.textContent=Object.keys(votes).length+" of 8 assessed; "+voters.filter((v,j)=>votes[j]===v[1]).length+" match the rule.";
   }
-  el.append(button("Could vote",()=>respond(true)),button("Could not vote",()=>respond(false)),feedback);root.append(el);
+  const yes=button("Could vote",()=>respond(true)),no=button("Could not vote",()=>respond(false));yes.dataset.person=String(i);no.dataset.person=String(i);el.append(yes,no,feedback);root.append(el);
  });
  const count=document.createElement("p");count.className="status";count.textContent="0 of 8 assessed";root.append(count);
  root.append(card("The Themistocles ostraka","In a well, excavators found 190 pottery votes with the same name, written by only 14 hands. What could explain the pattern? What cannot it prove?"));
