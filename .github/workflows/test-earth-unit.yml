@@ -1,0 +1,27 @@
+name: Test Grade 8 Earth Science Unit
+on:
+  pull_request:
+    paths:
+      - 'science/data.js'
+      - 'science/river-watershed.js'
+      - 'science/index.html'
+      - 'tools/test_earth_unit.cjs'
+      - 'tools/test_earth_explorer.cjs'
+      - '.github/workflows/test-earth-unit.yml'
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: |
+          node --check science/data.js
+          node --check science/river-watershed.js
+          node --check tools/test_earth_unit.cjs
+          node tools/test_earth_unit.cjs
