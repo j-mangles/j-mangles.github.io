@@ -451,8 +451,8 @@ window.HUB = {
   "name": "Solar Energy and Light",
   "status": "soon",
   "when": "February to March",
-  "intro": "Energy & Light: five topics, 24-class teaching plan, existing Spectrum & Albedo Explorer, and a food-chain energy investigation.",
-  "after": "Student booklet pages 2–19 and five topic slide decks match this learning sequence. The 14 study guides group multiple class periods, rather than replacing the teacher's full 24-class schedule. Models are simplified; your teacher provides any printed assignments and labs.",
+  "intro": "Where Earth's energy comes from and where it goes: the electromagnetic spectrum, how surfaces absorb and reflect sunlight, photosynthesis, and how energy moves through food chains.",
+  "after": "These study guides follow the same order as your booklet. Printed assignments and labs come from Mr. Mangles in class.",
   "lessons": [
     {
       "id": "u3t1-energy",

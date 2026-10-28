@@ -53,7 +53,7 @@ function container(){
  $("#content").replaceChildren();const el=document.createElement("section");el.className="panel";$("#content").append(el);return el;
 }
 function siteGame(){
- intro("01","Found a City","Based on your U3L01 task: around 650 BCE, you lead 200 Greek settlers. Read four scouts' reports, score each need 1–3, and defend one choice. These are fictional reports about real places.");
+ intro("01","Found a City","Around 650 BCE, you lead 200 Greek settlers. Read four scouts' reports, score each need 1–3, and defend one choice. These are fictional reports about real places.");
  const root=container(),grid=document.createElement("div");grid.className="grid";root.append(grid);
  for(const c of cities){
   const node=card("Site "+c[0],c[1]);
@@ -83,7 +83,7 @@ function siteGame(){
  }),result);
 }
 function citizenGame(){
- intro("05","Citizen for a Day","Based on U3L05: Athens, 440 BCE. All eight residents are invented, but the citizenship rules reflect the student task. Ask who could participate in the Assembly.");
+ intro("05","Citizen for a Day","Athens, 440 BCE. All eight residents are invented, but the citizenship rules reflect the student task. Ask who could participate in the Assembly.");
  const root=container();
  voters.forEach((p,i)=>{
   const el=card(p[0],"Would this resident be allowed to vote?");
@@ -100,7 +100,7 @@ function citizenGame(){
  root.append(textArea("citizen-judgement","Compare democracy in ancient Athens and modern Canada."));
 }
 function lotGame(){
- intro("06","Draw Your Lot","Based on U3L06: one identity, two different lives. Whose perspective changes our judgement of Athens and Sparta? Profiles are fictional summaries.");
+ intro("06","Draw Your Lot","One identity, two different lives. Whose perspective changes our judgement of Athens and Sparta? Profiles are fictional summaries.");
  const root=container();
  const identity=document.createElement("h3"),a=card("Athens",""),s=card("Sparta","");
  function refresh(){identity.textContent="Your role: "+lives[role][0];a.querySelector("p").textContent=lives[role][1];s.querySelector("p").textContent=lives[role][2];}
@@ -117,7 +117,7 @@ function report(){
  return ["GRADE 8 ANCIENT GREECE — INQUIRY RESPONSE","Activity: "+tab,"Selected colony: "+selected,"Role: "+lives[role][0],
  "Scoring: "+JSON.stringify(scores),"Voting: "+JSON.stringify(votes),
  ...Object.entries(memory).map(([k,v])=>k+"\\n"+v),
- "Class source: U3L01 Found a City; U3L05 Citizen for a Day; U3L06 Draw Your Lot. Fictional examples are teaching simulations."].join("\n\n");
+ "Fictional examples are teaching simulations."].join("\n\n");
 }
 $("#download").onclick=()=>{
  const url=URL.createObjectURL(new Blob([report()],{type:"text/plain;charset=utf-8"}));

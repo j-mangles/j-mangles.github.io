@@ -20,8 +20,7 @@ window.GreeceLessons=[
       "Independent poleis developed with their own laws, government, farmland and defences. Geography influenced these choices without determining them.",
       "Seaborne trade carried olive oil, wine and pottery outward and grain, timber and metals inward.",
       "Greek speakers founded colonies around the Mediterranean and Black Sea, often interacting with peoples already living there. Colonies could govern themselves.",
-      "Poleis shared language, religious traditions, festivals and stories even while competing against one another.",
-      "Class source: U3L01 Mountains and Sea slides and Found a City student task."
+      "Poleis shared language, religious traditions, festivals and stories even while competing against one another."
     ],
     "terms": [
       [
@@ -101,8 +100,7 @@ window.GreeceLessons=[
       "Palace centres declined during the wider Bronze Age collapse around 1200 BCE; causes remain debated.",
       "Homeric poems developed centuries after the events they describe, drawing on oral traditions.",
       "Excavations at Hisarlik revealed multiple archaeological levels of Troy; Schliemann's famous treasure was much older than a possible Late Bronze Age conflict.",
-      "A real city and evidence of conflict do not prove the Trojan Horse, Helen or every character in the story.",
-      "Class source: U3L02 Before the Greeks We Know and Troy Case File."
+      "A real city and evidence of conflict do not prove the Trojan Horse, Helen or every character in the story."
     ],
     "terms": [
       [
@@ -181,8 +179,7 @@ window.GreeceLessons=[
       "Gods were portrayed with human qualities; stories could communicate values, tensions and warnings against hubris.",
       "The oracle at Delphi was associated with Apollo; people and states sought guidance there.",
       "The Olympic festival at Olympia honoured Zeus. Religion, athletics and competition between poleis overlapped.",
-      "The first traditionally recorded Olympics were in 776 BCE. Contest rules and participation differed greatly from the modern games.",
-      "Class source: U3L03 Gods, Myths and the Games and Myth Lab."
+      "The first traditionally recorded Olympics were in 776 BCE. Contest rules and participation differed greatly from the modern games."
     ],
     "terms": [
       [
@@ -247,8 +244,7 @@ window.GreeceLessons=[
       "Perioikoi were free non-citizen inhabitants of nearby towns who traded and produced goods; helots were unfree agricultural workers.",
       "Spartan women from citizen families had some rights and public training unavailable to many Athenian women, but they could not vote.",
       "Two kings, ephors, elders and a citizens' assembly shared government power unequally.",
-      "Much evidence about Spartan society comes from outsiders with their own biases. Dramatic stories about newborns require scrutiny rather than unquestioned repetition.",
-      "Class source: U3L04 Sparta and Three Lives in Sparta."
+      "Much evidence about Spartan society comes from outsiders with their own biases. Dramatic stories about newborns require scrutiny rather than unquestioned repetition."
     ],
     "terms": [
       [
@@ -313,8 +309,7 @@ window.GreeceLessons=[
       "Lotteries selected many officials, limiting the influence of personal wealth and fame compared with elections.",
       "Women, enslaved people, children and resident foreigners lacked citizenship voting rights; wealth alone did not give a metic a vote.",
       "Ostracism could exclude a man for ten years. Archaeologists found 190 pottery votes naming Themistocles, written by a surprisingly small number of hands.",
-      "Pericles praised the system while Plato later criticized decisions made by crowds; read ancient viewpoints as arguments, not neutral summaries.",
-      "Class source: U3L05 Athens Democracy and Citizen for a Day."
+      "Pericles praised the system while Plato later criticized decisions made by crowds; read ancient viewpoints as arguments, not neutral summaries."
     ],
     "terms": [
       [
@@ -392,8 +387,7 @@ window.GreeceLessons=[
       "Athenian citizenship and Spartan full citizenship were both limited; neither city included women in citizen assemblies.",
       "Both economies depended substantially on coerced labour, but the structures of enslavement and helotage differed.",
       "Spartan citizen women could own property and often had more training than Athenian citizen women; the comparison varies by status and period.",
-      "Historians must ask 'better for whom?' rather than proclaim one society universally superior.",
-      "Class source: U3L06 Athens vs Sparta slides and Draw Your Lot task."
+      "Historians must ask 'better for whom?' rather than proclaim one society universally superior."
     ],
     "terms": [
       [
@@ -461,8 +455,7 @@ window.GreeceLessons=[
       "Before Xerxes' invasion in 480 BCE, Athens invested silver income in a fleet of triremes rowed by many poorer male citizens.",
       "At Thermopylae, a Greek force under Leonidas delayed the Persian army; non-Spartans also fought and died, despite popular '300-only' retellings.",
       "Greek naval success at Salamis and later land fighting helped defeat Persian invasions.",
-      "Persia was a large, organized state with many cultures. Ancient Greek accounts of numbers and events may exaggerate or favour Greek heroes.",
-      "Class source: U3L07 Persian Wars and War Room task."
+      "Persia was a large, organized state with many cultures. Ancient Greek accounts of numbers and events may exaggerate or favour Greek heroes."
     ],
     "terms": [
       [
@@ -538,8 +531,7 @@ window.GreeceLessons=[
       "The Parthenon was built on the Acropolis in 447–432 BCE as a sanctuary of Athena.",
       "Building required skilled citizens, foreign residents and enslaved workers. Athenian influence should not hide the contributions of excluded groups.",
       "Athenian theatre, historians and philosophers became influential across later centuries.",
-      "Some allies objected to funding Athenian building and power. Historians should distinguish admiration of art from agreement with the empire.",
-      "Class source: U3L08 Golden Age and Follow the Money."
+      "Some allies objected to funding Athenian building and power. Historians should distinguish admiration of art from agreement with the empire."
     ],
     "terms": [
       [
@@ -600,8 +592,7 @@ window.GreeceLessons=[
       "His trial in 399 BCE followed wartime defeat and a period of oligarchic rule; the surviving accounts come mainly from his followers.",
       "He was charged with impiety and corrupting young people, found guilty and sentenced to death.",
       "Plato wrote dialogues featuring Socrates. Plato's student Aristotle later tutored Alexander of Macedon.",
-      "The famous Death of Socrates painting was made in the 1700s and is not an eyewitness record of his death.",
-      "Class source: U3L09 The Thinkers and The Jury."
+      "The famous Death of Socrates painting was made in the 1700s and is not an eyewitness record of his death."
     ],
     "terms": [
       [
@@ -666,8 +657,7 @@ window.GreeceLessons=[
       "Enslaved people performed agricultural, household and skilled work, with few legal protections.",
       "Metics were free resident foreigners who could trade and pay taxes but did not receive citizen voting rights.",
       "Gravestones, pottery, building accounts and court speeches help historians learn beyond elite literature, but these sources also have biases.",
-      "A fair account of a 'golden age' includes both achievements and the people who bore their costs.",
-      "Class source: U3L10 Left Out and The Missing Voices."
+      "A fair account of a 'golden age' includes both achievements and the people who bore their costs."
     ],
     "terms": [
       [
@@ -730,8 +720,7 @@ window.GreeceLessons=[
       "The war began in 431 BCE. A devastating epidemic struck crowded Athens in 430 BCE, and Pericles died.",
       "Athens' punishment of Melos exposed the gap between its democratic ideals and imperial practices.",
       "The Athenian expedition against Syracuse in 415–413 BCE was disastrous; Persian funding later helped Sparta build a fleet.",
-      "Athens surrendered in 404 BCE, losing its walls and empire. Different causes can be examined using the C.R.A.S.H. framework.",
-      "Class source: U3L11 Peloponnesian War and Autopsy of a War."
+      "Athens surrendered in 404 BCE, losing its walls and empire. Different causes can be examined using the C.R.A.S.H. framework."
     ],
     "terms": [
       [
@@ -805,8 +794,7 @@ window.GreeceLessons=[
       "His army defeated Persian forces, entered Egypt and Babylon, and eventually reached northwestern India; troops refused to march farther.",
       "His campaigns involved both city-building and severe violence. Records from conquered peoples survive unevenly.",
       "He died in Babylon in 323 BCE. Generals divided the empire and fought over its territories.",
-      "The Hellenistic period brought interactions among Greek, Egyptian, Persian and other traditions. Alexandria became an important centre of learning.",
-      "Class source: U3L12 Alexander and Alexander the ___ student task."
+      "The Hellenistic period brought interactions among Greek, Egyptian, Persian and other traditions. Alexandria became an important centre of learning."
     ],
     "terms": [
       [

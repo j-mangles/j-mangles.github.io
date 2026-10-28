@@ -15,7 +15,7 @@
 
   function route(){
     const h = decodeURIComponent((location.hash||"").slice(1));
-    const mapView = !h || h==="overview";
+    const mapView = h==="overview";
     const mapLink=$("#course-map-link");
     if(mapLink){
       if(mapView) mapLink.setAttribute("aria-current","page");
@@ -54,7 +54,7 @@
     const cur=$("#units").querySelector('[aria-selected="true"]'); if(cur) cur.scrollIntoView({block:"nearest",inline:"nearest"});
   }
 
-  function statusLabel(u){ return u.status==="now"?"We're here now":u.status==="done"?"Finished":u.status==="next"?"Up next":"Coming up"; }
+  function statusLabel(u){ return u.status==="now"?"We're here now":u.status==="done"?"Finished":u.status==="ongoing"?"All year":u.status==="next"?"Up next":"Coming up"; }
 
   function renderUnit(u){
     const done=getDone(); const ls=u.lessons||[]; const tool=H.tools&&H.tools[u.id];

@@ -54,7 +54,6 @@ assert.ok(poisoned.includes('src="img/public.png"'));
 assert.ok(!poisoned.includes('teacherMaterials'));
 const hub=read("assets/hub.js");
 assert.ok(hub.includes('h==="resources"')&&hub.includes('window.StudentResources.render($("#main"),H)'),"Resource view route is missing");
-const home=read("index.html");
 for(const subject of ["math","science","ela","critical-thinking"])
- assert.ok(home.includes('href="'+subject+'/#resources"'),"Homepage missing "+subject+" resource link");
+ assert.ok(read(subject+"/index.html").includes('id="course-resources-link" href="#resources"'),subject+" hub missing resource library link");
 console.log("Resource library navigation, safe image paths and all category links validated.");

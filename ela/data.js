@@ -55,7 +55,7 @@ window.HUB = {
     ]
   },
   {
-    id:"grammar", n:"2", name:"Grammar and Language", status:"now", when:"All year, in short lessons",
+    id:"grammar", n:"2", name:"Grammar and Language", status:"ongoing", when:"All year, in short lessons",
     intro:"Short, focused grammar lessons that show up again in your writing. Practise any time with the quick-fire game on this page.",
     lessons:[
       {id:"apostrophes", n:"1", title:"Apostrophes",
