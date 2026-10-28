@@ -97,5 +97,21 @@ function safeMove(p,dx,dz){
  }
  return{x,z};
 }
-g.HarbourQuest={RESEARCH,EVIDENCE,CHARACTERS,VERDICTS,start,find,person,inspect,interview,canConclude,conclude,distance,safeMove};
+/* Simplified sledge experiment. Relative progress is pedagogical, not a
+   measurement of ancient forces. Dampening can decrease resistance;
+   too much water loses some of the advantage (Fall et al., PRL 2014).
+ */
+const newHaul=()=>({progress:0,pulls:0,lastMoisture:0});
+function haul(s,moisture){
+ const m=Number(moisture);
+ if(!Number.isFinite(m)||m<0||m>100)throw Error("Water input must be 0–100");
+ const deviation=Math.abs(m-43);
+ const progress=Math.round(25-Math.min(19,deviation*.45));
+ s.lastMoisture=m;s.pulls++;s.progress=Math.min(100,s.progress+progress);
+ const result={advanced:progress,progress:s.progress,done:s.progress>=100,
+  note:m<18?"The dry sand resists the sled. Try adding some water.":m<=62?"The damp sand supports the load. Pulling is easier in this model.":"The very wet sand is less helpful. Try a smaller amount of water."};
+ return result;
+}
+
+g.HarbourQuest={RESEARCH,EVIDENCE,CHARACTERS,VERDICTS,start,find,person,inspect,interview,canConclude,conclude,distance,safeMove,newHaul,haul};
 })(window);
