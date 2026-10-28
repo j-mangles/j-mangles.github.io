@@ -396,6 +396,11 @@ window.GreeceAtlas={
       "p": "mycenae"
     },
     {
+      "d": "776 BCE",
+      "t": "Traditional first Olympic Games",
+      "p": "olympia"
+    },
+    {
       "d": "c. 750 BCE",
       "t": "Homeric epic traditions take written form",
       "p": "troy"
@@ -404,11 +409,6 @@ window.GreeceAtlas={
       "d": "c. 733 BCE",
       "t": "Greek settlers found Syracuse",
       "p": "syracuse"
-    },
-    {
-      "d": "776 BCE",
-      "t": "Traditional first Olympic Games",
-      "p": "olympia"
     },
     {
       "d": "594 BCE",
