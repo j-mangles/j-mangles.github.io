@@ -2,9 +2,9 @@ window.HUB = {
   subject: "math",
   units: [
   {
-    id:"fdp", n:"1", name:"Fractions, Decimals and Percents", status:"now", when:"September – November 2",
+    id:"fdp", n:"1", name:"Fractions, Decimals and Percents", status:"now", when:"September – November 6",
     intro:"One amount can be written three ways. We are learning to switch between fractions, decimals and percents, find percents of numbers, work with sales and tax, and compare numbers in any form.",
-    after:"Coming up in this unit: percent problems in context (Oct 23); discounts, tax and money (Oct 26); comparing and ordering (Oct 27–29); Percent Skill Check and review (Oct 30); Unit 1 test (Mon Nov 2).",
+    after:"Coming up in this unit: percent problems in context (Oct 28); discounts, tax and money (Oct 29); comparing integers, decimals and fractions (Nov 2); mixed forms and number lines (Nov 3); Percent Skill Check and review (Nov 4); whiteboard review (Nov 5); Unit 1 test (Fri Nov 6).",
     lessons:[
       {id:"l01", n:"1", title:"Same Value, Different Clothes",
        big:"A fraction, a decimal and a percent can all name the same amount. They're the same value wearing different clothes.",
@@ -277,9 +277,9 @@ window.HUB = {
     ]
   },
   {
-    id:"prob", n:"2", name:"Probability", status:"next", when:"November 3 – 9",
+    id:"prob", n:"2", name:"Probability", status:"next", when:"November 9 – 16",
     intro:"How likely is something to happen? We write probability as a fraction, decimal, percent or ratio, then compare what should happen with what actually happens.",
-    after:"Coming up in this unit: impossible, certain, \"not\" and spinners; experimental vs. theoretical probability; skill check (Nov 9).",
+    after:"Coming up in this unit: impossible, certain, \"not\" and spinners; experimental vs. theoretical probability; skill check (Nov 16).",
     lessons:[
       {id:"p1", n:"1", title:"Probability of an Outcome",
        big:"Probability = favourable outcomes ÷ ALL possible outcomes.",
@@ -376,7 +376,7 @@ window.HUB = {
     ]
   },
   {
-   id:"div", n:"3", name:"Divisibility", status:"soon", when:"November 10 – 13",
+   id:"div", n:"3", name:"Divisibility", status:"soon", when:"November 17 – 19",
    intro:"Explain WHY a number is or is not divisible by 2, 3, 4, 5, 6, 8, 9 or 10. Test each rule with examples, not guesses.",
    after:"Use the Divisibility Detective on this unit page for unlimited practice. Curriculum outcome 7.N.1.",
    lessons:[
@@ -442,7 +442,7 @@ window.HUB = {
      ]}
    ]
   },
-  {id:"fracops", n:"4", name:"Fraction Operations", status:"soon", when:"Mid-November", intro:"Adding and subtracting fractions and mixed numbers.", lessons:[]},
+  {id:"fracops", n:"4", name:"Fraction Operations", status:"soon", when:"Late November", intro:"Adding and subtracting fractions and mixed numbers.", lessons:[]},
   {id:"int", n:"5", name:"Integer Operations", status:"soon", when:"Later this year", intro:"Adding and subtracting integers.", lessons:[]},
   {id:"eq", n:"6", name:"Patterns and Equations", status:"soon", when:"Later this year", intro:"Patterns, expressions and one-step equations.", lessons:[]},
   {id:"lin", n:"7", name:"Linear Equations and the Coordinate Plane", status:"soon", when:"Later this year", intro:"", lessons:[]},
