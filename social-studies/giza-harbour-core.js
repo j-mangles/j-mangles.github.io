@@ -6,7 +6,7 @@
 (function(g){
 "use strict";
 const RESEARCH=[
- {title:"AERA — Pyramid settlement research",url:"https://aera.net/",note:"Excavated workers' settlement and organized provisioning"},
+ {title:"AERA — Pyramid settlement research",url:"https://aeraweb.org/",note:"Excavated workers' settlement and organized provisioning"},
  {title:"Lehner (2019) — Pyramid Settlements of Giza",url:"https://doi.org/10.1111/apaa.12111",note:"Networks of labour, administration and waterways"},
  {title:"Younes et al. (2024) — Khufu's harbour",url:"https://doi.org/10.1016/j.jasrep.2023.104303",note:"Reconstruction of Giza waterways and harbour landscape"},
  {title:"Digital Giza, Harvard",url:"https://giza.fas.harvard.edu/",note:"Maps, objects, monuments and context"}
