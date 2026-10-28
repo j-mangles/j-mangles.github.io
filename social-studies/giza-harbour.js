@@ -151,7 +151,7 @@ $("#back-journal").onclick=()=>{hide("#conclude");openJournal();};
 $("#submit-case").onclick=()=>{
  const verdict=$("#verdicts input:checked")?.value;
  if(!verdict){$("#feedback").textContent="Choose a possible explanation.";$("#feedback").hidden=false;return;}
- const selected=[...$("#case-file input:checked")].map(x=>x.value);
+ const selected=[...document.querySelectorAll("#case-file input:checked")].map(x=>x.value);
  const result=Q.conclude(state,verdict,selected,$("#reason").value);
  $("#feedback").textContent=result.message;$("#feedback").hidden=false;
  if(result.ok){
