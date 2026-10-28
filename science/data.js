@@ -1236,7 +1236,916 @@ window.HUB = {
     }
   ]
 },
-  {id:"earth", n:"4", name:"Earth's Interior and Tectonics", status:"soon", when:"March to May",
-   intro:"What's under our feet: layers of the Earth, plate tectonics, earthquakes and volcanoes."}
+{
+  "id": "earth",
+  "n": "4",
+  "name": "Earth Science: Earth's Interior and Tectonics",
+  "status": "soon",
+  "when": "March to May",
+  "intro": "Explore how Earth's internal heat causes tectonic activity and how rivers, flooding and glaciers shape the surface, especially in Manitoba. Organized around the four topics in our Earth Science booklet.",
+  "after": "Based on the Science 8 Unit 4 student booklet, Topics 1–4, and the matching teacher slides. Try the Earth Interior & Plate Boundary Explorer and the River & Watershed Lab. All models are conceptual, not measured reconstructions or forecasts.",
+  "lessons": [
+    {
+      "id": "e1-spheres",
+      "title": "Earth's Four Connected Systems",
+      "big": "Earth's atmosphere, hydrosphere, lithosphere and biosphere interact. One event can affect several spheres.",
+      "notes": [
+        "Atmosphere: gases surrounding Earth; hydrosphere: water in all states; lithosphere: the rigid crust and uppermost mantle; biosphere: living things and their environments.",
+        "A volcano can add ash to the air, melt nearby snow and ice, build new rock, and disrupt living habitats.",
+        "An Earth system is not isolated. Track cause and effect between spheres.",
+        "Booklet Topic 1: Earth's Systems. SCI.8.E.10."
+      ],
+      "terms": [
+        [
+          "Atmosphere",
+          "Gases surrounding Earth."
+        ],
+        [
+          "Hydrosphere",
+          "All water, liquid, ice and vapour."
+        ],
+        [
+          "Lithosphere",
+          "The rigid outer rocky layer, including the crust and uppermost mantle."
+        ],
+        [
+          "Biosphere",
+          "Living things and where they live."
+        ]
+      ],
+      "work": "Complete the four-spheres eruption chart in Topic 1. Explain one change that crosses from one sphere to another.",
+      "check": [
+        {
+          "q": "Which sphere includes glaciers and water vapour?",
+          "a": [
+            "Hydrosphere",
+            "Lithosphere",
+            "Biosphere"
+          ],
+          "c": 0,
+          "why": "All water in every state belongs to the hydrosphere."
+        },
+        {
+          "q": "Ash changes the air and affects nearby plants. This shows…",
+          "a": [
+            "System interactions",
+            "The atmosphere is separate from life",
+            "No environmental change"
+          ],
+          "c": 0,
+          "why": "An eruption can affect the atmosphere and biosphere."
+        }
+      ],
+      "n": "1"
+    },
+    {
+      "id": "e2-time",
+      "title": "Geological Time and Dating Rocks",
+      "big": "Earth is about 4.6 billion years old. Relative and radiometric dating provide different evidence about Earth's past.",
+      "notes": [
+        "Geology studies Earth's materials, structure and history across very long timescales.",
+        "One million seconds is about 12 days; one billion seconds is about 32 years.",
+        "Relative dating puts rock layers and events in order; in an undisturbed sediment sequence, lower layers were laid down first.",
+        "Radiometric dating uses predictable radioactive decay to estimate a numerical age. Half-life is the time for half an original parent isotope to decay.",
+        "Example: 8 g becomes 4 g after one half-life and 2 g after two. Real mineral dating involves additional evidence.",
+        "Booklet Topic 1: Geological Time and Rock Dating."
+      ],
+      "terms": [
+        [
+          "Geology",
+          "The study of Earth's materials, structure and history."
+        ],
+        [
+          "Relative dating",
+          "Ordering rocks or events from older to younger."
+        ],
+        [
+          "Radiometric dating",
+          "Estimating numerical ages using radioactive decay."
+        ],
+        [
+          "Half-life",
+          "Time for half of a radioactive isotope to decay."
+        ]
+      ],
+      "work": "Compare a million and a billion seconds. Complete the Topic 1 half-life problem, then explain why a relative age is not an exact age.",
+      "check": [
+        {
+          "q": "After two half-lives, how much of 8 g remains?",
+          "a": [
+            "4 g",
+            "2 g",
+            "0 g"
+          ],
+          "c": 1,
+          "why": "8 → 4 → 2 g."
+        },
+        {
+          "q": "Undisturbed lower sediment layers are generally…",
+          "a": [
+            "Older",
+            "Younger",
+            "Exactly two billion years old"
+          ],
+          "c": 0,
+          "why": "Relative position gives order, not a numerical age."
+        }
+      ],
+      "n": "2"
+    },
+    {
+      "id": "e3-layers",
+      "title": "Inside Earth: Four Major Layers",
+      "big": "The crust, mantle, outer core and inner core have different materials and physical properties.",
+      "notes": [
+        "Crust: thin, solid rock at the surface. Oceanic crust is usually thinner and denser than continental crust.",
+        "Mantle: thick region of mostly solid rock that deforms slowly over geological time; it is not an underground ocean of magma.",
+        "Outer core: liquid iron-rich metal. Inner core: solid iron-rich metal despite intense heat, because of enormous pressure.",
+        "Lithosphere means the rigid crust and uppermost mantle. Asthenosphere is the more slowly deforming region of upper mantle beneath it.",
+        "Seismic waves help scientists infer layers without drilling to the centre. Models exaggerate the crust's thickness.",
+        "Booklet Topic 1: Layers of the Earth. SCI.8.E.10."
+      ],
+      "terms": [
+        [
+          "Crust",
+          "Earth's thin outer solid rocky layer."
+        ],
+        [
+          "Mantle",
+          "Mostly solid hot rock beneath the crust."
+        ],
+        [
+          "Outer core",
+          "Liquid iron-rich region around the inner core."
+        ],
+        [
+          "Inner core",
+          "Solid metal at Earth's centre."
+        ],
+        [
+          "Asthenosphere",
+          "Slowly deforming region within the upper mantle."
+        ]
+      ],
+      "work": "Label the four layers. Explain crust versus lithosphere, then investigate each layer using the Earth Interior & Plate Boundary Explorer.",
+      "check": [
+        {
+          "q": "Which major layer is liquid?",
+          "a": [
+            "Outer core",
+            "Inner core",
+            "Mantle"
+          ],
+          "c": 0,
+          "why": "The iron-rich outer core is liquid."
+        },
+        {
+          "q": "The lithosphere includes…",
+          "a": [
+            "Crust and rigid uppermost mantle",
+            "Only the inner core",
+            "An ocean of magma"
+          ],
+          "c": 0,
+          "why": "Lithosphere is defined mechanically by rigidity."
+        }
+      ],
+      "n": "3"
+    },
+    {
+      "id": "e4-heat",
+      "title": "Where Earth's Internal Heat Comes From",
+      "big": "Leftover heat from Earth's formation and ongoing radioactive decay contribute to the heat that powers tectonic activity.",
+      "notes": [
+        "Earth grew by accretion as rocky material collided under gravity. Collisions and compression generated substantial heat.",
+        "Some ancient formation heat remains; radioactive decay in rocks provides ongoing heating.",
+        "Movement, compression and friction can produce additional heat, as described in the Grade 8 booklet.",
+        "Heat moves outward from hotter regions to cooler areas. Earth's mantle remains mostly solid while deforming very slowly.",
+        "The Sun powers most weather and the surface water cycle, while Earth's internal heat helps power tectonic processes.",
+        "Booklet Topic 1: Internal Heat. SCI.8.E.11–12."
+      ],
+      "terms": [
+        [
+          "Accretion",
+          "Growth as smaller pieces gather and collide."
+        ],
+        [
+          "Radioactive decay",
+          "Change in unstable atoms that releases energy."
+        ],
+        [
+          "Internal heat",
+          "Thermal energy stored and generated within Earth."
+        ]
+      ],
+      "work": "Explain three heat sources listed in the booklet. Compare the Sun's surface effects with Earth's internal heat.",
+      "check": [
+        {
+          "q": "Which produces ongoing heat within Earth?",
+          "a": [
+            "Radioactive decay",
+            "Only daylight",
+            "Human-made electricity"
+          ],
+          "c": 0,
+          "why": "Natural radioactive decay releases energy in Earth."
+        },
+        {
+          "q": "Which contrast is most accurate?",
+          "a": [
+            "Sun powers much surface weather; internal heat contributes to tectonics",
+            "Sun directly heats Earth's core",
+            "Earth never loses heat"
+          ],
+          "c": 0,
+          "why": "Earth is heated by different energy sources that drive different processes."
+        }
+      ],
+      "n": "4"
+    },
+    {
+      "id": "e5-drift",
+      "title": "Wegener's Continental Drift Evidence",
+      "big": "Fossils, rocks, glacial clues and continent shapes suggest landmasses changed position over time.",
+      "notes": [
+        "Wegener proposed a former supercontinent called Pangaea and argued continents had moved apart.",
+        "Matching fossils on widely separated continents support earlier land connections. Mesosaurus was a small freshwater reptile.",
+        "Matching rocks and mountain chains line up when some continents are reconstructed.",
+        "Ancient glacial deposits in now-warm regions form a more coherent pattern when landmasses are rearranged.",
+        "Wegener lacked a convincing mechanism for movement. Later seafloor research supported plate tectonics.",
+        "Booklet Topic 2: Continental Drift and Evidence. SCI.8.E.12."
+      ],
+      "terms": [
+        [
+          "Pangaea",
+          "Ancient supercontinent containing most landmasses."
+        ],
+        [
+          "Continental drift",
+          "The idea that continents have changed position over time."
+        ],
+        [
+          "Glacial evidence",
+          "Deposits or scratches left behind by ancient moving ice."
+        ]
+      ],
+      "work": "List four lines of drift evidence; use the Evidence tab of Earth Explorer and justify which line you think is strongest.",
+      "check": [
+        {
+          "q": "Why do Mesosaurus fossils in South America and Africa matter?",
+          "a": [
+            "They suggest a former connection",
+            "They prove reptiles could fly",
+            "They disprove plate motion"
+          ],
+          "c": 0,
+          "why": "Freshwater animals could not easily cross the modern Atlantic."
+        },
+        {
+          "q": "What was missing from Wegener's original explanation?",
+          "a": [
+            "How continents move",
+            "Any fossil evidence",
+            "A map of Africa"
+          ],
+          "c": 0,
+          "why": "He lacked a convincing movement mechanism."
+        }
+      ],
+      "n": "5"
+    },
+    {
+      "id": "e6-seafloor",
+      "title": "Seafloor Spreading",
+      "big": "New oceanic crust forms at ridges and older crust moves away—a key mechanism behind plate tectonics.",
+      "notes": [
+        "At a mid-ocean ridge, plates separate, magma cools and new oceanic crust may form.",
+        "Ocean-floor rocks are typically youngest near spreading ridges and older away from them.",
+        "Magnetic striping and rock ages provide evidence for the spreading process.",
+        "At some convergent boundaries, old oceanic lithosphere subducts into the mantle, recycling it.",
+        "The continents are parts of moving plates, not independent rafts floating on ocean water.",
+        "Booklet Topic 2: Hypothesis to Theory and Seafloor Spreading. SCI.8.E.12."
+      ],
+      "terms": [
+        [
+          "Mid-ocean ridge",
+          "Undersea mountain chain associated with spreading."
+        ],
+        [
+          "Seafloor spreading",
+          "Creation of new oceanic crust where plates move apart."
+        ],
+        [
+          "Subduction",
+          "One tectonic plate descending beneath another."
+        ]
+      ],
+      "work": "Use the ocean-floor age map: locate the youngest Atlantic rock and write an explanation of what the age pattern indicates.",
+      "check": [
+        {
+          "q": "Ocean-floor rock near a typical ridge is usually…",
+          "a": [
+            "Youngest",
+            "Oldest",
+            "Identical age everywhere"
+          ],
+          "c": 0,
+          "why": "New material cools where plates move apart."
+        },
+        {
+          "q": "Older oceanic lithosphere may be…",
+          "a": [
+            "Subducted",
+            "Turned into sunlight",
+            "Transported only by glaciers"
+          ],
+          "c": 0,
+          "why": "Plate recycling occurs in subduction zones."
+        }
+      ],
+      "n": "6"
+    },
+    {
+      "id": "e7-plates",
+      "title": "What Moves Tectonic Plates?",
+      "big": "Plates are rigid sections of lithosphere that move slowly as Earth's interior loses heat.",
+      "notes": [
+        "Most plates move only a few centimetres each year. Manitoba lies well inside the North American Plate.",
+        "Continental crust is generally less dense and thicker than oceanic crust.",
+        "Convection is movement of heat through a slowly moving material; Earth's mantle deforms as solid rock rather than boiling like water.",
+        "Other mechanisms, including sinking slabs and ridge-related forces, contribute to plate motion.",
+        "At a constant illustrative rate of 2.5 cm/year, plates separate 25 kilometres in one million years.",
+        "The boiling-pot model makes the principle visible but greatly exaggerates how liquid-like and fast mantle processes are.",
+        "Booklet Topic 2: Tectonic Plates, Crust and Convection. SCI.8.E.12."
+      ],
+      "terms": [
+        [
+          "Tectonic plate",
+          "A moving portion of Earth's lithosphere."
+        ],
+        [
+          "Convection",
+          "Transfer of heat by the movement of a substance."
+        ],
+        [
+          "Slab pull",
+          "Force associated with sinking dense lithosphere."
+        ]
+      ],
+      "work": "Compare continental and oceanic crust; calculate 2.5 cm/year for 1 million years. Explain a limitation of the pot analogy.",
+      "check": [
+        {
+          "q": "Where is Manitoba located?",
+          "a": [
+            "Inside the North American Plate",
+            "At the Mid-Atlantic Ridge",
+            "On the San Andreas Fault"
+          ],
+          "c": 0,
+          "why": "Manitoba is well away from a plate edge."
+        },
+        {
+          "q": "2.5 cm a year over one million years equals…",
+          "a": [
+            "25 km",
+            "25 metres",
+            "2,500 km"
+          ],
+          "c": 0,
+          "why": "2.5 million cm is 25 km."
+        }
+      ],
+      "n": "7"
+    },
+    {
+      "id": "e8-boundaries",
+      "title": "Divergent, Convergent and Transform Boundaries",
+      "big": "The way plates interact helps explain ridges, mountains, volcanic arcs and earthquakes.",
+      "notes": [
+        "Divergent plates move apart; many mid-ocean ridges form here. Iceland lies along a spreading region.",
+        "Convergent plates move toward one another. Some collide as continents; others form subduction zones.",
+        "Transform plates slide horizontally past one another and often cause earthquakes.",
+        "Ocean–ocean, ocean–continent and continent–continent convergences have different geological outcomes.",
+        "The Earth Explorer models exaggerate motion and layer thickness to make patterns observable.",
+        "Booklet Topic 2: Plate Boundaries. SCI.8.E.12."
+      ],
+      "terms": [
+        [
+          "Divergent",
+          "Plate boundary with movement apart."
+        ],
+        [
+          "Convergent",
+          "Plate boundary with movement toward one another."
+        ],
+        [
+          "Transform",
+          "Plate boundary with sideways sliding."
+        ]
+      ],
+      "work": "Label the three boundary diagrams. Use Earth Explorer to explain what a model shows and what it leaves out.",
+      "check": [
+        {
+          "q": "Where does new oceanic crust commonly form?",
+          "a": [
+            "Divergent boundaries",
+            "Transform boundaries",
+            "All mountain summits"
+          ],
+          "c": 0,
+          "why": "New crust forms at spreading ridges."
+        },
+        {
+          "q": "The San Andreas Fault is mainly a…",
+          "a": [
+            "Transform boundary",
+            "Hot spring",
+            "Convergent volcanic arc"
+          ],
+          "c": 0,
+          "why": "Two plates slide past one another there."
+        }
+      ],
+      "n": "8"
+    },
+    {
+      "id": "e9-mountains",
+      "title": "Mountains and Faults",
+      "big": "Rock deformation and movement at plate boundaries can uplift mountains and create faults.",
+      "notes": [
+        "At continental collisions like India–Eurasia, thickening and folding of crust helps form the Himalayas.",
+        "Where an oceanic plate subducts beneath a continent, mountain belts and volcanic arcs may form, as in the Andes.",
+        "A fault is a fracture in rock along which displacement has occurred.",
+        "Faults often concentrate where plates interact but may also occur within plates.",
+        "Uplift and erosion both influence the mountains we observe today.",
+        "Booklet Topic 3: Mountains and Faults. SCI.8.E.12."
+      ],
+      "terms": [
+        [
+          "Fault",
+          "Fracture in rock along which movement has happened."
+        ],
+        [
+          "Uplift",
+          "Raising part of Earth's crust."
+        ],
+        [
+          "Convergence",
+          "Motion of plates toward each other."
+        ]
+      ],
+      "work": "Compare the Himalayas and the Andes with labelled diagrams. Explain which evidence indicates uplift and which suggests subduction.",
+      "check": [
+        {
+          "q": "The Himalayas formed primarily through…",
+          "a": [
+            "Continental collision",
+            "A modern flood",
+            "A sea breeze"
+          ],
+          "c": 0,
+          "why": "Collision thickens and raises continental crust."
+        },
+        {
+          "q": "A fault is…",
+          "a": [
+            "A fracture where rock has moved",
+            "Any bend in a river",
+            "Only a volcanic vent"
+          ],
+          "c": 0,
+          "why": "Faulting involves displacement along a fracture."
+        }
+      ],
+      "n": "9"
+    },
+    {
+      "id": "e10-volcano",
+      "title": "Volcanoes and the Ring of Fire",
+      "big": "Volcanoes reflect several melting processes and can occur at plate boundaries or hot spots.",
+      "notes": [
+        "Magma is molten rock beneath the surface. Once erupted onto the surface, it is called lava.",
+        "At subduction zones, descending material carries water that encourages melting in the overlying mantle.",
+        "At divergent boundaries, rising mantle and separation help magma form and reach the surface.",
+        "Hot-spot volcanism can occur within a moving plate; Hawaii is an example.",
+        "Many volcanoes surround the Pacific where subduction zones form an uneven 'Ring of Fire.'",
+        "Volcano shapes and behaviour vary; not every volcano is a steep cone.",
+        "Booklet Topic 3: Volcanoes. SCI.8.E.12."
+      ],
+      "terms": [
+        [
+          "Magma",
+          "Molten rock below Earth's surface."
+        ],
+        [
+          "Lava",
+          "Molten rock at Earth's surface."
+        ],
+        [
+          "Subduction zone",
+          "Region where one plate descends beneath another."
+        ],
+        [
+          "Hot spot",
+          "Area of volcanism that can lie away from plate boundaries."
+        ]
+      ],
+      "work": "Compare Iceland, Hawaii and a Pacific subduction volcano. Trace how melting begins in each setting.",
+      "check": [
+        {
+          "q": "A volcanic hot-spot example is…",
+          "a": [
+            "Hawaii",
+            "Every transform fault",
+            "Lake Winnipeg"
+          ],
+          "c": 0,
+          "why": "Hawaii is a well-known oceanic hot spot."
+        },
+        {
+          "q": "Erupted molten rock is called…",
+          "a": [
+            "Lava",
+            "A glacier",
+            "Sediment"
+          ],
+          "c": 0,
+          "why": "Magma becomes lava upon eruption."
+        }
+      ],
+      "n": "10"
+    },
+    {
+      "id": "e11-quakes",
+      "title": "Earthquakes, Tsunamis and Evidence",
+      "big": "Sudden fault movement releases seismic waves. Undersea disturbances can move seawater and generate tsunamis.",
+      "notes": [
+        "Rock can lock across a fault, allowing stress to build before a sudden slip.",
+        "The focus is where rupture begins underground; the epicentre lies directly above it at Earth's surface.",
+        "Earthquakes happen at different plate boundary types.",
+        "A large undersea earthquake can displace water, creating a tsunami that travels across the ocean.",
+        "A tsunami may be low in deep water and grow higher as it nears shallow coastlines.",
+        "The student booklet connects First Nations oral histories of the 1700 Cascadia earthquake with geological evidence and records from Japan. Study these respectfully as complementary sources of knowledge.",
+        "Booklet Topic 3: Earthquakes and Tsunamis. SCI.8.E.12."
+      ],
+      "terms": [
+        [
+          "Focus",
+          "The underground point where an earthquake rupture begins."
+        ],
+        [
+          "Epicentre",
+          "Surface point directly above the focus."
+        ],
+        [
+          "Seismic waves",
+          "Waves carrying energy from earthquakes."
+        ],
+        [
+          "Tsunami",
+          "Waves from sudden displacement of a large amount of water."
+        ]
+      ],
+      "work": "Label focus, epicentre and fault. Sequence the events of a tsunami; explain how different evidence contributes to understanding the 1700 Cascadia event.",
+      "check": [
+        {
+          "q": "An earthquake rupture starts at…",
+          "a": [
+            "The focus",
+            "Only the epicentre",
+            "The stratosphere"
+          ],
+          "c": 0,
+          "why": "The focus is underground where movement begins."
+        },
+        {
+          "q": "A deep-ocean tsunami is often…",
+          "a": [
+            "Fast with relatively low wave height",
+            "Always a 20-m wall of water",
+            "Caused only by wind"
+          ],
+          "c": 0,
+          "why": "Wave height often grows as the tsunami moves into shallower water."
+        }
+      ],
+      "n": "11"
+    },
+    {
+      "id": "e12-geothermal",
+      "title": "Geysers and Hot Springs",
+      "big": "Groundwater heated near hot rock can flow at hot springs or erupt when pressure builds in confined underground channels.",
+      "notes": [
+        "Rain and melted snow can soak underground and become groundwater.",
+        "Hot rock or magma near the surface can heat groundwater until it rises as a hot spring.",
+        "A geyser requires water, heat and underground passages that allow pressure to build.",
+        "Most hot springs are not geysers because pressure can escape without erupting.",
+        "Iceland has accessible geothermal resources near active volcanic areas; Manitoba is far from an active plate boundary.",
+        "Booklet Topic 3: Geysers & Hot Springs. SCI.8.E.12."
+      ],
+      "terms": [
+        [
+          "Groundwater",
+          "Water in pore spaces and cracks underground."
+        ],
+        [
+          "Hot spring",
+          "Natural outflow of geothermally heated water."
+        ],
+        [
+          "Geyser",
+          "A hot spring that erupts intermittently under the right conditions."
+        ]
+      ],
+      "work": "Explain why geysers are rarer than hot springs. Compare Iceland's geothermal use with typical conditions in Manitoba.",
+      "check": [
+        {
+          "q": "A geyser needs what besides water and heat?",
+          "a": [
+            "Restricted underground plumbing",
+            "A new moon",
+            "An ocean iceberg"
+          ],
+          "c": 0,
+          "why": "Pressure must accumulate to power an eruption."
+        },
+        {
+          "q": "Why is geothermal heating especially accessible in Iceland?",
+          "a": [
+            "Active volcanic regions near a plate boundary",
+            "A complete lack of groundwater",
+            "Its deep-frozen core"
+          ],
+          "c": 0,
+          "why": "Volcanic rock near the surface heats underground water."
+        }
+      ],
+      "n": "12"
+    },
+    {
+      "id": "e13-rivers",
+      "title": "Weathering, Erosion, Deposition and Rivers",
+      "big": "Flowing water shapes land by breaking down, moving and depositing sediments.",
+      "notes": [
+        "Weathering breaks down rock in place. Erosion moves material; deposition drops it in a new location.",
+        "Freeze–thaw weathering may widen rock cracks where water freezes and expands.",
+        "Faster river water can typically move more or larger sediment, but actual transport depends on grain and channel conditions.",
+        "Water usually erodes the outside of a meander bend and deposits sediment on the inside.",
+        "Sediment dropped where a river slows upon reaching a lake or sea can form a delta.",
+        "Booklet Topic 4: Weathering, Erosion & Deposition; Precipitation & Rivers. SCI.8.E.14."
+      ],
+      "terms": [
+        [
+          "Weathering",
+          "Breakdown of rock in place."
+        ],
+        [
+          "Erosion",
+          "Removal and transport of sediment."
+        ],
+        [
+          "Deposition",
+          "Dropping transported sediment."
+        ],
+        [
+          "Meander",
+          "A bend in a river."
+        ],
+        [
+          "Delta",
+          "Land built by deposited sediment at a river mouth."
+        ]
+      ],
+      "work": "Label a meander's outer eroding bank and inner depositing bank. Open the River & Watershed Lab and describe what changed and why.",
+      "check": [
+        {
+          "q": "What often happens on the outside of a river bend?",
+          "a": [
+            "More erosion",
+            "Always deposition",
+            "No moving water"
+          ],
+          "c": 0,
+          "why": "The outside of a bend typically has faster flow and greater erosion."
+        },
+        {
+          "q": "Deposition is…",
+          "a": [
+            "Sediment being dropped",
+            "Magma solidifying in the core",
+            "Water evaporating"
+          ],
+          "c": 0,
+          "why": "Sediment settles as a river loses carrying capacity."
+        }
+      ],
+      "n": "13"
+    },
+    {
+      "id": "e14-watersheds",
+      "title": "Watersheds and Red River Flooding",
+      "big": "Watersheds channel water toward rivers and lakes; geography, snowmelt and infrastructure influence flood risk.",
+      "notes": [
+        "A watershed is land draining to a shared water body. It can cross provincial and international borders.",
+        "The Lake Winnipeg drainage basin includes parts of the Canadian Prairies and northern United States; water ultimately leaves through the Nelson River toward Hudson Bay.",
+        "The Red River flows north from the United States to Lake Winnipeg through a broad, flat floodplain.",
+        "Spring thaw, heavy snow, rapid runoff and ice still present downstream can worsen flooding.",
+        "The Red River Floodway diverts some water around Winnipeg during many major flood events, reducing flood levels in protected areas. It does not eliminate all flooding.",
+        "Booklet Topic 4: Watersheds and Flooding. SCI.8.E.14."
+      ],
+      "terms": [
+        [
+          "Watershed",
+          "Land that drains to the same river or lake."
+        ],
+        [
+          "Runoff",
+          "Water flowing over land toward streams."
+        ],
+        [
+          "Floodplain",
+          "Flat land beside a river that can flood."
+        ],
+        [
+          "Floodway",
+          "Engineered channel to divert high river flows."
+        ]
+      ],
+      "work": "Study the booklet's Lake Winnipeg watershed map and Floodway graph. Explain Red River flooding with three causes and one mitigation. Experiment with the River & Watershed Lab.",
+      "check": [
+        {
+          "q": "The Red River generally flows toward Lake Winnipeg…",
+          "a": [
+            "North",
+            "South",
+            "Into the Pacific"
+          ],
+          "c": 0,
+          "why": "The Red River runs north."
+        },
+        {
+          "q": "Which factor can worsen spring flooding?",
+          "a": [
+            "Flat land with large snowmelt runoff",
+            "No snow anywhere",
+            "No connection to precipitation"
+          ],
+          "c": 0,
+          "why": "Runoff and low gradient can cause water to spread over a floodplain."
+        }
+      ],
+      "n": "14"
+    },
+    {
+      "id": "e15-glaciers",
+      "title": "Glaciers and the Ice-Age Landscape of Manitoba",
+      "big": "Moving glaciers can scrape and transport rock; melting ice deposits sediment and helped form Manitoba's landforms.",
+      "notes": [
+        "Glaciers form where accumulated land snow compacts into flowing ice.",
+        "Rocks trapped under the ice can abrade bedrock and leave striations showing the direction of ice motion.",
+        "Glaciers can carve U-shaped valleys; many rivers cut V-shaped valleys.",
+        "Ice leaves behind clay, sand, gravel and boulders when it melts.",
+        "The Laurentide Ice Sheet covered Manitoba. As it retreated, meltwater formed glacial Lake Agassiz, leaving extensive sediments.",
+        "The Canadian Shield's exposed, scoured bedrock and thousands of lakes reflect long-term glacial processes.",
+        "Booklet Topic 4: Glaciers and Manitoba Was Shaped by Ice. SCI.8.E.14."
+      ],
+      "terms": [
+        [
+          "Glacier",
+          "Large mass of slowly moving land ice."
+        ],
+        [
+          "Striation",
+          "Scratch left in rock by material dragged under ice."
+        ],
+        [
+          "Lake Agassiz",
+          "Large former glacial lake that covered part of central North America."
+        ],
+        [
+          "Glacial deposition",
+          "Sediment left behind as ice melts."
+        ]
+      ],
+      "work": "Compare a U-shaped glacial valley with a V-shaped river valley. Use the booklet's map to explain two Manitoba glacial features.",
+      "check": [
+        {
+          "q": "Parallel scratches in bedrock may be caused by…",
+          "a": [
+            "Stones dragged under glacial ice",
+            "Heat from the Sun drawing lines",
+            "Only flowing lava"
+          ],
+          "c": 0,
+          "why": "Glacial abrasion can leave striations."
+        },
+        {
+          "q": "Which former lake helped shape southern Manitoba?",
+          "a": [
+            "Lake Agassiz",
+            "Lake Baikal",
+            "Lake Victoria"
+          ],
+          "c": 0,
+          "why": "Glacial Lake Agassiz left widespread sediments."
+        }
+      ],
+      "n": "15"
+    },
+    {
+      "id": "e16-review",
+      "title": "Earth Science Unit Review and Evidence Challenge",
+      "big": "Connect Earth's interior, tectonic activity, water and ice into explanations supported by observations and models.",
+      "notes": [
+        "Topic 1: Connect the four spheres; describe Earth's layered structure and sources of internal heat.",
+        "Topic 2: Explain continental-drift evidence, seafloor spreading and three plate boundaries.",
+        "Topic 3: Distinguish processes causing mountains, volcanoes, earthquakes, tsunamis and geothermal features.",
+        "Topic 4: Explain weathering, erosion, deposition, rivers, watersheds, the Red River and glaciation.",
+        "A strong scientific explanation makes a claim, cites observations or measured evidence, explains the mechanism and acknowledges a model limitation.",
+        "Review Earth Explorer plus River & Watershed Lab; compare the diagrams against booklet source maps and descriptions."
+      ],
+      "terms": [
+        [
+          "Model limitation",
+          "Something a representation leaves out or simplifies."
+        ],
+        [
+          "Scientific claim",
+          "Explanation supported with evidence and reasoning."
+        ],
+        [
+          "Earth-system connection",
+          "An effect involving two or more spheres."
+        ]
+      ],
+      "work": "Choose a Manitoba landform or event. Create a concept map of at least three connected Earth processes, then write a five-sentence claim/evidence/reasoning explanation.",
+      "check": [
+        {
+          "q": "Which sequence describes a sediment journey?",
+          "a": [
+            "Weathering, erosion, deposition",
+            "Deposition, combustion, sunlight",
+            "Fault, electricity, steam"
+          ],
+          "c": 0,
+          "why": "Sediment is broken down, carried and may be dropped."
+        },
+        {
+          "q": "A good model should…",
+          "a": [
+            "Explain a mechanism while identifying limitations",
+            "Always perfectly predict natural events",
+            "Be treated as a photograph"
+          ],
+          "c": 0,
+          "why": "Scale and missing real-world complexity must be acknowledged."
+        },
+        {
+          "q": "Manitoba's landscape reflects…",
+          "a": [
+            "Glaciers and river processes",
+            "Only active volcanoes",
+            "Only weather this year"
+          ],
+          "c": 0,
+          "why": "Ice, meltwater, deposition and rivers helped shape the province."
+        }
+      ],
+      "activity": {
+        "title": "Build a scientific explanation",
+        "context": "Use your booklet, the Earth Explorer and River & Watershed Lab. Save your work before leaving this page.",
+        "prompts": [
+          {
+            "label": "My claim about how Earth changes",
+            "hint": "A specific statement about water, ice or tectonics."
+          },
+          {
+            "label": "Observation or evidence 1",
+            "hint": "Use a diagram, map or booklet example."
+          },
+          {
+            "label": "Observation or evidence 2",
+            "hint": "Use a different kind of evidence."
+          },
+          {
+            "label": "How do the observations support my claim?",
+            "hint": "Connect your claim to the physical process."
+          },
+          {
+            "label": "One important limitation of my model or evidence",
+            "hint": "What is simplified, missing or uncertain?"
+          }
+        ],
+        "checklist": [
+          "Specific claim",
+          "Two evidence points",
+          "Cause-and-effect explanation",
+          "Model limitation"
+        ]
+      },
+      "n": "16"
+    }
+  ]
+}
   ]
 };
