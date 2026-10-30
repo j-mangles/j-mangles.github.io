@@ -8,7 +8,7 @@ assert.equal(C.PERIODS.length,5);
 for(const p of C.PERIODS){
  const start=atlas.indexOf('id:"'+p.id+'", n:');
  assert.ok(start>=0,"Missing period "+p.id+" on live atlas");
- assert.ok(atlas.slice(start,start+400).includes('span:"'+p.span+'"'),"Atlas span changed: "+p.id+" "+p.span);
+ assert.ok(atlas.slice(start,start+1500).includes('span:"'+p.span+'"'),"Atlas span changed: "+p.id+" "+p.span);
  assert.ok(p.start<p.end&&p.start>=-5500&&p.end<=1600);
  assert.ok(p.caution.length>30,"Every teaching period needs a caveat");
  for(const q of C.PERIODS){

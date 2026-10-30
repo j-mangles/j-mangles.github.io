@@ -34,6 +34,6 @@ assert.ok(page.includes('src="source-lab.js"')&&page.includes("window.ArtifactEv
 for(const id of ["observation","inference","limits","confidence","next-clue","synthesis","artifact-list"])assert.ok(page.includes('id="'+id+'"'),"Missing "+id);
 assert.ok(page.includes("Fictional practice site")&&page.includes("not photographs"));
 assert.ok(!page.includes("docs.google.com")&&!page.includes("The_Present_Teacher_Key")&&!page.includes("TeacherGuide"));
-assert.ok(read("social-studies/index.html").includes('href="evidence.html"'));
+assert.ok(read("social-studies/index.html").includes('href:"evidence.html"'),"Early Humans activity link missing");
 assert.ok(read("index.html").includes('href="social-studies/evidence.html"'));
 console.log("Site 14 desk passed: 5 source scenarios, 3 confidence levels, original schematic SVGs and editable response export.");

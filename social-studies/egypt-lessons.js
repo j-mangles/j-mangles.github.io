@@ -1,641 +1,674 @@
-/* Ancient Egypt: Grade 8 Societies of the Past. Outcomes: 8-KI-013/014, 8-KL-023/024, 8-KH-029/030, 8-KG-038, 8-KP-045, 8-KE-054; 8-S-200/202/302/305/306. */
+/* Ancient Egypt, Grade 8 Societies of the Past. One entry per class slide deck (Unit 2, Lessons 1-13), in teaching order. */
 window.EgyptLessons = [
   {
     "id": "l1",
     "n": "1",
-    "title": "The Nile: A River Through the Desert",
+    "title": "Gift of the Nile",
     "released": true,
     "places": [
       "nile",
       "lower",
       "upper",
       "aswan",
-      "memphis"
+      "cat1",
+      "western",
+      "eastern",
+      "redsea"
     ],
-    "big": "The Nile shaped where people lived, how they farmed, and the choices communities made about water.",
+    "big": "One river through a desert gave Egypt its food, its calendar and its protection, which helped one civilization last about 3,000 years.",
     "notes": [
-      "The Nile flows north into the Mediterranean. Upper Egypt is upstream in the south, and Lower Egypt is downstream in the northern delta.",
-      "Before the Aswan High Dam, seasonal flooding often deposited fertile silt on farmland. Floods varied, so high or low water could also create serious problems.",
-      "Settlements concentrated beside the river because most of the surrounding region is arid.",
-      "Canals, basins and organized labour helped communities manage water; these works required upkeep and decisions about sharing access.",
-      "Geography matters, but it does not determine everything: human decisions, trade, political power and technology also shaped Egyptian life.",
-      "Map skill: use the Nile, Mediterranean, Red Sea and cataracts to explain movement and settlement."
+      "About 96% of Egypt is desert. Almost everyone lived on the thin green strip of the Nile Valley and Delta.",
+      "The Nile flows north. Upper Egypt is upstream in the south; Lower Egypt is downstream in the northern Delta.",
+      "The yearly flood (the inundation) came from summer rains in the Ethiopian Highlands, not from rain in Egypt. It left behind fertile silt.",
+      "The timing of the flood was reliable (June to October), and a Nilometer at Aswan gave early warning. The height was not: too high wrecked villages, too low meant famine.",
+      "Egyptians called their farmland Kemet, the Black Land, and the desert Deshret, the Red Land.",
+      "Deserts on both sides, the sea to the north and the First Cataract to the south made Egypt hard to invade, unlike flat, open Mesopotamia."
     ],
     "terms": [
       [
+        "Inundation",
+        "The Nile's yearly flood."
+      ],
+      [
         "Silt",
-        "Fine sediment deposited by water."
+        "Fine, fertile soil left behind by floodwater."
       ],
       [
         "Delta",
-        "Area where a river divides into smaller channels near its mouth."
-      ],
-      [
-        "Irrigation",
-        "Moving water to crops by human-built channels or devices."
+        "The fan-shaped area where a river splits apart before the sea."
       ],
       [
         "Cataract",
-        "A rocky stretch of river that makes navigation difficult."
+        "A rocky, shallow stretch of river that boats can't easily pass."
+      ],
+      [
+        "Oasis",
+        "A fertile spot in the desert fed by underground water."
       ]
     ],
-    "work": "Map the Nile and label Upper/Lower Egypt. Use the River Valley Decision Lab and write a 5-sentence explanation of how geography created both opportunities and challenges.",
+    "work": "Egypt's Geography File: compare the Nile with the Tigris and Euphrates feature by feature, then argue which river gave its civilization the bigger advantage, and where it fell short.",
     "activity": {
       "href": "river-valley-lab.html?civilization=egypt",
-      "title": "Open the River Valley Decision Lab"
+      "title": "Try the River Valley Decision Lab"
     },
     "check": [
       {
         "q": "Why is Lower Egypt in the north?",
         "a": [
-          "It is downstream, nearer the river's mouth.",
-          "It is colder than Upper Egypt.",
-          "It has less land than the south."
+          "It is downstream, where the Nile reaches the sea",
+          "It is lower on a map",
+          "It was less important than Upper Egypt"
         ],
         "c": 0,
-        "why": "The Nile flows north toward the Mediterranean; 'lower' refers to downstream elevation."
+        "why": "The Nile flows north, so 'lower' means downstream, toward the Delta and the Mediterranean."
       },
       {
-        "q": "What could an unusually weak flood mean for farmers?",
+        "q": "Where did the water for the Nile's flood come from?",
         "a": [
-          "Too much silt everywhere",
-          "Less water and poorer harvests",
-          "Guaranteed larger harvests"
+          "Heavy rain in Egypt",
+          "Melting snow in the Mediterranean",
+          "Summer rains in the Ethiopian Highlands"
         ],
-        "c": 1,
-        "why": "Seasonal flooding helped farming but was not perfectly predictable."
+        "c": 2,
+        "why": "It almost never rains in Egypt. Monsoon rains far to the south fed the Blue Nile and the Atbara."
       },
       {
-        "q": "Which best explains river valley settlement?",
+        "q": "Which part of the flood could Egyptians NOT count on?",
         "a": [
-          "One cause: rivers always prevent conflict",
-          "Water and soils helped, alongside human choices and tools",
-          "Only rulers could live beside rivers"
+          "When it arrived",
+          "How high it rose",
+          "Whether it brought silt"
         ],
         "c": 1,
-        "why": "Geography creates conditions, while people make decisions."
+        "why": "The timing was steady. The height swung between floods that destroyed villages and floods too weak to water the fields."
       }
     ]
   },
   {
     "id": "l2",
     "n": "2",
-    "title": "Unification, Pharaohs and Government",
+    "title": "From Villages to a Unified Kingdom",
     "released": true,
     "places": [
+      "upper",
+      "lower",
       "hierakonpolis",
       "abydos",
-      "memphis",
-      "upper",
-      "lower"
+      "memphis"
     ],
-    "big": "Rulers unified territories and used officials, records, symbols and belief systems to organize the state.",
+    "big": "Around 3100 BCE, Upper and Lower Egypt became one kingdom, and the idea of a god-king helped it hold together, fall apart and come back together for 3,000 years.",
     "notes": [
-      "Around 3100 BCE, early rulers brought Upper and Lower Egypt into one kingdom. The details and exact sequence are still studied.",
-      "Narmer is associated with the unification period; the Narmer Palette is evidence of royal claims and imagery, not a recording of every event exactly as it happened.",
-      "Pharaohs were political rulers with important religious roles; power varied across Egypt's long history.",
-      "Officials helped organize agriculture, labour, justice and supplies. Scribes kept records in a society where most people did not read and write.",
-      "Different periods had strong or weaker central government. Egypt's political history includes reunifications and periods of division.",
-      "The double crown symbolized a connection between Upper and Lower Egypt."
+      "The Narmer Palette (c. 3100 BCE) shows a king wearing the White Crown of Upper Egypt on one side and the Red Crown of Lower Egypt on the other.",
+      "The traditional story says Egypt was unified by conquest. But palettes were made to glorify a king, so showing a conquest doesn't prove it happened that way.",
+      "Later king lists call the first pharaoh Menes. Egyptologists are still split on whether Menes was Narmer or his successor Hor-Aha.",
+      "The Double Crown (Pschent) combined the White and Red crowns: one ruler for both lands.",
+      "Divine kingship: the living pharaoh was Horus, and became Osiris after death. Obeying him kept ma'at, the order of the universe.",
+      "Egypt broke apart in two Intermediate Periods but kept reuniting: Old Kingdom, Middle Kingdom and New Kingdom."
     ],
     "terms": [
       [
-        "Pharaoh",
-        "Title used for Egyptian kings; their authority combined political and sacred roles."
-      ],
-      [
         "Unification",
-        "Bringing previously separate territories under one government."
+        "Joining two separate kingdoms into one."
       ],
       [
-        "Official",
-        "Person given responsibility for carrying out government decisions."
+        "Dynasty",
+        "A series of rulers from the same family."
+      ],
+      [
+        "Pharaoh",
+        "The ruler of ancient Egypt."
+      ],
+      [
+        "Divine kingship",
+        "The belief that a ruler is a god, or chosen by the gods."
+      ],
+      [
+        "Intermediate period",
+        "A time when Egypt broke apart into rival regions."
       ]
     ],
-    "work": "Examine the map from Hierakonpolis and Abydos to Memphis. Write a claim about how geography and writing could help a ruler govern widely separated settlements.",
+    "work": "Egypt's Timeline of Power: build a timeline from unification to the New Kingdom, work out how long periods lasted, and weigh the evidence in the Narmer and Menes debate.",
     "check": [
       {
-        "q": "What does the double crown represent?",
+        "q": "What does the Narmer Palette show on its two sides?",
         "a": [
-          "Two rivers",
-          "Upper and Lower Egypt together",
-          "Trade with Greece"
+          "Narmer wearing the crowns of Upper and Lower Egypt",
+          "Narmer building the first pyramid",
+          "A treaty between Egypt and Nubia"
+        ],
+        "c": 0,
+        "why": "One side shows the White Crown of Upper Egypt, the other the Red Crown of Lower Egypt."
+      },
+      {
+        "q": "Why should historians be careful using the palette as proof of a conquest?",
+        "a": [
+          "It is a fake",
+          "It was carved in Mesopotamia",
+          "It was made to glorify the king, not to report events"
+        ],
+        "c": 2,
+        "why": "Royal art showed what the king wanted remembered. Showing a victory doesn't prove how unification really happened."
+      },
+      {
+        "q": "What was an Intermediate Period?",
+        "a": [
+          "The time between two floods",
+          "A time when Egypt split into rival regions",
+          "A peaceful time between two pharaohs"
         ],
         "c": 1,
-        "why": "It combines symbols associated with the two regions."
-      },
-      {
-        "q": "Why were scribes useful to Egyptian government?",
-        "a": [
-          "They could record resources and decisions",
-          "They replaced all farmers",
-          "They built every pyramid themselves"
-        ],
-        "c": 0,
-        "why": "Administration depends on keeping reliable records."
-      },
-      {
-        "q": "What is an important caution about royal artworks?",
-        "a": [
-          "They may communicate claims and ideals, not just neutral facts",
-          "They are always photographs of events",
-          "They are never useful sources"
-        ],
-        "c": 0,
-        "why": "Context and intended audience matter when interpreting historical evidence."
+        "why": "Central government collapsed and the country split, then later reunited under one king."
       }
     ]
   },
   {
     "id": "l3",
     "n": "3",
-    "title": "Everyday Life: More Than Pharaohs",
+    "title": "Pyramids and the Old Kingdom",
     "released": true,
     "places": [
-      "memphis",
-      "thebes",
-      "nile"
+      "giza",
+      "memphis"
     ],
-    "big": "Ancient Egypt included many social groups; everyday experiences differed according to work, wealth, gender, time and status.",
+    "big": "The pyramids are proof of what a unified, god-led state could organize: food, workers, records and skill on a huge scale.",
     "notes": [
-      "Most people worked in agriculture or connected occupations. Village and family life supported the larger economy.",
-      "Skilled craftspeople, merchants, soldiers, priests and scribes made different contributions to society.",
-      "Elites had greater access to resources and power, but historical evidence from poorer households is often less abundant.",
-      "Women in ancient Egypt could own and inherit property, though social experiences and opportunities differed greatly.",
-      "Enslavement and forced labour existed in different periods, but it is inaccurate to assume that all pyramid builders were enslaved.",
-      "Archaeology of workers' settlements, tools, tombs and written records can reveal aspects of ordinary life."
+      "The Old Kingdom (c. 2650 to 2150 BCE) is called the Age of the Pyramids.",
+      "Imhotep designed the Step Pyramid of Djoser around 2670 BCE by stacking mastabas. He is the first architect we know by name.",
+      "Pyramids were royal tombs, built to protect the pharaoh's body and launch him into the afterlife.",
+      "The Great Pyramid of Khufu (c. 2560 BCE) was about 146 m tall, with a base almost perfectly square and lined up to true north.",
+      "Myth: slaves built the pyramids (that story comes from Herodotus, 2,000 years later). Evidence: paid, fed, organized crews, with their own town and honoured cemetery near Giza.",
+      "Blocks were cut with copper and stone tools, dragged on sledges over wetted sand, and raised with ramps. Exactly how the top blocks were raised is still debated.",
+      "The real achievement was organizing a state: surplus grain, a workers' town, and scribes tracking labour and rations."
     ],
     "terms": [
       [
-        "Social hierarchy",
-        "Unequal distribution of status, resources and authority among groups."
+        "Old Kingdom",
+        "Egypt's first great period of strong central rule, c. 2650 to 2150 BCE."
       ],
       [
-        "Artisan",
-        "A skilled maker of useful or decorative objects."
+        "Mastaba",
+        "A flat-roofed tomb that came before the pyramid."
       ],
       [
-        "Historical perspective",
-        "Thinking about experiences in their own time and circumstances."
+        "Vizier",
+        "The pharaoh's chief official."
+      ],
+      [
+        "Surplus",
+        "Extra food beyond what people need, which can support other workers."
       ]
     ],
-    "work": "Create a four-person 'day in the life' comparison: farmer, scribe, artisan and official. For each, distinguish something supported by evidence from something you would have to research further.",
+    "work": "Building the Great Pyramid: rank the real challenges from hardest to easiest, weigh the three ramp theories as evidence, and explain why the project mattered beyond the tomb.",
+    "activity": {
+      "href": "giza-harbour.html",
+      "title": "Play: The Missing Stone Shipment (Giza)"
+    },
     "check": [
       {
-        "q": "Which statement is most accurate?",
+        "q": "Who built the pyramids, according to the evidence?",
         "a": [
-          "Everyone in Egypt lived like a pharaoh",
-          "Work and status shaped different daily experiences",
-          "Ordinary people left no evidence at all"
-        ],
-        "c": 1,
-        "why": "Ancient societies contained many different social groups."
-      },
-      {
-        "q": "Why must we be cautious about a royal tomb as evidence for everyday life?",
-        "a": [
-          "It may mainly represent an elite person's resources and beliefs",
-          "Every person had an identical tomb",
-          "Archaeological objects cannot provide evidence"
+          "Paid, fed crews of Egyptian workers",
+          "Slaves forced to work",
+          "Foreign prisoners of war"
         ],
         "c": 0,
-        "why": "The richest surviving evidence is not necessarily representative."
+        "why": "The workers' town and cemetery near Giza show organized crews who were housed, fed and honoured."
       },
       {
-        "q": "Which claim about pyramid construction is too simple?",
+        "q": "Why is Imhotep important?",
         "a": [
-          "It required organized labour",
-          "All workers were enslaved",
-          "It required resources and planning"
+          "He was the first pharaoh",
+          "He found the Rosetta Stone",
+          "He designed the first pyramid"
+        ],
+        "c": 2,
+        "why": "He designed Djoser's Step Pyramid at Saqqara around 2670 BCE."
+      },
+      {
+        "q": "What is still debated about pyramid building?",
+        "a": [
+          "What the pyramids were for",
+          "How the heaviest blocks were raised near the top",
+          "Who Khufu was"
         ],
         "c": 1,
-        "why": "Evidence shows organized paid and provisioned workforces at Giza, rather than a single story of enslaved labour."
+        "why": "Straight, spiral and internal ramp ideas all have supporters, and none has been proven."
       }
     ]
   },
   {
     "id": "l4",
     "n": "4",
-    "title": "Hieroglyphs, Scribes and the Rosetta Stone",
+    "title": "Gods, Priests and the Afterlife",
     "released": true,
     "places": [
-      "rosetta",
-      "memphis",
-      "thebes"
+      "thebes",
+      "abydos"
     ],
-    "big": "Writing made it easier to communicate, govern, preserve ideas and exchange information across time.",
+    "big": "For Egyptians, the afterlife was something you prepared for, paid for and had to pass, and over time more people could try.",
     "notes": [
-      "Egyptian writing included hieroglyphic and cursive scripts such as hieratic and, later, demotic.",
-      "Hieroglyphic signs can represent sounds as well as ideas or whole words. They are not merely decorative pictures.",
-      "Writing supported taxation and administration, religious practices, monumental inscriptions, literature and trade.",
-      "Papyrus was one writing material, while monuments were inscribed on stone. Many surviving texts come from particular settings and social groups.",
-      "The Rosetta Stone records a decree in three scripts: hieroglyphic, demotic and ancient Greek.",
-      "Jean-François Champollion's 1822 work was a major breakthrough in deciphering hieroglyphs, building on earlier scholarship including Thomas Young's.",
-      "Decoding a writing system helps historians access voices and records, but texts still must be questioned for bias and purpose."
+      "Egyptians named over 1,400 gods. Animal heads were symbols of a god's qualities, not literal half-animal bodies.",
+      "Key gods: Ra (sun), Osiris (ruler of the dead), Isis (magic and protection), Horus (every living pharaoh), Set (chaos), Anubis (embalming), Thoth (writing), Ma'at (truth and order).",
+      "The Osiris myth: Set murders Osiris, Isis restores him, and Horus wins back the throne. Dead pharaohs became Osiris; living ones were Horus.",
+      "The body had to last so the ka (life force) and ba (personality) had somewhere to return. Mummification took about 70 days, and the heart stayed in.",
+      "Tombs held canopic jars, shabtis (helper figures), a Book of the Dead and a heart scarab.",
+      "At the weighing of the heart, your heart was balanced against the feather of Ma'at. If it was heavy, Ammit ate it and you stopped existing.",
+      "Temples were rich: the Temple of Amun at Thebes had over 84,000 workers and 56 towns."
     ],
     "terms": [
       [
-        "Hieroglyph",
-        "A sign in the ancient Egyptian writing system."
+        "Ka",
+        "A person's life force, which stayed with the body and needed offerings."
       ],
       [
-        "Demotic",
-        "An ancient Egyptian cursive script used in daily and official writing."
+        "Ba",
+        "A person's personality, shown as a bird with a human head."
       ],
       [
-        "Decipherment",
-        "Working out how to read a writing system."
+        "Mummification",
+        "Preserving a body by drying and wrapping it."
       ],
       [
-        "Primary source",
-        "Evidence created in or close to the period under study."
+        "Canopic jars",
+        "Four jars that held the dried organs."
+      ],
+      [
+        "Book of the Dead",
+        "A scroll of spells to get through the underworld."
       ]
     ],
-    "work": "Compare the three scripts on the Rosetta Stone. Explain why a translation key is valuable and why translation does not remove questions about who made a document.",
+    "work": "Passport to the Afterlife: put the mummy-making steps in order, read the 42 declarations, pack a tomb on a budget, and compare Egypt's afterlife with Mesopotamia's.",
     "check": [
       {
-        "q": "The Rosetta Stone helped scholars because…",
+        "q": "Why did Egyptians preserve the body?",
         "a": [
-          "It shows one decree written in three scripts",
-          "It lists every Egyptian ruler",
-          "It is the oldest writing in the world"
+          "So the ka and ba had a body to return to",
+          "To keep it for science",
+          "Because the law required it"
         ],
         "c": 0,
-        "why": "Comparing versions aided the decipherment process."
+        "why": "Without the body there was nowhere for the ka and ba to return, which meant a second, permanent death."
       },
       {
-        "q": "Which is true about hieroglyphs?",
+        "q": "What happened if your heart was heavier than the feather?",
         "a": [
-          "They were only pictures with no sounds",
-          "Signs could represent sounds and meanings",
-          "They were invented in 1822"
+          "You were sent back to life",
+          "You worked forever in the fields",
+          "Ammit ate it and you stopped existing"
+        ],
+        "c": 2,
+        "why": "There was no punishment, just an end. Passing meant the Field of Reeds."
+      },
+      {
+        "q": "How was Egypt's afterlife different from Mesopotamia's?",
+        "a": [
+          "Egypt's was the same for everyone",
+          "In Egypt how you lived and were buried mattered",
+          "Mesopotamia's was a perfect paradise"
         ],
         "c": 1,
-        "why": "The writing system uses phonetic and semantic signs."
-      },
-      {
-        "q": "Deciphering a document means historians can now…",
-        "a": [
-          "Read it, but still question its creator and purpose",
-          "Assume everything it says is neutral",
-          "Stop using archaeology"
-        ],
-        "c": 0,
-        "why": "Reading a source is different from judging its reliability."
+        "why": "Mesopotamia's underworld was dark and the same for all. Egypt's had to be earned and prepared for."
       }
     ]
   },
   {
     "id": "l5",
     "n": "5",
-    "title": "Pyramids, Temples and Beliefs",
+    "title": "Temples, Art and Monuments",
     "released": true,
     "places": [
-      "giza",
-      "memphis",
       "thebes",
-      "abusimbel"
+      "abusimbel",
+      "aswan"
     ],
-    "big": "Architecture expresses technological skill, belief, political power and the labour of many people.",
+    "big": "Egyptian temples and art had jobs to do: keep the gods fed, keep the dead alive and keep the world in order.",
     "notes": [
-      "The Step Pyramid complex at Saqqara, associated with Djoser, predates the Great Pyramid at Giza.",
-      "The Great Pyramid at Giza was built for Khufu around the mid-third millennium BCE; enormous planning and coordinated labour were required.",
-      "Pyramids were royal funerary monuments linked to beliefs about death and kingship. They were not universal burial places for all Egyptians.",
-      "Temples were important ritual and economic centres; Abu Simbel is associated with Ramesses II and monumental royal imagery.",
-      "Surviving buildings can tell us about methods and priorities, but not automatically what every worker believed or experienced.",
-      "Egyptian religious traditions changed over thousands of years; avoid treating them as a single unchanging set of beliefs."
+      "A temple was the house of a god who lived in a statue, not a place for crowds to worship. Priests were the god's household staff.",
+      "Walking in, the floor rose, the ceiling dropped, the light faded and fewer people were allowed: pylon, open court, hypostyle hall, sanctuary.",
+      "Karnak was built over 2,000 years by about 30 pharaohs. Its Great Hypostyle Hall has 134 columns.",
+      "Most people only came near the god on festival days, like the Opet Festival procession from Karnak to Luxor.",
+      "Abu Simbel (Ramesses II) was cut into a cliff in Nubia. In the 1960s it was cut into 1,036 blocks and moved uphill to escape the Aswan High Dam's lake.",
+      "Art rules: head and legs from the side, eye and shoulders from the front; size shows rank; scenes in rows; a grid; a colour code.",
+      "Temples and statues were brightly painted. Under Akhenaten, the art rules broke for about 17 years, then came back."
     ],
     "terms": [
       [
-        "Monumental architecture",
-        "Large construction created to serve or express a society's priorities."
+        "Pylon",
+        "The huge gateway at the front of a temple."
       ],
       [
-        "Mortuary",
-        "Connected with burial and remembering the dead."
+        "Hypostyle hall",
+        "A hall filled with columns holding up the roof."
       ],
       [
-        "Primary evidence",
-        "Evidence from objects, structures or texts created in the time studied."
+        "Sanctuary",
+        "The small, dark room where the god's statue lived."
+      ],
+      [
+        "Obelisk",
+        "A tall, four-sided stone with a pointed top."
       ]
     ],
-    "work": "Choose Giza or Abu Simbel. Explain how the site shows at least two of technology, religious practice, government, social hierarchy and environment.",
+    "work": "Draw like an Egyptian: find the rules in the Nebamun painting, draw a portrait on a grid following them, and explain why Egyptians drew this way.",
     "activity": {
       "href": "temple-walkthrough.html",
-      "title": "Explore the Egyptian Temple Walkthrough"
+      "title": "Walk through an Egyptian temple"
     },
     "check": [
       {
-        "q": "The Great Pyramid is most closely associated with…",
+        "q": "What was an Egyptian temple mainly for?",
         "a": [
-          "Khufu",
-          "Cleopatra",
-          "Alexander the Great"
+          "Housing and caring for a god",
+          "Large crowds praying together",
+          "Training scribes"
         ],
         "c": 0,
-        "why": "It was commissioned for Khufu in the Old Kingdom."
+        "why": "The word for temple meant 'mansion of the god.' Ordinary people were kept out of the inner rooms."
       },
       {
-        "q": "A large temple directly proves…",
+        "q": "Why are the most important people drawn biggest in Egyptian art?",
         "a": [
-          "All people shared identical beliefs",
-          "The society organized resources and skilled work",
-          "No one worked in agriculture"
+          "They were taller in real life",
+          "Artists ran out of space",
+          "Size showed rank"
+        ],
+        "c": 2,
+        "why": "Size is rank: gods and kings tower, servants and children are tiny."
+      },
+      {
+        "q": "Why was Abu Simbel moved in the 1960s?",
+        "a": [
+          "It was falling down",
+          "The lake behind the Aswan High Dam would flood it",
+          "Tourists asked for it"
         ],
         "c": 1,
-        "why": "Building required design, materials, labour and planning."
-      },
-      {
-        "q": "Why should we avoid describing all Egyptian beliefs as unchanged?",
-        "a": [
-          "Egyptian history spans many centuries and traditions evolved",
-          "Nobody believed anything",
-          "Only one pharaoh ever ruled"
-        ],
-        "c": 0,
-        "why": "Beliefs and institutions changed over time and place."
+        "why": "Engineers cut it into blocks and rebuilt it 65 metres up the hill."
       }
     ]
   },
   {
     "id": "l6",
     "n": "6",
-    "title": "Egypt, Nubia and Kush: Trade and Power",
+    "title": "Hieroglyphics and Scribes",
     "released": true,
     "places": [
-      "aswan",
-      "buhen",
-      "kerma",
-      "napata",
-      "meroe",
-      "nubia",
-      "punt"
+      "abydos",
+      "thebes"
     ],
-    "big": "The Nile connected Egypt with powerful southern neighbours; relationships involved trade, conflict, cultural influence and changing power.",
+    "big": "In Egypt, writing was power. The few who could read and write kept the records, collected the taxes and told the official story.",
     "notes": [
-      "Nubia refers to a region south of Egypt, including areas of today's Sudan. Different societies and kingdoms developed there across long periods.",
-      "Kerma was an important Nubian centre, and the kingdom of Kush later had centres at Napata and Meroë.",
-      "Trade moved materials and goods, including gold and other valued resources, along the Nile and regional routes.",
-      "Egyptian and Nubian rulers competed for territory and influenced each other. In the eighth and seventh centuries BCE, Kushite rulers governed Egypt as the 25th Dynasty.",
-      "Egyptian border forts such as Buhen show efforts to control trade and movement near the cataracts.",
-      "Studying Kush only as a neighbour of Egypt misses the achievements and history of Nubian societies in their own right.",
-      "Punt appears in Egyptian sources as a trading partner, but historians still debate its precise location."
+      "Egyptians used three scripts: hieroglyphic (careful signs for temples and tombs), hieratic (fast, for everyday business) and later demotic.",
+      "Hieroglyphs mix word signs, sound signs (about 24 single sounds) and silent meaning markers. No vowels were written, and you read toward the faces.",
+      "A cartouche is an oval around a royal name.",
+      "Scribes wrote on papyrus, made from Nile reeds, with black ink for most text and red for headings.",
+      "Scribes trained for years. Possibly only about 1 in 100 Egyptians could read, almost all of them men.",
+      "Egyptians wrote records and taxes, math problems (Rhind Papyrus), medicine (Edwin Smith Papyrus) and stories.",
+      "The last hieroglyphs were carved at Philae in 394 CE. After that, nobody could read them for 1,400 years."
     ],
     "terms": [
       [
-        "Kush",
-        "A series of ancient kingdoms in the Nile region south of Egypt."
+        "Hieroglyphics",
+        "Egyptian picture-sign writing, used on monuments."
       ],
       [
-        "Trade route",
-        "Path along which people exchange goods and ideas."
+        "Papyrus",
+        "A paper-like material made from a Nile reed."
       ],
       [
-        "Dynasty",
-        "Succession of rulers from the same family or line."
+        "Scribe",
+        "A trained writer who kept records."
+      ],
+      [
+        "Cartouche",
+        "An oval loop around a royal name."
       ]
     ],
-    "work": "Map Kerma, Napata and Meroë. Create a two-column chart: what Egypt and Kush exchanged or contested, and where a historian would need stronger evidence.",
+    "work": "The Scribe's Exam: analyze the biased career advice in the Satire of the Trades, then compare Egyptian and Mesopotamian writing.",
     "check": [
       {
-        "q": "Which statement best describes Kush?",
+        "q": "What did a cartouche tell a reader?",
         "a": [
-          "Only a province of Egypt",
-          "A region with its own powerful kingdoms and rulers",
-          "A modern name for ancient Greece"
+          "The word is a royal name",
+          "Read this line backwards",
+          "This is a prayer"
+        ],
+        "c": 0,
+        "why": "An oval around signs marked a king's or queen's name."
+      },
+      {
+        "q": "Why might the Satire of the Trades be biased?",
+        "a": [
+          "It was written by farmers",
+          "It was translated badly",
+          "It was a school text written to make scribes look best"
+        ],
+        "c": 2,
+        "why": "Student scribes copied it, so they were also learning to look down on every other job."
+      },
+      {
+        "q": "Why did so much Egyptian papyrus survive?",
+        "a": [
+          "It was stored underwater",
+          "The desert is very dry",
+          "It was carved in stone"
         ],
         "c": 1,
-        "why": "Kingdoms such as Kerma and Kush had important independent histories."
-      },
-      {
-        "q": "What happened in the eighth century BCE?",
-        "a": [
-          "Kushite rulers conquered and governed Egypt",
-          "The Roman Empire founded Egypt",
-          "Writing disappeared from Egypt"
-        ],
-        "c": 0,
-        "why": "Kushite kings ruled Egypt during the 25th Dynasty."
-      },
-      {
-        "q": "Why was Buhen's location significant?",
-        "a": [
-          "It was on a major Nile border and travel corridor",
-          "It stood beside the Amazon River",
-          "It was built after the Industrial Revolution"
-        ],
-        "c": 0,
-        "why": "Cataracts and border crossings mattered for movement and power."
+        "why": "Papyrus rots when wet. Egypt's dry climate preserved it."
       }
     ]
   },
   {
     "id": "l7",
     "n": "7",
-    "title": "Can We Trust the Evidence?",
+    "title": "Rich and Poor in Egypt",
     "released": true,
     "places": [
-      "rosetta",
-      "giza",
-      "hierakonpolis",
       "thebes"
     ],
-    "big": "Every historical claim should be tested against the source's origin, purpose, context and other evidence.",
+    "big": "Egypt's wealth was built on farmers' work, but most of the benefits went to the people at the top.",
     "notes": [
-      "A monument may have been created to celebrate a ruler. That tells us what the ruler wanted shown, which is not always the same as a neutral account.",
-      "An artifact can tell us about materials, technology and sometimes use, but motives can be uncertain.",
-      "A written decree is useful for studying government claims; it does not automatically represent the views of farmers and workers.",
-      "The Rosetta Stone's three-script inscription helps decipher writing; it does not settle every historical question.",
-      "Compare sources: ask who created each, who was the intended audience, and what other evidence might support or challenge the claim.",
-      "Responsible historians distinguish observation, inference and speculation, and change their conclusions when warranted by new evidence."
+      "Egypt's social pyramid: pharaoh; vizier, nobles and high priests; scribes and officials; craftspeople; farmers (the great majority); servants and enslaved people.",
+      "Nobles had big houses, servants, banquets, fine linen and decorated tombs. Farming families had small mudbrick homes, simple food and a simple grave.",
+      "Workers were mostly paid in grain, bread and beer. Egypt had no coins until very late.",
+      "Slavery existed, especially in the New Kingdom with war captives, but slaves did not build the pyramids.",
+      "Women could own and inherit property, make wills, go to court and divorce. Naunakhte's will (c. 1145 BCE) cut four of her children out for not caring for her.",
+      "Women rarely held government jobs and few could read. Most people stayed in the class they were born into. Scribe school and the army were rare ways up."
     ],
     "terms": [
       [
-        "Corroborate",
-        "Check a claim against other evidence."
+        "Social pyramid",
+        "A diagram showing the ranks of people in a society."
       ],
       [
-        "Bias",
-        "A perspective or purpose that shapes how information is presented."
+        "Vizier",
+        "The pharaoh's chief official."
       ],
       [
-        "Inference",
-        "A reasoned conclusion that goes beyond what is directly observed."
+        "Ma'at",
+        "Order and balance, which included everyone keeping their place."
       ]
     ],
-    "work": "Use an image of the Narmer Palette, a royal inscription or the Rosetta Stone. Make three observations, two inferences and one unresolved question; explain the source's likely purpose.",
+    "work": "Test the claim: sort nine pieces of evidence for and against three claims about Egyptian society, then decide whether each is mostly true, partly true or mostly false.",
     "check": [
       {
-        "q": "Which is the strongest source-based question?",
+        "q": "Who made up the largest group in Egyptian society?",
         "a": [
-          "Who created this, for whom, and why?",
-          "Is this the prettiest artifact?",
-          "Can I assume it is completely true?"
+          "Farmers",
+          "Scribes",
+          "Priests"
         ],
         "c": 0,
-        "why": "Origin and purpose are key to reliability."
+        "why": "Farmers were the great majority, and their harvests fed everyone above them."
       },
       {
-        "q": "A royal monument showing a victory is best treated as…",
+        "q": "What does Naunakhte's will show about Egyptian women?",
         "a": [
-          "A statement that needs context and corroboration",
-          "A neutral photograph",
-          "Proof no other perspectives existed"
+          "They could not inherit",
+          "They ruled most villages",
+          "They could own property and make legal decisions"
         ],
-        "c": 0,
-        "why": "Monuments are evidence of both events and political messaging."
+        "c": 2,
+        "why": "She listed her property and decided who got it, and the court accepted it."
       },
       {
-        "q": "What should a historian do when new evidence contradicts a claim?",
+        "q": "Why should we be careful using Naunakhte's will to describe all Egyptian women?",
         "a": [
-          "Ignore the new evidence",
-          "Reconsider and test the interpretation",
-          "Destroy old records"
+          "It is too short",
+          "She lived in an unusual village of skilled, literate workers",
+          "It was written in Greek"
         ],
         "c": 1,
-        "why": "Historical interpretations can change as evidence improves."
+        "why": "One woman from Deir el-Medina may not represent farming families across Egypt."
       }
     ]
   },
   {
     "id": "l8",
     "n": "8",
-    "title": "Egypt Unit Review: Past and Present",
+    "title": "Trade, Technology and Innovation",
     "released": true,
     "places": [
-      "nile",
-      "giza",
-      "rosetta",
-      "napata"
+      "punt",
+      "redsea",
+      "alexandria"
     ],
-    "big": "Egypt's geography, government, technologies, writing and connections with other societies left lasting influences.",
+    "big": "Egypt was protected by its geography but never cut off. It traded for what it lacked, borrowed what worked and passed its own ideas on.",
     "notes": [
-      "Geography: locate the Nile, delta, Upper and Lower Egypt, the cataracts and the Nubian corridor.",
-      "Government and society: explain the role of pharaohs and officials, as well as the experiences of farmers, artisans, scribes and elites.",
-      "Writing: explain why record-keeping mattered, and how the Rosetta Stone helped later scholars.",
-      "Architecture and science: connect pyramids, temples, measurement and building methods to labour and priorities.",
-      "World connections: recognize Kush as a powerful set of kingdoms, and examine trade and competition across the region.",
-      "Historical thinking: support each explanation with a specific place, source or observed fact and recognize limitations."
+      "Egypt had grain, linen, papyrus, gold and stone. It needed timber (cedar), tin, silver, incense and lapis lazuli.",
+      "Partners: the Levant (cedar), Cyprus and the Aegean (copper), Mesopotamia (silver, lapis), Nubia (gold, ivory) and Punt (incense).",
+      "Hatshepsut's expedition to Punt (c. 1470 BCE) brought back live incense trees, gold, ebony and baboons.",
+      "Prices were measured in deben, a weight of copper, even when no copper changed hands. Long-distance trade was run by the pharaoh and the temples.",
+      "The Amarna letters were cuneiform tablets between kings swapping 'gifts.' The Uluburun shipwreck (c. 1300 BCE) carried goods from many lands.",
+      "Egypt gave the world a 365-day calendar, the 24-hour day, early medicine and papyrus (the root of the word 'paper').",
+      "From the Hyksos, Egypt borrowed horses, chariots and stronger bows."
     ],
     "terms": [
       [
-        "Continuity",
-        "What remains similar over time."
+        "Deben",
+        "A set weight of copper used to measure value."
       ],
       [
-        "Change",
-        "What becomes different over time."
+        "Expedition",
+        "A long trip organized for a purpose, like trade."
       ],
       [
-        "Historical significance",
-        "Why an event, person, source or development matters."
+        "Lapis lazuli",
+        "A deep blue stone traded from far to the east."
+      ],
+      [
+        "Hyksos",
+        "Foreign rulers of northern Egypt who brought the chariot."
       ]
     ],
-    "work": "Build a GRAPES-style one-page synthesis (Geography, Religion, Achievements, Politics, Economics, Social structure). Complete the review self-check, then prepare for the teacher-provided assessment.",
+    "work": "Royal Trade Mission: plan a trade mission as the pharaoh's scribe, investigate the Uluburun cargo, and decide which Egyptian idea matters most today.",
     "check": [
       {
-        "q": "Which environmental feature most directly shaped ancient Egyptian settlement?",
+        "q": "Why did Hatshepsut bring back live incense trees from Punt?",
         "a": [
-          "The Nile River",
-          "The Great Lakes",
-          "The Himalayan Mountains"
+          "To grow incense in Egypt instead of buying it",
+          "As gifts for Nubia",
+          "To build ships"
         ],
         "c": 0,
-        "why": "The river provided water and fertile land in an otherwise arid landscape."
+        "why": "Egypt wanted its own supply of incense, which temples used constantly."
       },
       {
-        "q": "Which is an important example of the significance of writing?",
+        "q": "What was a deben?",
         "a": [
-          "It supported records, communication and ideas across time",
-          "It ended every conflict",
-          "It meant everybody was literate"
+          "A gold coin",
+          "A type of boat",
+          "A weight of copper used to measure value"
         ],
-        "c": 0,
-        "why": "Written records had multiple functions and unequal access."
+        "c": 2,
+        "why": "Prices could be written in deben even when people paid with grain, oil or cloth."
       },
       {
-        "q": "Which is a well-supported historical claim?",
+        "q": "What did Egypt borrow from the Hyksos?",
         "a": [
-          "Kush had independent kingdoms and sometimes ruled Egypt",
-          "No people lived beyond the Nile",
-          "Egypt had no trade with its neighbours"
+          "Papyrus",
+          "Horses and chariots",
+          "The calendar"
         ],
-        "c": 0,
-        "why": "Archaeological and written sources document Kushite kingdoms and Egypt's 25th Dynasty."
+        "c": 1,
+        "why": "After driving the Hyksos out, Egypt kept their chariot technology and built an empire."
       }
     ]
   },
   {
     "id": "l9",
     "n": "9",
-    "title": "Trade, Technology and Innovation",
+    "title": "Egypt and Nubia",
     "released": true,
     "places": [
-      "thebes",
-      "amarna",
-      "aswan",
       "nubia",
-      "punt"
+      "kerma",
+      "buhen",
+      "napata",
+      "meroe",
+      "abusimbel",
+      "cat1",
+      "cat2"
     ],
-    "big": "Egypt's deserts and seas created barriers, but they did not isolate it: people exchanged resources, technologies and ideas across connected regions.",
+    "big": "Egypt and Nubia were neighbours for over 2,000 years: trading partners, rivals, rulers of each other, and borrowers of each other's ideas.",
     "notes": [
-      "Egypt had grain, linen, papyrus, stone and access to gold, but some resources were harder to obtain locally, including high-quality cedar timber and certain metals.",
-      "Trade and diplomatic exchange connected Egypt to Nubia, the Levant, the eastern Mediterranean and other regions. The location of Punt remains debated, so do not put a precise dot on a map as if it were certain.",
-      "Hatshepsut's expedition to Punt, shown in reliefs at Deir el-Bahari, brought valued goods such as incense materials. Royal images also promote the ruler's achievements and must be interpreted critically.",
-      "New Kingdom texts sometimes used the deben, a standard weight, to express value. A price stated in deben did not mean people necessarily paid with coins.",
-      "The Amarna letters, written in cuneiform, record diplomatic relationships and exchanges between rulers around the 14th century BCE. They show elite voices, not every trader's experience.",
-      "The Uluburun shipwreck, dated to around the late 14th century BCE, carried goods from several regions. It is evidence of connected trade networks, not proof that every item on the ship was headed for Egypt.",
-      "Technologies and practices moved in more than one direction. Egyptians adapted ideas and materials from neighbours while Egyptian goods and techniques travelled outward."
+      "Nubia lay south of the First Cataract, in what is now southern Egypt and Sudan. Egyptians called it Ta-Seti, the Land of the Bow, for its famous archers.",
+      "Nubia had what Egypt wanted: gold, ebony, ivory, incense and cattle, plus routes further into Africa.",
+      "Kerma (c. 2500 to 1500 BCE) was a powerful Nubian kingdom that could raid deep into Egypt.",
+      "Middle Kingdom Egypt built big forts in Nubia. A boundary stone calls Nubians cowards, which is strange if Egypt needed forts to hold them back.",
+      "New Kingdom Egypt ruled Nubia (c. 1500 to 1070 BCE) and took its gold. Egyptian temples like Abu Simbel were built there.",
+      "Then Kush ruled Egypt (c. 744 to 656 BCE). Piye and Taharqa ruled as pharaohs and revived old Egyptian traditions.",
+      "Meroe carried on for centuries, with more pyramids than Egypt and ruling queens called kandake. Its script still can't be fully read."
     ],
     "terms": [
       [
-        "Trade network",
-        "Interconnected routes along which people exchange goods, ideas and knowledge."
+        "Nubia",
+        "The land along the Nile south of Egypt."
       ],
       [
-        "Deben",
-        "A historical Egyptian unit of weight used as a measure of value."
+        "Kush",
+        "A powerful Nubian kingdom that once ruled Egypt."
       ],
       [
-        "Diplomacy",
-        "Communication and negotiation between rulers or states."
+        "Kandake",
+        "The title of ruling queens of Kush."
       ],
       [
-        "Corroboration",
-        "Checking a claim against other evidence."
+        "Cataract",
+        "A rocky, shallow stretch of the Nile."
       ]
     ],
-    "work": "Plan a royal trade mission: choose a resource Egypt needed, identify a possible trading region, and explain what a letter, shipwreck or temple relief could—and could not—prove about the exchange.",
+    "work": "Two Sides of the Nile: rate the relationship at each stage with evidence, compare an Egyptian king's words with a Kushite king's, and answer the essential question.",
     "check": [
       {
-        "q": "What do the Amarna letters reveal especially well?",
+        "q": "Who was Piye?",
         "a": [
-          "Diplomatic exchanges among rulers",
-          "Every farmer's daily conversations",
-          "Modern Egyptian elections"
+          "A Kushite king who conquered Egypt",
+          "An Egyptian scribe",
+          "The builder of Abu Simbel"
         ],
         "c": 0,
-        "why": "They are written diplomatic records from elite networks."
+        "why": "He marched north from Nubia and ruled Egypt as pharaoh."
       },
       {
-        "q": "Why is the Uluburun shipwreck important?",
+        "q": "Why should we question Senusret III's boundary stone calling Nubians cowards?",
         "a": [
-          "Its mixed cargo provides evidence of long-distance connections",
-          "It proves every item was headed for Egypt",
-          "It proves no one traded by land"
+          "It was carved by Nubians",
+          "It was written in Greek",
+          "Egypt built huge forts to hold them back"
         ],
-        "c": 0,
-        "why": "Cargo from several regions shows wide exchange, but the ship's exact itinerary is not fully known."
+        "c": 2,
+        "why": "If Nubians were weak, why build a chain of massive forts? The stone is Egyptian propaganda."
       },
       {
-        "q": "A price expressed in deben means…",
+        "q": "Which is true about Kush after Egypt?",
         "a": [
-          "It was necessarily paid with minted coins",
-          "It used a standard of weight or value",
-          "It was always free"
+          "It disappeared",
+          "It built many more pyramids than Egypt",
+          "It became part of Greece"
         ],
         "c": 1,
-        "why": "A unit of account need not be a coin."
+        "why": "Sudan has roughly twice as many pyramids as Egypt, built for centuries after Egypt stopped."
       }
     ]
   },
@@ -648,142 +681,279 @@ window.EgyptLessons = [
       "thebes",
       "amarna",
       "abusimbel",
-      "alexandria",
-      "punt"
+      "alexandria"
     ],
-    "big": "A ruler's achievements and reputation are not the same thing. Historians compare actions, sources and who controlled the story afterward.",
+    "big": "One ruler could change a lot, but not everything, and what we know about each depends on who controlled the record afterward.",
     "notes": [
-      "Pharaohs were expected to maintain order, defend the kingdom, support religious institutions and organize resources, but their actual power varied by period.",
-      "Hatshepsut ruled as pharaoh in the 15th century BCE and sponsored trade and monumental building. Later removal of some of her images and names makes her surviving record uneven.",
-      "Akhenaten promoted the Aten and shifted the royal capital to Akhetaten (modern Amarna). Many of his religious and political changes were reversed after his death.",
-      "Ramesses II ruled in the 13th century BCE and commissioned extensive monuments. His inscriptions portray the Battle of Kadesh as a major triumph, but other evidence complicates that royal message; a later peace treaty was concluded with the Hittites.",
-      "Cleopatra VII ruled in the 1st century BCE as a member of the Greek-speaking Ptolemaic dynasty. Much of the narrative about her survives through later Roman writers, who had their own perspectives.",
-      "Royal monuments, later histories and surviving documents have different purposes. Ask who created each source, when, and which voices are missing.",
-      "Long-lasting change depended on more than one person's orders. Institutions, communities and later rulers could continue, adapt or reverse a policy."
+      "A pharaoh's job: keep order (ma'at), defend Egypt, build temples and see that people were fed.",
+      "Hatshepsut (1479 to 1458 BCE) ruled as king for about 21 peaceful years. Her name was later chiselled off, probably to clear the line of succession, not out of revenge.",
+      "Akhenaten (1353 to 1336 BCE) replaced the gods with one, the Aten, built a new capital and changed the art. It was undone soon after his death.",
+      "Ramesses II (1279 to 1213 BCE) ruled 66 years and built everywhere. At Kadesh he carved a draw as a great victory, then signed the oldest surviving peace treaty.",
+      "Cleopatra VII (51 to 30 BCE) was the last pharaoh, from a Greek family. She allied with Caesar and Antony, and most of her story was written by the Romans who beat her.",
+      "Only Ramesses told his own story, and he is the one called 'the Great.'"
     ],
     "terms": [
       [
-        "Ma'at",
-        "An Egyptian concept of order, justice and proper balance."
+        "Regent",
+        "Someone who rules for a king who is too young."
       ],
       [
-        "Royal propaganda",
-        "Messaging intended to present a ruler favourably."
+        "Propaganda",
+        "Information made to make one side look good."
       ],
       [
-        "Ptolemaic dynasty",
-        "The Macedonian Greek royal family that governed Egypt after Alexander."
-      ],
-      [
-        "Historical interpretation",
-        "A reasoned account built from evidence that may be revised."
+        "Succession",
+        "The order in which rulers take power."
       ]
     ],
-    "work": "Create a short evidence-based 'report card' for one ruler: identify two actions, a possible effect, a limitation of a surviving source, and one question you would investigate further.",
+    "work": "Pharaoh report cards: grade four pharaohs with evidence, sort fact from spin, decide who changed Egypt most, and write a comeback for an erased pharaoh.",
     "check": [
       {
-        "q": "Which ruler established a new royal centre at Amarna?",
+        "q": "Why did Hatshepsut wear a false beard in her statues?",
         "a": [
-          "Akhenaten",
-          "Khufu",
-          "Cleopatra VII"
+          "To show she held the full office of pharaoh",
+          "To disguise herself",
+          "Because of a law"
         ],
         "c": 0,
-        "why": "Akhenaten moved the royal court to Akhetaten, near modern Amarna."
+        "why": "Everyone knew who she was. The beard was part of the traditional image of a king."
       },
       {
-        "q": "Why should historians question Ramesses II's victory scenes?",
+        "q": "What happened to Akhenaten's changes after he died?",
         "a": [
-          "Royal monuments can promote a ruler's preferred version of events",
-          "Every carved scene is a photograph",
-          "The Hittites did not exist"
+          "They lasted for centuries",
+          "They spread to Greece",
+          "They were undone within a few years"
         ],
-        "c": 0,
-        "why": "Claims of victory should be checked against other records and the later diplomatic settlement."
+        "c": 2,
+        "why": "The old temples reopened, his city was abandoned, and he was cut from the king lists."
       },
       {
-        "q": "What is a limitation of many accounts about Cleopatra?",
+        "q": "What really happened at the Battle of Kadesh?",
         "a": [
-          "They were written by later Roman authors with their own interests",
-          "They are all contemporary Egyptian diaries",
-          "No accounts survive"
+          "A huge Egyptian victory",
+          "Neither side won",
+          "Egypt lost its capital"
         ],
-        "c": 0,
-        "why": "Who writes a history affects which perspectives survive."
+        "c": 1,
+        "why": "Ramesses escaped an ambush and went home without the city, then carved it as a victory."
       }
     ]
   },
   {
     "id": "l11",
     "n": "11",
-    "title": "Decline, Change and Legacy",
+    "title": "Decline and Legacy",
     "released": true,
     "places": [
-      "nile",
       "thebes",
-      "napata",
+      "lower",
       "alexandria"
     ],
-    "big": "Egypt did not disappear on one date. Political authority changed repeatedly while people, language, religious practices and cultural traditions also continued and changed.",
+    "big": "Egypt lost its wealth, then its unity, then its independence over a thousand years, but its culture outlasted every conqueror.",
     "notes": [
-      "Egypt experienced periods of internal division and pressure from wars, resource demands and changing regional trade. Historians debate how these causes interacted; no single explanation fits all centuries.",
-      "Around the end of the New Kingdom, political authority fragmented. Priests at Thebes and rulers in the north exercised power in different regions.",
-      "Kushite rulers from the south governed Egypt during the 25th Dynasty. Later Assyrian and Persian interventions also changed who controlled parts of the country.",
-      "Alexander of Macedon took control in 332 BCE. The Ptolemaic dynasty ruled afterward, until Egypt became a Roman province in 30 BCE.",
-      "Some foreign rulers adopted Egyptian titles and supported temples. Conquest did not immediately erase Egyptian institutions or cultural practices.",
-      "What counts as the 'end' depends on the question: political independence, a dynasty, a writing system and cultural continuity have different timelines.",
-      "The Egyptian language continued to develop, including into Coptic. Modern Egyptians are not separate from this history; people and culture persisted through major changes.",
-      "Egyptian practices and objects influenced later societies, but claims of a direct modern 'invention' should be supported rather than assumed."
+      "Ramesses III beat the Sea Peoples around 1177 BCE, but war drained the treasury and trade partners collapsed.",
+      "When the tomb builders' grain didn't arrive, they went on the first recorded strike in history.",
+      "Around 1070 BCE, Egypt split: kings in the Delta, and the High Priests of Amun ruling from Thebes.",
+      "Then came foreign rulers: Kush, Assyria, Persia, Alexander the Great, the Greek Ptolemies and finally Rome in 30 BCE.",
+      "Conquerors became pharaohs and kept building Egyptian-style temples, like Edfu.",
+      "Using C.R.A.S.H.: conflict, resources and authority did the most damage. There is little evidence that sickness mattered much.",
+      "Legacy: the 365-day calendar, the 24-hour day, paper, the alphabet's roots, medicine and the shapes of obelisks and pyramids."
     ],
     "terms": [
       [
-        "Continuity",
-        "Something that persists across change."
-      ],
-      [
-        "Conquest",
-        "The taking of territory by force."
-      ],
-      [
-        "Political independence",
-        "A state governing itself rather than being ruled by another power."
+        "Decline",
+        "A slow loss of power or wealth."
       ],
       [
         "Legacy",
-        "A lasting influence or inheritance from the past."
+        "What a civilization leaves behind for later people."
+      ],
+      [
+        "Ptolemies",
+        "The Greek dynasty that ruled Egypt from 305 to 30 BCE."
+      ],
+      [
+        "Coptic",
+        "The last form of the Egyptian language, still used in church."
       ]
     ],
-    "work": "Choose a turning point (for example 1070 BCE, 332 BCE or 30 BCE). Explain why it matters, then give one piece of evidence that Egyptian society also continued afterward. Respond to a possible counterargument.",
+    "work": "The long goodbye: put six conquerors in order, sort eight facts with C.R.A.S.H., pick and defend a date for when ancient Egypt ended, and name one legacy in your own life.",
     "check": [
       {
-        "q": "Which statement is best supported?",
+        "q": "Why do historians call the win over the Sea Peoples 'the beginning of the end'?",
         "a": [
-          "Egypt lost all its culture on one day",
-          "Political rule changed many times while cultural traditions also persisted",
-          "Egypt had no foreign contacts"
+          "The cost drained Egypt and its trade partners collapsed",
+          "Egypt lost the war",
+          "The pharaoh died in battle"
+        ],
+        "c": 0,
+        "why": "Winning was expensive. Empty granaries and late wages followed."
+      },
+      {
+        "q": "Which group ruled the south of Egypt after it split around 1070 BCE?",
+        "a": [
+          "The Romans",
+          "The Hyksos",
+          "The High Priests of Amun at Thebes"
+        ],
+        "c": 2,
+        "why": "Priests had grown nearly as rich as the pharaoh, and they took control of the south."
+      },
+      {
+        "q": "Why did conquerors like the Ptolemies dress as pharaohs?",
+        "a": [
+          "They were forced to",
+          "It helped Egyptians accept their rule",
+          "It was a Greek tradition"
         ],
         "c": 1,
-        "why": "Political and cultural timelines are not identical."
-      },
+        "why": "Taking the old title and building in the old style made a foreign ruler look legitimate."
+      }
+    ]
+  },
+  {
+    "id": "l12",
+    "n": "12",
+    "title": "Rediscovering Egypt",
+    "released": true,
+    "places": [
+      "rosetta",
+      "thebes",
+      "abusimbel",
+      "giza"
+    ],
+    "big": "What we know about the past depends on what we can read and what survives, and that changes.",
+    "notes": [
+      "For 1,400 years nobody could read hieroglyphs. Scholars wrongly thought each sign was a mystical symbol.",
+      "In 1799, a French soldier found the Rosetta Stone in a wall near Rosetta. The British took it in 1801, and it has been in the British Museum since 1802.",
+      "The stone carries the same decree (196 BCE) in hieroglyphs, demotic and Greek. Scholars could already read the Greek.",
+      "Thomas Young made a start. Champollion, who knew Coptic, cracked it in 1822 by matching sounds in the names Ptolemy and Cleopatra.",
+      "Howard Carter found Tutankhamun's tomb in 1922. Being forgotten had saved it from robbers. Egyptian workers and foremen did much of the digging.",
+      "The 'mummy's curse' is a legend: Lord Carnarvon died of an infected mosquito bite, and Carter lived 17 more years.",
+      "Who owns the past is still argued: the Rosetta Stone is in London, while Tutankhamun's treasure stayed in Egypt."
+    ],
+    "terms": [
+      [
+        "Rosetta Stone",
+        "A stone with one message in three scripts, the key to reading hieroglyphs."
+      ],
+      [
+        "Decipher",
+        "To work out the meaning of a code or unknown writing."
+      ],
+      [
+        "Archaeologist",
+        "A scientist who studies the past through objects and sites."
+      ],
+      [
+        "Repatriation",
+        "Returning objects to their country of origin."
+      ]
+    ],
+    "work": "Crack the code: decode two royal names the way Champollion did, sort curse claims into proven, reasonable guess or legend, and argue whether the Rosetta Stone should go back to Egypt.",
+    "check": [
       {
-        "q": "What happened in 30 BCE?",
+        "q": "Why was the Rosetta Stone the key to reading hieroglyphs?",
         "a": [
-          "Egypt became a Roman province",
-          "The Great Pyramid was built",
-          "Hieroglyphs were first invented"
+          "It had the same text in Greek, which scholars could read",
+          "It had a dictionary",
+          "It was carved by Champollion"
         ],
         "c": 0,
-        "why": "After Cleopatra VII's death, Egypt came under Roman rule."
+        "why": "Knowing the Greek let scholars match names like Ptolemy to the hieroglyphs."
       },
       {
-        "q": "Why might historians disagree about when 'ancient Egypt ended'?",
+        "q": "Why did Tutankhamun's tomb survive mostly untouched?",
         "a": [
-          "They may be using different definitions of political and cultural change",
-          "No evidence survives from Egypt",
-          "Every date is equally accurate for every question"
+          "It had a curse",
+          "It was guarded by soldiers",
+          "He had been forgotten and the entrance was buried"
+        ],
+        "c": 2,
+        "why": "His family was struck from the king lists, and debris covered the entrance."
+      },
+      {
+        "q": "What really killed Lord Carnarvon?",
+        "a": [
+          "The curse",
+          "An infected mosquito bite",
+          "A collapse in the tomb"
+        ],
+        "c": 1,
+        "why": "No curse was written in the tomb, and Carter, who handled everything, lived 17 more years."
+      }
+    ]
+  },
+  {
+    "id": "l13",
+    "n": "13",
+    "title": "Egypt Review: Fact or Myth?",
+    "released": true,
+    "places": [
+      "nile",
+      "giza",
+      "nubia"
+    ],
+    "big": "Egypt's story is about one river, a god-king, an afterlife you had to earn, writing as power, and neighbours who shaped it, and about asking whose record you are reading.",
+    "notes": [
+      "Myth: slaves built the pyramids. Fact: organized, fed and housed Egyptian crews did.",
+      "Myth: the flood came from rain in Egypt. Fact: it came from summer rains in Ethiopia.",
+      "Myth: each hieroglyph is a picture of what it means. Fact: most signs stand for sounds.",
+      "Fact: Egyptian women could own property, sign contracts and go to court, but government jobs went to men.",
+      "Myth: Egypt was cut off. Fact: it traded widely and borrowed the chariot.",
+      "Myth: Egypt always ruled Nubia. Fact: Kush also ruled Egypt.",
+      "For any source, ask who made it, when, for whom, and what they wanted you to think."
+    ],
+    "terms": [
+      [
+        "Ma'at",
+        "Order, truth and balance, which the pharaoh had to keep."
+      ],
+      [
+        "Pharaoh",
+        "Egypt's ruler, seen as a living god."
+      ],
+      [
+        "Inundation",
+        "The Nile's yearly flood."
+      ],
+      [
+        "Primary source",
+        "Evidence made at the time being studied."
+      ]
+    ],
+    "work": "Review sheet: fix eight true or false statements, match sources to their biases, compare Egypt and Mesopotamia, and note what you still need to study. Test next class (50 marks).",
+    "check": [
+      {
+        "q": "Where did the stories that slaves built the pyramids come from?",
+        "a": [
+          "Herodotus, writing 2,000 years later",
+          "Egyptian workers' records",
+          "The Rosetta Stone"
         ],
         "c": 0,
-        "why": "The answer depends on what kind of change is being investigated."
+        "why": "An outside visitor repeated what he was told, long after the fact."
+      },
+      {
+        "q": "Which statement about Egypt and Nubia is true?",
+        "a": [
+          "Egypt always ruled Nubia",
+          "They never traded",
+          "Kushite kings once ruled Egypt as pharaohs"
+        ],
+        "c": 2,
+        "why": "Kush conquered Egypt around 744 BCE and ruled for about 90 years."
+      },
+      {
+        "q": "Which is the best question to ask about any source?",
+        "a": [
+          "Is it old?",
+          "Who made it, and what did they want you to think?",
+          "Is it long?"
+        ],
+        "c": 1,
+        "why": "Every source has a maker with a purpose. That's the thread through the whole unit."
       }
     ]
   }

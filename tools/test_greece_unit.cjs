@@ -23,7 +23,7 @@ for(const x of act)assert.ok(x.activity.href.startsWith("greek-inquiry-lab.html#
 const html=read("social-studies/index.html");
 assert.ok(html.indexOf('src="greece-lessons.js"')>html.indexOf('src="egypt-lessons.js"'));
 assert.ok(html.indexOf('src="greece-atlas.js"')<html.indexOf('<script src="https://cdnjs.cloudflare'));
-assert.match(html,/status:"next", span:"c. 800 – 146 BCE"/);
+assert.match(html,/id:"greece", n:"3", name:"Ancient Greece", status:"soon"/);
 assert.match(html,/places:window\.GreeceAtlas\.places, timeline:window\.GreeceAtlas\.timeline, lessons:window\.GreeceLessons/);
 assert.ok(read("social-studies/greek-inquiry-lab.html").includes('src="greek-inquiry.js"'));
 const source=read("social-studies/greek-inquiry.js");

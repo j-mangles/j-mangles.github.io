@@ -105,6 +105,7 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .span{color:var(--muted);font-variant-numeric:tabular-nums;font-size:15px}
 .panel p{margin:12px 0 0;font-size:17px;max-width:62ch}
 .panel h3{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:24px 0 6px;padding-bottom:6px;border-bottom:1px solid var(--rule)}
+.acts{list-style:none;margin:0;padding:0}.acts li{border-bottom:1px solid color-mix(in srgb,var(--rule) 60%,transparent)}.acts a{display:flex;flex-direction:column;gap:2px;padding:9px 0;text-decoration:none;color:inherit}.acts a b{color:var(--accent,inherit)}.acts a:hover b{text-decoration:underline;text-underline-offset:3px}.acts a span{font-size:.86em;opacity:.8}
 .plist{list-style:none;margin:0;padding:0}
 .plist button{display:grid;grid-template-columns:16px 1fr auto;align-items:baseline;gap:8px;width:100%;background:none;border:0;border-bottom:1px solid color-mix(in srgb,var(--rule) 60%,transparent);padding:8px 2px;text-align:left;cursor:pointer;font-size:15.5px}
 .plist button:hover .nm{text-decoration:underline;text-underline-offset:3px}
@@ -255,12 +256,6 @@ figcaption{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.35}
         <button id="m-find" data-mode="find" aria-pressed="false">Find it</button>
         <button id="m-name" data-mode="name" aria-pressed="false">Name it</button>
       </div>
-      <a class="atlas-compare-link" href="compare.html">Compare civilizations</a>
-      <a class="atlas-compare-link" href="evidence.html">Artifact Evidence Desk</a>
-      <a class="atlas-compare-link" href="river-valley-lab.html">River Valley Lab</a>
-      <a class="atlas-compare-link" href="temple-walkthrough.html">Temple Walkthrough</a>
-      <a class="atlas-compare-link" href="giza-harbour.html">Play: Missing Stone Shipment</a>
-      <a class="atlas-compare-link" href="giza-expedition.html">Giza Expedition (original)</a>
       <button class="tog" id="t-labels" aria-pressed="true">Labels</button>
       <button class="tog" id="t-borders" aria-pressed="false">Modern borders</button>
     </div>
@@ -300,7 +295,8 @@ figcaption{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.35}
    --------------------------------------------------------------- */
 const UNITS = [
 {
-  id:"early-humans", n:1, name:"Early Humans", status:"done",
+  id:"early-humans", n:"0", name:"Early Humans", status:"done",
+  activities:[{href:"evidence.html",title:"Artifact Evidence Desk",blurb:"Investigate a dig site: what do the clues actually show?"}],
   span:"3.7 million – 9,000 years ago",
   bbox:[-180,-46,180,72], anchor:[36,-1], tol:500,
   intro:"Long before cities, people lived as hunter-gatherers. The evidence for that story is spread across the whole planet: footprints, bones, stone tools, cave art and the first farming villages.",
@@ -423,7 +419,8 @@ const UNITS = [
   ]
 },
 {
-  id:"mesopotamia", n:2, name:"Mesopotamia", status:"now",
+  id:"mesopotamia", n:"1", name:"Mesopotamia", status:"now",
+  activities:[{href:"river-valley-lab.html?civilization=mesopotamia",title:"River Valley Decision Lab",blurb:"Advise a river community: canals, floods and who gets the water."}],
   span:"c. 5400 – 539 BCE",
   bbox:[35,28.6,50,39.2], anchor:[44.5,32.5], tol:30,
   intro:"The land between two rivers. Farmers here dug canals off the Tigris and Euphrates, grew more food than they needed, and built the world's first cities, laws and writing.",
@@ -668,7 +665,8 @@ const UNITS = [
   ]
 },
 {
-  id:"egypt", n:3, name:"Ancient Egypt", status:"next",
+  id:"egypt", n:"2", name:"Ancient Egypt", status:"next",
+  activities:[{href:"river-valley-lab.html?civilization=egypt",title:"River Valley Decision Lab",blurb:"Lesson 1: living with the Nile flood."},{href:"giza-harbour.html",title:"The Missing Stone Shipment",blurb:"Lesson 3: a 3D mystery at the Giza harbour."},{href:"temple-walkthrough.html",title:"Inside an Egyptian Temple",blurb:"Lesson 5: walk from the pylon to the sanctuary."}],
   span:"c. 3100 – 30 BCE",
   bbox:[24,14,41.5,33], anchor:[31.2,26.6], tol:40,
   intro:"One river through a desert. The Nile's yearly flood made Egypt rich and its deserts kept it safe, so one civilization lasted almost 3,000 years. To the south, Nubia was its trading partner, rival and, for a while, its ruler.",
@@ -755,13 +753,14 @@ const UNITS = [
   lessons: window.EgyptLessons || []
 },
 
-{ id:"greece", n:4, name:"Ancient Greece", status:"next", span:"c. 800 – 146 BCE", bbox:[19,34.5,29.5,42], anchor:[22.5,38.6], tol:22,
-  intro:"Explore the 13-lesson Ancient Greece unit from our class slides and tasks: geography, gods and games, Athens and Sparta, democracy, war, thinkers and Alexander.",
+{ id:"greece", n:"3", name:"Ancient Greece", status:"soon",
+  activities:[{href:"greek-inquiry-lab.html",title:"Greek Inquiry Lab",blurb:"Found a City, Citizen for a Day and Draw Your Lot."}], span:"c. 800 – 146 BCE", bbox:[19,34.5,29.5,42], anchor:[22.5,38.6], tol:22,
+  intro:"No great river and hundreds of tiny rival city-states, full of people who argued about everything, including whether they should have kings at all. Mountains, sea, democracy, war, philosophy and Alexander.",
   footnote:"Places are located approximately for study and do not imply exact ancient urban boundaries. Historical place names and modern boundaries differ.",
   places:window.GreeceAtlas.places, timeline:window.GreeceAtlas.timeline, lessons:window.GreeceLessons },
-{ id:"rome", n:5, name:"Ancient Rome", status:"soon", span:"753 BCE – 476 CE", bbox:[-10,28,42,52], anchor:[12.5,41.9],
+{ id:"rome", n:"4", name:"Ancient Rome", status:"soon", span:"753 BCE – 476 CE", bbox:[-10,28,42,52], anchor:[12.5,41.9],
   intro:"How one city grew into an empire around the whole Mediterranean, and why it fell apart." },
-{ id:"middle-ages", n:6, name:"Middle Ages", status:"soon", span:"c. 500 – 1500 CE", bbox:[-12,30,45,62], anchor:[3,48.5],
+{ id:"middle-ages", n:"5", name:"Middle Ages", status:"soon", span:"c. 500 – 1500 CE", bbox:[-12,30,45,62], anchor:[3,48.5],
   intro:"Castles and kingdoms, the Church, the Islamic world, and the trade routes that tied it all together." }
 ];
 
@@ -1024,7 +1023,7 @@ function renderPanel(){
       <div class="span">${n} places on the map so far</div>
       <p>Every unit adds a new layer to this map. Pick a unit to zoom in, or click a number on the map.</p>
       ${nu&&nu.lessons?`<div class="missed"><b>Missed a class?</b>Open a unit and choose Lessons. Each lesson has the notes, key terms and a quick self-check. <button class="btn ghost" id="golessons" style="margin-top:10px">${esc(nu.name)} lessons</button></div>`:""}
-      <h3>Units</h3><ul class="units">${UNITS.map(x=>`<li class="${x.status==="soon"?"soon":""}"><button data-u="${x.id}"><span class="n">${x.n}</span><span><span class="nm">${esc(x.name)}</span>${statusTag(x)}<span class="sub">${esc(x.span)}</span></span></button></li>`).join("")}</ul>`;
+      <h3>Units</h3><ul class="units">${UNITS.map(x=>`<li class="${x.status==="soon"?"soon":""}"><button data-u="${x.id}"><span class="n">${x.n}</span><span><span class="nm">${esc(x.name)}</span>${statusTag(x)}<span class="sub">${esc(x.span)}</span></span></button></li>`).join("")}</ul><p class="fine" style="margin-top:14px"><a href="compare.html">Compare when civilizations overlapped →</a></p>`;
     P.querySelectorAll("[data-u]").forEach(b=>b.onclick=()=>setView(b.dataset.u));
     const gl=$("#golessons"); if(gl) gl.onclick=()=>{S.ptab="lessons"; setView(nu.id);};
     return;
@@ -1055,7 +1054,7 @@ function renderPanel(){
   let body;
   if(hasL&&S.ptab==="lessons"){
     const done=getDone();
-    body=`<p class="fine">${u.id==="egypt"?"These study topics are organized for review, not numbered to match the classroom slide lessons. Check the class handout or ask Mr. Mangles which topic fits the day.":"Missed a class? Open the lesson, read the notes, try the self-check, then get the handout from Mr. Mangles. Looking ahead is fine too."}</p>
+    body=`<p class="fine">Missed a class? Find the lesson number from the slides, read the notes, try the self-check, then get the handout from Mr. Mangles.</p>
       <ul class="lessons">${u.lessons.map(l=>{
         const ok=done.has(u.id+":"+l.id);
         return `<li class="${l.released?"":"locked"}"><button data-l="${l.id}" ${l.released?"":'aria-disabled="true"'}><span class="ln">${esc(l.n)}</span><span class="nm">${esc(l.title)}</span><span class="st ${ok?"ok":""}">${l.released?(ok?"Checked ✓":""):"After class"}</span></button></li>`;}).join("")}</ul>
@@ -1067,7 +1066,8 @@ function renderPanel(){
       ${geo.length?`<h3>Rivers, land and regions</h3><ul class="plist">${geo.map(row).join("")}</ul>`:""}
       ${u.footnote?`<p class="fine">${esc(u.footnote)}</p>`:""}`;
   }
-  P.innerHTML=head+body;
+  const acts=(u.activities||[]).length?`<h3>Activities</h3><ul class="acts">${u.activities.map(a=>`<li><a href="${a.href}"><b>${esc(a.title)}</b><span>${esc(a.blurb||"")}</span></a></li>`).join("")}</ul>`:"";
+  P.innerHTML=head+body+acts;
   P.querySelectorAll("[data-p]").forEach(b=>b.onclick=()=>select(u.id,b.dataset.p));
   P.querySelectorAll(".lessons [data-l]").forEach(b=>b.onclick=()=>{const l=u.lessons.find(x=>x.id===b.dataset.l); if(l&&l.released) openLesson(u.id,l.id);});
   const rvb=$("#ss-review"); if(rvb) rvb.onclick=()=>openReview(u);
