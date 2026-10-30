@@ -67,7 +67,7 @@ assert.deepEqual(scriptOrder,["giza-harbour-core.js","giza-harbour-world.js","gi
 assert.ok(read("social-studies/giza-harbour-world.js").includes("WebGLRenderer"));
 assert.ok(read("social-studies/giza-harbour-world.js").includes("CanvasTexture"));
 assert.ok(read("social-studies/giza-harbour.js").includes("fallback()"));
-assert.ok(read("social-studies/index.html").includes('href="giza-harbour.html"'));
+assert.ok(read("social-studies/index.html").includes('href:"giza-harbour.html"'));
 assert.ok(html.includes("Fictional mystery")||html.includes("fictional mystery"));
 assert.ok(/doi.org\/10.1111\/apaa.12111/.test(html));
 console.log("Giza Harbour: 5 clues, 3 branching NPCs, evidence-gated conclusion, historical caveats, WebGL/2D, accessibility and privacy passed");
