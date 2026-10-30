@@ -2,7 +2,9 @@
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Probability Investigation · Math 7</title><link rel="stylesheet" href="../assets/fonts.css"><link rel="stylesheet" href="../assets/site.css">
 <style>
-.lab{max-width:890px;margin:2rem auto;padding:0 18px 4rem}.panel{background:var(--paper,#fff);border:1px solid var(--rule,#ccc);border-radius:12px;padding:22px;margin:20px 0}.controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center}button{cursor:pointer}.choices{display:flex;gap:10px;flex-wrap:wrap}.choices label{border:1px solid var(--rule,#ccc);padding:10px 14px;border-radius:8px}.stat{font-variant-numeric:tabular-nums;font-size:1.2rem}.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}.meter{height:20px;background:#e4e9ee;border-radius:12px;overflow:hidden}.meter span{height:100%;display:block;background:#286da1;transition:width .2s}textarea{width:100%;min-height:85px;font:inherit;padding:8px;box-sizing:border-box}table{border-collapse:collapse;width:100%}th,td{text-align:left;padding:8px;border-bottom:1px solid #bcc7d1}button:focus-visible,input:focus-visible{outline:3px solid #b47b0a;outline-offset:3px}.tiny{font-size:.9rem}.result{font-weight:700}.question{margin:14px 0}input[type=number]{max-width:80px;padding:6px;font:inherit}
+.lab{max-width:890px;margin:2rem auto;padding:0 18px 4rem}.panel{background:var(--paper,#fff);border:1px solid var(--rule,#ccc);border-radius:12px;padding:22px;margin:20px 0}.controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center}button{cursor:pointer}.choices{display:flex;gap:10px;flex-wrap:wrap}.choices label{border:1px solid var(--rule,#ccc);padding:10px 14px;border-radius:8px}.stat{font-variant-numeric:tabular-nums;font-size:1.2rem}.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}.meter{height:20px;background:#e4e9ee;border-radius:12px;overflow:hidden}.meter span{height:100%;display:block;background:#286da1;transition:width .2s}textarea{width:100%;min-height:85px;font:inherit;padding:8px;box-sizing:border-box}table{border-collapse:collapse;width:100%}
+.table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+@media (max-width:520px){th,td{font-size:14px;padding:7px 6px}}th,td{text-align:left;padding:8px;border-bottom:1px solid #bcc7d1}button:focus-visible,input:focus-visible{outline:3px solid #b47b0a;outline-offset:3px}.tiny{font-size:.9rem}.result{font-weight:700}.question{margin:14px 0}input[type=number]{max-width:80px;padding:6px;font:inherit}
 @media print{.topbar,.controls button,.print-hide{display:none!important}.panel{break-inside:avoid}.lab{margin:0;max-width:none}}
 </style></head><body data-subject="math">
 <header class="topbar"><div class="wrap"><a class="home" href="../">Mr. Mangles' Class</a><nav class="subnav" aria-label="Subjects"><a href="./">Math 7</a><a href="../science/">Science</a><a href="../ela/">ELA</a><a href="../social-studies/">Social Studies</a><a href="../critical-thinking/">Critical Thinking</a></nav></div></header>
@@ -21,7 +23,7 @@
 <div class="controls"><button class="btn" data-draw="10">Draw 10</button><button class="btn" data-draw="90">Draw 90 more</button><button class="btn" data-draw="900">Draw 900 more</button><button class="btn ghost" id="reset">Reset experiment</button></div>
 <div class="grid2"><div><p>Actual red draws</p><p class="stat" id="actual" aria-live="polite">0 of 0 (—)</p><div class="meter" role="img" aria-label="Experimental red percentage"><span id="bar" style="width:0%"></span></div></div><div><p>Expected red draws</p><p class="stat" id="expected">30%</p><p class="tiny">Theoretical probability stays the same even when the experiment changes.</p></div></div>
 <div aria-live="polite" id="compare"></div>
-<table><thead><tr><th>Outcome</th><th>Number of draws</th><th>Experimental probability</th></tr></thead><tbody><tr><td>Red</td><td id="redcount">0</td><td id="redpct">—</td></tr><tr><td>Blue</td><td id="bluecount">0</td><td id="bluepct">—</td></tr></tbody></table>
+<div class="table-scroll"><table><thead><tr><th>Outcome</th><th>Number of draws</th><th>Experimental probability</th></tr></thead><tbody><tr><td>Red</td><td id="redcount">0</td><td id="redpct">—</td></tr><tr><td>Blue</td><td id="bluecount">0</td><td id="bluepct">—</td></tr></tbody></table></div>
 <p class="tiny">Random results vary each time. A larger sample often gets closer to the predicted proportion, but that is not guaranteed on every run.</p>
 </section>
 <section class="panel"><h2>3. Try two independent draws</h2>
@@ -29,12 +31,12 @@
 <p class="tiny">For example, with 3 red and 7 blue, P(RR) = 3/10 × 3/10 = 9/100 = 9%. The table groups the four possible <em>colour sequences</em>; they are not necessarily equally likely.</p>
 <div class="controls"><button class="btn" data-pair="10">Run 10 pairs</button><button class="btn" data-pair="90">Run 90 more</button><button class="btn" data-pair="900">Run 900 more</button><button class="btn ghost" id="reset-pairs">Reset pairs</button></div>
 <p id="pairsummary" aria-live="polite">No pairs yet.</p>
-<table><thead><tr><th>Two-draw colour sequence</th><th>Theoretical probability</th><th>Observed / pairs</th><th>Experimental probability</th></tr></thead><tbody>
+<div class="table-scroll"><table><thead><tr><th>Two-draw colour sequence</th><th>Theoretical probability</th><th>Observed / pairs</th><th>Experimental probability</th></tr></thead><tbody>
 <tr><td>RR (red, red)</td><td id="th-0"></td><td id="count-0"></td><td id="ex-0"></td></tr>
 <tr><td>RB (red, blue)</td><td id="th-1"></td><td id="count-1"></td><td id="ex-1"></td></tr>
 <tr><td>BR (blue, red)</td><td id="th-2"></td><td id="count-2"></td><td id="ex-2"></td></tr>
 <tr><td>BB (blue, blue)</td><td id="th-3"></td><td id="count-3"></td><td id="ex-3"></td></tr>
-</tbody></table>
+</tbody></table></div>
 <p class="tiny">These are two independent events. Compare RR with RB + BR: order matters when naming individual outcomes, even if both combinations contain one red and one blue.</p>
 </section>
 <section class="panel"><h2>4. Make a claim using evidence</h2>
