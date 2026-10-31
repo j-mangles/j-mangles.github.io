@@ -146,7 +146,7 @@
     const key=u.id+"/"+l.id,saved=exitDrafts[key]||{};
     return `<details class="exit-ticket" id="exit-ticket">
       <summary>One-minute exit ticket · Before you go</summary>
-      <p class="note">Use this as a quick reflection on Lesson ${esc(l.n)}: ${esc(l.title)} Your writing stays in this tab; it is not submitted or saved online.</p>
+      <p class="note">Use this as a quick reflection on Lesson ${esc(l.n)} · ${esc(l.title)} — responses are not submitted or saved online.</p>
       <label for="exit-recall">One idea from this lesson I can now explain</label>
       <textarea id="exit-recall" data-exit="recall" rows="2">${esc(saved.recall||"")}</textarea>
       <label for="exit-question">One question or idea I want to revisit</label>
