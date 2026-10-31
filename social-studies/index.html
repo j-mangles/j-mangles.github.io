@@ -175,7 +175,8 @@ figcaption{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.35}
 .lightbox{position:fixed;inset:0;z-index:70;background:rgba(10,14,18,.88);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px max(16px,env(safe-area-inset-right,0px)) 24px max(16px,env(safe-area-inset-left,0px));cursor:zoom-out}
 .lightbox img{max-width:100%;max-height:82vh;object-fit:contain;border-radius:6px}
 .lightbox p{color:#dde3e8;font-size:14px;max-width:70ch;text-align:center;margin:0}
-.diagram{overflow-x:auto;margin-top:14px}
+.diagram{overflow-x:auto;margin:14px 0 0}
+.diagram figcaption{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.4}
 .diagram svg{display:block;min-width:620px;width:100%;height:auto}
 .l-cat{font:italic 500 12.5px var(--f-ui);fill:var(--muted)}
 .mk-cat{fill:var(--panel);stroke:var(--river);stroke-width:2}
@@ -283,6 +284,7 @@ figcaption{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.35}
 </div>
 
 <script src="../assets/review.js"></script>
+<script src="egypt-diagrams.js"></script>
 <script src="egypt-lessons.js"></script>
 <script src="greece-lessons.js"></script>
 <script src="greece-atlas.js"></script>
@@ -1120,7 +1122,7 @@ function renderSheet(){
     ${l.imgs&&l.imgs.length?`<figure class="hero"><img src="${l.imgs[0].src}" alt="" data-cap="${esc(l.imgs[0].cap)}"><figcaption>${esc(l.imgs[0].cap)}</figcaption></figure>`:""}
     <div class="callout"><div class="eyebrow">The big idea</div><p class="big">${esc(l.big)}</p></div>
     <h3>What we covered</h3><ul class="notes">${l.notes.map(n=>`<li>${esc(n)}</li>`).join("")}</ul>
-    ${l.diagram==="bce"?`<div class="diagram">${bceDiagram()}</div>`:""}
+    ${diagramsFor(l)}
     ${l.imgs&&l.imgs.length>1?`<h3>Pictures from the lesson</h3><div class="gal">${l.imgs.slice(1).map(im=>`<figure><img src="${im.src}" alt="" loading="lazy" data-cap="${esc(im.cap)}"><figcaption>${esc(im.cap)}</figcaption></figure>`).join("")}</div>`:""}
     ${l.terms.length?`<h3>Key terms</h3><dl class="terms">${l.terms.map(t=>`<dt>${esc(t[0])}</dt><dd>${esc(t[1])}</dd>`).join("")}</dl>`:""}
     ${places.length?`<h3>On the map</h3><div class="chips">${places.map(p=>`<button class="chip" data-place="${p.id}">${glyph(p.kind)}${esc(p.name)}</button>`).join("")}</div>`:""}
@@ -1152,6 +1154,14 @@ document.addEventListener("click",e=>{
   $("#lbimg").src=im.src; $("#lbcap").textContent=im.dataset.cap||""; $("#lightbox").hidden=false;
 });
 $("#lightbox").addEventListener("click",()=>{$("#lightbox").hidden=true;});
+function diagramsFor(l){
+  const keys=[].concat(l.diagram||[]);
+  return keys.map(k=>{
+    if(k==="bce")return `<div class="diagram">${bceDiagram()}</div>`;
+    const f=window.EgyptDiagrams&&window.EgyptDiagrams[k]; if(!f)return "";
+    const d=f(); return `<figure class="diagram">${d.svg}${d.cap?`<figcaption>${esc(d.cap)}</figcaption>`:""}</figure>`;
+  }).join("");
+}
 function bceDiagram(){
   const W=720,H=190,x0=40,x1=680,a=-4000,b=2026,X=y=>x0+(y-a)/(b-a)*(x1-x0);
   const ev=[[-3300,"First writing","3300 BCE",-1],[-2560,"Great Pyramid","2560 BCE",1],[-2334,"Sargon's empire","2334 BCE",-1],[-1750,"Hammurabi's laws","1750 BCE",1],[-30,"Cleopatra dies","30 BCE",-1],[2026,"Today","2026 CE",1]];

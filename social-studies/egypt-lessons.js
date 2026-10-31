@@ -82,6 +82,10 @@ window.EgyptLessons = [
         "c": 1,
         "why": "The timing was steady. The height swung between floods that destroyed villages and floods too weak to water the fields."
       }
+    ],
+    "diagram": [
+      "flood",
+      "kemet"
     ]
   },
   {
@@ -159,7 +163,8 @@ window.EgyptLessons = [
         "c": 1,
         "why": "Central government collapsed and the country split, then later reunited under one king."
       }
-    ]
+    ],
+    "diagram": "kingdoms"
   },
   {
     "id": "l3",
@@ -234,7 +239,8 @@ window.EgyptLessons = [
         "c": 1,
         "why": "Straight, spiral and internal ramp ideas all have supporters, and none has been proven."
       }
-    ]
+    ],
+    "diagram": "pyramids"
   },
   {
     "id": "l4",
@@ -309,7 +315,8 @@ window.EgyptLessons = [
         "c": 1,
         "why": "Mesopotamia's underworld was dark and the same for all. Egypt's had to be earned and prepared for."
       }
-    ]
+    ],
+    "diagram": "mummy"
   },
   {
     "id": "l5",
@@ -385,7 +392,8 @@ window.EgyptLessons = [
         "c": 1,
         "why": "Engineers cut it into blocks and rebuilt it 65 metres up the hill."
       }
-    ]
+    ],
+    "diagram": "temple"
   },
   {
     "id": "l6",
@@ -456,7 +464,8 @@ window.EgyptLessons = [
         "c": 1,
         "why": "Papyrus rots when wet. Egypt's dry climate preserved it."
       }
-    ]
+    ],
+    "diagram": "scripts"
   },
   {
     "id": "l7",
@@ -521,7 +530,8 @@ window.EgyptLessons = [
         "c": 1,
         "why": "One woman from Deir el-Medina may not represent farming families across Egypt."
       }
-    ]
+    ],
+    "diagram": "social"
   },
   {
     "id": "l8",
@@ -593,7 +603,8 @@ window.EgyptLessons = [
         "c": 1,
         "why": "After driving the Hyksos out, Egypt kept their chariot technology and built an empire."
       }
-    ]
+    ],
+    "diagram": "trade"
   },
   {
     "id": "l9",
@@ -670,7 +681,8 @@ window.EgyptLessons = [
         "c": 1,
         "why": "Sudan has roughly twice as many pyramids as Egypt, built for centuries after Egypt stopped."
       }
-    ]
+    ],
+    "diagram": "nubia"
   },
   {
     "id": "l10",
@@ -738,7 +750,8 @@ window.EgyptLessons = [
         "c": 1,
         "why": "Ramesses escaped an ambush and went home without the city, then carved it as a victory."
       }
-    ]
+    ],
+    "diagram": "pharaohs"
   },
   {
     "id": "l11",
@@ -810,7 +823,8 @@ window.EgyptLessons = [
         "c": 1,
         "why": "Taking the old title and building in the old style made a foreign ruler look legitimate."
       }
-    ]
+    ],
+    "diagram": "conquerors"
   },
   {
     "id": "l12",
@@ -883,7 +897,8 @@ window.EgyptLessons = [
         "c": 1,
         "why": "No curse was written in the tomb, and Carter, who handled everything, lived 17 more years."
       }
-    ]
+    ],
+    "diagram": "rosetta"
   },
   {
     "id": "l13",
