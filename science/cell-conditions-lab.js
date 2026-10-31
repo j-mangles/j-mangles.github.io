@@ -35,7 +35,7 @@
         <div class="eyebrow">Interactive model · SCI.8.E.19</div>
         <h3>Plant Cell Conditions: Find the Limiting Resource</h3>
         <p>Plants need light, water and carbon dioxide for photosynthesis. Change one condition at a time, then use the model's output as evidence.</p>
-        <p class="ccm-note"><strong>Model rule:</strong> the scarcest resource limits the model's relative photosynthesis rate. The percentages are made-up model values, not real measurements of a plant.</p>
+        <p class="ccm-note"><strong>Model rule:</strong> the scarcest resource limits the model's relative photosynthesis rate. The percentages are made-up model values, not real measurements. This model also leaves out temperature, leaf age and many real-plant interactions.</p>
         <div class="ccm-grid">
           <div>
             <div class="ccm-controls">
@@ -80,7 +80,8 @@
       Object.entries(v).forEach(([key,value])=>$('#ccm-'+key+'-out').textContent=value+'%');
       $('#ccm-meter-fill').style.width=rate+'%';
       const low=Object.keys(v).filter(key=>v[key]===rate).map(key=>titles[key]);
-      $('#ccm-result').textContent='Relative rate: '+rate+'%. '+(rate===100?'All three resources are plentiful in this model.':low.join(' and ')+' '+(low.length===1?'is':'are')+' limiting the model right now.');
+      const status=rate===100?'All three resources are plentiful in this model.':low.length===3?'All three resources are tied at the current limiting level.':low.join(' and ')+' '+(low.length===1?'is':'are')+' tied as the limiting resource.';
+      $('#ccm-result').textContent='Relative rate: '+rate+'%. '+status;
       return {v,rate,low};
     }
     function drawTrials() {
