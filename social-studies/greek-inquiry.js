@@ -150,7 +150,7 @@ function ostracismGame(){
 function report(){
  return ["GRADE 8 ANCIENT GREECE — INQUIRY RESPONSE","Activity: "+tab,"Selected colony: "+selected,"Role: "+lives[role][0],
  "Scoring: "+JSON.stringify(scores),"Voting: "+JSON.stringify(votes),
- ...Object.entries(memory).map(([k,v])=>k+"\\n"+v),
+ ...Object.entries(memory).map(([k,v])=>k+"\n"+v),
  (tab==="ostracism"?"Historical clues are observations; proposed explanations are student hypotheses.":"Fictional examples are teaching simulations.")].join("\n\n");
 }
 $("#download").onclick=()=>{
