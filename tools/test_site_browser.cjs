@@ -286,7 +286,7 @@ async function checkNoHorizontalOverflow(page,label){
   stage="Ancient Greece coming-up release state";
   await goto(page,"/social-studies/#greece",'#tabs [data-id="greece"]');
   await page.locator("#panel .eyebrow").waitFor({state:"visible"});
-  assert.match(await page.locator("#panel .eyebrow").innerText(),/Unit 3 · Coming up/);
+  assert.match(await page.locator("#panel .eyebrow").innerText(),/Unit 3 · Coming up/i);
   assert.equal(await page.locator("#tab-lessons").count(),0,"Future Greece lessons should stay hidden until the unit is active");
   assert.equal(await page.locator("#panel .lessons [data-l]").count(),0,"Coming-up units should not expose lesson links");
   await capture(page,"atlas-greece-coming-up-desktop");
