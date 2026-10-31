@@ -80,7 +80,7 @@
       Object.entries(v).forEach(([key,value])=>$('#ccm-'+key+'-out').textContent=value+'%');
       $('#ccm-meter-fill').style.width=rate+'%';
       const low=Object.keys(v).filter(key=>v[key]===rate).map(key=>titles[key]);
-      const status=rate===100?'All three resources are plentiful in this model.':low.length===3?'All three resources are tied at the current limiting level.':low.join(' and ')+' '+(low.length===1?'is':'are')+' tied as the limiting resource.';
+      const status=rate===100?'All three resources are plentiful in this model.':low.length===3?'All three resources are tied at the current limiting level.':low.length===1?low[0]+' is the limiting resource right now.':low.join(' and ')+' are tied as limiting resources.';
       $('#ccm-result').textContent='Relative rate: '+rate+'%. '+status;
       return {v,rate,low};
     }
