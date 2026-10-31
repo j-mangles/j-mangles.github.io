@@ -82,7 +82,7 @@ function compressibility(el){
     body+='<line x1="'+(pistonX+58)+'" y1="'+(y0+barrelH/2-25)+'" x2="'+(pistonX+58)+'" y2="'+(y0+barrelH/2+25)+'" stroke="var(--accent)" stroke-width="8" stroke-linecap="round"/>';
     for(let i=0;i<pts.length;i++){const px=innerX+7+pts[i][0]*Math.max(12,pistonX-innerX-17),py=innerY+7+pts[i][1]*(innerH-14);body+='<circle cx="'+px.toFixed(1)+'" cy="'+py.toFixed(1)+'" r="'+(medium==="gas"?6:5.5)+'" fill="'+m.color+'" opacity=".92"/>';}
     body+='<text x="'+(x0+barrelW/2)+'" y="258" text-anchor="middle" fill="var(--ink)" font-size="15">'+(medium==="gas"?"Gas particles spread through the space":"Particles stay close together")+'</text>';
-    root.querySelector("#mlab-model").innerHTML='<svg viewBox="0 0 540 278" role="img" aria-label="'+m.label+" in a syringe under a squeeze; particle count stays constant"+'">'+body+'</svg>';
+    root.querySelector("#mlab-model").innerHTML='<svg viewBox="0 0 540 278" role="img" aria-label="'+m.label+" particle model; same particle count"+'">'+body+'</svg>';
     root.querySelector("#mlab-push-value").textContent=slider.value;
     root.querySelector("#mlab-volume").textContent=pct+"% of starting volume";
     root.querySelector("#mlab-observation").textContent=m.note;
