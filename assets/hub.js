@@ -13,8 +13,10 @@
   const unit = id => units.find(u=>u.id===id);
   const defaultUnit = () => (units.find(u=>u.status==="now")||units.find(u=>u.lessons&&u.lessons.length)||units[0]).id;
   let answers = {};
+  const exitDrafts = {};
 
   function route(){
+    Object.keys(exitDrafts).forEach(k=>delete exitDrafts[k]);
     const h = decodeURIComponent((location.hash||"").slice(1));
     const mapView = h==="overview";
     const mapLink=$("#course-map-link");
@@ -139,6 +141,52 @@
  };
 }
 
+
+  function exitTicketHTML(u,l){
+    const key=u.id+"/"+l.id,saved=exitDrafts[key]||{};
+    return `<details class="exit-ticket" id="exit-ticket">
+      <summary>One-minute exit ticket · Before you go</summary>
+      <p class="note">Use this as a quick reflection on Lesson ${esc(l.n)}: ${esc(l.title)}. Your writing stays in this tab; it is not submitted or saved online.</p>
+      <label for="exit-recall">One idea from this lesson I can now explain</label>
+      <textarea id="exit-recall" data-exit="recall" rows="2">${esc(saved.recall||"")}</textarea>
+      <label for="exit-question">One question or idea I want to revisit</label>
+      <textarea id="exit-question" data-exit="question" rows="2">${esc(saved.question||"")}</textarea>
+      <div class="exit-ticket-actions">
+        <button class="btn" type="button" id="exit-download">Download my ticket</button>
+        <button class="btn ghost" type="button" id="exit-copy">Copy my ticket</button>
+        <button class="btn ghost" type="button" id="exit-clear">Clear</button>
+      </div>
+      <p class="note" id="exit-status" aria-live="polite">Optional: copy or download your reflection before leaving.</p>
+    </details>`;
+  }
+
+  function bindExitTicket(u,l){
+    const root=$("#exit-ticket");if(!root)return;
+    const key=u.id+"/"+l.id,fields=[...root.querySelectorAll("textarea[data-exit]")],status=root.querySelector("#exit-status");
+    fields.forEach(el=>el.addEventListener("input",()=>{
+      if(!exitDrafts[key])exitDrafts[key]={};
+      exitDrafts[key][el.dataset.exit]=el.value;
+      status.textContent="Draft held in this page only. Copy or download it before leaving if you want to keep it.";
+    }));
+    const contents=()=>[u.name+" — "+l.title,"One-minute exit ticket",
+      "One idea I can now explain:\\n"+root.querySelector('[data-exit="recall"]').value.trim(),
+      "One question or idea I want to revisit:\\n"+root.querySelector('[data-exit="question"]').value.trim()
+    ].join("\\n\\n")+"\\n";
+    root.querySelector("#exit-download").onclick=()=>{
+      const blob=new Blob([contents()],{type:"text/plain;charset=utf-8"}),url=URL.createObjectURL(blob),link=document.createElement("a");
+      link.href=url;link.download=("exit-ticket-"+H.subject+"-"+u.id+"-"+l.id).replace(/[^a-z0-9-]/gi,"-")+".txt";
+      document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);
+      status.textContent="Exit ticket downloaded.";
+    };
+    root.querySelector("#exit-copy").onclick=()=>{
+      if(!navigator.clipboard?.writeText){status.textContent="Copy isn't available in this browser. Use Download my ticket instead.";return;}
+      navigator.clipboard.writeText(contents()).then(()=>{status.textContent="Exit ticket copied.";}).catch(()=>{status.textContent="Copy was blocked. Use Download my ticket instead.";});
+    };
+    root.querySelector("#exit-clear").onclick=()=>{
+      fields.forEach(el=>el.value="");delete exitDrafts[key];status.textContent="Exit ticket cleared.";
+    };
+  }
+
   function renderLesson(u,l){
     if(window.UnitReview)window.UnitReview.remember(H.subject,u.id,l.id);
     const ls=u.lessons, i=ls.indexOf(l), prev=ls[i-1], next=ls[i+1];
@@ -166,6 +214,7 @@
       ${imgs.length>1?`<h3>Pictures from the lesson</h3><div class="gal">${imgs.slice(1).map(m=>`<figure><img src="${m.src}" alt="" loading="lazy" data-cap="${esc(m.cap)}"><figcaption>${esc(m.cap)}</figcaption></figure>`).join("")}</div>`:""}
       ${l.work?`<h3>Your work</h3><div class="task"><p>${esc(l.work)}</p><p class="note">Get the handout from Mr. Mangles if you don't have it.</p></div>`:""}
       ${l.activity?`<h3>Complete the activity</h3>${activityHTML(u,l)}`:""}
+      ${exitTicketHTML(u,l)}
       ${qs?`<h3>Check yourself</h3>${qs}`:""}
       ${n&&n===l.check.length?`<div class="score">${right} out of ${l.check.length}${right===l.check.length?". Nice, you've got this lesson.":". Have another look at the notes, then try again."} <button class="btn ghost" id="retry" style="margin-left:8px">Try again</button></div>`:""}
       <div class="pager">${prev?`<button class="btn ghost" data-go="${u.id}/${prev.id}">&larr; Lesson ${esc(prev.n)}</button>`:"<span></span>"}${next?`<button class="btn ghost" data-go="${u.id}/${next.id}">Lesson ${esc(next.n)} &rarr;</button>`:(ls.length>1?`<button class="btn" data-go="${u.id}/review">Unit review &rarr;</button>`:"")}</div>
@@ -190,6 +239,7 @@
     });
     const r=$("#retry"); if(r) r.onclick=()=>{answers={}; const y=window.scrollY; renderLesson(u,l); window.scrollTo(0,y);};
     bindActivity(u,l);
+    bindExitTicket(u,l);
   }
 
   function renderReview(u){
