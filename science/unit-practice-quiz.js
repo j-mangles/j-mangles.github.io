@@ -36,10 +36,10 @@
     @media(max-width:520px){.uq{padding:17px}.uq-head{font-size:12px}}
   `;
 
-  function collect(checks, lessonTitle, out) {
+  function collect(checks, lesson, out) {
     if (!checks || typeof checks !== 'object') return;
     if (Array.isArray(checks)) {
-      checks.forEach(item => collect(item, lessonTitle, out));
+      checks.forEach(item => collect(item, lesson, out));
       return;
     }
     if (typeof checks.q === 'string' && Array.isArray(checks.a) &&
@@ -49,11 +49,12 @@
         a: checks.a,
         c: checks.c,
         why: typeof checks.why === 'string' ? checks.why : 'Review the lesson notes and try again.',
-        lesson: lessonTitle
+        lesson: lesson.title || 'Lesson check',
+        lessonId: lesson.id
       });
       return;
     }
-    Object.values(checks).forEach(value => collect(value, lessonTitle, out));
+    Object.values(checks).forEach(value => collect(value, lesson, out));
   }
 
   function shuffle(items) {
@@ -65,10 +66,10 @@
     return result;
   }
 
-  function mount(target, unit) {
+  function mount(target, unit, onLesson) {
     if (!target || !unit) return;
     const bank = [];
-    (unit.lessons || []).forEach(lesson => collect(lesson.check, lesson.title || 'Lesson check', bank));
+    (unit.lessons || []).forEach(lesson => collect(lesson.check, lesson, bank));
     target.innerHTML = `<style>${styles}</style><section class="uq" aria-label="${esc(unit.name)} practice quiz">
       <div class="uq-kicker">Unit ${esc(unit.n)} · Practice</div>
       <h3>Check what you know</h3>
@@ -120,9 +121,12 @@
     }
 
     function renderResults() {
-      const missedHTML = missed.length ? missed.map(({ item, selected: answer }) => `<article><h4>${esc(item.q)}</h4><p style="color:var(--bad,#c2373a)">Your answer: ${esc(item.a[answer])}</p><p style="color:var(--good,#1e8a5a)">Best answer: ${esc(item.a[item.c])}</p><p>${esc(item.why)}</p></article>`).join('') : '<article><h4>All correct</h4><p>Try another round when you’re ready.</p></article>';
+      const missedHTML = missed.length ? missed.map(({ item, selected: answer }) => `<article><h4>${esc(item.q)}</h4><p style="color:var(--bad,#c2373a)">Your answer: ${esc(item.a[answer])}</p><p style="color:var(--good,#1e8a5a)">Best answer: ${esc(item.a[item.c])}</p><p>${esc(item.why)}</p>${item.lessonId ? `<button class="uq-retry uq-review-lesson" type="button" data-review-lesson="${esc(item.lessonId)}">Review: ${esc(item.lesson)}</button>` : ''}</article>`).join('') : '<article><h4>All correct</h4><p>Try another round when you’re ready.</p></article>';
       stage.innerHTML = `<div class="uq-result"><div class="uq-kicker">Round complete</div><div class="uq-score">${score} / ${questions.length}</div><p>${score === questions.length ? 'Excellent work.' : 'Review any missed ideas, then try again.'}</p><div class="uq-missed">${missedHTML}</div><button class="uq-retry" type="button">Try another round</button></div>`;
       stage.querySelector('.uq-retry').addEventListener('click', begin);
+      stage.querySelectorAll('[data-review-lesson]').forEach(button => button.addEventListener('click', () => {
+        if (typeof onLesson === 'function') onLesson(button.dataset.reviewLesson);
+      }));
     }
 
     function begin() {
