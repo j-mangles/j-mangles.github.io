@@ -84,7 +84,7 @@
       return {v,rate,low};
     }
     function drawTrials() {
-      table.innerHTML=trials.length?trials.map((t,i)=>'<tr><td>'+(i+1)+'</td><td>'+t.v.light+'%</td><td>'+t.v.water+'%</td><td>'+t.v.co2+'%</td><td>'+t.rate+'%</td><td>'+t.limiting+'</td></tr>').join('':'<tr><td colspan="6">No trials recorded yet.</td></tr>';
+      table.innerHTML=trials.length?trials.map((t,i)=>'<tr><td>'+(i+1)+'</td><td>'+t.v.light+'%</td><td>'+t.v.water+'%</td><td>'+t.v.co2+'%</td><td>'+t.rate+'%</td><td>'+t.limiting+'</td></tr>').join(''):'<tr><td colspan="6">No trials recorded yet.</td></tr>';
     }
     Object.values(sliders).forEach(el=>el.addEventListener('input',update));
     $('#ccm-record').addEventListener('click',()=>{const result=update();trials.push({v:result.v,rate:result.rate,limiting:result.low.join(', ')});drawTrials();});
