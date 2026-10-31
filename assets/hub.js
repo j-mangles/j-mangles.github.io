@@ -215,9 +215,9 @@
       ${imgs.length>1?`<h3>Pictures from the lesson</h3><div class="gal">${imgs.slice(1).map(m=>`<figure><img src="${m.src}" alt="" loading="lazy" data-cap="${esc(m.cap)}"><figcaption>${esc(m.cap)}</figcaption></figure>`).join("")}</div>`:""}
       ${l.work?`<h3>Your work</h3><div class="task"><p>${esc(l.work)}</p><p class="note">Get the handout from Mr. Mangles if you don't have it.</p></div>`:""}
       ${l.activity?`<h3>Complete the activity</h3>${activityHTML(u,l)}`:""}
-      ${exitTicketHTML(u,l)}
       ${qs?`<h3>Check yourself</h3>${qs}`:""}
       ${n&&n===l.check.length?`<div class="score">${right} out of ${l.check.length}${right===l.check.length?". Nice, you've got this lesson.":". Have another look at the notes, then try again."} <button class="btn ghost" id="retry" style="margin-left:8px">Try again</button></div>`:""}
+      ${exitTicketHTML(u,l)}
       <div class="pager">${prev?`<button class="btn ghost" data-go="${u.id}/${prev.id}">&larr; Lesson ${esc(prev.n)}</button>`:"<span></span>"}${next?`<button class="btn ghost" data-go="${u.id}/${next.id}">Lesson ${esc(next.n)} &rarr;</button>`:(ls.length>1?`<button class="btn" data-go="${u.id}/review">Unit review &rarr;</button>`:"")}</div>
     </article></div>`;
     $("#back").onclick=()=>go(u.id);
