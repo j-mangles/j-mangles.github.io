@@ -195,7 +195,7 @@
       <h2>${esc(u.name)}</h2><div id="review"></div><div id="unit-practice-quiz"></div></article></div>`;
     $("#back").onclick=()=>go(u.id);
     if(window.UnitReview) window.UnitReview.render($("#review"),{name:u.name,lessons:u.lessons,onLesson:l=>go(u.id+"/"+l.id)});
-    if(window.UnitPracticeQuiz) window.UnitPracticeQuiz.mount($("#unit-practice-quiz"),u);
+    if(window.UnitPracticeQuiz) window.UnitPracticeQuiz.mount($("#unit-practice-quiz"),u,lessonId=>go(u.id+"/"+lessonId));
   }
 
   // lightbox for any lesson image
