@@ -375,7 +375,8 @@ async function checkNoHorizontalOverflow(page,label){
   await capture(page,"social-giza-game-desktop");
   stage="Ancient Egypt atlas link to Giza game";
   await goto(page,"/social-studies/#egypt",'#tabs [data-id="egypt"]');
-  assert.ok(await page.locator('a[href="giza-expedition.html"]').count()>0);
+  assert.ok(await page.locator('a[href="giza-harbour.html"]').count()>0,"Current Egypt activity should link to the Giza Harbour mystery");
+  assert.equal(await page.locator('a[href="giza-expedition.html"]').count(),0,"Superseded Giza expedition should stay unlinked");
   stage="Giza Harbour mystery 3D game and historical reasoning";
   await goto(page,"/social-studies/giza-harbour.html","#start-button");
   await page.locator("#start-button").waitFor({state:"visible"});
