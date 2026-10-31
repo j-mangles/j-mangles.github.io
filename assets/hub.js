@@ -6,14 +6,17 @@
   const $ = s => document.querySelector(s);
   const esc = s => String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
   const KEY = "hub-done-"+H.subject;
+  const recentLesson = id => window.UnitReview&&window.UnitReview.lastLesson(H.subject,id,(unit(id)||{}).lessons||[]);
   const getDone = () => { try{ return new Set(JSON.parse(localStorage.getItem(KEY)||"[]")); }catch(e){ return new Set(); } };
   const markDone = k => { try{ const d=getDone(); d.add(k); localStorage.setItem(KEY,JSON.stringify([...d])); }catch(e){} };
   const units = H.units;
   const unit = id => units.find(u=>u.id===id);
   const defaultUnit = () => (units.find(u=>u.status==="now")||units.find(u=>u.lessons&&u.lessons.length)||units[0]).id;
   let answers = {};
+  const exitDrafts = {};
 
   function route(){
+    Object.keys(exitDrafts).forEach(k=>delete exitDrafts[k]);
     const h = decodeURIComponent((location.hash||"").slice(1));
     const mapView = h==="overview";
     const mapLink=$("#course-map-link");
@@ -62,6 +65,7 @@
       <div class="eyebrow">Unit ${esc(u.n)} · ${statusLabel(u)}</div>
       <h2>${esc(u.name)}</h2>${u.when?`<div class="span">${esc(u.when)}</div>`:""}
       ${u.intro?`<p>${esc(u.intro)}</p>`:""}
+      ${ls.length?`<section class="last-review"><div class="eyebrow">Daily retrieval · last class</div><h3>Quick review</h3><p>${recentLesson(u.id)?`Last opened on this device: Lesson ${esc(recentLesson(u.id).n)} · ${esc(recentLesson(u.id).title)}`:"Choose the lesson you covered last class. The site will remember that lesson on this device."}</p><p>Choose individual practice or lead three questions aloud, with time to think before the explanation appears.</p><div class="last-review-controls"><label for="last-class-lesson">Lesson to review<select id="last-class-lesson">${ls.map(l=>`<option value="${esc(l.id)}" ${recentLesson(u.id)?.id===l.id?"selected":""}>Lesson ${esc(l.n)} · ${esc(l.title)}</option>`).join("")}</select></label><button class="btn" id="last-class-start">Practise individually</button><button class="btn ghost" id="last-class-class">Lead as a class</button></div><div id="last-class-round" aria-live="polite" aria-atomic="true"></div><p class="note">Only the lesson choice is remembered on this device. Answers stay on this page and clear when you leave.</p></section>`:""}
       ${ls.length>1?`<button class="reviewcard" id="openreview"><span class="eyebrow">Unit review</span><b>Review ${esc(u.name)}</b><span>Big ideas, ${ls.reduce((a,l)=>a+(l.terms||[]).length,0)} flashcards and a practice test from every lesson.</span><span class="go">Start &rarr;</span></button>`:""}
       ${ls.length?`<h3>Lessons</h3><p class="note">Missed a class? Open the lesson, read the notes, try the self-check, then get the handout from Mr. Mangles.</p>
       <ol class="lessons">${ls.map(l=>{const ok=done.has(u.id+"/"+l.id);
@@ -73,6 +77,7 @@
     $("#main").innerHTML = `<div class="wrap grid ${tool?"":"single"}">${left}${right}</div>`;
     $("#main").querySelectorAll("[data-l]").forEach(b=>b.onclick=()=>go(u.id+"/"+b.dataset.l));
     const rv=$("#openreview"); if(rv) rv.onclick=()=>go(u.id+"/review");
+    const chosenLesson=()=>ls.find(x=>x.id===$("#last-class-lesson").value); const quick=$("#last-class-start"); if(quick) quick.onclick=()=>{const l=chosenLesson();if(l&&window.UnitReview)window.UnitReview.renderQuick($("#last-class-round"),l,{unitName:u.name,onLesson:()=>go(u.id+"/"+l.id)});}; const wholeClass=$("#last-class-class"); if(wholeClass) wholeClass.onclick=()=>{const l=chosenLesson();if(l&&window.UnitReview)window.UnitReview.renderWholeClass($("#last-class-round"),l,{onLesson:()=>go(u.id+"/"+l.id),onSolo:()=>window.UnitReview.renderQuick($("#last-class-round"),l,{unitName:u.name,onLesson:()=>go(u.id+"/"+l.id)})});};
     if(tool){ try{ tool($("#tool")); }catch(e){ $("#tool").textContent="This tool didn't load. Refresh the page to try again."; } }
   }
 
@@ -136,7 +141,55 @@
  };
 }
 
+
+  function exitTicketHTML(u,l){
+    const key=u.id+"/"+l.id,saved=exitDrafts[key]||{};
+    return `<details class="exit-ticket" id="exit-ticket">
+      <summary>One-minute exit ticket · Before you go</summary>
+      <p class="note">Use this as a quick reflection on Lesson ${esc(l.n)} · ${esc(l.title)} — responses are not submitted or saved online.</p>
+      <label for="exit-recall">One idea from this lesson I can now explain</label>
+      <textarea id="exit-recall" data-exit="recall" rows="2">${esc(saved.recall||"")}</textarea>
+      <label for="exit-question">One question or idea I want to revisit</label>
+      <textarea id="exit-question" data-exit="question" rows="2">${esc(saved.question||"")}</textarea>
+      <div class="exit-ticket-actions">
+        <button class="btn" type="button" id="exit-download">Download my ticket</button>
+        <button class="btn ghost" type="button" id="exit-copy">Copy my ticket</button>
+        <button class="btn ghost" type="button" id="exit-clear">Clear</button>
+      </div>
+      <p class="note" id="exit-status" aria-live="polite">Optional: copy or download your reflection before leaving.</p>
+    </details>`;
+  }
+
+  function bindExitTicket(u,l){
+    const root=$("#exit-ticket");if(!root)return;
+    const key=u.id+"/"+l.id,fields=[...root.querySelectorAll("textarea[data-exit]")],status=root.querySelector("#exit-status");
+    fields.forEach(el=>el.addEventListener("input",()=>{
+      if(!exitDrafts[key])exitDrafts[key]={};
+      exitDrafts[key][el.dataset.exit]=el.value;
+      status.textContent="Draft held in this page only. Copy or download it before leaving if you want to keep it.";
+    }));
+    const contents=()=>[u.name+" — "+l.title,"One-minute exit ticket",
+      "One idea I can now explain:\n"+root.querySelector('[data-exit="recall"]').value.trim(),
+      "One question or idea I want to revisit:\n"+root.querySelector('[data-exit="question"]').value.trim()
+    ].join("\n\n")+"\n";
+    root.querySelector("#exit-download").onclick=()=>{
+      const blob=new Blob([contents()],{type:"text/plain;charset=utf-8"}),url=URL.createObjectURL(blob),link=document.createElement("a");
+      link.href=url;link.download=("exit-ticket-"+H.subject+"-"+u.id+"-"+l.id).replace(/[^a-z0-9-]/gi,"-")+".txt";
+      document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);
+      status.textContent="Exit ticket downloaded.";
+    };
+    root.querySelector("#exit-copy").onclick=()=>{
+      if(!navigator.clipboard?.writeText){status.textContent="Copy isn't available in this browser. Use Download my ticket instead.";return;}
+      navigator.clipboard.writeText(contents()).then(()=>{status.textContent="Exit ticket copied.";}).catch(()=>{status.textContent="Copy was blocked. Use Download my ticket instead.";});
+    };
+    root.querySelector("#exit-clear").onclick=()=>{
+      fields.forEach(el=>el.value="");delete exitDrafts[key];status.textContent="Exit ticket cleared.";
+    };
+  }
+
   function renderLesson(u,l){
+    const exitWasOpen=!!document.getElementById("exit-ticket")?.open;
+    if(window.UnitReview)window.UnitReview.remember(H.subject,u.id,l.id);
     const ls=u.lessons, i=ls.indexOf(l), prev=ls[i-1], next=ls[i+1];
     const imgs=l.imgs||[];
     const qs=(l.check||[]).map((q,qi)=>{
@@ -164,9 +217,11 @@
       ${l.activity?`<h3>Complete the activity</h3>${activityHTML(u,l)}`:""}
       ${qs?`<h3>Check yourself</h3>${qs}`:""}
       ${n&&n===l.check.length?`<div class="score">${right} out of ${l.check.length}${right===l.check.length?". Nice, you've got this lesson.":". Have another look at the notes, then try again."} <button class="btn ghost" id="retry" style="margin-left:8px">Try again</button></div>`:""}
+      ${exitTicketHTML(u,l)}
       <div class="pager">${prev?`<button class="btn ghost" data-go="${u.id}/${prev.id}">&larr; Lesson ${esc(prev.n)}</button>`:"<span></span>"}${next?`<button class="btn ghost" data-go="${u.id}/${next.id}">Lesson ${esc(next.n)} &rarr;</button>`:(ls.length>1?`<button class="btn" data-go="${u.id}/review">Unit review &rarr;</button>`:"")}</div>
     </article></div>`;
     $("#back").onclick=()=>go(u.id);
+    const exitPanel=$("#exit-ticket");if(exitPanel&&exitWasOpen)exitPanel.open=true;
     if(LT){ // a live model on the lesson page; reuse it on re-render so answering questions doesn't reset it
       const slot=$("#ltool-slot");
       if(keep&&keep.dataset.k===ltKey) slot.replaceWith(keep);
@@ -186,6 +241,7 @@
     });
     const r=$("#retry"); if(r) r.onclick=()=>{answers={}; const y=window.scrollY; renderLesson(u,l); window.scrollTo(0,y);};
     bindActivity(u,l);
+    bindExitTicket(u,l);
   }
 
   function renderReview(u){

@@ -283,7 +283,7 @@ figcaption{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.35}
   </div>
 </div>
 
-<script src="../assets/review.js"></script>
+<script src="../assets/review.js?v=20261101a"></script>
 <script src="egypt-diagrams.js"></script>
 <script src="egypt-lessons.js"></script>
 <script src="greece-lessons.js"></script>
@@ -1015,6 +1015,19 @@ function glyph(kind){
   return '<svg width="12" height="12"><line x1="2" y1="10" x2="10" y2="2" stroke="var(--muted)" stroke-width="1.5"/></svg>';
 }
 function statusTag(u){return u.status==="now"?'<span class="tag">Now</span>':u.status==="next"?'<span class="tag">Up next</span>':u.status==="done"?'<span class="tag" style="color:var(--muted)">Done</span>':'<span class="tag" style="color:var(--muted)">Coming up</span>';}
+function lastClassReviewHTML(u){
+  const lessons=(u.lessons||[]).filter(l=>l.released);
+  if(!lessons.length||!window.UnitReview)return "";
+  const last=window.UnitReview.lastLesson("ss",u.id,lessons);
+  const chosen=last||lessons[0];
+  return `<section class="last-review" aria-label="Last class quick review">
+    <div class="eyebrow">Daily retrieval · last class</div><h3>Quick review</h3>
+    <p>${last?`Last opened on this device: Lesson ${esc(last.n)} · ${esc(last.title)}`:"Choose the lesson you covered last class. The site will remember it on this device."}</p><p>Choose individual practice or lead three questions aloud, with time to think before the explanation appears.</p>
+    <div class="last-review-controls"><label for="ss-last-class-lesson">Lesson to review<select id="ss-last-class-lesson">${lessons.map(l=>`<option value="${esc(l.id)}" ${chosen.id===l.id?"selected":""}>Lesson ${esc(l.n)} · ${esc(l.title)}</option>`).join("")}</select></label><button class="btn" id="ss-last-class-start">Practise individually</button><button class="btn ghost" id="ss-last-class-class">Lead as a class</button></div>
+    <div id="ss-last-class-round" aria-live="polite" aria-atomic="true"></div><p class="fine">Only the lesson choice is remembered on this device. Answers stay on this page and clear when you leave.</p>
+  </section>`;
+}
+
 function renderPanel(){
   const P=$("#panel"); const u=curUnit();
   if(S.mode!=="explore"&&S.quiz){ renderQuizPanel(); return; }
@@ -1057,6 +1070,7 @@ function renderPanel(){
   if(hasL&&S.ptab==="lessons"){
     const done=getDone();
     body=`<p class="fine">Missed a class? Find the lesson number from the slides, read the notes, try the self-check, then get the handout from Mr. Mangles.</p>
+      ${lastClassReviewHTML(u)}
       <ul class="lessons">${u.lessons.map(l=>{
         const ok=done.has(u.id+":"+l.id);
         return `<li class="${l.released?"":"locked"}"><button data-l="${l.id}" ${l.released?"":'aria-disabled="true"'}><span class="ln">${esc(l.n)}</span><span class="nm">${esc(l.title)}</span><span class="st ${ok?"ok":""}">${l.released?(ok?"Checked ✓":""):"After class"}</span></button></li>`;}).join("")}</ul>
@@ -1073,6 +1087,8 @@ function renderPanel(){
   P.querySelectorAll("[data-p]").forEach(b=>b.onclick=()=>select(u.id,b.dataset.p));
   P.querySelectorAll(".lessons [data-l]").forEach(b=>b.onclick=()=>{const l=u.lessons.find(x=>x.id===b.dataset.l); if(l&&l.released) openLesson(u.id,l.id);});
   const rvb=$("#ss-review"); if(rvb) rvb.onclick=()=>openReview(u);
+  const qrb=$("#ss-last-class-start"); if(qrb) qrb.onclick=()=>{const id=$("#ss-last-class-lesson").value,l=(u.lessons||[]).find(x=>x.id===id&&x.released);if(l)UnitReview.renderQuick($("#ss-last-class-round"),l,{unitName:u.name,onLesson:()=>openLesson(u.id,l.id)});};
+  const ssClass=$("#ss-last-class-class"); if(ssClass) ssClass.onclick=()=>{const id=$("#ss-last-class-lesson").value,l=(u.lessons||[]).find(x=>x.id===id&&x.released);if(l)UnitReview.renderWholeClass($("#ss-last-class-round"),l,{onLesson:()=>openLesson(u.id,l.id),onSolo:()=>UnitReview.renderQuick($("#ss-last-class-round"),l,{unitName:u.name,onLesson:()=>openLesson(u.id,l.id)})});};
   const tp=$("#tab-places"), tl=$("#tab-lessons");
   if(tp) tp.onclick=()=>{S.ptab="places";renderPanel();};
   if(tl) tl.onclick=()=>{S.ptab="lessons";renderPanel();};
@@ -1085,7 +1101,8 @@ let sheetCtx=null, lastFocus=null;
 function openLesson(unitId,lessonId){
   const u=unitById(unitId); if(!u||!u.lessons) return;
   const l=u.lessons.find(x=>x.id===lessonId); if(!l||!l.released) return;
-  sheetCtx={u,l,answers:{}};
+  if(window.UnitReview)UnitReview.remember("ss",unitId,lessonId);
+  sheetCtx={u,l,answers:{},exitDraft:{}};
   if($("#sheet").hidden) lastFocus=document.activeElement;
   renderSheet();
   $("#sheet").hidden=false;
@@ -1098,12 +1115,40 @@ function openReview(u){
   $("#sheetcard").innerHTML=`<button class="sheet-close" id="sheet-x" aria-label="Close review">&times;</button>
     <div class="eyebrow">${esc(u.name)} · Unit review</div><h2>Review the unit</h2><div id="ss-rv"></div>`;
   $("#sheet-x").onclick=closeLesson;
+  const exitPanel=$("#ss-exit-ticket");
+  if(exitPanel){
+    if(exitWasOpen)exitPanel.open=true;
+    const fields=[...exitPanel.querySelectorAll("textarea[data-exit]")],status=$("#ss-exit-status");
+    fields.forEach(el=>el.addEventListener("input",()=>{
+      sheetCtx.exitDraft[el.dataset.exit]=el.value;
+      status.textContent="Draft held in this lesson only. Copy or download it before closing if you want to keep it.";
+    }));
+    const contents=()=>[u.name+" — "+l.title,"One-minute exit ticket",
+      "One idea I can now explain:\n"+exitPanel.querySelector('[data-exit="recall"]').value.trim(),
+      "One question or idea I want to revisit:\n"+exitPanel.querySelector('[data-exit="question"]').value.trim()
+    ].join("\n\n")+"\n";
+    $("#ss-exit-download").onclick=()=>{
+      const blob=new Blob([contents()],{type:"text/plain;charset=utf-8"}),url=URL.createObjectURL(blob),link=document.createElement("a");
+      link.href=url;link.download=("exit-ticket-ss-"+u.id+"-"+l.id).replace(/[^a-z0-9-]/gi,"-")+".txt";
+      document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);
+      status.textContent="Exit ticket downloaded.";
+    };
+    $("#ss-exit-copy").onclick=()=>{
+      if(!navigator.clipboard?.writeText){status.textContent="Copy isn't available in this browser. Use Download my ticket instead.";return;}
+      navigator.clipboard.writeText(contents()).then(()=>{status.textContent="Exit ticket copied.";}).catch(()=>{status.textContent="Copy was blocked. Use Download my ticket instead.";});
+    };
+    $("#ss-exit-clear").onclick=()=>{
+      fields.forEach(el=>el.value="");sheetCtx.exitDraft={};status.textContent="Exit ticket cleared.";
+    };
+  }
+
   UnitReview.render($("#ss-rv"),{name:u.name,lessons:u.lessons.filter(l=>l.released),onLesson:l=>openLesson(u.id,l.id)});
   $("#sheet").hidden=false; $("#sheetcard").scrollTop=0; $("#sheet").scrollTop=0;
 }
 function closeLesson(){ $("#sheet").hidden=true; sheetCtx=null; if(lastFocus&&lastFocus.focus) lastFocus.focus(); }
 function renderSheet(){
   const {u,l,answers}=sheetCtx;
+  const exitWasOpen=!!document.getElementById("ss-exit-ticket")?.open;
   const lessonLabel="Lesson";
   const activity=l.activity || (u.id==="mesopotamia" && ["l1","l5"].includes(l.id) ? {href:"river-valley-lab.html?civilization=mesopotamia",title:"Try the River Valley Decision Lab"} : null);
   const rel=u.lessons.filter(x=>x.released); const i=rel.indexOf(l);
@@ -1130,6 +1175,20 @@ function renderSheet(){
     ${activity?`<p><a class="atlas-compare-link" href="${esc(activity.href)}">${esc(activity.title||"Open investigation")}</a></p>`:""}<p class="fine">Get the handout from Mr. Mangles if you don't have it.</p>
     <h3>Check yourself</h3>${qs}
     ${nAns===l.check.length?`<div class="qscore">${nRight} out of ${l.check.length}${nRight===l.check.length?". Nice, you've got this lesson.":". Have another look at the notes above, then try again."} <button class="btn ghost" id="retry" style="margin-left:8px">Try again</button></div>`:""}
+    <details class="exit-ticket" id="ss-exit-ticket">
+      <summary>One-minute exit ticket · Before you go</summary>
+      <p class="fine">Use this as a quick reflection on Lesson ${esc(l.n)} · ${esc(l.title)} — responses are not submitted or saved online.</p>
+      <label for="ss-exit-recall">One idea from this lesson I can now explain</label>
+      <textarea id="ss-exit-recall" data-exit="recall" rows="2">${esc(sheetCtx.exitDraft.recall||"")}</textarea>
+      <label for="ss-exit-question">One question or idea I want to revisit</label>
+      <textarea id="ss-exit-question" data-exit="question" rows="2">${esc(sheetCtx.exitDraft.question||"")}</textarea>
+      <div class="exit-ticket-actions">
+        <button class="btn" type="button" id="ss-exit-download">Download my ticket</button>
+        <button class="btn ghost" type="button" id="ss-exit-copy">Copy my ticket</button>
+        <button class="btn ghost" type="button" id="ss-exit-clear">Clear</button>
+      </div>
+      <p class="fine" id="ss-exit-status" aria-live="polite">Optional: copy or download your reflection before closing this lesson.</p>
+    </details>
     <div class="sheet-nav">${prev?`<button class="btn ghost" id="lprev">&larr; ${lessonLabel} ${esc(prev.n)}</button>`:"<span></span>"}${next?`<button class="btn ghost" id="lnext">${lessonLabel} ${esc(next.n)} &rarr;</button>`:""}</div>`;
   $("#sheet-x").onclick=closeLesson;
   document.querySelectorAll("#sheetcard .opt").forEach(b=>b.onclick=()=>{
