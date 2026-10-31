@@ -180,6 +180,13 @@
   .rv-quick{margin-top:14px;padding:14px;border:1px solid var(--rule,#d6d6d6);border-radius:var(--radius,12px);background:var(--paper,var(--panel,#fff))}
   .rv-quick .opts{display:grid;gap:7px;margin:10px 0}
   .rv-quick .opts .opt{text-align:left}
+  .exit-ticket{margin:22px 0;padding:16px;border:1px solid var(--rule,#d6d6d6);border-radius:var(--radius,12px);background:var(--soft,var(--panel,#f7f5ee));color:var(--ink)}
+  .exit-ticket summary{cursor:pointer;font-weight:700;font-size:18px}
+  .exit-ticket[open] summary{margin-bottom:10px}
+  .exit-ticket label{display:block;margin:13px 0 5px;font-weight:700}
+  .exit-ticket textarea{display:block;width:100%;min-height:60px;padding:10px 12px;border:1px solid var(--rule,#aaa);border-radius:var(--btn-radius,8px);background:var(--paper,#fff);color:var(--ink);font:inherit;resize:vertical}
+  .exit-ticket textarea:focus-visible,.exit-ticket summary:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+  .exit-ticket-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
   @media(max-width:600px){.last-review-controls{align-items:stretch}.last-review-controls label{min-width:100%}}`;
   const st=document.createElement("style"); st.textContent=css; document.head.appendChild(st);
 })();
