@@ -57,5 +57,17 @@
     }
     objectSelect.addEventListener('change',updateMethod);$('#dlc-calculate').addEventListener('click',calculate);$('#dlc-half-calc').addEventListener('click',compareClay);updateMethod();renderRows();
   }
-  H.lessonTools=Object.assign(H.lessonTools||{}, {'matter/lab':densityLabCompanion});
+  H.lessonTools=H.lessonTools||{};
+  const displacementDiagram=H.lessonTools['matter/lab'];
+  H.lessonTools['matter/lab']=function(root){
+    if(displacementDiagram){
+      const diagram=document.createElement('div');
+      diagram.className='density-lab-existing-diagram';
+      root.appendChild(diagram);
+      displacementDiagram(diagram);
+    }
+    const companion=document.createElement('div');
+    root.appendChild(companion);
+    densityLabCompanion(companion);
+  };
 })();
