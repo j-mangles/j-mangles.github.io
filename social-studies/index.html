@@ -1015,6 +1015,19 @@ function glyph(kind){
   return '<svg width="12" height="12"><line x1="2" y1="10" x2="10" y2="2" stroke="var(--muted)" stroke-width="1.5"/></svg>';
 }
 function statusTag(u){return u.status==="now"?'<span class="tag">Now</span>':u.status==="next"?'<span class="tag">Up next</span>':u.status==="done"?'<span class="tag" style="color:var(--muted)">Done</span>':'<span class="tag" style="color:var(--muted)">Coming up</span>';}
+function lastClassReviewHTML(u){
+  const lessons=(u.lessons||[]).filter(l=>l.released);
+  if(!lessons.length||!window.UnitReview)return "";
+  const last=window.UnitReview.lastLesson("ss",u.id,lessons);
+  const chosen=last||lessons[0];
+  return `<section class="last-review" aria-label="Last class quick review">
+    <div class="eyebrow">Daily retrieval · last class</div><h3>Quick review</h3>
+    <p>${last?`Last opened on this device: Lesson ${esc(last.n)} · ${esc(last.title)}.`:"Choose the lesson you covered last class. The site will remember it on this device."} Answer three questions, then revisit anything you missed.</p>
+    <div class="last-review-controls"><label for="ss-last-class-lesson">Lesson to review<select id="ss-last-class-lesson">${lessons.map(l=>`<option value="${esc(l.id)}" ${chosen.id===l.id?"selected":""}>Lesson ${esc(l.n)} · ${esc(l.title)}</option>`).join("")}</select></label><button class="btn" id="ss-last-class-start">Start quick review</button></div>
+    <div id="ss-last-class-round"></div><p class="fine">Only the lesson choice is remembered on this device. Answers stay on this page and clear when you leave.</p>
+  </section>`;
+}
+
 function renderPanel(){
   const P=$("#panel"); const u=curUnit();
   if(S.mode!=="explore"&&S.quiz){ renderQuizPanel(); return; }
@@ -1057,6 +1070,7 @@ function renderPanel(){
   if(hasL&&S.ptab==="lessons"){
     const done=getDone();
     body=`<p class="fine">Missed a class? Find the lesson number from the slides, read the notes, try the self-check, then get the handout from Mr. Mangles.</p>
+      ${lastClassReviewHTML(u)}
       <ul class="lessons">${u.lessons.map(l=>{
         const ok=done.has(u.id+":"+l.id);
         return `<li class="${l.released?"":"locked"}"><button data-l="${l.id}" ${l.released?"":'aria-disabled="true"'}><span class="ln">${esc(l.n)}</span><span class="nm">${esc(l.title)}</span><span class="st ${ok?"ok":""}">${l.released?(ok?"Checked ✓":""):"After class"}</span></button></li>`;}).join("")}</ul>
@@ -1073,6 +1087,7 @@ function renderPanel(){
   P.querySelectorAll("[data-p]").forEach(b=>b.onclick=()=>select(u.id,b.dataset.p));
   P.querySelectorAll(".lessons [data-l]").forEach(b=>b.onclick=()=>{const l=u.lessons.find(x=>x.id===b.dataset.l); if(l&&l.released) openLesson(u.id,l.id);});
   const rvb=$("#ss-review"); if(rvb) rvb.onclick=()=>openReview(u);
+  const qrb=$("#ss-last-class-start"); if(qrb) qrb.onclick=()=>{const id=$("#ss-last-class-lesson").value,l=(u.lessons||[]).find(x=>x.id===id&&x.released);if(l)UnitReview.renderQuick($("#ss-last-class-round"),l,{unitName:u.name,onLesson:()=>openLesson(u.id,l.id)});};
   const tp=$("#tab-places"), tl=$("#tab-lessons");
   if(tp) tp.onclick=()=>{S.ptab="places";renderPanel();};
   if(tl) tl.onclick=()=>{S.ptab="lessons";renderPanel();};
@@ -1085,6 +1100,7 @@ let sheetCtx=null, lastFocus=null;
 function openLesson(unitId,lessonId){
   const u=unitById(unitId); if(!u||!u.lessons) return;
   const l=u.lessons.find(x=>x.id===lessonId); if(!l||!l.released) return;
+  if(window.UnitReview)UnitReview.remember("ss",unitId,lessonId);
   sheetCtx={u,l,answers:{}};
   if($("#sheet").hidden) lastFocus=document.activeElement;
   renderSheet();
