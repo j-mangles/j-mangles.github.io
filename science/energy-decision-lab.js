@@ -70,8 +70,9 @@
         $('#etl-b-'+c.id).setAttribute('aria-label',sourceName($('#etl-source-b').value)+' '+c.name+' rating, 1 to 5');
       });
     }
-    $('#etl-source-a').addEventListener('change',updateLabels);
-    $('#etl-source-b').addEventListener('change',updateLabels);
+    function sourceChanged(prefix){criteria.forEach(c=>$('#etl-'+prefix+'-'+c.id).value='');updateLabels();$('#etl-result').textContent='Source changed. Re-rate that option using evidence before comparing.';}
+    $('#etl-source-a').addEventListener('change',()=>sourceChanged('a'));
+    $('#etl-source-b').addEventListener('change',()=>sourceChanged('b'));
     $('#etl-compare').addEventListener('click',()=>{
       const a=$('#etl-source-a').value,b=$('#etl-source-b').value,out=$('#etl-result');
       if(a===b){out.textContent='Choose two different energy sources to compare.';return;}
