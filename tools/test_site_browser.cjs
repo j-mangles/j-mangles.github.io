@@ -290,7 +290,6 @@ async function checkNoHorizontalOverflow(page,label){
   assert.equal(await page.locator("#tab-lessons").count(),0,"Future Greece lessons should stay hidden until the unit is active");
   assert.equal(await page.locator("#panel .lessons [data-l]").count(),0,"Coming-up units should not expose lesson links");
   await capture(page,"atlas-greece-coming-up-desktop");
-  await page.locator("#tab-places").click().catch(()=>{});
   stage="Greece Found a City, Citizen for a Day and Draw Your Lot tools";
   await goto(page,"/social-studies/greek-inquiry-lab.html#found",'[data-tab="found"]');
   assert.equal(await page.locator('[data-rating]').count(),20);
