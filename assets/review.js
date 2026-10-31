@@ -49,7 +49,7 @@
         const open=el.querySelector("#rvc-open");if(open&&options.onLesson)open.onclick=options.onLesson;return;
       }
       if(i>=qs.length){
-        el.innerHTML='<div class="rv-quick"><div class="rv-score"><span>'+qs.length+'</span> prompts</div><p role="status">Whole-class review complete. Invite students to name one idea they can now explain.</p><button class="btn" id="rvc-again">New question set</button> <button class="btn ghost" id="rvc-solo">Try it individually</button> <button class="btn ghost" id="rvc-open">Open the full lesson</button> <button class="btn ghost" id="rvc-project">'+(projecting?'Exit board view':'Project this question')+'</button></div>';
+        el.innerHTML='<div class="rv-quick"><div class="rv-score"><span>'+qs.length+'</span> prompts</div><p role="status">Whole-class review complete. Invite students to name one idea they can now explain.</p><button class="btn" id="rvc-again">New question set</button> <button class="btn ghost" id="rvc-solo">Try it individually</button> <button class="btn ghost" id="rvc-open">Open the full lesson</button> <button class="btn ghost" id="rvc-project">'+(projecting?'Exit board view':'Project wrap-up')+'</button></div>';
         el.classList.toggle("rv-projector",projecting);
         const again=el.querySelector("#rvc-again");if(again)again.onclick=()=>{qs=shuffle(bank).slice(0,Math.min(3,bank.length));i=0;revealed=false;draw();};
         const solo=el.querySelector("#rvc-solo");if(solo&&options.onSolo)solo.onclick=()=>{projecting=false;el.classList.remove("rv-projector");options.onSolo();};
