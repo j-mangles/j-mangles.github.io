@@ -1022,7 +1022,7 @@ function lastClassReviewHTML(u){
   const chosen=last||lessons[0];
   return `<section class="last-review" aria-label="Last class quick review">
     <div class="eyebrow">Daily retrieval · last class</div><h3>Quick review</h3>
-    <p>${last?`Last opened on this device: Lesson ${esc(last.n)} · ${esc(last.title)}.`:"Choose the lesson you covered last class. The site will remember it on this device."} Choose individual practice or lead three questions aloud, with time to think before the explanation appears.</p>
+    <p>${last?`Last opened on this device: Lesson ${esc(last.n)} · ${esc(last.title)}`:"Choose the lesson you covered last class. The site will remember it on this device."}</p><p>Choose individual practice or lead three questions aloud, with time to think before the explanation appears.</p>
     <div class="last-review-controls"><label for="ss-last-class-lesson">Lesson to review<select id="ss-last-class-lesson">${lessons.map(l=>`<option value="${esc(l.id)}" ${chosen.id===l.id?"selected":""}>Lesson ${esc(l.n)} · ${esc(l.title)}</option>`).join("")}</select></label><button class="btn" id="ss-last-class-start">Practise individually</button><button class="btn ghost" id="ss-last-class-class">Lead as a class</button></div>
     <div id="ss-last-class-round" aria-live="polite" aria-atomic="true"></div><p class="fine">Only the lesson choice is remembered on this device. Answers stay on this page and clear when you leave.</p>
   </section>`;
