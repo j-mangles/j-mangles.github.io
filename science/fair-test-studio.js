@@ -107,8 +107,7 @@
       }
       feedback.textContent=graph==='line'?'A line graph fits these temperatures because temperature is a continuous scale.':'A bar graph can show the values, but a line graph better shows the trend across a continuous temperature scale.';
     }
-    root.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{mode=b.dataset.mode;render();});
-    root.querySelectorAll('input[name="sugar-graph"]').forEach(el=>el.onchange=()=>{graph=el.value;update();});
+    
     root.querySelector('.sugar-download').onclick=()=>{
       const rows=mode==='example'?temps.map((temp,i)=>({temp,nums:[example[i]],mean:example[i]})):values();
       const lines=['Mode,Water temperature (°C),Trial 1 time (s),Trial 2 time (s),Trial 3 time (s),Mean time (s)'];
