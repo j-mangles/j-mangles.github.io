@@ -35,7 +35,7 @@
         <div class="eyebrow">Interactive model · SCI.8.E.19</div>
         <h3>Plant Cell Conditions: Find the Limiting Resource</h3>
         <p>Plants need light, water and carbon dioxide for photosynthesis. Change one condition at a time, then use the model's output as evidence.</p>
-        <p class="ccm-note"><strong>Model rule:</strong> the scarcest resource limits the model's relative photosynthesis rate. The percentages are made-up model values, not real measurements. This model also leaves out temperature, leaf age and many real-plant interactions.</p>
+        <p class="ccm-note"><strong>Model rule:</strong> Established science: plant photosynthesis needs light, water, and carbon dioxide. Simplified model: the lowest slider percentage sets the relative rate. The slider percentages are illustrative, not measurements; temperature, leaf age, and other real-plant interactions are not modelled.</p>
         <div class="ccm-grid">
           <div>
             <div class="ccm-controls">
