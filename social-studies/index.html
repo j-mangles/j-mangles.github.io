@@ -1177,7 +1177,7 @@ function renderSheet(){
     ${nAns===l.check.length?`<div class="qscore">${nRight} out of ${l.check.length}${nRight===l.check.length?". Nice, you've got this lesson.":". Have another look at the notes above, then try again."} <button class="btn ghost" id="retry" style="margin-left:8px">Try again</button></div>`:""}
     <details class="exit-ticket" id="ss-exit-ticket">
       <summary>One-minute exit ticket · Before you go</summary>
-      <p class="fine">Use this as a quick reflection on Lesson ${esc(l.n)}: ${esc(l.title)} Your writing stays in this lesson sheet; it is not submitted or saved online.</p>
+      <p class="fine">Use this as a quick reflection on Lesson ${esc(l.n)} · ${esc(l.title)} — responses are not submitted or saved online.</p>
       <label for="ss-exit-recall">One idea from this lesson I can now explain</label>
       <textarea id="ss-exit-recall" data-exit="recall" rows="2">${esc(sheetCtx.exitDraft.recall||"")}</textarea>
       <label for="ss-exit-question">One question or idea I want to revisit</label>
