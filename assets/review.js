@@ -4,7 +4,42 @@
   const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
   const shuffle=a=>{a=a.slice();for(let k=a.length-1;k>0;k--){const j=Math.floor(Math.random()*(k+1));[a[k],a[j]]=[a[j],a[k]];}return a;};
 
-  window.UnitReview={render(el,unit){
+  const LAST_KEY="class-last-lesson-v1";
+  function recentMap(){try{return JSON.parse(localStorage.getItem(LAST_KEY)||"{}");}catch(e){return {};}}
+  function remember(subject,unitId,lessonId){
+    try{const map=recentMap();map[String(subject)+":"+String(unitId)]=String(lessonId);localStorage.setItem(LAST_KEY,JSON.stringify(map));}catch(e){}
+  }
+  function lastLesson(subject,unitId,lessons){
+    const id=recentMap()[String(subject)+":"+String(unitId)];
+    return id?(lessons||[]).find(l=>l.id===id)||null:null;
+  }
+  function renderQuick(el,lesson,options={}){
+    const bank=(lesson.check||[]).filter(q=>Array.isArray(q.a)&&q.a.length>1&&Number.isInteger(q.c)&&q.c>=0&&q.c<q.a.length&&!/^Use the graph/.test(q.q));
+    let qs=shuffle(bank).slice(0,Math.min(3,bank.length)),i=0,answers=[];
+    function draw(){
+      if(!qs.length){
+        el.innerHTML='<div class="rv-quick"><p class="rv-lede">This lesson does not have a quick-check question yet.</p>'+(lesson.big?'<p><strong>Recall the big idea:</strong> '+esc(lesson.big)+'</p>':'')+'<button class="btn" id="rvq-open">Open the lesson</button></div>';
+        const open=el.querySelector("#rvq-open");if(open&&options.onLesson)open.onclick=options.onLesson;return;
+      }
+      if(i>=qs.length){
+        const score=answers.filter((a,j)=>a===qs[j].c).length,missed=qs.filter((q,j)=>answers[j]!==q.c);
+        el.innerHTML='<div class="rv-quick"><div class="rv-score"><span>'+score+'</span> / '+qs.length+'</div><p role="status">'+(score===qs.length?"Nice recall. You're ready to build on this.":score/qs.length>=.67?"Good start. Review the one you missed.":"Open the lesson notes, then try those questions again.")+'</p>'+
+          (missed.length?'<button class="btn" id="rvq-missed">Retry missed ('+missed.length+')</button> ':"")+
+          '<button class="btn ghost" id="rvq-again">New 3-question round</button> <button class="btn ghost" id="rvq-open">Open the full lesson</button></div>';
+        const retry=el.querySelector("#rvq-missed");if(retry)retry.onclick=()=>{qs=shuffle(missed);i=0;answers=[];draw();};
+        const again=el.querySelector("#rvq-again");if(again)again.onclick=()=>{qs=shuffle(bank).slice(0,Math.min(3,bank.length));i=0;answers=[];draw();};
+        const open=el.querySelector("#rvq-open");if(open&&options.onLesson)open.onclick=options.onLesson;return;
+      }
+      const q=qs[i],a=answers[i];
+      el.innerHTML='<div class="rv-quick"><div class="rv-prog"><span style="width:'+Math.round(i/qs.length*100)+'%"></span></div><p class="rv-qn">Question '+(i+1)+' of '+qs.length+' · '+esc(options.unitName||"")+ ' · Lesson '+esc(lesson.n)+'</p><p class="rv-q">'+esc(q.q)+'</p><div class="opts">'+q.a.map((o,k)=>{let cls="opt";if(a!==undefined){if(k===q.c)cls+=" right";else if(k===a)cls+=" wrong";}return '<button class="'+cls+'" data-rvq="'+k+'" '+(a!==undefined?"disabled":"")+'>'+esc(o)+'</button>';}).join("")+'</div>'+
+        (a!==undefined?'<p class="why" role="status">'+(a===q.c?"Right. ":"Not quite. ")+esc(q.why)+'</p><button class="btn" id="rvq-next">'+(i+1<qs.length?"Next question":"See my score")+'</button>':"")+'</div>';
+      el.querySelectorAll("[data-rvq]").forEach(b=>b.onclick=()=>{answers[i]=Number(b.dataset.rvq);draw();});
+      const next=el.querySelector("#rvq-next");if(next)next.onclick=()=>{i++;draw();};
+    }
+    draw();
+  }
+
+  window.UnitReview={remember,lastLesson,renderQuick,render(el,unit){
     const ls=unit.lessons.filter(l=>l.big||l.terms||l.check);
     const cards=[]; ls.forEach(l=>(l.terms||[]).forEach(t=>cards.push({t:t[0],d:t[1],l})));
     const bank=[]; ls.forEach(l=>(l.check||[]).forEach(q=>{ if(!/^Use the graph/.test(q.q)) bank.push({...q,l}); }));
@@ -111,6 +146,15 @@
   .rv-q{font-size:21px;line-height:1.35;margin:0 0 6px}
   .rv-score{font-family:var(--f-title,var(--f-display));font-size:64px;line-height:1;margin-top:6px}.rv-score span{color:var(--accent-ink,var(--accent))}
   .rv-h{font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:18px 0 6px}
-  .rv .btn:disabled{opacity:.35;cursor:default}`;
+  .rv .btn:disabled{opacity:.35;cursor:default}
+  .last-review{margin:18px 0;padding:16px;border:1px solid var(--rule,#d6d6d6);border-radius:var(--radius,12px);background:var(--soft,var(--panel,#f7f5ee));color:var(--ink)}
+  .last-review h3{margin:4px 0 7px}.last-review p{margin:7px 0 12px;color:var(--muted)}
+  .last-review-controls{display:flex;align-items:end;gap:9px;flex-wrap:wrap;margin:10px 0}
+  .last-review-controls label{display:grid;gap:5px;flex:1;min-width:220px;font-weight:700}
+  .last-review-controls select{width:100%;min-height:42px;padding:7px 10px;border:1px solid var(--rule,#aaa);border-radius:8px;background:var(--paper,#fff);color:var(--ink);font:inherit}
+  .rv-quick{margin-top:14px;padding:14px;border:1px solid var(--rule,#d6d6d6);border-radius:var(--radius,12px);background:var(--paper,var(--panel,#fff))}
+  .rv-quick .opts{display:grid;gap:7px;margin:10px 0}
+  .rv-quick .opts .opt{text-align:left}
+  @media(max-width:600px){.last-review-controls{align-items:stretch}.last-review-controls label{min-width:100%}}`;
   const st=document.createElement("style"); st.textContent=css; document.head.appendChild(st);
 })();
