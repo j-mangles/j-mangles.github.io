@@ -130,5 +130,29 @@
     @media(max-width:620px){.sugar-data input{width:72px}.sugar-options fieldset{display:grid;gap:8px}}
   </style>`;
   const sugarMount=root=>{sugarInvestigation(root);root.insertAdjacentHTML('afterbegin',sugarStyles);};
-  H.lessonTools=Object.assign(H.lessonTools||{}, {'skills/fair':fairTestStudio,'skills/mini':sugarMount});
+  function evidenceReview(root){
+    const questions=[
+      {label:'1. Is the underlying question testable?',options:['No. Health questions cannot be investigated with evidence.','Yes. A study could compare headache reports under carefully planned conditions.'],answer:1,why:'A question can be scientific and testable even when one weak example does not answer it.'},
+      {label:'2. What conclusion is supported by this evidence?',options:['The bracelet caused the headaches to improve.','Three volunteers reported feeling better, but this does not show what caused the change.'],answer:1,why:'Without a comparison group, improvement could have another explanation, including expectations or changes over time.'},
+      {label:'3. Which follow-up would make the comparison stronger?',options:['Ask more people who already use the bracelet whether they feel better.','Randomly compare a treatment group with a similar placebo group, then compare the results.'],answer:1,why:'A randomized comparison with a placebo helps separate the effect of the bracelet from expectations and other influences.'}
+    ];
+    root.innerHTML=style+`<section class="fts evidence-review" aria-label="Peer review an evidence claim">
+      <div class="eyebrow">Interactive practice</div><h3>Peer Review: Does the Evidence Support the Claim?</h3>
+      <p class="fts-intro">A website says a magnet bracelet helped three volunteers with headaches. The volunteers reported feeling better, but the website describes no comparison group or repeated study. Review the evidence before judging the claim.</p>
+      <div class="fts-grid evidence-questions">${questions.map((q,i)=>'<div class="fts-field"><label for="ev-'+i+'">'+esc(q.label)+'</label><select id="ev-'+i+'"><option value="">Choose one…</option>'+q.options.map((o,n)=>'<option value="'+n+'">'+esc(o)+'</option>').join('')+'</select></div>').join('')}</div>
+      <p class="fts-context">This is a classroom exercise about evidence quality, not advice about headaches or treatment.</p>
+      <div class="fts-actions"><button type="button" class="evidence-check">Check my review</button><button type="button" class="evidence-reset fts-secondary">Try again</button></div>
+      <div class="fts-feedback" role="status" hidden></div>
+    </section>`;
+    const check=root.querySelector('.evidence-check'),reset=root.querySelector('.evidence-reset'),feedback=root.querySelector('.fts-feedback');
+    check.onclick=()=>{
+      const fields=questions.map((_,i)=>root.querySelector('#ev-'+i)),missing=fields.some(el=>el.value==='');
+      feedback.hidden=false;
+      if(missing){feedback.innerHTML='<strong>Finish your review first.</strong><p>Choose one response for each question.</p>';return;}
+      const correct=fields.map((el,i)=>Number(el.value)===questions[i].answer);
+      feedback.innerHTML='<div class="fts-summary">'+correct.filter(Boolean).length+' of 3 evidence checks complete</div>'+questions.map((q,i)=>'<p class="'+(correct[i]?'fts-right':'fts-wrong')+'"><strong>'+ (correct[i]?'Strong review':'Reconsider this point') +'</strong> '+esc(q.why)+(correct[i]?'':' Best choice: '+esc(q.options[q.answer])+'.')+'</p>').join('')+'<p>Good peer review separates what was observed from what the evidence can support.</p>';
+    };
+    reset.onclick=()=>{root.querySelectorAll('.evidence-questions select').forEach(el=>el.value='');feedback.hidden=true;feedback.innerHTML='';};
+  }
+  H.lessonTools=Object.assign(H.lessonTools||{}, {'skills/fair':fairTestStudio,'skills/mini':sugarMount,'skills/what':evidenceReview});
 })();
