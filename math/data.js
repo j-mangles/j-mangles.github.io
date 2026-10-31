@@ -442,7 +442,447 @@ window.HUB = {
      ]}
    ]
   },
-  {id:"fracops", n:"4", name:"Fraction Operations", status:"soon", when:"Late November", intro:"Adding and subtracting fractions and mixed numbers.", lessons:[]},
+  {id:"fracops", n:"4", name:"Fraction Operations", status:"soon", when:"Late November",
+   intro:"Adding and subtracting fractions and mixed numbers. We start with two tools, the GCF and LCM, then add and subtract with like denominators, unlike denominators and mixed numbers, and finish with a skill check.",
+   lessons:[
+ {
+  "id": "l01",
+  "n": "1",
+  "title": "GCF and LCM",
+  "big": "The GCF is the biggest number that divides into both numbers. The LCM is the smallest number both numbers divide into. We use the GCF to simplify fractions and the LCM to find common denominators.",
+  "notes": [
+   "Factors divide a number evenly, and there are only a few of them. Multiples are what you get when you count by the number, and they go on forever. A factor is never bigger than the number. A multiple is never smaller.",
+   "GCF: list the factors of each number in pairs (1 × 18, 2 × 9, 3 × 6), circle the ones in both lists and take the biggest. The GCF of 12 and 18 is 6.",
+   "LCM: list multiples of each number and stop at the first match. The LCM of 4 and 6 is 12. 24 is also a common multiple, but 12 comes first.",
+   "For bigger numbers, prime factors are faster. 24 = 2 × 2 × 2 × 3 and 36 = 2 × 2 × 3 × 3. GCF = what they share: 2 × 2 × 3 = 12. LCM = everything needed: 2 × 2 × 2 × 3 × 3 = 72.",
+   "Divide the top and bottom by the GCF to simplify in one step: 24/36 → 24 ÷ 12 and 36 ÷ 12 = 2/3.",
+   "Common mistake: multiplying the two numbers to get the LCM. 4 × 6 = 24 is a common multiple, but not always the least one."
+  ],
+  "table": {
+   "title": "Which one do I need?",
+   "head": [
+    "GCF",
+    "LCM"
+   ],
+   "rows": [
+    [
+     "Splitting things into equal groups",
+     "Things that repeat and line up again"
+    ],
+    [
+     "The biggest group size that works",
+     "The first time both happen together"
+    ],
+    [
+     "Simplifying a fraction",
+     "Finding a common denominator"
+    ]
+   ]
+  },
+  "html": "<h3>Worked examples</h3><div class=\"task\" style=\"margin-bottom:12px\"><p><b>Find the GCF of 12 and 18.</b></p><ol style=\"margin:8px 0;padding-left:22px;display:grid;gap:4px\"><li>12: 1, 2, 3, 4, 6, 12 <span style=\"display:block;font-size:.92em;color:var(--muted)\">List the factors.</span></li><li>18: 1, 2, 3, 6, 9, 18 <span style=\"display:block;font-size:.92em;color:var(--muted)\">Work in pairs: 1 × 18, 2 × 9, 3 × 6.</span></li><li>Common: 1, 2, 3, 6 <span style=\"display:block;font-size:.92em;color:var(--muted)\">Circle the ones in both lists.</span></li><li>Greatest: 6 <span style=\"display:block;font-size:.92em;color:var(--muted)\">The biggest number that divides both.</span></li></ol><p>Answer: <b>6</b></p></div><div class=\"task\" style=\"margin-bottom:12px\"><p><b>Bus A leaves every 6 minutes and Bus B every 8 minutes. Both leave at 9:00. When do they next leave together?</b></p><ol style=\"margin:8px 0;padding-left:22px;display:grid;gap:4px\"><li>Repeating and lining up: LCM <span style=\"display:block;font-size:.92em;color:var(--muted)\">Decide which tool first.</span></li><li>6, 12, 18, 24 and 8, 16, 24 <span style=\"display:block;font-size:.92em;color:var(--muted)\">List multiples until they match.</span></li><li>LCM of 6 and 8 is 24 <span style=\"display:block;font-size:.92em;color:var(--muted)\">24 minutes after 9:00.</span></li></ol><p>Answer: <b>9:24</b></p></div>",
+  "terms": [
+   [
+    "Factor",
+    "A number that divides another number evenly."
+   ],
+   [
+    "Multiple",
+    "The product of a number and a whole number; what you get counting by that number."
+   ],
+   [
+    "GCF",
+    "Greatest common factor: the largest factor two numbers share."
+   ],
+   [
+    "LCM",
+    "Least common multiple: the smallest multiple two numbers share."
+   ],
+   [
+    "Prime factorization",
+    "Writing a number as a product of prime numbers, like 24 = 2 × 2 × 2 × 3."
+   ]
+  ],
+  "work": "Lesson 1 practice sheet, Parts A to E. Part F is a challenge.",
+  "check": [
+   {
+    "q": "The GCF of 15 and 25 is…",
+    "a": [
+     "3",
+     "25",
+     "5",
+     "75"
+    ],
+    "c": 2,
+    "why": "Factors of 15: 1, 3, 5, 15. Factors of 25: 1, 5, 25. The biggest shared one is 5."
+   },
+   {
+    "q": "The LCM of 6 and 9 is…",
+    "a": [
+     "18",
+     "3",
+     "36",
+     "54"
+    ],
+    "c": 0,
+    "why": "6, 12, 18 and 9, 18. The first match is 18. 54 = 6 × 9 works, but it isn't the least."
+   },
+   {
+    "q": "18/24 in simplest form is…",
+    "a": [
+     "9/12",
+     "6/8",
+     "2/3",
+     "3/4"
+    ],
+    "c": 3,
+    "why": "The GCF of 18 and 24 is 6. 18 ÷ 6 = 3 and 24 ÷ 6 = 4."
+   },
+   {
+    "q": "Two lights flash together. One flashes every 4 seconds, the other every 10 seconds. When do they next flash together?",
+    "a": [
+     "After 14 seconds",
+     "After 20 seconds",
+     "After 40 seconds",
+     "After 2 seconds"
+    ],
+    "c": 1,
+    "why": "Repeating and lining up means LCM. 4, 8, 12, 16, 20 and 10, 20."
+   }
+  ]
+ },
+ {
+  "id": "l02",
+  "n": "2",
+  "title": "Adding and Subtracting: Like Denominators",
+  "big": "When the denominators match, the pieces are already the same size. Add or subtract the numerators, keep the denominator, then simplify.",
+  "notes": [
+   "The denominator names the size of the piece. The numerator counts the pieces. Three eighths plus two eighths is five eighths: 3/8 + 2/8 = 5/8.",
+   "Keep the denominator, then simplify with the GCF: 5/12 + 1/12 = 6/12 = 1/2.",
+   "Subtracting works the same way: 7/10 − 3/10 = 4/10 = 2/5.",
+   "If the answer is improper, write it as a mixed number: 5/6 + 5/6 = 10/6 = 1 4/6 = 1 2/3.",
+   "Mixed numbers: add the wholes, add the fractions, then regroup if the fractions made another whole. 2 3/5 + 1 4/5 = 3 + 7/5 = 3 + 1 2/5 = 4 2/5.",
+   "To subtract from 1, write 1 with the same denominator: 1 − 5/8 = 8/8 − 5/8 = 3/8.",
+   "Common mistake: adding the denominators too, like 3/8 + 2/8 = 5/16. The pieces are still eighths. Adding can't make an amount smaller, and 5/16 is less than 3/8."
+  ],
+  "html": "<h3>Worked examples</h3><div class=\"task\" style=\"margin-bottom:12px\"><p><b>5/6 + 5/6</b></p><ol style=\"margin:8px 0;padding-left:22px;display:grid;gap:4px\"><li>5 + 5 = 10, so 10/6 <span style=\"display:block;font-size:.92em;color:var(--muted)\">Improper: more than one whole.</span></li><li>10/6 = 1 4/6 <span style=\"display:block;font-size:.92em;color:var(--muted)\">6 sixths make one whole, with 4 sixths left.</span></li><li>1 4/6 = 1 2/3 <span style=\"display:block;font-size:.92em;color:var(--muted)\">Simplify the fraction part.</span></li></ol><p>Answer: <b>1 2/3</b></p></div><div class=\"task\" style=\"margin-bottom:12px\"><p><b>A pizza has 8 slices. Sam eats 3/8 and Lee eats 2/8. What fraction is left?</b></p><ol style=\"margin:8px 0;padding-left:22px;display:grid;gap:4px\"><li>Eaten: 3/8 + 2/8 = 5/8 <span style=\"display:block;font-size:.92em;color:var(--muted)\">Add what was eaten.</span></li><li>Whole pizza = 8/8 <span style=\"display:block;font-size:.92em;color:var(--muted)\">Write 1 with the same denominator.</span></li><li>8/8 − 5/8 = 3/8 <span style=\"display:block;font-size:.92em;color:var(--muted)\">Subtract from the whole.</span></li></ol><p>Answer: <b>3/8 of the pizza</b></p></div>",
+  "terms": [
+   [
+    "Numerator",
+    "The top number: how many pieces."
+   ],
+   [
+    "Denominator",
+    "The bottom number: what size the pieces are."
+   ],
+   [
+    "Improper fraction",
+    "A fraction where the numerator is bigger than the denominator, like 10/6."
+   ],
+   [
+    "Mixed number",
+    "A whole number and a fraction together, like 1 2/3."
+   ],
+   [
+    "Simplest form",
+    "A fraction whose numerator and denominator share no factor except 1."
+   ]
+  ],
+  "work": "Lesson 2 practice sheet, Parts A to E. Part F is a challenge.",
+  "check": [
+   {
+    "q": "2/7 + 3/7 =",
+    "a": [
+     "5/14",
+     "5/7",
+     "6/7",
+     "6/14"
+    ],
+    "c": 1,
+    "why": "Same-size pieces: 2 sevenths + 3 sevenths = 5 sevenths. The denominator stays 7."
+   },
+   {
+    "q": "11/12 − 5/12 in simplest form is…",
+    "a": [
+     "6/12",
+     "6/24",
+     "3/4",
+     "1/2"
+    ],
+    "c": 3,
+    "why": "11 − 5 = 6, so 6/12. The GCF of 6 and 12 is 6, so 6/12 = 1/2."
+   },
+   {
+    "q": "5/8 + 7/8 as a mixed number is…",
+    "a": [
+     "1 1/2",
+     "12/16",
+     "1 3/8",
+     "2"
+    ],
+    "c": 0,
+    "why": "12/8 = 1 4/8 = 1 1/2."
+   },
+   {
+    "q": "3 5/6 − 1 1/6 =",
+    "a": [
+     "2 4/12",
+     "4 2/3",
+     "2 2/3",
+     "2 1/2"
+    ],
+    "c": 2,
+    "why": "Wholes: 3 − 1 = 2. Fractions: 5/6 − 1/6 = 4/6 = 2/3."
+   }
+  ]
+ },
+ {
+  "id": "l03",
+  "n": "3",
+  "title": "Adding and Subtracting: Unlike Denominators",
+  "big": "Halves and thirds are different-sized pieces, so you can't just count them together. Rename both fractions with a common denominator first. Then it's a like-denominator question.",
+  "notes": [
+   "Same four steps every time: find the lowest common denominator (LCD), rename both fractions, add or subtract the numerators, then simplify and regroup.",
+   "The LCD is the LCM of the denominators. For 1/2 + 1/3 the LCD is 6, so 3/6 + 2/6 = 5/6.",
+   "Rename by multiplying the top and bottom by the same number: 3/4 = 9/12 (× 3) and 1/6 = 2/12 (× 2).",
+   "Look for the lowest. For 4 and 6 the LCD is 12, not 24. 24 still works, but you'll have bigger numbers to simplify at the end.",
+   "If one denominator is a multiple of the other, only one fraction needs renaming: 2/3 + 5/6 = 4/6 + 5/6 = 9/6 = 1 1/2.",
+   "Mixed numbers: rename the fraction parts only. 1 1/2 + 2 2/3 = 1 3/6 + 2 4/6 = 3 7/6 = 4 1/6.",
+   "Common mistake: adding tops and bottoms, like 1/2 + 1/3 = 2/5. You started with 1/2 and added more, so the answer has to be bigger than 1/2. 2/5 is smaller."
+  ],
+  "html": "<h3>Worked examples</h3><div class=\"task\" style=\"margin-bottom:12px\"><p><b>3/4 − 1/6</b></p><ol style=\"margin:8px 0;padding-left:22px;display:grid;gap:4px\"><li>LCD of 4 and 6 is 12 <span style=\"display:block;font-size:.92em;color:var(--muted)\">Not 24. Look for the lowest.</span></li><li>3/4 = 9/12 and 1/6 = 2/12 <span style=\"display:block;font-size:.92em;color:var(--muted)\">× 3 and × 2, top and bottom.</span></li><li>9/12 − 2/12 = 7/12 <span style=\"display:block;font-size:.92em;color:var(--muted)\">Can&#x27;t be simplified.</span></li></ol><p>Answer: <b>7/12</b></p></div><div class=\"task\" style=\"margin-bottom:12px\"><p><b>A recipe needs 3/4 cup of white sugar and 1/3 cup of brown sugar. How much sugar altogether?</b></p><ol style=\"margin:8px 0;padding-left:22px;display:grid;gap:4px\"><li>3/4 + 1/3, LCD 12 <span style=\"display:block;font-size:.92em;color:var(--muted)\">Altogether means add.</span></li><li>9/12 + 4/12 = 13/12 <span style=\"display:block;font-size:.92em;color:var(--muted)\">Rename both, then add.</span></li><li>13/12 = 1 1/12 <span style=\"display:block;font-size:.92em;color:var(--muted)\">A little more than 1 cup.</span></li></ol><p>Answer: <b>1 1/12 cups</b></p></div>",
+  "terms": [
+   [
+    "Common denominator",
+    "A denominator both fractions can be renamed with."
+   ],
+   [
+    "Lowest common denominator (LCD)",
+    "The smallest common denominator; the LCM of the denominators."
+   ],
+   [
+    "Equivalent fractions",
+    "Fractions that name the same amount, like 1/2 and 3/6."
+   ]
+  ],
+  "work": "Lesson 3 practice sheet, Parts A to E. Part F is a challenge.",
+  "check": [
+   {
+    "q": "The lowest common denominator for 3/4 and 1/6 is…",
+    "a": [
+     "24",
+     "10",
+     "6",
+     "12"
+    ],
+    "c": 3,
+    "why": "Multiples of 4: 4, 8, 12. Multiples of 6: 6, 12. 24 works, but 12 is the lowest."
+   },
+   {
+    "q": "1/3 + 1/4 =",
+    "a": [
+     "2/7",
+     "7/12",
+     "1/12",
+     "2/12"
+    ],
+    "c": 1,
+    "why": "LCD 12: 4/12 + 3/12 = 7/12."
+   },
+   {
+    "q": "7/8 − 1/4 =",
+    "a": [
+     "6/4",
+     "3/4",
+     "5/8",
+     "1/2"
+    ],
+    "c": 2,
+    "why": "1/4 = 2/8, so 7/8 − 2/8 = 5/8."
+   },
+   {
+    "q": "2 3/4 + 1 1/2 =",
+    "a": [
+     "4 1/4",
+     "3 4/6",
+     "3 5/8",
+     "4 1/2"
+    ],
+    "c": 0,
+    "why": "1/2 = 2/4. Wholes: 3. Fractions: 3/4 + 2/4 = 5/4 = 1 1/4. So 3 + 1 1/4 = 4 1/4."
+   }
+  ]
+ },
+ {
+  "id": "l04",
+  "n": "4",
+  "title": "Subtracting Mixed Numbers",
+  "big": "If the first fraction is too small to subtract from, borrow one whole and turn it into a fraction. 3 1/4 becomes 2 5/4: the same amount, written so you can subtract.",
+  "notes": [
+   "Check the fractions first. In 3 1/4 − 1 3/4 you can't take 3/4 away from 1/4, so you need to borrow.",
+   "Borrow by trading one whole for a fraction with the same denominator: 3 1/4 = 2 + 4/4 + 1/4 = 2 5/4.",
+   "Then subtract wholes and subtract fractions: 2 5/4 − 1 3/4 = 1 2/4 = 1 1/2.",
+   "A whole number has no fraction part, so borrow right away: 5 − 2 3/8 = 4 8/8 − 2 3/8 = 2 5/8.",
+   "With unlike denominators, rename first, then decide if you need to borrow. 4 1/3 − 1 1/2 = 4 2/6 − 1 3/6 = 3 8/6 − 1 3/6 = 2 5/6.",
+   "Not every question needs borrowing: 5 5/6 − 2 1/4 = 5 10/12 − 2 3/12 = 3 7/12.",
+   "Another way: change both to improper fractions. 13/4 − 7/4 = 6/4 = 1 1/2. You never need to borrow, but the numbers get big when there are lots of wholes.",
+   "Common mistake: flipping the fractions and doing 3/4 − 1/4 instead. Check a subtraction by adding back: your answer plus what you took away should give what you started with."
+  ],
+  "html": "<h3>Worked examples</h3><div class=\"task\" style=\"margin-bottom:12px\"><p><b>5 − 2 3/8</b></p><ol style=\"margin:8px 0;padding-left:22px;display:grid;gap:4px\"><li>5 has no fraction part: borrow <span style=\"display:block;font-size:.92em;color:var(--muted)\">The denominator we need is 8.</span></li><li>5 = 4 8/8 <span style=\"display:block;font-size:.92em;color:var(--muted)\">One whole becomes 8/8.</span></li><li>4 8/8 − 2 3/8 = 2 5/8 <span style=\"display:block;font-size:.92em;color:var(--muted)\">Subtract wholes, subtract fractions.</span></li></ol><p>Answer: <b>2 5/8</b></p></div><div class=\"task\" style=\"margin-bottom:12px\"><p><b>A rope is 6 1/4 m long. A piece 2 2/3 m long is cut off. How much rope is left?</b></p><ol style=\"margin:8px 0;padding-left:22px;display:grid;gap:4px\"><li>LCD 12: 6 3/12 − 2 8/12 <span style=\"display:block;font-size:.92em;color:var(--muted)\">Rename first.</span></li><li>3/12 is less than 8/12: borrow <span style=\"display:block;font-size:.92em;color:var(--muted)\">6 3/12 = 5 15/12.</span></li><li>5 15/12 − 2 8/12 = 3 7/12 <span style=\"display:block;font-size:.92em;color:var(--muted)\">A bit more than 3 1/2 m, which makes sense.</span></li></ol><p>Answer: <b>3 7/12 m</b></p></div>",
+  "terms": [
+   [
+    "Borrowing (regrouping)",
+    "Trading one whole for an equal fraction, like 1 = 4/4, so you can subtract."
+   ],
+   [
+    "Improper fraction",
+    "A fraction greater than 1, like 13/4."
+   ]
+  ],
+  "work": "Lesson 4 practice sheet, Parts A to D. Part E is a challenge.",
+  "check": [
+   {
+    "q": "4 1/5 − 1 3/5 =",
+    "a": [
+     "2 3/5",
+     "3 2/5",
+     "2 2/5",
+     "3 3/5"
+    ],
+    "c": 0,
+    "why": "Borrow: 4 1/5 = 3 6/5. Then 3 6/5 − 1 3/5 = 2 3/5."
+   },
+   {
+    "q": "6 − 2 1/4 =",
+    "a": [
+     "4 1/4",
+     "3 1/4",
+     "3 3/4",
+     "4 3/4"
+    ],
+    "c": 2,
+    "why": "6 = 5 4/4. Then 5 4/4 − 2 1/4 = 3 3/4."
+   },
+   {
+    "q": "Which one needs borrowing?",
+    "a": [
+     "7 3/4 − 3 1/4",
+     "5 1/8 − 2 5/8",
+     "5 5/6 − 2 1/4",
+     "6 2/3 − 1 1/3"
+    ],
+    "c": 1,
+    "why": "1/8 is less than 5/8. In the others the first fraction is bigger (5 5/6 − 2 1/4 is 10/12 vs 3/12 after renaming)."
+   },
+   {
+    "q": "3 1/2 − 1 2/3 =",
+    "a": [
+     "2 1/6",
+     "1 1/6",
+     "2 5/6",
+     "1 5/6"
+    ],
+    "c": 3,
+    "why": "LCD 6: 3 3/6 − 1 4/6. Borrow: 2 9/6 − 1 4/6 = 1 5/6."
+   }
+  ]
+ },
+ {
+  "id": "l05",
+  "n": "5",
+  "title": "Skill Check and Review",
+  "big": "Every question in this unit comes down to the same moves: make the pieces the same size, add or take away, then simplify.",
+  "notes": [
+   "Same denominator? Add or subtract the numerators and keep the denominator.",
+   "Different denominators? Find the LCD (the LCM of the denominators) and rename both fractions first.",
+   "Subtracting mixed numbers? Rename first, then check whether you need to borrow.",
+   "Finish in simplest form (divide by the GCF), and write improper answers as mixed numbers.",
+   "Sense check: adding should give a bigger amount and subtracting a smaller one. Add back to check a subtraction.",
+   "The skill check is 18 marks, no calculator. Part A is single fractions, Part B is mixed numbers with steps shown, and Part C is GCF and LCM, finding a mistake, and a word problem."
+  ],
+  "table": {
+   "title": "Quick reference",
+   "head": [
+    "If you see…",
+    "First move",
+    "Example"
+   ],
+   "rows": [
+    [
+     "Same denominators",
+     "Add or subtract the tops",
+     "4/9 + 2/9 = 6/9 = 2/3"
+    ],
+    [
+     "Different denominators",
+     "Find the LCD and rename",
+     "1/4 + 1/6 = 3/12 + 2/12 = 5/12"
+    ],
+    [
+     "Mixed numbers, adding",
+     "Wholes + fractions, then regroup",
+     "1 3/4 + 2 1/2 = 3 5/4 = 4 1/4"
+    ],
+    [
+     "Mixed numbers, small first fraction",
+     "Borrow a whole",
+     "4 1/3 − 2 2/3 = 3 4/3 − 2 2/3 = 1 2/3"
+    ],
+    [
+     "Simplifying",
+     "Divide by the GCF",
+     "16/24 ÷ 8/8 = 2/3"
+    ]
+   ]
+  },
+  "work": "Fraction Operations Skill Check: 18 marks, no calculator, answers in simplest form.",
+  "check": [
+   {
+    "q": "2/3 + 1/5 =",
+    "a": [
+     "3/8",
+     "13/15",
+     "3/15",
+     "1 1/15"
+    ],
+    "c": 1,
+    "why": "LCD 15: 10/15 + 3/15 = 13/15."
+   },
+   {
+    "q": "5 1/4 − 2 5/6 =",
+    "a": [
+     "2 5/12",
+     "3 5/12",
+     "2 7/12",
+     "3 7/12"
+    ],
+    "c": 0,
+    "why": "LCD 12: 5 3/12 − 2 10/12. Borrow: 4 15/12 − 2 10/12 = 2 5/12."
+   },
+   {
+    "q": "The GCF and LCM of 8 and 12 are…",
+    "a": [
+     "2 and 96",
+     "4 and 96",
+     "8 and 12",
+     "4 and 24"
+    ],
+    "c": 3,
+    "why": "Factors in common: 1, 2, 4, so the GCF is 4. Multiples: 8, 16, 24 and 12, 24, so the LCM is 24."
+   },
+   {
+    "q": "Jo has 3 1/2 m of ribbon and uses 1 3/4 m. How much is left?",
+    "a": [
+     "2 1/4 m",
+     "2 3/4 m",
+     "1 3/4 m",
+     "1 1/4 m"
+    ],
+    "c": 2,
+    "why": "3 1/2 = 3 2/4 = 2 6/4. Then 2 6/4 − 1 3/4 = 1 3/4. Check: 1 3/4 + 1 3/4 = 3 1/2."
+   }
+  ]
+ }
+]},
   {id:"int", n:"5", name:"Integer Operations", status:"soon", when:"Later this year", intro:"Adding and subtracting integers.", lessons:[]},
   {id:"eq", n:"6", name:"Patterns and Equations", status:"soon", when:"Later this year", intro:"Patterns, expressions and one-step equations.", lessons:[]},
   {id:"lin", n:"7", name:"Linear Equations and the Coordinate Plane", status:"soon", when:"Later this year", intro:"", lessons:[]},
