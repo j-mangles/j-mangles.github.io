@@ -41,25 +41,30 @@
 
   function renderWholeClass(el,lesson,options={}){
     const bank=(lesson.check||[]).filter(q=>Array.isArray(q.a)&&q.a.length>1&&Number.isInteger(q.c)&&q.c>=0&&q.c<q.a.length&&!/^Use the graph/.test(q.q));
-    let qs=shuffle(bank).slice(0,Math.min(3,bank.length)),i=0,revealed=false;
+    let qs=shuffle(bank).slice(0,Math.min(3,bank.length)),i=0,revealed=false,projecting=false;
     function draw(){
       if(!qs.length){
+        el.classList.remove("rv-projector");
         el.innerHTML='<div class="rv-quick"><p class="rv-lede">This lesson does not have a quick-check question yet.</p>'+(lesson.big?'<p><strong>Recall the big idea:</strong> '+esc(lesson.big)+'</p>':'')+'<button class="btn" id="rvc-open">Open the lesson</button></div>';
         const open=el.querySelector("#rvc-open");if(open&&options.onLesson)open.onclick=options.onLesson;return;
       }
       if(i>=qs.length){
-        el.innerHTML='<div class="rv-quick"><div class="rv-score"><span>'+qs.length+'</span> prompts</div><p role="status">Whole-class review complete. Invite students to name one idea they can now explain.</p><button class="btn" id="rvc-again">New question set</button> <button class="btn ghost" id="rvc-solo">Try it individually</button> <button class="btn ghost" id="rvc-open">Open the full lesson</button></div>';
+        el.innerHTML='<div class="rv-quick"><div class="rv-score"><span>'+qs.length+'</span> prompts</div><p role="status">Whole-class review complete. Invite students to name one idea they can now explain.</p><button class="btn" id="rvc-again">New question set</button> <button class="btn ghost" id="rvc-solo">Try it individually</button> <button class="btn ghost" id="rvc-open">Open the full lesson</button> <button class="btn ghost" id="rvc-project">'+(projecting?'Exit board view':'Project this question')+'</button></div>';
+        el.classList.toggle("rv-projector",projecting);
         const again=el.querySelector("#rvc-again");if(again)again.onclick=()=>{qs=shuffle(bank).slice(0,Math.min(3,bank.length));i=0;revealed=false;draw();};
-        const solo=el.querySelector("#rvc-solo");if(solo&&options.onSolo)solo.onclick=options.onSolo;
-        const open=el.querySelector("#rvc-open");if(open&&options.onLesson)open.onclick=options.onLesson;return;
+        const solo=el.querySelector("#rvc-solo");if(solo&&options.onSolo)solo.onclick=()=>{projecting=false;el.classList.remove("rv-projector");options.onSolo();};
+        const open=el.querySelector("#rvc-open");if(open&&options.onLesson)open.onclick=()=>{projecting=false;el.classList.remove("rv-projector");options.onLesson();};
+        const project=el.querySelector("#rvc-project");if(project)project.onclick=()=>{projecting=!projecting;draw();};return;
       }
       const q=qs[i];
       el.innerHTML='<div class="rv-quick"><div class="rv-prog"><span style="width:'+Math.round(i/qs.length*100)+'%"></span></div><p class="rv-qn">Whole-class question '+(i+1)+' of '+qs.length+' · Lesson '+esc(lesson.n)+'</p><p class="rv-q">'+esc(q.q)+'</p><p class="rv-lede">Think, turn-and-talk or write a response before revealing.</p>'+
         (revealed?'<div class="why" role="status"><strong>Answer:</strong> '+esc(q.a[q.c])+'<br><strong>Why:</strong> '+esc(q.why)+'</div><button class="btn" id="rvc-next">'+(i+1<qs.length?'Next question':'Finish review')+'</button>':'<button class="btn" id="rvc-reveal">Reveal explanation</button>')+
-        ' <button class="btn ghost" id="rvc-solo">Switch to individual practice</button></div>';
+        ' <button class="btn ghost" id="rvc-solo">Switch to individual practice</button> <button class="btn ghost" id="rvc-project">'+(projecting?'Exit board view':'Project this question')+'</button></div>';
+      el.classList.toggle("rv-projector",projecting);
       const reveal=el.querySelector("#rvc-reveal");if(reveal)reveal.onclick=()=>{revealed=true;draw();};
       const next=el.querySelector("#rvc-next");if(next)next.onclick=()=>{i++;revealed=false;draw();};
-      const solo=el.querySelector("#rvc-solo");if(solo&&options.onSolo)solo.onclick=options.onSolo;
+      const solo=el.querySelector("#rvc-solo");if(solo&&options.onSolo)solo.onclick=()=>{projecting=false;el.classList.remove("rv-projector");options.onSolo();};
+      const project=el.querySelector("#rvc-project");if(project)project.onclick=()=>{projecting=!projecting;draw();};
     }
     draw();
   }
@@ -180,6 +185,13 @@
   .rv-quick{margin-top:14px;padding:14px;border:1px solid var(--rule,#d6d6d6);border-radius:var(--radius,12px);background:var(--paper,var(--panel,#fff))}
   .rv-quick .opts{display:grid;gap:7px;margin:10px 0}
   .rv-quick .opts .opt{text-align:left}
+  .rv-projector{position:fixed;inset:0;z-index:2147483000;overflow:auto;display:grid;align-items:center;padding:clamp(18px,6vh,72px) clamp(16px,6vw,96px);background:var(--bg,#fff)}
+  .rv-projector .rv-quick{width:min(100%,1200px);margin:auto;padding:clamp(22px,4vw,52px);border-width:2px;box-shadow:0 18px 60px rgba(0,0,0,.16)}
+  .rv-projector .rv-q{font-size:clamp(30px,5vw,64px);line-height:1.2;margin:10px 0 18px}
+  .rv-projector .rv-qn{font-size:clamp(17px,2vw,24px)}
+  .rv-projector .rv-lede{font-size:clamp(17px,1.7vw,22px)}
+  .rv-projector .why{font-size:clamp(20px,2.7vw,34px);line-height:1.35}
+  .rv-projector .btn{min-height:48px;font-size:18px}
   .exit-ticket{margin:22px 0;padding:16px;border:1px solid var(--rule,#d6d6d6);border-radius:var(--radius,12px);background:var(--soft,var(--panel,#f7f5ee));color:var(--ink)}
   .exit-ticket summary{cursor:pointer;font-weight:700;font-size:18px}
   .exit-ticket[open] summary{margin-bottom:10px}
