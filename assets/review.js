@@ -39,7 +39,32 @@
     draw();
   }
 
-  window.UnitReview={remember,lastLesson,renderQuick,render(el,unit){
+  function renderWholeClass(el,lesson,options={}){
+    const bank=(lesson.check||[]).filter(q=>Array.isArray(q.a)&&q.a.length>1&&Number.isInteger(q.c)&&q.c>=0&&q.c<q.a.length&&!/^Use the graph/.test(q.q));
+    let qs=shuffle(bank).slice(0,Math.min(3,bank.length)),i=0,revealed=false;
+    function draw(){
+      if(!qs.length){
+        el.innerHTML='<div class="rv-quick"><p class="rv-lede">This lesson does not have a quick-check question yet.</p>'+(lesson.big?'<p><strong>Recall the big idea:</strong> '+esc(lesson.big)+'</p>':'')+'<button class="btn" id="rvc-open">Open the lesson</button></div>';
+        const open=el.querySelector("#rvc-open");if(open&&options.onLesson)open.onclick=options.onLesson;return;
+      }
+      if(i>=qs.length){
+        el.innerHTML='<div class="rv-quick"><div class="rv-score"><span>'+qs.length+'</span> prompts</div><p role="status">Whole-class review complete. Invite students to name one idea they can now explain.</p><button class="btn" id="rvc-again">New question set</button> <button class="btn ghost" id="rvc-solo">Try it individually</button> <button class="btn ghost" id="rvc-open">Open the full lesson</button></div>';
+        const again=el.querySelector("#rvc-again");if(again)again.onclick=()=>{qs=shuffle(bank).slice(0,Math.min(3,bank.length));i=0;revealed=false;draw();};
+        const solo=el.querySelector("#rvc-solo");if(solo&&options.onSolo)solo.onclick=options.onSolo;
+        const open=el.querySelector("#rvc-open");if(open&&options.onLesson)open.onclick=options.onLesson;return;
+      }
+      const q=qs[i];
+      el.innerHTML='<div class="rv-quick"><div class="rv-prog"><span style="width:'+Math.round(i/qs.length*100)+'%"></span></div><p class="rv-qn">Whole-class question '+(i+1)+' of '+qs.length+' · Lesson '+esc(lesson.n)+'</p><p class="rv-q">'+esc(q.q)+'</p><p class="rv-lede">Think, turn-and-talk or write a response before revealing.</p>'+
+        (revealed?'<div class="why" role="status"><strong>Answer:</strong> '+esc(q.a[q.c])+'<br><strong>Why:</strong> '+esc(q.why)+'</div><button class="btn" id="rvc-next">'+(i+1<qs.length?'Next question':'Finish review')+'</button>':'<button class="btn" id="rvc-reveal">Reveal explanation</button>')+
+        ' <button class="btn ghost" id="rvc-solo">Switch to individual practice</button></div>';
+      const reveal=el.querySelector("#rvc-reveal");if(reveal)reveal.onclick=()=>{revealed=true;draw();};
+      const next=el.querySelector("#rvc-next");if(next)next.onclick=()=>{i++;revealed=false;draw();};
+      const solo=el.querySelector("#rvc-solo");if(solo&&options.onSolo)solo.onclick=options.onSolo;
+    }
+    draw();
+  }
+
+  window.UnitReview={remember,lastLesson,renderQuick,renderWholeClass,render(el,unit){
     const ls=unit.lessons.filter(l=>l.big||l.terms||l.check);
     const cards=[]; ls.forEach(l=>(l.terms||[]).forEach(t=>cards.push({t:t[0],d:t[1],l})));
     const bank=[]; ls.forEach(l=>(l.check||[]).forEach(q=>{ if(!/^Use the graph/.test(q.q)) bank.push({...q,l}); }));
