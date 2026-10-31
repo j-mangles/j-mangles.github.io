@@ -367,8 +367,8 @@ window.GreeceLessons=[
       }
     ],
     "activity": {
-      "href": "greek-inquiry-lab.html#citizens",
-      "title": "Try the Citizen for a Day Lab"
+      "href": "greek-inquiry-lab.html#ostracism",
+      "title": "Open the Mystery in the Well Investigation"
     }
   },
   {
