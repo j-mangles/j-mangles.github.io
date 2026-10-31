@@ -169,9 +169,9 @@
       status.textContent="Draft held in this page only. Copy or download it before leaving if you want to keep it.";
     }));
     const contents=()=>[u.name+" — "+l.title,"One-minute exit ticket",
-      "One idea I can now explain:\\n"+root.querySelector('[data-exit="recall"]').value.trim(),
-      "One question or idea I want to revisit:\\n"+root.querySelector('[data-exit="question"]').value.trim()
-    ].join("\\n\\n")+"\\n";
+      "One idea I can now explain:\n"+root.querySelector('[data-exit="recall"]').value.trim(),
+      "One question or idea I want to revisit:\n"+root.querySelector('[data-exit="question"]').value.trim()
+    ].join("\n\n")+"\n";
     root.querySelector("#exit-download").onclick=()=>{
       const blob=new Blob([contents()],{type:"text/plain;charset=utf-8"}),url=URL.createObjectURL(blob),link=document.createElement("a");
       link.href=url;link.download=("exit-ticket-"+H.subject+"-"+u.id+"-"+l.id).replace(/[^a-z0-9-]/gi,"-")+".txt";
@@ -188,6 +188,7 @@
   }
 
   function renderLesson(u,l){
+    const exitWasOpen=!!document.getElementById("exit-ticket")?.open;
     if(window.UnitReview)window.UnitReview.remember(H.subject,u.id,l.id);
     const ls=u.lessons, i=ls.indexOf(l), prev=ls[i-1], next=ls[i+1];
     const imgs=l.imgs||[];
@@ -220,6 +221,7 @@
       <div class="pager">${prev?`<button class="btn ghost" data-go="${u.id}/${prev.id}">&larr; Lesson ${esc(prev.n)}</button>`:"<span></span>"}${next?`<button class="btn ghost" data-go="${u.id}/${next.id}">Lesson ${esc(next.n)} &rarr;</button>`:(ls.length>1?`<button class="btn" data-go="${u.id}/review">Unit review &rarr;</button>`:"")}</div>
     </article></div>`;
     $("#back").onclick=()=>go(u.id);
+    const exitPanel=$("#exit-ticket");if(exitPanel&&exitWasOpen)exitPanel.open=true;
     if(LT){ // a live model on the lesson page; reuse it on re-render so answering questions doesn't reset it
       const slot=$("#ltool-slot");
       if(keep&&keep.dataset.k===ltKey) slot.replaceWith(keep);
