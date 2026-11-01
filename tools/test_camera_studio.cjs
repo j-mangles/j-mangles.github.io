@@ -31,7 +31,13 @@ assert.ok(scripts.includes("camera-studio.js")&&scripts.indexOf("tools.js")<scri
 const data={window:{}};vm.runInNewContext(read("ela/data.js"),data);
 const u=data.window.HUB.units.find(x=>x.id==="film");
 assert.ok(u&&u.name==="Media and Film");
-assert.ok(!u.lessons||u.lessons.length===0,"Do not fabricate future lesson pages");
+assert.ok(u&&u.status==="soon","Keep the unit staged until it is taught");
+assert.equal(u.lessons?.length,1,"Only add the student-grounded first lesson");
+assert.equal(u.lessons[0].id,"l1");
+assert.equal(u.lessons[0].title,"The Present: Every Shot Is a Choice");
+assert.equal(u.lessons[0].activity.prompts.length,3,"Lesson should include a page-only viewing response");
+assert.equal(typeof context.window.HUB.lessonTools["film/l1"],"function","Camera studio should be embedded inside Lesson 1");
+assert.ok(u.lessons[0].work.includes("student handout"),"Ground the lesson in the student handout");
 assert.ok(read("assets/course-map.js").includes('film:"Camera Framing Studio"'));
 assert.ok(read("index.html").includes('href="ela/#film"'));
 console.log("Camera Studio tests passed: five distinct shots, four grounded directing scenarios, existing unit and original tools preserved.");
