@@ -6,6 +6,15 @@
   const rnd = (a,b) => a+Math.random()*(b-a);
 
   const STYLE = `<style>
+    .mx-ph-ladder{margin:14px 0 12px;padding:12px 12px 10px;border:1px solid var(--rule);border-radius:12px;background:var(--paper)}
+    .mx-ph-ladder-head{display:flex;justify-content:space-between;gap:8px;align-items:baseline;margin-bottom:8px;font-size:14px}
+    .mx-ph-track{position:relative;display:grid;grid-template-columns:repeat(15,minmax(0,1fr));height:28px;border:1px solid rgba(30,40,60,.18);border-radius:7px;overflow:hidden;background:linear-gradient(90deg,#e95b50 0%,#ed9c42 22%,#f2d35d 42%,#75bd83 50%,#66b9d3 68%,#6e79ce 84%,#8c63b4 100%)}
+    .mx-ph-track span{display:grid;place-items:center;border-right:1px solid rgba(255,255,255,.55);font-size:11px;font-weight:700;color:#172238;text-shadow:0 1px 1px rgba(255,255,255,.55)}
+    .mx-ph-track span:last-child{border:0}
+    .mx-ph-marker{position:absolute;top:-4px;bottom:-4px;width:3px;background:#172238;border:1px solid #fff;box-shadow:0 0 0 1px #172238;transform:translateX(-50%);pointer-events:none}
+    .mx-ph-zones{display:flex;justify-content:space-between;margin-top:5px;font-size:12px;color:var(--muted)}
+    .mx-ph-note{margin:7px 0 0;font-size:13.5px;color:var(--muted)}
+    @media(max-width:560px){.mx-ph-ladder{padding:9px}.mx-ph-track{height:25px}.mx-ph-track span{font-size:10px}.mx-ph-zones{font-size:11px}}
     .mx-tabs{display:flex;flex-wrap:wrap;gap:4px;padding:4px;background:var(--soft);border-radius:16px}
     .mx-tabs button{border:0;background:none;padding:7px 12px;border-radius:12px;cursor:pointer;font-size:14.5px;font-weight:600;color:var(--muted)}
     .mx-tabs button[aria-selected="true"]{background:var(--paper);color:var(--ink);box-shadow:0 1px 3px rgba(20,20,40,.14)}
@@ -75,6 +84,12 @@
         <span class="mx-seg" id="ez-e">${Object.keys(ENZ).map(k=>`<button data-e="${k}">${ENZ[k].name}</button>`).join("")}</span>
         <label>pH <input type="range" id="ez-ph" min="0" max="12" step="0.5" value="${pH}"> <b id="ez-phv" style="min-width:2.5em">${pH}</b></label>
         <span class="mx-seg" id="ez-pre">${PRESETS.map(([n,v])=>`<button data-p="${v}">${n} · ${v}</button>`).join("")}</span>
+      </div>
+      <div class="mx-ph-ladder" role="group" aria-label="Interactive pH ladder from acidic to basic">
+        <div class="mx-ph-ladder-head"><b>pH ladder</b><span>Full scale: 0–14</span></div>
+        <div class="mx-ph-track" aria-hidden="true"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span><span>14</span><i class="mx-ph-marker" id="ez-ph-marker" style="left:50%"></i></div>
+        <div class="mx-ph-zones"><span>More acidic</span><span>7 · neutral</span><span>More basic</span></div>
+        <p class="mx-ph-note" id="ez-ph-note" aria-live="polite">pH 7 is neutral. Each step on the scale represents a tenfold change in acidity.</p>
       </div>
       <div class="mx-stage"><canvas id="ez-cv" aria-label="Enzymes breaking down food molecules"></canvas></div>
       <div class="mx-read"><button class="btn" id="ez-run">Run a 10-second trial</button><span id="ez-stat"></span></div>
@@ -156,7 +171,10 @@
     function controls(){
       el.querySelectorAll("[data-e]").forEach(b=>b.classList.toggle("on",b.dataset.e===enz));
       el.querySelectorAll("[data-p]").forEach(b=>b.classList.toggle("on",+b.dataset.p===pH));
-      el.querySelector("#ez-ph").value=pH; el.querySelector("#ez-phv").textContent=pH; }
+      el.querySelector("#ez-ph").value=pH; el.querySelector("#ez-phv").textContent=pH;
+      el.querySelector("#ez-ph-marker").style.left=(pH/14*100)+"%";
+      const zone=pH<7?"acidic":pH>7?"basic":"neutral";
+      el.querySelector("#ez-ph-note").textContent=`Selected pH ${pH} is ${zone}. The enzyme trial slider and booklet graph cover pH 0–12; the ladder shows the full 0–14 scale.`; }
     el.querySelectorAll("[data-e]").forEach(b=>b.onclick=()=>{ if(trial) return; enz=b.dataset.e; controls(); reset(); });
     el.querySelectorAll("[data-p]").forEach(b=>b.onclick=()=>{ if(trial) return; pH=+b.dataset.p; controls(); });
     el.querySelector("#ez-ph").addEventListener("input",e=>{ if(trial){ e.target.value=pH; return; } pH=+e.target.value; controls(); });
