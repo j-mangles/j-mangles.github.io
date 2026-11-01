@@ -502,7 +502,8 @@ window.EgyptLessons = [
       ]
     ],
     "work": "Test the claim: sort nine pieces of evidence for and against three claims about Egyptian society, then decide whether each is mostly true, partly true or mostly false.",
-    "check": [
+    "activity": {"href":"egypt-social-evidence-lab.html","title":"Build an Egypt Evidence File"},
+        "check": [
       {
         "q": "Who made up the largest group in Egyptian society?",
         "a": [
@@ -575,7 +576,8 @@ window.EgyptLessons = [
       ]
     ],
     "work": "Royal Trade Mission: plan a trade mission as the pharaoh's scribe, investigate the Uluburun cargo, and decide which Egyptian idea matters most today.",
-    "check": [
+    "activity": {"href":"egypt-trade-desk.html","title":"Open the Royal Trade Desk"},
+        "check": [
       {
         "q": "Why did Hatshepsut bring back live incense trees from Punt?",
         "a": [
@@ -803,7 +805,8 @@ window.EgyptLessons = [
       ]
     ],
     "work": "The long goodbye: put six conquerors in order, sort eight facts with C.R.A.S.H., pick and defend a date for when ancient Egypt ended, and name one legacy in your own life.",
-    "check": [
+    "activity": {"href":"egypt-decline-legacy-lab.html","title":"Explore Egypt’s Long Goodbye"},
+        "check": [
       {
         "q": "Why do historians call the win over the Sea Peoples 'the beginning of the end'?",
         "a": [
