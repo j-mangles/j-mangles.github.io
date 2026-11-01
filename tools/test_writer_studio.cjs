@@ -11,8 +11,8 @@ vm.runInNewContext(js,scope,{filename:"ela/writer-studio.js",timeout:2000});
 const model=scope.window.HUB.lessonTools["answering/day2"];
 assert.equal(typeof model,"function","Expected registration on Answer, Evidence, Explain lesson");
 const index=fs.readFileSync(path.join(root,"ela","index.html"),"utf8");
-assert.match(index,/<script src="writer-studio\.js"><\/script>/);
-assert.ok(index.indexOf('src="writer-studio.js"')<index.indexOf('src="../assets/hub.js"'));
+const toolIndex=index.indexOf('src="writer-studio.js'),hubIndex=index.indexOf('src="../assets/hub.js');
+assert.ok(toolIndex>=0&&hubIndex>=0&&toolIndex<hubIndex,"tool must register before lesson hub mounts");
 const mk=(dataset={})=>({dataset,value:"",checked:false,attributes:{},listeners:{},setAttribute(k,v){this.attributes[k]=v;},addEventListener(k,cb){this.listeners[k]=cb;},focus(){}});
 const nodes=new Map(),groups={
  "[data-check]":Array.from({length:4},()=>mk()),
