@@ -1,5 +1,6 @@
 /* Regression checks for source-aligned Grade 8 ELA core writing tasks. */
 "use strict";
+const scriptSrcIndex=(html,src)=>[...html.matchAll(/<script src="([^"]+)"/g)].map(m=>m[1].split("?")[0]).indexOf(src);
 const assert=require("node:assert/strict");
 const fs=require("node:fs"),path=require("node:path"),vm=require("node:vm");
 const root=path.resolve(__dirname,"..");
@@ -23,7 +24,7 @@ assert.equal(tasks.paw.opposing,true);
 assert.match(tasks.paw.length,/Three or four/);
 const html=fs.readFileSync(path.join(root,"ela/index.html"),"utf8");
 assert.match(html,/<script src="core-writing-workshop\.js"><\/script>/);
-assert.ok(html.indexOf('src="core-writing-workshop.js"')<html.indexOf('src="../assets/hub.js"'));
+assert.ok(scriptSrcIndex(html,"core-writing-workshop.js")<scriptSrcIndex(html,"../assets/hub.js"));
 const data=fs.readFileSync(path.join(root,"ela/data.js"),"utf8");
 for(const k of expected)assert.match(data,new RegExp('id:"'+k+'"'),"Story lesson is missing: "+k);
 assert.ok(!code.includes("localStorage")&&!code.includes("fetch("),"No saved or network data");
