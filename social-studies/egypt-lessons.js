@@ -723,6 +723,10 @@ window.EgyptLessons = [
       ]
     ],
     "work": "Pharaoh report cards: grade four pharaohs with evidence, sort fact from spin, decide who changed Egypt most, and write a comeback for an erased pharaoh.",
+    "activity": {
+      "href": "egypt-pharaoh-report-cards.html",
+      "title": "Try: Pharaoh Report Cards Lab"
+    },
     "check": [
       {
         "q": "Why did Hatshepsut wear a false beard in her statues?",
