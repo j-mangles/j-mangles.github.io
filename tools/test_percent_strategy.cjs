@@ -16,7 +16,7 @@ assert.match(P("discount",25,80).steps,/BEFORE tax/);
 for(const id of ["fdp/l05","fdp/l06","fdp/l09"])assert.equal(typeof H.lessonTools[id],"function");
 const index=fs.readFileSync(path.join(root,"math","index.html"),"utf8");
 assert.ok(index.indexOf('src="percent-strategy.js"')>=0);
-assert.ok(index.indexOf('src="percent-strategy.js"')<index.indexOf('src="../assets/hub.js"'));
+assert.ok(index.indexOf('src="percent-strategy.js"')<index.indexOf('src="../assets/hub.js'));
 const element=(dataset={})=>({value:"",innerHTML:"",textContent:"",hidden:false,dataset,attrs:{},setAttribute(k,v){this.attrs[k]=v;}});
 const nodes=new Map(),levels=[element({level:"friendly"}),element({level:"stretch"})];
 const el={
