@@ -7,6 +7,7 @@ assert.match(page,/data-reveal/g);
 assert.equal((page.match(/data-case-card/g)||[]).length,3);
 assert.match(page,/Law 230/);
 assert.match(page,/data-eye-check/);
+assert.match(page,/class="workbox" data-eye-card/);
 assert.match(page,/not submitted or saved online/);
 assert.doesNotMatch(page,/fetch\(|localStorage|sessionStorage/);
 const ctx={window:{},document:{readyState:"loading",addEventListener(){}}};
