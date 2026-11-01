@@ -13,7 +13,8 @@ for(const [input,expected] of [["65%",.65],["−3/4",-.75],["1 1/2",1.5],["110%"
 }
 for(const input of ["1/0","0/0","3/","not a number","2+3","1 2/0"])assert.equal(model.parseValue(input),null,input);
 const index=fs.readFileSync(path.join(root,"math/index.html"),"utf8");
-assert.ok(index.indexOf('src="number-line-lab.js"')>=0&&index.indexOf('src="number-line-lab.js"')<index.indexOf('src="../assets/hub.js"'));
+const toolIndex=index.indexOf('src="number-line-lab.js'),hubIndex=index.indexOf('src="../assets/hub.js');
+assert.ok(toolIndex>=0&&hubIndex>=0&&toolIndex<hubIndex,"tool must register before lesson hub mounts");
 const make=(dataset={})=>({dataset,innerHTML:"",textContent:"",value:"",hidden:false,attrs:{},setAttribute(k,v){this.attrs[k]=v;}});
 const nodes=new Map(),modes=[make({mode:"place"}),make({mode:"between"})],cardNodes=Array.from({length:10},(_,i)=>make({card:String(i)}));
 const rootEl={innerHTML:"",querySelector(k){if(!nodes.has(k))nodes.set(k,make());return nodes.get(k);},querySelectorAll(k){
