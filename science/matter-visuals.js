@@ -19,7 +19,7 @@ function states(el){
   [[290,150],[312,160],[336,152],[360,162],[384,150],[408,160],[432,155],[300,172],[324,176],[348,174],[372,177],[396,173],[420,176],[444,174],[290,128],[316,136],[342,130],[368,138],[394,128],[420,134],[444,130],[302,108],[330,112],[358,104],[386,110]].forEach(([x,y])=>b+=`<circle cx="${x}" cy="${y}" r="11" fill="${A}" stroke="var(--paper)"/>`);
   b+=`<line x1="262" y1="96" x2="458" y2="96" stroke="${S}" stroke-dasharray="4 3"/>`;
   [[530,50,30,-14],[610,70,-26,10],[670,46,-20,22],[560,120,28,18],[650,140,24,-20],[590,168,-28,-8],[680,110,14,26],[540,170,24,-16]].forEach(([x,y,dx,dy])=>b+=`<circle cx="${x}" cy="${y}" r="11" fill="${A}"/>`+arrow(x+dx*.45,y+dy*.45,x+dx*1.25,y+dy*1.25));
-  el.innerHTML=wrap("See it",svg(720,244,"Particle models of a solid, a liquid and a gas",b),"Same particles, different energy. Adding energy moves you from left to right: solid to liquid to gas.");
+  el.innerHTML=wrap("See it",svg(720,244,"Particle models of a solid, a liquid and a gas",b),"Same particles, different energy. Adding energy moves you from left to right: solid to liquid to gas. Circles are enlarged and not to scale.");
 }
 
 function density(el){
@@ -55,7 +55,7 @@ function heating(el){
   b+=T(96,Y(-10)-16,"ice warms",{w:700,size:13})+lab(205,Y(0)+26,"melting","flat: particles pulling apart")+T(330,Y(60),"water warms",{w:700,size:13,a:"end"})+lab(510,Y(100)-30,"boiling","flat again")+T(640,Y(100)+26,"steam warms",{w:700,size:13,a:"middle"});
   b+=`<rect x="150" y="${Y(0)-6}" width="110" height="12" fill="${A}" opacity=".15"/><rect x="420" y="${Y(100)-6}" width="180" height="12" fill="${A}" opacity=".15"/>`;
   b+=T((x0+x1)/2,y0+24,"Energy added over time →",{a:"middle",size:12,fill:S});
-  el.innerHTML=wrap("See it",svg(720,284,"Heating curve for water from ice to steam with flat sections at melting and boiling",b),"Boiling takes much longer than melting because pulling particles all the way apart into a gas takes far more energy.");
+  el.innerHTML=wrap("See it",svg(720,284,"Heating curve for water from ice to steam with flat sections at melting and boiling",b),"Boiling takes much longer than melting because pulling particles all the way apart into a gas takes far more energy. This schematic is for pure water at standard atmospheric pressure; plateau widths are illustrative, not measured time.");
 }
 
 
@@ -106,5 +106,62 @@ function compressibility(el){
   });
   renderHistory();draw();
 }
-H.lessonTools=Object.assign(H.lessonTools||{},{"matter/states":states,"matter/density":density,"matter/lab":displacement,"matter/phase":heating,"matter/pressure":compressibility});
+function viscosity(el){
+  let b="";
+  b+="<rect x='20' y='26' width='320' height='220' rx='12' fill='var(--paper)' stroke='var(--rule)'/>";
+  b+="<rect x='380' y='26' width='320' height='220' rx='12' fill='var(--paper)' stroke='var(--rule)'/>";
+  b+=T(180,53,"WATER · LOWER VISCOSITY",{a:"middle",w:700,size:15})+T(180,76,"farther in the same short time",{a:"middle",size:12,fill:S});
+  b+=T(540,53,"SYRUP · HIGHER VISCOSITY",{a:"middle",w:700,size:15})+T(540,76,"less distance in the same short time",{a:"middle",size:12,fill:S});
+  b+="<line x1='60' y1='194' x2='300' y2='116' stroke='"+S+"' stroke-width='5' stroke-linecap='round'/>";
+  b+="<line x1='420' y1='194' x2='660' y2='116' stroke='"+S+"' stroke-width='5' stroke-linecap='round'/>";
+  b+=arrow(75,188,291,119)+arrow(435,188,482,173);
+  b+="<path d='M270 132 C280 119 294 119 302 132 C302 143 293 151 286 151 C278 151 270 143 270 132Z' fill='"+W+"' stroke='"+A+"'/>";
+  b+="<path d='M458 174 C466 162 480 162 488 174 C488 185 480 192 473 192 C465 192 458 185 458 174Z' fill='color-mix(in srgb, var(--accent) 35%, var(--paper))' stroke='"+A+"'/>";
+  b+=T(180,222,"Flow direction",{a:"middle",size:12,fill:S})+T(540,222,"Flow direction",{a:"middle",size:12,fill:S});
+  el.innerHTML=wrap("See it",svg(720,270,"Qualitative comparison: water flows farther than syrup on identical ramps in the same time",b),"Viscosity is resistance to flow. Same ramp angle, surface, sample amount, temperature and time; only the fluid changes. This is a conceptual comparison, not measured data.");
+}
+
+function temperatureDensity(el){
+  let b="";
+  b+=T(360,22,"SAME SAMPLE · SAME MASS",{a:"middle",w:700,size:15});
+  b+="<rect x='28' y='46' width='260' height='152' rx='8' fill='var(--paper)' stroke='"+S+"' stroke-width='1.5'/>";
+  b+="<rect x='432' y='34' width='260' height='176' rx='8' fill='var(--paper)' stroke='"+S+"' stroke-width='1.5'/>";
+  b+=T(158,69,"COOL GAS",{a:"middle",w:700,size:15})+T(562,58,"WARM GAS",{a:"middle",w:700,size:15});
+  const cool=[[82,104],[122,104],[162,104],[202,104],[242,104],[82,146],[122,146],[162,146],[202,146],[242,146]];
+  const warm=[[474,93],[520,94],[566,91],[612,94],[658,92],[474,151],[520,151],[566,151],[612,151],[658,151]];
+  cool.forEach(([x,y])=>b+="<circle cx='"+x+"' cy='"+y+"' r='9' fill='"+A+"'/ >".replace("/ >","/>"));
+  warm.forEach(([x,y],i)=>b+="<circle cx='"+x+"' cy='"+y+"' r='9' fill='"+A+"'/ >".replace("/ >","/>")+(i%2===0?arrow(x+2,y-11,x+10,y-18):""));
+  b+=T(158,221,"particles closer together",{a:"middle",size:12,fill:S})+T(562,233,"particles spread farther apart",{a:"middle",size:12,fill:S});
+  b+=arrow(305,120,413,120)+T(359,105,"add heat",{a:"middle",size:12,fill:S});
+  b+="<rect x='36' y='246' width='648' height='36' rx='9' fill='var(--soft)'/>";
+  b+=T(360,269,"Mass stays the same  ÷  volume increases  →  density decreases",{a:"middle",w:700,size:14});
+  b+=T(360,309,"Warm air rises when surrounded by cooler, denser air.",{a:"middle",size:13,fill:S});
+  el.innerHTML=wrap("See it",svg(720,324,"Same sample of gas before and after warming: particles move faster and spread through a larger volume, lowering density",b),"Blue circles represent gas particles. The spacing and motion arrows are simplified and not to scale. Warm air rises in cooler surroundings because it is less dense.");
+}
+
+function waterProperties(el){
+  let b="";
+  b+="<rect x='18' y='26' width='326' height='278' rx='12' fill='var(--paper)' stroke='var(--rule)'/>";
+  b+="<rect x='366' y='26' width='336' height='278' rx='12' fill='var(--paper)' stroke='var(--rule)'/>";
+  b+=T(181,52,"WHY ICE FLOATS",{a:"middle",w:700,size:15})+T(534,52,"FRESHWATER LAKE IN WINTER",{a:"middle",w:700,size:14});
+  b+=T(92,82,"ICE",{a:"middle",w:700,size:14})+T(250,82,"LIQUID WATER",{a:"middle",w:700,size:14});
+  const ice=[[62,116],[100,116],[81,148],[119,148],[62,180],[100,180],[81,212],[119,212]];
+  const liquid=[[206,116],[234,110],[262,116],[290,112],[218,140],[248,143],[278,139],[205,170],[235,168],[264,173],[290,166],[218,198],[249,199],[279,198]];
+  ice.forEach(([x,y])=>b+="<circle cx='"+x+"' cy='"+y+"' r='10' fill='"+A+"'/ >".replace("/ >","/>"));
+  liquid.forEach(([x,y])=>b+="<circle cx='"+x+"' cy='"+y+"' r='8' fill='"+A+"'/ >".replace("/ >","/>"));
+  b+=T(92,242,"open particle arrangement",{a:"middle",size:11,fill:S})+T(250,242,"closer-packed liquid",{a:"middle",size:11,fill:S});
+  b+=T(92,270,"Ice: 0.92 g/cm³",{a:"middle",w:700,size:13})+T(250,270,"Water: about 1.00 g/cm³",{a:"middle",w:700,size:12});
+  b+=T(181,291,"same amount of water · ice occupies more volume",{a:"middle",size:10,fill:S});
+  b+="<rect x='386' y='72' width='296' height='198' rx='6' fill='"+W+"' stroke='"+S+"'/>";
+  b+="<rect x='387' y='73' width='294' height='34' fill='color-mix(in srgb, #9cc9ed 48%, var(--paper))' stroke='"+S+"'/>";
+  b+=T(534,96,"floating ice insulates water below",{a:"middle",w:700,size:12});
+  b+="<line x1='388' y1='159' x2='680' y2='159' stroke='"+S+"' stroke-dasharray='4 4'/>";
+  b+=T(534,137,"cooler liquid water",{a:"middle",size:12})+T(534,192,"water near 4°C · densest",{a:"middle",w:700,size:13})+T(534,218,"sinks below colder water",{a:"middle",size:12});
+  b+=arrow(650,174,650,202);
+  b+=T(534,248,"deeper water stays liquid beneath the ice",{a:"middle",size:11,fill:S});
+  b+=T(534,291,"simplified lake layers · not to scale",{a:"middle",size:11,fill:S});
+  el.innerHTML=wrap("See it",svg(720,320,"Water compared as ice and liquid, plus simplified winter lake layering showing surface ice and denser four-degree water near the bottom",b),"The circles show a simplified particle model, not actual water molecules. In freshwater, liquid water is densest near 4°C; real lakes vary with depth, weather and mixing.");
+}
+
+H.lessonTools=Object.assign(H.lessonTools||{},{"matter/states":states,"matter/density":density,"matter/lab":displacement,"matter/viscosity":viscosity,"matter/temperature":temperatureDensity,"matter/phase":heating,"matter/pressure":compressibility,"matter/water":waterProperties});
 })();
