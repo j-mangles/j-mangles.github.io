@@ -132,7 +132,8 @@ window.EgyptLessons = [
       ]
     ],
     "work": "Egypt's Timeline of Power: build a timeline from unification to the New Kingdom, work out how long periods lasted, and weigh the evidence in the Narmer and Menes debate.",
-    "check": [
+    "activity": {"href":"egypt-unified-kingdom-lab.html","title":"Explore Egypt's Timeline of Power"},
+        "check": [
       {
         "q": "What does the Narmer Palette show on its two sides?",
         "a": [
@@ -284,7 +285,8 @@ window.EgyptLessons = [
       ]
     ],
     "work": "Passport to the Afterlife: put the mummy-making steps in order, read the 42 declarations, pack a tomb on a budget, and compare Egypt's afterlife with Mesopotamia's.",
-    "check": [
+    "activity": {"href":"egypt-afterlife-lab.html","title":"Open Passport to the Afterlife"},
+        "check": [
       {
         "q": "Why did Egyptians preserve the body?",
         "a": [

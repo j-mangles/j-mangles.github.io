@@ -33,7 +33,8 @@ const tests=[
  "test_evidence_inspector.cjs","test_number_line_lab.cjs",
  "test_organization_explorer.cjs","test_chance_lab.cjs","test_hammurabi_lab.cjs","test_sargon_source_lab.cjs",
  "test_scribe_school.cjs",
- "test_rosetta_investigation.cjs"
+ "test_rosetta_investigation.cjs",
+ "test_egypt_unification_lab.cjs","test_egypt_afterlife_lab.cjs"
 ];
 for(const file of tests){
  const p=path.join(root,"tools",file);
