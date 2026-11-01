@@ -1,5 +1,6 @@
 /* Science 8 Solar Spectrum & Albedo: exact model and course integration. */
 "use strict";
+const scriptSrcIndex=(html,src)=>[...html.matchAll(/<script src="([^"]+)"/g)].map(m=>m[1].split("?")[0]).indexOf(src);
 const fs=require("node:fs"),path=require("node:path"),vm=require("node:vm"),assert=require("node:assert/strict");
 const root=path.resolve(__dirname,".."),read=p=>fs.readFileSync(path.join(root,p),"utf8");
 const ctx={window:{HUB:{subject:"sci",units:[],tools:{}}}};
@@ -36,7 +37,7 @@ for(const percent of [0,5,15,25,35,50,70,85,100]){
 assert.equal(C.energyBudget(60,240).reflected,144);
 assert.equal(C.energyBudget(60,240).absorbed,96);
 for(const n of [-1,101,NaN])assert.throws(()=>C.energyBudget(n));
-const html=read("science/index.html"),src=[...html.matchAll(/<script src="([^"]+)"/g)].map(m=>m[1]);
+const html=read("science/index.html"),src=[...html.matchAll(/<script src="([^"]+)"/g)].map(m=>m[1].split("?")[0]);
 assert.ok(src.includes("solar-explorer.js")&&src.indexOf("tools.js")<src.indexOf("solar-explorer.js"));
 assert.ok(src.indexOf("solar-explorer.js")<src.indexOf("../assets/course-map.js"));
 assert.ok(read("index.html").includes('href="science/#light"'));

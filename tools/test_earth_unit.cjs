@@ -1,5 +1,6 @@
 /* Grade 8 Earth Science: curriculum coverage, student guides and model limitations. */
 "use strict";
+const scriptSrcIndex=(html,src)=>[...html.matchAll(/<script src="([^"]+)"/g)].map(m=>m[1].split("?")[0]).indexOf(src);
 const assert=require("node:assert/strict"),fs=require("node:fs"),path=require("node:path"),vm=require("node:vm");
 const root=path.resolve(__dirname,".."),read=p=>fs.readFileSync(path.join(root,p),"utf8");
 const ctx={window:{}};vm.runInNewContext(read("science/data.js"),ctx,{timeout:3000});
@@ -46,7 +47,7 @@ for(const m of ["meander","flood","glacier"]){
  assert.ok(!image.includes("NaN")&&!image.includes("undefined"),"Broken diagram "+m);
 }
 const html=read("science/index.html");
-assert.ok(html.indexOf('src="earth-explorer.js"')<html.indexOf('src="river-watershed.js"'));
-assert.ok(html.indexOf('src="river-watershed.js"')<html.indexOf('src="../assets/hub.js"'));
+assert.ok(scriptSrcIndex(html,"earth-explorer.js")<scriptSrcIndex(html,"river-watershed.js"));
+assert.ok(scriptSrcIndex(html,"river-watershed.js")<scriptSrcIndex(html,"../assets/hub.js"));
 assert.ok(!/localStorage|sessionStorage|fetch\(/.test(read("science/river-watershed.js")),"Don't store or transmit student responses");
 console.log("Earth Science Unit 4 passed: "+unit.lessons.length+" lessons, "+count+" checks, "+vocab+" vocabulary entries, 4 bound models, 3 accessible diagrams and Manitoba examples.");

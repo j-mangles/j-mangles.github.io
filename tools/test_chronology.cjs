@@ -1,5 +1,6 @@
 /* Grade 8 SS: compare-only timeline must match existing Atlas study ranges. */
 "use strict";
+const scriptSrcIndex=(html,src)=>[...html.matchAll(/<script src="([^"]+)"/g)].map(m=>m[1].split("?")[0]).indexOf(src);
 const assert=require("node:assert/strict"),path=require("node:path"),fs=require("node:fs"),vm=require("node:vm");
 const root=path.resolve(__dirname,".."),read=p=>fs.readFileSync(path.join(root,p),"utf8");
 const ctx={window:{}};vm.runInNewContext(read("social-studies/chronology.js"),ctx);
@@ -31,7 +32,7 @@ assert.equal(C.overlap("rome","rome").earlier,"same");
 assert.throws(()=>C.overlap("not-real","rome"));
 assert.equal(C.PERIODS.find(p=>p.id==="mesopotamia").name,"Mesopotamia");
 const html=read("social-studies/compare.html");
-assert.ok(html.includes('src="chronology.js"')&&html.includes("window.ChronologyCore.mount(document)"));
+assert.ok(scriptSrcIndex(html,"chronology.js")>=0&&html.includes("window.ChronologyCore.mount(document)"));
 assert.ok(html.includes('id="period-a"')&&html.includes('id="period-b"'));
 assert.ok(atlas.includes('href="compare.html"')&&read("index.html").includes('href="social-studies/compare.html"'));
 console.log("Five civilization spans match the Atlas; 25 SVG comparisons and overlap cases passed.");
