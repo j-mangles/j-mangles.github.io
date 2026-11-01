@@ -51,7 +51,7 @@ const injected={subject:"sci",units:[{id:"safe",n:"1",name:"Visible Unit",lesson
 const poisoned=ctx.window.StudentResources.createMarkup(injected);
 assert.ok(!poisoned.includes('<script>alert')&&!poisoned.includes('<img src=x'));
 assert.ok(!poisoned.includes('https://private.example')&&!poisoned.includes("img/../private.jpg"));
-assert.ok(scriptSrcIndex(poisoned,"img/public.png")>=0);
+assert.ok(poisoned.includes('src="img/public.png"'));
 assert.ok(!poisoned.includes('teacherMaterials'));
 const hub=read("assets/hub.js");
 assert.ok(hub.includes('h==="resources"')&&hub.includes('window.StudentResources.render($("#main"),H)'),"Resource view route is missing");
