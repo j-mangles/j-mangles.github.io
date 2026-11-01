@@ -939,6 +939,10 @@ window.EgyptLessons = [
       ]
     ],
     "work": "Review sheet: fix eight true or false statements, match sources to their biases, compare Egypt and Mesopotamia, and note what you still need to study. Test next class (50 marks).",
+    "activity": {
+      "href": "egypt-fact-myth.html",
+      "title": "Play: Egypt Fact or Myth? — seven evidence rounds"
+    },
     "check": [
       {
         "q": "Where did the stories that slaves built the pyramids come from?",
