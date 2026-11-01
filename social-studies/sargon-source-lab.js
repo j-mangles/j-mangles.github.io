@@ -34,7 +34,7 @@
   function empireFeedback(answers){
     const result=score(empire,answers);
     if(!result.complete)return {score:result,text:"Classify all eight cards before checking."};
-    return {score:result,details:"Sargon’s tools included an army, loyal governors, Akkadian as a government language, religious influence and trade. Revolts and the Gutians challenged his rule. Drought is a debated explanation for the empire’s decline, so the lesson labels it as probable rather than certain."};
+    return {score:result,details:"Sargon’s inscription says 5,400 men ate bread daily before him. Historians debate whether this means a standing army or a large royal court. Other tools included loyal governors, Akkadian as a government language, religious influence and trade. Revolts and the Gutians challenged his rule. Drought is a debated explanation for the empire’s decline, so the lesson labels it as probable rather than certain."};
   }
   function buildAdvice(tool,reason){
     if(!tool)return "Choose one of Sargon’s tools first.";
