@@ -1,5 +1,6 @@
 /* Game Theory payoff chart: aligns with student booklet, protects original live game. */
 "use strict";
+const scriptSrcIndex=(html,src)=>[...html.matchAll(/<script src="([^"]+)"/g)].map(m=>m[1].split("?")[0]).indexOf(src);
 const fs=require("node:fs"),vm=require("node:vm"),path=require("node:path"),assert=require("node:assert/strict");
 const root=path.resolve(__dirname,".."),read=p=>fs.readFileSync(path.join(root,p),"utf8");
 const h={window:{HUB:{tools:{games:()=>{}},lessonTools:{}}}};const original=h.window.HUB.tools.games;
@@ -40,7 +41,7 @@ assert.equal(P.play("tit","alwaysB").totalA,9);
 assert.equal(P.play("tit","alwaysB").totalB,14);
 assert.throws(()=>P.play("alwaysC","unknown"));
 assert.throws(()=>P.play("alwaysC","alwaysC",0));
-const html=read("critical-thinking/index.html"),scripts=[...html.matchAll(/<script src="([^"]+)"/g)].map(x=>x[1]);
+const html=read("critical-thinking/index.html"),scripts=[...html.matchAll(/<script src="([^"]+)"/g)].map(x=>x[1].split("?")[0]);
 assert.ok(scripts.includes("payoff-matrix.js")&&scripts.indexOf("payoff-matrix.js")<scripts.indexOf("../assets/hub.js"));
 const d={window:{}};vm.runInNewContext(read("critical-thinking/data.js"),d);
 assert.ok(d.window.HUB.units.some(u=>u.id==="games"&&u.lessons.some(l=>l.id==="g1"&&l.title==="Outsmart the Game")));
