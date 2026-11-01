@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f7f4ed">
+<title>Egypt and Nubia: Evidence Lab · Lesson 9</title>
+<style>
+:root{color-scheme:light dark;--paper:#f7f4ed;--card:#fffdf8;--ink:#20231f;--muted:#62695f;--line:#d9d6cc;--accent:#844d31;--accent-soft:#f2e6dc;--good:#286342;--focus:#145fa6}
+@media(prefers-color-scheme:dark){:root{--paper:#1c1d1a;--card:#252621;--ink:#f2efe6;--muted:#bab9ae;--line:#41423b;--accent:#efaa82;--accent-soft:#3a2d25;--good:#8bc59b;--focus:#90c9ff}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:900px;margin:auto;padding:22px 16px 54px}
+a{color:var(--accent);font-weight:700}
+header{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding-bottom:15px;border-bottom:1px solid var(--line)}
+.kicker{margin:0;color:var(--muted);font-size:.78rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+h1,h2,h3{font-family:Georgia,"Times New Roman",serif;line-height:1.18}
+h1{font-size:clamp(2rem,6vw,3.2rem);margin:5px 0}
+h2{font-size:1.7rem;margin:0 0 8px}
+h3{font-size:1.25rem;margin:0 0 8px}
+p{margin:8px 0}
+.lede{max-width:70ch;color:var(--muted);margin:16px 0 20px}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding:3px 2px 12px}
+.tab,.btn,.option,.phasebtn{font:inherit;cursor:pointer}
+.tab{white-space:nowrap;border:1px solid var(--line);border-radius:999px;padding:9px 13px;background:var(--card);font-weight:700}
+.tab[aria-pressed=true]{background:var(--ink);color:var(--card);border-color:var(--ink)}
+:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:clamp(17px,4vw,28px);box-shadow:0 8px 30px #0000000a}
+.panel+.panel{margin-top:16px}
+.note{color:var(--muted);font-size:.92rem}
+.timeline{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin:18px 0}
+.phasebtn{min-height:72px;border:1px solid var(--line);border-radius:8px;background:var(--paper);padding:9px;text-align:left}
+.phasebtn b{display:block;font-size:.92rem}
+.phasebtn span{display:block;margin-top:4px;color:var(--muted);font-size:.79rem}
+.phasebtn[aria-current=true]{border-color:var(--accent);box-shadow:inset 0 -3px var(--accent)}
+.phase{padding:16px 0;border-top:1px solid var(--line)}
+.phasehead{display:flex;justify-content:space-between;align-items:start;gap:12px;flex-wrap:wrap}
+.question{font-weight:750;margin:14px 0 8px}
+.options{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px}
+.option{border:1px solid var(--line);border-radius:8px;background:var(--card);padding:10px 12px;min-height:48px;text-align:left}
+.option:hover:not(:disabled){border-color:var(--accent);background:var(--accent-soft)}
+.option[aria-pressed=true]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.option:disabled{cursor:default;opacity:.85}
+.btn{border:0;border-radius:8px;background:var(--ink);color:var(--card);font-weight:750;padding:11px 15px;min-height:46px}
+.btn.secondary{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn:hover{opacity:.88}
+.feedback{margin-top:12px;border-left:4px solid var(--accent);background:var(--accent-soft);padding:13px 15px;border-radius:7px}
+.feedback strong{display:block;margin-bottom:3px}
+.badge{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:3px 9px;font-size:.8rem;color:var(--muted)}
+.nav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:12px}
+.nav .note{text-align:center}
+.sourcegrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}
+.source{border:1px solid var(--line);border-radius:9px;padding:14px;background:var(--paper)}
+.source .label{color:var(--muted);font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;font-weight:800}
+textarea{display:block;width:100%;min-height:88px;resize:vertical;border:1px solid var(--line);border-radius:8px;background:var(--paper);color:var(--ink);padding:10px 12px;font:inherit}
+.actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px}
+hr{border:0;border-top:1px solid var(--line);margin:22px 0}
+.final{margin-top:16px}
+[hidden]{display:none!important}
+@media(max-width:650px){.timeline{grid-template-columns:repeat(2,minmax(0,1fr))}.timeline .phasebtn:last-child{grid-column:span 2}.sourcegrid{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<main>
+<header><div><p class="kicker">Unit 2 · Ancient Egypt · Lesson 9</p><h1>Egypt and Nubia</h1></div><a href="index.html">Back to the Egypt atlas</a></header>
+<p class="lede">Were Egypt and Nubia rivals, trading partners, or both? Track how power shifted across five phases, then weigh a Roman-era written account against a message preserved in an object. Make a choice before revealing the evidence each source can support.</p>
+<nav class="tabs" aria-label="Investigation sections">
+<button class="tab" type="button" aria-pressed="true" data-tab="timeline">1 · Track the relationship</button>
+<button class="tab" type="button" aria-pressed="false" data-tab="sources">2 · Compare two sources</button>
+<button class="tab" type="button" aria-pressed="false" data-tab="verdict">3 · Make a claim</button>
+</nav>
+<section class="panel" id="timeline-panel">
+<p class="kicker">Evidence station 1</p><h2>Who had the upper hand?</h2>
+<p class="note">Choose the best-supported answer for each phase. Some relationships do not fit a simple winner-versus-loser story. Your work stays in this tab; nothing is submitted or saved online.</p>
+<div class="timeline" id="phase-list" aria-label="Five phases in chronological order"></div>
+<div class="phase" id="phase-card"></div>
+<div class="nav"><button class="btn secondary" id="phase-prev" type="button">← Previous phase</button><span class="note" id="phase-count"></span><button class="btn" id="phase-next" type="button">Next phase →</button></div>
+</section>
+<section class="panel" id="sources-panel" hidden>
+<p class="kicker">Evidence station 2</p><h2>Two sources, two limits</h2>
+<p>One source is a Roman-era writer describing a Kushite queen. The other is an object found at the Kushite capital. Consider what each source can show and what it leaves out.</p>
+<div class="sourcegrid">
+<article class="source"><p class="label">Source A · Strabo</p><p>A Greek geographer writing around 20 CE, while living in the Roman Empire. He describes the queen of Kush who fought Rome and comments on her appearance.</p></article>
+<article class="source"><p class="label">Source B · Bronze head of Augustus</p><p>A larger-than-life bronze head of Rome’s emperor was found buried beneath the top step of a temple at Meroë, the capital of Kush. People entering would walk over it.</p></article>
+</div>
+<div id="source-questions"></div>
+<div class="actions"><button class="btn" id="check-sources" type="button">Check my source reading</button><span class="note" id="source-score" aria-live="polite"></span></div>
+<div id="source-feedback" aria-live="polite"></div>
+</section>
+<section class="panel" id="verdict-panel" hidden>
+<p class="kicker">Evidence station 3</p><h2>Was Kush “just copying Egypt”?</h2>
+<p>Sort each fact by how you think it relates to the claim. For some facts, more than one reading is defensible. Choose a position, then open both evidence notes and explain which reading you find stronger.</p>
+<div id="claim-cards"></div>
+<hr>
+<h3>Your verdict</h3>
+<p class="question">Were Egypt and Nubia rivals, trading partners, or both?</p>
+<label for="claim">Write a short claim. Use evidence from at least three phases and explain one change in power.</label>
+<textarea id="claim" placeholder="Both, because… For example, during…"></textarea>
+<div class="actions"><button class="btn" id="show-model" type="button">I’ve tried — show a possible evidence path</button><button class="btn secondary" id="clear-work" type="button">Clear this tab’s work</button></div>
+<div class="feedback" id="model" hidden><strong>One evidence path to consider</strong><span>Egypt and Nubia were both rivals and trading partners. The record shows power moving in both directions: Kerma was a powerful neighbour; Egypt later ruled Nubia; Kushite rulers then governed Egypt; and Meroë remained an independent centre. Trade and cultural exchange continued across many of these changes. Egyptian and Roman sources survive more often than accounts from Nubians themselves, so our view is incomplete.</span></div>
+</section>
+<p class="note final">Based on the student task “Rivals or Partners?” in the Egypt and Nubia lesson. A source can provide useful evidence while still reflecting the maker’s point of view.</p>
+</main>
+<script>
+(function(){
+"use strict";
+const phases=[
+ {name:"Kerma",dates:"2500–1500 BCE",choices:["Egypt","Kush","Neither / a stand-off"],correct:["Kush","Neither / a stand-off"],clue:"Kerma controlled important trade and was powerful enough to raid deep into Egypt. Egypt and Kerma were both major neighbours; the evidence does not show a single, uninterrupted Egyptian victory.",prompt:"Which choice best describes the balance of power in this phase?"},
+ {name:"The forts",dates:"about 1860 BCE",choices:["Egypt","Kush","Neither / a stand-off"],correct:["Neither / a stand-off"],clue:"Egypt built Buhen with very thick walls and a moat as part of a chain of forts in Nubia. The forts show Egypt wanted to control the region and regarded Kerma as a serious threat.",prompt:"What does the evidence of the forts suggest about the relationship?"},
+ {name:"Egypt rules",dates:"1500–1070 BCE",choices:["Egypt","Kush","Neither / a stand-off"],correct:["Egypt"],clue:"After destroying Kerma, Egypt governed Nubia for more than 400 years. An Egyptian viceroy administered the region, and gold moved north.",prompt:"Which kingdom held political control in this phase?"},
+ {name:"Kush rules",dates:"744–656 BCE",choices:["Egypt","Kush","Neither / a stand-off"],correct:["Kush"],clue:"Piye conquered Egypt, and Kushite rulers governed it as the 25th Dynasty. They restored temples and ruled as pharaohs.",prompt:"Who held the upper hand after Piye’s campaign?"},
+ {name:"Meroë",dates:"590 BCE–350 CE",choices:["Egypt","Kush","Neither / a stand-off"],correct:["Kush"],clue:"Meroë was a Kushite capital with its own pyramids and script. Kush also won a treaty with Rome that required no tribute. This phase shows an independent Kush, not an Egyptian province.",prompt:"Which kingdom was independent and able to negotiate with Rome?"}
+];
+const comparisons=[
+ {q:"What is the strongest caution when using Strabo to understand the Kushite queen?",opts:["He was a Greek writer living in the Roman Empire, and his description leaves out the queen’s aims and the outcome of her war.","He was a Kushite soldier who fought in her army.","He wrote the account before the Roman conflict."],correct:0,why:"Strabo wrote from within the Roman Empire. His surviving description focuses on her appearance and does not give her own account or the treaty outcome."},
+ {q:"What can the buried bronze head of Augustus suggest most strongly?",opts:["Kush treated Rome as a close ally in this conflict.","The placement may have sent a message of defiance or victory over Rome, though the object has no written explanation.","It proves exactly what every person in Meroë thought."],correct:1,why:"Its placement beneath the temple step is evidence of a deliberate message. The interpretation is a reasoned inference, not a written statement of everyone’s views."}
+];
+const ideas=[
+ {fact:"Kushite kings worshipped the Egyptian god Amun.",support:"This supports the idea that Kush adopted an important Egyptian religious tradition.",challenge:"It does not prove that Kush copied everything; shared religion can coexist with distinct political choices and local traditions."},
+ {fact:"Kush built small, steep-sided pyramids centuries after Egypt’s pyramid age.",support:"The use of pyramids suggests an Egyptian influence.",challenge:"Their different shape and later timing also show Kush developed its own funerary tradition."},
+ {fact:"Kushite kings were buried with horses.",support:"A reader might connect royal burial customs to broader regional exchange.",challenge:"Horse burials are a distinctive Kushite practice in this comparison and point to a tradition of its own."},
+ {fact:"Kush first used Egyptian hieroglyphs, then developed its own 23-sign script.",support:"The early use of hieroglyphs shows Egyptian influence.",challenge:"Developing a script of its own shows adaptation rather than simple copying."},
+ {fact:"Kush was often ruled by queens with real military power.",support:"This could be compared with powerful women in Egyptian history.",challenge:"It also points to a Kushite political tradition that was not simply the same as Egypt’s."},
+ {fact:"Kushite pharaohs repaired Egyptian temples and revived Egyptian art styles.",support:"This is clear evidence that Kushite rulers adopted Egyptian traditions.",challenge:"They did so while governing as Kushite rulers; adopting traditions does not mean losing a distinct identity."}
+];
+let phaseIndex=0;const phaseAnswers=Array(phases.length).fill(null);const phaseChecked=Array(phases.length).fill(false);const sourceAnswers=Array(comparisons.length).fill(null);const ideaAnswers=Array(ideas.length).fill(null);const ideaShown=Array(ideas.length).fill(false);let sourceChecked=false;
+function $(id){return document.getElementById(id)}
+function el(tag,cls,txt){const n=document.createElement(tag);if(cls)n.className=cls;if(txt!==undefined)n.textContent=txt;return n}
+function renderPhases(){
+ const list=$("phase-list");list.replaceChildren();
+ phases.forEach((p,i)=>{const b=el("button","phasebtn");b.type="button";b.setAttribute("aria-current",i===phaseIndex?"true":"false");b.setAttribute("aria-label",p.name+", "+p.dates);b.append(el("b","",p.name),el("span","",p.dates));b.addEventListener("click",()=>{phaseIndex=i;renderPhases()});list.appendChild(b)});
+ const p=phases[phaseIndex],choice=phaseAnswers[phaseIndex],checked=phaseChecked[phaseIndex],card=$("phase-card");card.replaceChildren();
+ const head=el("div","phasehead");head.append(el("div","",p.prompt),el("span","badge",p.dates));card.appendChild(head);
+ const opts=el("div","options");
+ p.choices.forEach((c,i)=>{const b=el("button","option",c);b.type="button";b.disabled=checked;b.setAttribute("aria-pressed",choice===c?"true":"false");b.addEventListener("click",()=>{phaseAnswers[phaseIndex]=c;renderPhases()});opts.appendChild(b)});card.appendChild(opts);
+ if(checked){const fb=el("div","feedback");const correct=p.correct.includes(choice);fb.append(el("strong","",correct?"A defensible reading.":"Look again at the evidence."),el("span","",p.clue));card.appendChild(fb)}
+ $("phase-count").textContent=(phaseIndex+1)+" of "+phases.length+" phases";
+ $("phase-prev").disabled=phaseIndex===0;
+ $("phase-next").textContent=checked?(phaseIndex===phases.length-1?"Go to sources →":"Next phase →"):"Check this phase";
+ $("phase-next").onclick=()=>{if(!checked){if(choice===null){$("phase-count").textContent="Choose a reading first.";return}phaseChecked[phaseIndex]=true;renderPhases();return}if(phaseIndex<phases.length-1){phaseIndex++;renderPhases()}else{switchTab("sources")}};
+ $("phase-prev").onclick=()=>{if(phaseIndex>0){phaseIndex--;renderPhases()}};
+}
+function renderSources(){
+ const root=$("source-questions");root.replaceChildren();
+ comparisons.forEach((q,qi)=>{const box=el("div","phase");box.append(el("div","question",(qi+1)+". "+q.q));const opts=el("div","options");q.opts.forEach((t,oi)=>{const b=el("button","option",t);b.type="button";b.setAttribute("aria-pressed",sourceAnswers[qi]===oi?"true":"false");b.addEventListener("click",()=>{sourceAnswers[qi]=oi;Array.from(opts.children).forEach((x,j)=>x.setAttribute("aria-pressed",j===oi?"true":"false"))});opts.appendChild(b)});box.appendChild(opts);root.appendChild(box)});if(sourceChecked)checkSources();
+}
+function checkSources(){
+ let right=0,done=0;const boxes=$("source-questions").children;
+ comparisons.forEach((q,i)=>{const box=boxes[i],ans=sourceAnswers[i];if(ans===null)return;done++;if(ans===q.correct)right++;let fb=box.querySelector(".feedback");if(!fb){fb=el("div","feedback");box.appendChild(fb)}fb.replaceChildren(el("strong","",ans===q.correct?"Good source reading.":"Reconsider what the source can establish."),el("span","",q.why))});
+ sourceChecked=true;$("source-score").textContent=done+" of "+comparisons.length+" attempted; "+right+" strong readings.";
+}
+function renderIdeas(){
+ const root=$("claim-cards");root.replaceChildren();
+ ideas.forEach((item,i)=>{const box=el("article","phase");box.append(el("div","question",(i+1)+". "+item.fact));const prompt=el("p","note","Choose how this evidence relates to “Kush just copied Egypt.”");box.appendChild(prompt);const opts=el("div","options");["Supports","Challenges","Could be used either way"].forEach((label,j)=>{const b=el("button","option",label);b.type="button";b.setAttribute("aria-pressed",ideaAnswers[i]===j?"true":"false");b.addEventListener("click",()=>{ideaAnswers[i]=j;renderIdeas()});opts.appendChild(b)});box.appendChild(opts);
+ const reveal=el("button","btn secondary",ideaShown[i]?"Hide both readings":"Show both readings");reveal.type="button";reveal.style.marginTop="8px";reveal.addEventListener("click",()=>{ideaShown[i]=!ideaShown[i];renderIdeas()});box.appendChild(reveal);if(ideaShown[i]){const f=el("div","feedback");f.append(el("strong","","Possible readings"),el("span","",item.support+" "+item.challenge));box.appendChild(f)}root.appendChild(box)});
+}
+function switchTab(id){
+ document.querySelectorAll(".tab").forEach(b=>{const on=b.dataset.tab===id;b.setAttribute("aria-pressed",on?"true":"false")});
+ $("timeline-panel").hidden=id!=="timeline";$("sources-panel").hidden=id!=="sources";$("verdict-panel").hidden=id!=="verdict";
+ if(id==="sources")renderSources();
+ if(id==="verdict")renderIdeas();
+}
+document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>switchTab(b.dataset.tab)));
+$("check-sources").addEventListener("click",checkSources);
+$("show-model").addEventListener("click",()=>{$("model").hidden=false});
+$("clear-work").addEventListener("click",()=>{phaseAnswers.fill(null);phaseChecked.fill(false);sourceAnswers.fill(null);sourceChecked=false;ideaAnswers.fill(null);ideaShown.fill(false);phaseIndex=0;$("source-score").textContent="";$("claim").value="";$("model").hidden=true;switchTab("timeline");renderPhases()});
+renderPhases();
+})();
+</script>
+</body>
+</html>
