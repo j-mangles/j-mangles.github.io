@@ -7,6 +7,22 @@
 
   const STYLE = `<style>
     .mx-ph-ladder{margin:14px 0 12px;padding:12px 12px 10px;border:1px solid var(--rule);border-radius:12px;background:var(--paper)}
+    .mx-vis-key{margin:10px 0 14px;padding:12px;border:1px solid var(--rule);border-radius:12px;background:#fff}
+    .mx-vis-key h3,.mx-enzyme-map h3{margin:0 0 8px;font-size:14px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+    .mx-key-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px 14px}
+    .mx-key-item{display:flex;align-items:flex-start;gap:8px;font-size:13.5px;line-height:1.4}
+    .mx-key-icon{flex:none;width:17px;height:17px;margin-top:1px;border:1px solid rgba(20,30,50,.22)}
+    .mx-key-icon.enzyme{border-radius:50% 50% 50% 18%;background:#5968E8}
+    .mx-key-icon.food{width:34px;height:10px;margin-top:5px;border:0;background:radial-gradient(circle at 5px 5px,#D8C08C 0 4px,transparent 4.5px),radial-gradient(circle at 17px 5px,#D8C08C 0 4px,transparent 4.5px),radial-gradient(circle at 29px 5px,#D8C08C 0 4px,transparent 4.5px)}
+    .mx-key-icon.product{border-radius:50%;background:#D8C08C;box-shadow:9px 4px 0 -2px #D8C08C,3px 11px 0 -3px #D8C08C}
+    .mx-key-icon.ph{border-radius:4px;background:linear-gradient(90deg,#e95b50,#f2d35d,#75bd83,#66b9d3,#8c63b4)}
+    .mx-enzyme-map{margin:10px 0 14px;padding:12px;border:1px solid var(--rule);border-radius:12px;background:var(--soft)}
+    .mx-enzyme-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+    .mx-enzyme-card{border:1px solid var(--rule);border-radius:10px;background:#fff;padding:9px 10px;font-size:13.5px;line-height:1.4}
+    .mx-enzyme-card b{display:block;font-size:14px;margin-bottom:3px}
+    .mx-enzyme-card small{display:block;color:var(--muted);font-size:12.5px}
+    @media(max-width:560px){.mx-key-list{grid-template-columns:1fr}.mx-enzyme-cards{grid-template-columns:1fr}}
+
     .mx-ph-ladder-head{display:flex;justify-content:space-between;gap:8px;align-items:baseline;margin-bottom:8px;font-size:14px}
     .mx-ph-track{position:relative;display:grid;grid-template-columns:repeat(15,minmax(0,1fr));height:28px;border:1px solid rgba(30,40,60,.18);border-radius:7px;overflow:hidden;background:linear-gradient(90deg,#e95b50 0%,#ed9c42 22%,#f2d35d 42%,#75bd83 50%,#66b9d3 68%,#6e79ce 84%,#8c63b4 100%)}
     .mx-ph-track span{display:grid;place-items:center;border-right:1px solid rgba(255,255,255,.55);font-size:11px;font-weight:700;color:#172238;text-shadow:0 1px 1px rgba(255,255,255,.55)}
@@ -91,12 +107,30 @@
         <div class="mx-ph-zones"><span>More acidic</span><span>7 · neutral</span><span>More basic</span></div>
         <p class="mx-ph-note" id="ez-ph-note" aria-live="polite">pH 7 is neutral. Each step on the scale represents a tenfold change in acidity.</p>
       </div>
-      <div class="mx-stage"><canvas id="ez-cv" aria-label="Enzymes breaking down food molecules"></canvas></div>
+      <div class="mx-stage"><canvas id="ez-cv" aria-label="Simplified model showing the selected digestive enzyme interacting with food molecules at the selected pH"></canvas></div>
+      <section class="mx-vis-key" aria-label="Key to the enzyme animation">
+        <h3>Key to the animation</h3>
+        <div class="mx-key-list">
+          <div class="mx-key-item"><i class="mx-key-icon enzyme" id="ez-key-enzyme-icon" aria-hidden="true"></i><span><b>Notched coloured shape:</b> the selected enzyme (<span id="ez-key-enzyme">Amylase</span>).</span></div>
+          <div class="mx-key-item"><i class="mx-key-icon food" id="ez-key-food-icon" aria-hidden="true"></i><span><b>Connected beads:</b> food molecules the enzyme can act on (<span id="ez-key-food">starch</span>). This is a simplified model, not a molecular drawing.</span></div>
+          <div class="mx-key-item"><i class="mx-key-icon product" aria-hidden="true"></i><span><b>Loose beads:</b> smaller products after a successful reaction.</span></div>
+          <div class="mx-key-item"><i class="mx-key-icon ph" aria-hidden="true"></i><span><b>Canvas background:</b> colour represents the selected pH, from acidic to basic. The enzyme shape/activity changes as pH moves away from its best range.</span></div>
+        </div>
+      </section>
+      <section class="mx-enzyme-map" aria-label="Digestive enzyme comparison">
+        <h3>Same pH scale, different enzyme jobs</h3>
+        <div class="mx-enzyme-cards">
+          <div class="mx-enzyme-card"><b>Pepsin</b><span>Targets protein</span><small>Stomach · works best near pH 2</small></div>
+          <div class="mx-enzyme-card"><b>Amylase</b><span>Targets starch</span><small>Saliva / mouth · works best near pH 7</small></div>
+          <div class="mx-enzyme-card"><b>Trypsin</b><span>Targets protein</span><small>Small intestine · works best near pH 8</small></div>
+        </div>
+        <p class="note" style="margin:8px 0 0">Each enzyme can work across a range of pH values, but its activity is highest near its optimum. The pH slider changes the environment; it does not change which enzyme or food target you selected.</p>
+      </section>
       <div class="mx-read"><button class="btn" id="ez-run">Run a 10-second trial</button><span id="ez-stat"></span></div>
       <div class="mx-graph" id="ez-graph"></div>
       <div class="mx-ctl" style="margin-top:6px"><button class="btn ghost" id="ez-curve">Show the booklet curves</button><button class="btn ghost" id="ez-clear">Clear my results</button></div>
-      <div class="mx-txt"><div class="def">The chemical reactions of metabolism are carried out by special proteins called <b>enzymes</b>, which speed up reactions inside the cell. Most work best within a narrow range of <b>pH</b>.</div>
-        <p><b>Your job:</b> pick an enzyme, set a pH, and run a trial. Each result is plotted on your graph. Test several pH values for each enzyme, then compare your graph with the booklet curves. Your points will be a bit scattered, just like real lab data.</p>
+      <div class="mx-txt"><div class="def">Digestive enzymes are proteins that help break food molecules into smaller products. Different enzymes act on different targets, and each has a preferred pH range. The enzymes are not confined to only one pH value: they can still work outside their optimum, but usually less effectively.</div>
+        <p><b>How to explore:</b> choose an enzyme, move the pH slider, and watch the model. When the pH is near that enzyme's optimum, more encounters break the food chain. Run a 10-second trial to add a point to your graph. The moving particles and molecule shapes are simplified teaching models, not literal molecular-scale views.</p>
         <p id="ez-hint" class="note"></p></div>`;
     const cv=el.querySelector("#ez-cv"), ctx=cv.getContext("2d");
     fitCanvas(cv,ctx,W,H); window.addEventListener("resize",()=>{ if(document.body.contains(cv)) fitCanvas(cv,ctx,W,H); });
@@ -172,6 +206,10 @@
       el.querySelectorAll("[data-e]").forEach(b=>b.classList.toggle("on",b.dataset.e===enz));
       el.querySelectorAll("[data-p]").forEach(b=>b.classList.toggle("on",+b.dataset.p===pH));
       el.querySelector("#ez-ph").value=pH; el.querySelector("#ez-phv").textContent=pH;
+      el.querySelector("#ez-key-enzyme").textContent=ENZ[enz].name;
+      el.querySelector("#ez-key-food").textContent=ENZ[enz].food;
+      el.querySelector("#ez-key-enzyme-icon").style.background=ENZ[enz].col;
+      el.querySelector("#ez-key-food-icon").style.background=`radial-gradient(circle at 5px 5px,${ENZ[enz].foodCol} 0 4px,transparent 4.5px),radial-gradient(circle at 17px 5px,${ENZ[enz].foodCol} 0 4px,transparent 4.5px),radial-gradient(circle at 29px 5px,${ENZ[enz].foodCol} 0 4px,transparent 4.5px)`;
       el.querySelector("#ez-ph-marker").style.left=(pH/14*100)+"%";
       const zone=pH<7?"acidic":pH>7?"basic":"neutral";
       el.querySelector("#ez-ph-note").textContent=`Selected pH ${pH} is ${zone}. The enzyme trial slider and booklet graph cover pH 0–12; the ladder shows the full 0–14 scale.`; }
