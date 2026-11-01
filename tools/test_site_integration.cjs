@@ -12,7 +12,7 @@ const pages={
 };
 for(const [file,tools] of Object.entries(pages)){
  const dir=path.join(root,path.dirname(file)),html=fs.readFileSync(path.join(root,file),"utf8");
- const src=[...html.matchAll(/<script\s+src="([^"]+)"/g)].map(x=>x[1]);
+ const src=[...html.matchAll(/<script\s+src="([^"]+)"/g)].map(x=>x[1].split("?")[0]);
  assert.equal(new Set(src).size,src.length,file+" has duplicate script tags");
  assert.ok(src.indexOf("data.js")>=0,file+" missing data.js");
  const hubIndex=src.findIndex(link=>link.startsWith("../assets/hub.js"));
