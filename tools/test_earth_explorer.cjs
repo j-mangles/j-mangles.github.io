@@ -1,5 +1,6 @@
 /* Science 8: Earth layers, plate boundaries, evidence and measured scale disclaimers. */
 "use strict";
+const scriptSrcIndex=(html,src)=>[...html.matchAll(/<script src="([^"]+)"/g)].map(m=>m[1].split("?")[0]).indexOf(src);
 const assert=require("node:assert/strict"),path=require("node:path"),fs=require("node:fs"),vm=require("node:vm");
 const root=path.resolve(__dirname,".."),read=p=>fs.readFileSync(path.join(root,p),"utf8");
 const ctx={window:{HUB:{subject:"sci",units:[],tools:{}}}};
@@ -36,7 +37,7 @@ for(const input of [[-2,1],[2,-1],[NaN,2]])assert.throws(()=>E.rateDistance(...i
 assert.equal(E.evidence.length,4);
 assert.ok(E.evidence.find(x=>x.id==="fossils").fact.includes("South America"));
 assert.ok(E.evidence.find(x=>x.id==="seafloor").support.includes("spreading"));
-const html=read("science/index.html"),scripts=[...html.matchAll(/<script src="([^"]+)"/g)].map(m=>m[1]);
+const html=read("science/index.html"),scripts=[...html.matchAll(/<script src="([^"]+)"/g)].map(m=>m[1].split("?")[0]);
 assert.ok(scripts.includes("earth-explorer.js"));
 assert.ok(scripts.indexOf("data.js")<scripts.indexOf("earth-explorer.js"));
 assert.ok(scripts.indexOf("earth-explorer.js")<scripts.indexOf("../assets/course-map.js"));
