@@ -158,6 +158,7 @@ window.MiddleAgesLessons = [
     "n": "4",
     "title": "The House of Wisdom",
     "released": true,
+    "activity": {"href":"medieval-knowledge-routes.html#baghdad","title":"Trace a Knowledge Route"},
     "big": "Scholars across the Islamic world translated, tested and extended knowledge through networks that connected many languages and regions.",
     "notes": [
       "The Abbasid caliphs founded Baghdad in 762 CE; it became a centre of government, trade and scholarship.",
@@ -566,6 +567,7 @@ window.MiddleAgesLessons = [
     "n": "12",
     "title": "China, the Mongols and the Silk Road",
     "released": true,
+    "activity": {"href":"medieval-knowledge-routes.html#silk-road","title":"Trace a Knowledge Route"},
     "big": "Medieval Asia had powerful states and knowledge networks; Mongol rule reshaped routes connecting communities across Eurasia.",
     "notes": [
       "Song China developed large cities, printing, advanced manufacturing and state institutions before and during the Mongol era.",
