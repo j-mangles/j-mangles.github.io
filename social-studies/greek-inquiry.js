@@ -1,7 +1,7 @@
 (function(){
 "use strict";
 const $=s=>document.querySelector(s);
-const activities=["found","citizens","lot"];
+const activities=["found","citizens","lot","ostracism"];
 const cities=[
 ["A","Island with two harbours, a spring and access to farmland; people already live nearby.","Syracuse, Sicily"],
 ["B","Sheltered rocky inlet, vines and olives; nearby river trade in metal.","Massalia, now Marseille"],
@@ -113,11 +113,45 @@ function lotGame(){
  root.append(textArea("lot-perspective","Would another person choose differently? Why?"));
  const p=document.createElement("p");p.className="hint";p.textContent="Caution: The profiles simplify historical experiences. Forced labour and enslavement were systems of coercion and harm, not game roles in real life.";root.append(p);
 }
+function ostracismGame(){
+ intro("05","Mystery in the Well","Athens, around 480 BCE. Investigate a puzzling group of pottery ballots naming Themistocles. Separate what excavators observed from what those clues might mean.");
+ const root=container();
+ const evidence=card("Evidence from the excavation","The class source reports 190 pottery pieces naming Themistocles, found together in a well. Handwriting comparison suggested they were written by only 14 different people. The pieces seemed unused.");
+ root.append(evidence);
+ const note=document.createElement("p");note.className="hint";note.textContent="Start with the observations. A shared handwriting pattern raises questions about how the ballots were prepared; by itself, it does not reveal who arranged them or why.";root.append(note);
+ const check=card("Quick check · observation or inference?","Which statement repeats an observation from the evidence?");
+ const select=document.createElement("select");select.setAttribute("aria-label","Choose the statement that is an observation");
+ [["","Choose one"],["obs","190 pieces named Themistocles and were written by about 14 hands."],["inf","One powerful politician organized the ballots to control the vote."],["inf2","Every voter agreed that Themistocles should be exiled."]].forEach(([v,t])=>{const o=document.createElement("option");o.value=v;o.textContent=t;select.append(o);});
+ select.value=memory["well-observation-choice"]||"";
+ const feedback=document.createElement("p");feedback.className="status";feedback.setAttribute("aria-live","polite");
+ select.onchange=()=>{memory["well-observation-choice"]=select.value;feedback.textContent=select.value==="obs"?"Yes. That statement describes the reported clues. The other statements add explanations that the clues do not prove.":select.value?"That goes beyond the reported observations. Look for a statement that simply describes the pieces and handwriting.":"";};
+ check.append(select,feedback);root.append(check);
+ const check2=card("Quick check · what can the evidence establish?","Choose the most careful conclusion based on these clues.");
+ const select2=document.createElement("select");select2.setAttribute("aria-label","Choose the conclusion best supported by the evidence");
+ [["","Choose one"],["careful","The group is unusual and worth investigating, but the clues alone do not show who prepared the ballots or why."],["over","The evidence proves Themistocles' opponents secretly planned the vote."],["over2","The evidence proves all 190 pieces were written by one person."]].forEach(([v,t])=>{const o=document.createElement("option");o.value=v;o.textContent=t;select2.append(o);});
+ select2.value=memory["well-conclusion-choice"]||"";
+ const feedback2=document.createElement("p");feedback2.className="status";feedback2.setAttribute("aria-live","polite");
+ select2.onchange=()=>{memory["well-conclusion-choice"]=select2.value;feedback2.textContent=select2.value==="careful"?"Supported: the pattern invites questions, while motive and organizer remain uncertain.":select2.value?"That claim says more than the reported clues can establish. Try a conclusion that keeps the unanswered questions open.":"";};
+ check2.append(select2,feedback2);root.append(check2);
+ const possible=card("Build two explanations","The next ideas are hypotheses, not facts. Choose one possibility to test, then create a different explanation of your own.");
+ const hypothesis=document.createElement("select");hypothesis.setAttribute("aria-label","Select a possible hypothesis");
+ [["","Select a possible hypothesis"],["shared","Some ballots may have been prepared together before the gathering."],["helped","Some voters may have received help writing their names."],["other","I have a different explanation."]].forEach(([v,t])=>{const o=document.createElement("option");o.value=v;o.textContent=t;hypothesis.append(o);});
+ hypothesis.value=memory["well-hypothesis-choice"]||"";
+ hypothesis.onchange=()=>memory["well-hypothesis-choice"]=hypothesis.value;
+ possible.append(hypothesis);root.append(possible);
+ root.append(textArea("well-observations","List two observations from the excavation report"),textArea("well-hypothesis","Explain your selected hypothesis. Which clue fits it, and what remains uncertain?"),textArea("well-alternative","Offer a different explanation. What clue might fit it?"));
+ const evidenceNeed=document.createElement("label");evidenceNeed.className="write";evidenceNeed.textContent="How strongly do the current clues support your selected hypothesis?";
+ const strength=document.createElement("select");strength.setAttribute("aria-label","Rate how strongly the evidence supports the hypothesis");
+ [["","Choose a rating"],["limited","Limited: it is possible, but the clues do not distinguish it from alternatives."],["some","Some: at least one clue fits, though other explanations remain."],["strong","Strong: several clues fit and important alternatives have been ruled out."]].forEach(([v,t])=>{const o=document.createElement("option");o.value=v;o.textContent=t;strength.append(o);});
+ strength.value=memory["well-strength"]||"";strength.onchange=()=>memory["well-strength"]=strength.value;evidenceNeed.append(strength);root.append(evidenceNeed);
+ root.append(textArea("well-next-evidence","What additional evidence would help distinguish the explanations?"),textArea("well-conclusion","Write a careful conclusion. Use an observation, explain what it may suggest, and name one limit."));
+ const caution=document.createElement("p");caution.className="hint";caution.textContent="Historical interpretation: the pottery clues do not identify the people who prepared the pieces or establish their motive. Treat each explanation as a hypothesis until more evidence is available.";root.append(caution);
+}
 function report(){
  return ["GRADE 8 ANCIENT GREECE — INQUIRY RESPONSE","Activity: "+tab,"Selected colony: "+selected,"Role: "+lives[role][0],
  "Scoring: "+JSON.stringify(scores),"Voting: "+JSON.stringify(votes),
- ...Object.entries(memory).map(([k,v])=>k+"\\n"+v),
- "Fictional examples are teaching simulations."].join("\n\n");
+ ...Object.entries(memory).map(([k,v])=>k+"\n"+v),
+ (tab==="ostracism"?"Historical clues are observations; proposed explanations are student hypotheses.":"Fictional examples are teaching simulations.")].join("\n\n");
 }
 $("#download").onclick=()=>{
  const url=URL.createObjectURL(new Blob([report()],{type:"text/plain;charset=utf-8"}));
@@ -130,7 +164,7 @@ $("#copy").onclick=()=>{
 };
 function render(){
  document.querySelectorAll("[data-tab]").forEach(b=>b.setAttribute("aria-current",String(b.dataset.tab===tab)));
- if(tab==="found")siteGame();else if(tab==="citizens")citizenGame();else lotGame();
+ if(tab==="found")siteGame();else if(tab==="citizens")citizenGame();else if(tab==="lot")lotGame();else ostracismGame();
 }
 document.querySelectorAll("[data-tab]").forEach(b=>b.addEventListener("click",()=>{tab=b.dataset.tab;location.hash=tab;render();}));
 window.addEventListener("hashchange",()=>{const value=location.hash.slice(1);if(activities.includes(value)&&tab!==value){tab=value;render();}});
