@@ -146,7 +146,7 @@ function waterProperties(el){
   b+=T(181,52,"WHY ICE FLOATS",{a:"middle",w:700,size:15})+T(534,52,"FRESHWATER LAKE IN WINTER",{a:"middle",w:700,size:14});
   b+=T(92,82,"ICE",{a:"middle",w:700,size:14})+T(250,82,"LIQUID WATER",{a:"middle",w:700,size:14});
   const ice=[[62,116],[100,116],[81,148],[119,148],[62,180],[100,180],[81,212],[119,212]];
-  const liquid=[[206,116],[234,110],[262,116],[290,112],[218,140],[248,143],[278,139],[205,170],[235,168],[264,173],[290,166],[218,198],[249,199],[279,198]];
+  const liquid=[[206,116],[234,116],[262,116],[290,116],[206,145],[234,145],[262,145],[290,145]];
   ice.forEach(([x,y])=>b+="<circle cx='"+x+"' cy='"+y+"' r='10' fill='"+A+"'/ >".replace("/ >","/>"));
   liquid.forEach(([x,y])=>b+="<circle cx='"+x+"' cy='"+y+"' r='8' fill='"+A+"'/ >".replace("/ >","/>"));
   b+=T(92,242,"open particle arrangement",{a:"middle",size:11,fill:S})+T(250,242,"closer-packed liquid",{a:"middle",size:11,fill:S});
