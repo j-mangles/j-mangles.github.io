@@ -480,6 +480,11 @@
       <div class="ml-tabs" role="tablist" aria-label="Models">${TABS.map(([k,t])=>`<button role="tab" data-tab="${k}">${t}</button>`).join("")}</div>
       <div class="ml-ctl" id="ml-ctl"></div>
       <div class="ml-stage"><canvas id="ml-cv" aria-label="Particle model"></canvas></div>
+      <section class="ml-legend" aria-labelledby="ml-key-title">
+        <h3 id="ml-key-title">Key to this model</h3>
+        <ul class="ml-key-list" id="ml-key-list"></ul>
+        <p class="ml-legend-note" id="ml-key-note"></p>
+      </section>
       <div class="ml-read" id="ml-read" aria-live="off"></div>
       <div class="ml-txt" id="ml-txt"></div>
       <style>
@@ -496,6 +501,17 @@
         .ml-stage{border:1px solid var(--rule);border-radius:12px;overflow:hidden;background:#fff;line-height:0}
         .ml-stage canvas{display:block;width:100%}
         .ml-read{display:grid;gap:6px;margin-top:10px;font-size:14.5px}
+        .ml-legend{margin-top:10px;padding:10px 12px;border:1px solid var(--rule);border-radius:10px;background:var(--paper)}
+        .ml-legend h3{margin:0 0 7px;font-size:13px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+        .ml-key-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:6px 12px;list-style:none;margin:0;padding:0}
+        .ml-key-list li{display:flex;align-items:flex-start;gap:7px;font-size:14px;line-height:1.35}
+        .ml-symbol{display:inline-flex;flex:0 0 15px;align-items:center;justify-content:center;color:var(--key-color);font-size:16px;font-weight:800;line-height:1}
+        .ml-symbol.dot{width:12px;height:12px;flex-basis:12px;margin:2px 1px;border-radius:50%;background:var(--key-color)}
+        .ml-symbol.big-dot{width:15px;height:15px;flex-basis:15px;margin-top:1px;border-radius:50%;background:var(--key-color)}
+        .ml-symbol.bar{width:5px;height:16px;flex-basis:5px;margin:0 5px;background:var(--key-color)}
+        .ml-symbol.protein{width:13px;height:16px;flex-basis:13px;border:2px solid var(--key-color);border-radius:5px;background:color-mix(in srgb,var(--key-color) 35%,white)}
+        .ml-symbol.level{height:3px;flex-basis:15px;margin-top:7px;background:var(--key-color)}
+        .ml-legend-note{margin:7px 0 0;color:var(--muted);font-size:13px;line-height:1.4}
         .ml-bar{display:grid;grid-template-columns:minmax(92px,auto) 1fr;gap:10px;align-items:center}
         .ml-bar .tr{display:flex;height:22px;border-radius:6px;overflow:hidden;background:var(--soft);font-size:12.5px;font-weight:700;color:#fff;font-variant-numeric:tabular-nums}
         .ml-bar .tr span{display:flex;align-items:center;padding:0 7px;white-space:nowrap;transition:flex-grow .35s}
@@ -539,7 +555,42 @@
       if(tab==="fac"){ cfg.prot=cfg.prot==null?2:cfg.prot; add("glucose",-1,44); }
       if(tab==="osmo"){ cfg.solL=cfg.solL==null?0:cfg.solL; cfg.solR=cfg.solR==null?12:cfg.solR; lvl={L:168,R:168}; add("water",-1,60); add("water",1,60); add("solute",-1,cfg.solL); add("solute",1,cfg.solR); }
       if(tab==="active"){ atp=10; add("ion",-1,24); add("ion",1,36); }
-      controls(); words(); readout(true);
+      controls(); words(); key(); readout(true);
+    }
+
+    function key(){
+      const items={
+        perm:[
+          ["dot","#3B8ED8","Small blue dots: water"],
+          ["big-dot","#7A5232","Large brown dots: large particles"],
+          ["bar","#9AA3B5","Vertical barrier: the permeability being tested"]
+        ],
+        diff:[
+          ["dot","#E0533F","Red dots: oxygen particles"],
+          ["bar","#9AA3B5","Membrane: oxygen can pass directly through"]
+        ],
+        fac:[
+          ["dot","#F0A230","Orange dots: glucose particles"],
+          ["protein","#7C5CC4","Purple shapes: transport proteins"],
+          ["bar","#9AA3B5","Membrane: glucose crosses through a protein"]
+        ],
+        osmo:[
+          ["dot","#3B8ED8","Blue dots: water"],
+          ["dot","#8E63C7","Purple dots: dissolved solute (salt)"],
+          ["level","#8DBCE0","Horizontal lines: water level"]
+        ],
+        active:[
+          ["dot","#D9447A","Pink dots: particles being transported"],
+          ["protein","#23B3A0","Teal shape: energy-powered pump protein"],
+          ["star","#E08A00","Gold ATP symbol: energy used by the pump"]
+        ]
+      };
+      const list=el.querySelector("#ml-key-list");
+      list.innerHTML=items[tab].map(([shape,color,label])=>`<li><span class="ml-symbol ${shape}" style="--key-color:${color}" aria-hidden="true">${shape==="star"?"✦":""}</span><span>${label}</span></li>`).join("");
+      const note=tab==="perm"
+        ? "Side A (left) is outside; Side B (right) is inside. The centre barrier shows what can cross."
+        : "Left is outside the cell; right is inside. Dots move randomly; compare the overall movement across the membrane.";
+      el.querySelector("#ml-key-note").textContent=note;
     }
 
     function step(dt){
