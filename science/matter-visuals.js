@@ -129,14 +129,14 @@ function temperatureDensity(el){
   b+=T(158,69,"COOL GAS",{a:"middle",w:700,size:15})+T(562,58,"WARM GAS",{a:"middle",w:700,size:15});
   const cool=[[82,104],[122,104],[162,104],[202,104],[242,104],[82,146],[122,146],[162,146],[202,146],[242,146]];
   const warm=[[474,93],[520,94],[566,91],[612,94],[658,92],[474,151],[520,151],[566,151],[612,151],[658,151]];
-  cool.forEach(([x,y])=>b+="<circle cx='"+x+"' cy='"+y+"' r='9' fill='"+A+"'/ >".replace("/ >","/>"));
-  warm.forEach(([x,y],i)=>b+="<circle cx='"+x+"' cy='"+y+"' r='9' fill='"+A+"'/ >".replace("/ >","/>")+(i%2===0?arrow(x+2,y-11,x+10,y-18):""));
+  cool.forEach(([x,y])=>b+="<circle cx='"+x+"' cy='"+y+"' r='9' fill='"+A+"'/>");
+  warm.forEach(([x,y],i)=>b+="<circle cx='"+x+"' cy='"+y+"' r='9' fill='"+A+"'/>"+(i%2===0?arrow(x+2,y-11,x+10,y-18):""));
   b+=T(158,221,"particles closer together",{a:"middle",size:12,fill:S})+T(562,233,"particles spread farther apart",{a:"middle",size:12,fill:S});
   b+=arrow(305,120,413,120)+T(359,105,"add heat",{a:"middle",size:12,fill:S});
   b+="<rect x='36' y='246' width='648' height='36' rx='9' fill='var(--soft)'/>";
   b+=T(360,269,"Mass stays the same  ÷  volume increases  →  density decreases",{a:"middle",w:700,size:14});
   b+=T(360,309,"Warm air rises when surrounded by cooler, denser air.",{a:"middle",size:13,fill:S});
-  el.innerHTML=wrap("See it",svg(720,324,"Same sample of gas before and after warming: particles move faster and spread through a larger volume, lowering density",b),"Blue circles represent gas particles. The spacing and motion arrows are simplified and not to scale. Warm air rises in cooler surroundings because it is less dense.");
+  el.innerHTML=wrap("See it",svg(720,324,"Same sample of gas before and after warming: particles move faster and spread through a larger volume, lowering density",b),"Blue circles represent gas particles. The arrows show particle motion; warmed particles move faster. Spacing and motion are simplified and not to scale. Warm air rises in cooler surroundings because it is less dense.");
 }
 
 function waterProperties(el){
@@ -147,8 +147,8 @@ function waterProperties(el){
   b+=T(92,82,"ICE",{a:"middle",w:700,size:14})+T(250,82,"LIQUID WATER",{a:"middle",w:700,size:14});
   const ice=[[62,116],[100,116],[81,148],[119,148],[62,180],[100,180],[81,212],[119,212]];
   const liquid=[[206,116],[234,116],[262,116],[290,116],[206,145],[234,145],[262,145],[290,145]];
-  ice.forEach(([x,y])=>b+="<circle cx='"+x+"' cy='"+y+"' r='10' fill='"+A+"'/ >".replace("/ >","/>"));
-  liquid.forEach(([x,y])=>b+="<circle cx='"+x+"' cy='"+y+"' r='8' fill='"+A+"'/ >".replace("/ >","/>"));
+  ice.forEach(([x,y])=>b+="<circle cx='"+x+"' cy='"+y+"' r='10' fill='"+A+"'/>");
+  liquid.forEach(([x,y])=>b+="<circle cx='"+x+"' cy='"+y+"' r='8' fill='"+A+"'/>");
   b+=T(92,242,"open particle arrangement",{a:"middle",size:11,fill:S})+T(250,242,"closer-packed liquid",{a:"middle",size:11,fill:S});
   b+=T(92,270,"Ice: 0.92 g/cm³",{a:"middle",w:700,size:13})+T(250,270,"Water: about 1.00 g/cm³",{a:"middle",w:700,size:12});
   b+=T(181,291,"same amount of water · ice occupies more volume",{a:"middle",size:10,fill:S});
