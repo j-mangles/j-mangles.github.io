@@ -150,6 +150,30 @@
       $("#pc-solution").hidden=false;$("#pc-solution").innerHTML="<strong>Worked model:</strong> "+escapeHTML(problem.steps);
     };
     $("#pc-next").onclick=()=>{draw();$("#pc-answer").focus({preventScroll:true});};
+    $("#pc-snapshot-calc").onclick=()=>{
+      const classSize=Number($("#pc-class-size").value.trim());
+      const gradeRaw=$("#pc-grade-size").value.trim();
+      const gradeSize=gradeRaw===""?null:Number(gradeRaw);
+      const counts=[...element.querySelectorAll("[data-snapshot-count]")].map(input=>input.value.trim()===""?null:Number(input.value));
+      if(!Number.isInteger(classSize)||classSize<1){$("#pc-snapshot-status").textContent="Enter a positive whole-number class size first.";return;}
+      if(gradeSize!==null&&(!Number.isInteger(gradeSize)||gradeSize<1)){$("#pc-snapshot-status").textContent="The Grade 7 group size must be a positive whole number, or left blank.";return;}
+      if(counts.every(count=>count===null)){$("#pc-snapshot-status").textContent="Enter at least one yes count to build the snapshot.";return;}
+      if(counts.some(count=>count!==null&&(!Number.isInteger(count)||count<0||count>classSize))){$("#pc-snapshot-status").textContent="Each yes count must be a whole number from 0 to the class size.";return;}
+      counts.forEach((count,index)=>{
+        const result=$("#pc-result-"+index),bar=$("#pc-bar-"+index);
+        if(count===null){result.textContent="Enter a yes count.";bar.style.width="0%";return;}
+        const decimal=count/classSize,pct=Math.round(decimal*100);
+        result.textContent=count+"/"+classSize+" = "+decimal.toFixed(2)+" = "+pct+"%"+(gradeSize===null?"":" · about "+Math.round(decimal*gradeSize)+" of "+gradeSize);
+        bar.style.width=(decimal*100).toFixed(1)+"%";
+      });
+      $("#pc-snapshot-status").textContent=gradeSize===null?"Conversions are ready. Add a Grade 7 group size to estimate a count.":"Snapshot ready. Each larger-group count is an estimate based on this class sample.";
+    };
+    $("#pc-snapshot-reset").onclick=()=>{
+      $("#pc-class-size").value="";$("#pc-grade-size").value="";
+      [...element.querySelectorAll("[data-snapshot-count]")].forEach(input=>{input.value="";});
+      [0,1,2,3,4].forEach(index=>{$("#pc-result-"+index).textContent="";$("#pc-bar-"+index).style.width="0%";});
+      $("#pc-snapshot-status").textContent="Counts cleared from this page.";
+    };
     draw();
   }
   H.lessonTools=Object.assign(H.lessonTools||{},{"fdp/l08":mount});
