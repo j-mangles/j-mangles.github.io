@@ -650,6 +650,10 @@ window.EgyptLessons = [
       ]
     ],
     "work": "Two Sides of the Nile: rate the relationship at each stage with evidence, compare an Egyptian king's words with a Kushite king's, and answer the essential question.",
+    "activity": {
+      "href": "egypt-nubia-evidence.html",
+      "title": "Investigate: Egypt and Nubia Evidence Lab"
+    },
     "check": [
       {
         "q": "Who was Piye?",
