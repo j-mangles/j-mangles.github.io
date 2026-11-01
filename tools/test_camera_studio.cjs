@@ -1,5 +1,6 @@
 /* Grade 8 ELA original media study: shot distances from The Present viewing guide. */
 "use strict";
+const scriptSrcIndex=(html,src)=>[...html.matchAll(/<script src="([^"]+)"/g)].map(m=>m[1].split("?")[0]).indexOf(src);
 const assert=require("node:assert/strict"),fs=require("node:fs"),vm=require("node:vm"),path=require("node:path");
 const root=path.resolve(__dirname,".."),read=p=>fs.readFileSync(path.join(root,p),"utf8");
 const context={window:{HUB:{subject:"ela",tools:{stories:()=>{}},lessonTools:{}}}};
@@ -25,7 +26,7 @@ const exported=M.exportResponse(responses);
 assert.ok(exported.includes("Scene A")&&exported.includes("Extreme long shot"));
 assert.ok(exported.includes("The huge space emphasizes isolation."));
 assert.ok(exported.includes("[choose a shot]"));
-const page=read("ela/index.html"),scripts=[...page.matchAll(/<script src="([^"]+)"/g)].map(m=>m[1]);
+const page=read("ela/index.html"),scripts=[...page.matchAll(/<script src="([^"]+)"/g)].map(m=>m[1].split("?")[0]);
 assert.ok(scripts.includes("camera-studio.js")&&scripts.indexOf("tools.js")<scripts.indexOf("camera-studio.js")&&scripts.indexOf("camera-studio.js")<scripts.indexOf("../assets/hub.js"));
 const data={window:{}};vm.runInNewContext(read("ela/data.js"),data);
 const u=data.window.HUB.units.find(x=>x.id==="film");
