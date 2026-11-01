@@ -98,6 +98,7 @@
  return `<div class="task" id="lesson-activity" style="margin-top:10px">
   <p style="font-weight:700;font-size:19px;margin:0">${esc(a.title)}</p>
   <p style="margin-top:7px">${esc(a.context||"Use the lesson to support your response.")}</p>
+  ${a.href?`<p style="margin:12px 0"><a class="btn ghost" href="${esc(a.href)}">${esc(a.linkTitle||"Open interactive activity")}</a></p>`:""}
   ${fields}
   ${a.checklist?.length?`<div style="margin-top:18px"><b>Before you finish</b><ul style="margin:6px 0 0;padding-left:20px">${a.checklist.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>`:""}
   <div style="display:flex;flex-wrap:wrap;gap:9px;margin-top:18px">
