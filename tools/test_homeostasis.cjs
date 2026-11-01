@@ -16,8 +16,9 @@ assert.ok(Math.abs(evolve(8,false,true,20)-37)<Math.abs(evolve(8,false,false,20)
 assert.ok(Math.abs(evolve(35,false,true,20)-37)<Math.abs(evolve(35,false,false,20)-37),"negative feedback must resist heat");
 assert.ok(step(37,35,true,false).temperature>step(37,35,false,false).temperature,"physical activity should increase initial model heat load");
 const index=fs.readFileSync(path.join(root,"science","index.html"),"utf8");
-assert.match(index,/<script src="homeostasis\.js"><\/script>/);
-assert.ok(index.indexOf('src="homeostasis.js"')<index.indexOf('src="../assets/hub.js"'),"tool must register before lesson hub mounts");
+assert.match(index,/<script src="homeostasis\.js(?:\?[^"]*)?"><\/script>/);
+const toolIndex=index.indexOf('src="homeostasis.js'),hubIndex=index.indexOf('src="../assets/hub.js');
+assert.ok(toolIndex>=0&&toolIndex<hubIndex,"tool must register before lesson hub mounts");
 const selectors=["#hx-env [data-env]","#hx-activity [data-active]","#hx-feedback [data-regulated]","#hx-pred [data-predict]"];
 const fake=(dataset={})=>({dataset,value:"",disabled:false,textContent:"",innerHTML:"",attrs:{},setAttribute(k,v){this.attrs[k]=v;}});
 const groups={
