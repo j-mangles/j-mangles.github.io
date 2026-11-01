@@ -7,7 +7,6 @@
   if(!H)return;
 
   const choose=list=>list[Math.floor(Math.random()*list.length)];
-  const money=n=>"$"+Number(n).toFixed(2);
   const escapeHTML=value=>String(value).replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]));
 
   function makeProblem(){
@@ -63,7 +62,7 @@
   }
 
   function mount(element){
-    let problem=null,selected=new Set(),attempted=false,solved=0,shown=0;
+    let problem=null,selected=new Set(),attempted=false,credited=false,solved=0,shown=0;
     element.innerHTML='<section class="pc-studio">'+
       '<style>'+
       '.pc-studio{color:var(--ink);background:var(--paper);border:1px solid var(--rule);border-radius:var(--radius);padding:18px;line-height:1.5}'+
@@ -91,7 +90,7 @@
       '<p class="note">Practice is not graded or submitted. Your response clears when you leave this lesson.</p></section>';
     const $=selector=>element.querySelector(selector);
     function draw(){
-      problem=makeProblem();selected=new Set();attempted=false;shown++;$("#pc-prompt").textContent=problem.prompt;
+      problem=makeProblem();selected=new Set();attempted=false;credited=false;shown++;$("#pc-prompt").textContent=problem.prompt;
       $("#pc-data").innerHTML=problem.details.map((item,index)=>'<button type="button" data-item="'+index+'" aria-pressed="false">'+escapeHTML(item.label)+': <strong>'+escapeHTML(item.value)+'</strong></button>').join("");
       $("#pc-data").querySelectorAll("button").forEach(button=>button.onclick=()=>{
         const index=Number(button.dataset.item);
@@ -115,7 +114,7 @@
       const correct=Math.abs(answer-problem.answer)<0.01;
       const needed=problem.details.map((item,index)=>item.needed?index:-1).filter(index=>index>=0);
       const setup=needed.length===selected.size&&needed.every(index=>selected.has(index));
-      if(correct){solved++;$("#pc-feedback").textContent=(setup?"Good setup and answer. ":"Your answer is right; review which details were needed. ")+"Estimate check: does the result fit the size of the whole?";}
+      if(correct){if(!credited){solved++;credited=true;}$("#pc-feedback").textContent=(setup?"Good setup and answer. ":"Your answer is right; review which details were needed. ")+"Estimate check: does the result fit the size of the whole?";}
       else $("#pc-feedback").textContent=(setup?"Your data selection is sound. ":"Review the data you selected. ")+"Check whether you found the part, whole, percent, or a new remainder.";
       $("#pc-stats").textContent=solved+" solved · "+shown+" problems tried";
     };
