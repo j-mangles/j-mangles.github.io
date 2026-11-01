@@ -6,6 +6,7 @@ on:
       - 'social-studies/greek-inquiry*'
       - 'social-studies/index.html'
       - 'tools/test_greece_unit.cjs'
+      - 'tools/test_site_browser.cjs'
       - '.github/workflows/test-greece-unit.yml'
   push:
     branches: [main]
