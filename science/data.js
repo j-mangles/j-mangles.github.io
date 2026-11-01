@@ -2540,6 +2540,7 @@ window.HUB = {
           "Engineered channel to divert high river flows."
         ]
       ],
+      "activity": {"title":"Red River Flood Evidence Brief","context":"Use the Lake Winnipeg watershed map, Floodway graph, and River & Watershed Lab from this lesson. Connect local evidence to a decision. Your responses stay in this page until copied or downloaded; they are not submitted or saved online.","prompts":[{"label":"What does the Floodway graph show about river levels with and without flood protection? Use one year and a value from the graph.","hint":"A claim needs a comparison and data. The graph does not show every flood or every place."},{"label":"Propose one action a community could take to reduce flood risk. Explain which evidence supports it and one trade-off or limit.","hint":"Consider how water moves across a watershed and who or what could be affected."},{"label":"Name one additional perspective or piece of evidence that should be considered before deciding.","hint":"Think about people living in the watershed, downstream communities, land use, or how the model was built."}],"checklist":["I support my claim with a graph value or watershed evidence.","I explain a trade-off or a limit of flood protection.","I identify another perspective or evidence that could change the decision."]},
       "work": "Study the booklet's Lake Winnipeg watershed map and Floodway graph. Explain Red River flooding with three causes and one mitigation. Experiment with the River & Watershed Lab.",
       "check": [
         {
