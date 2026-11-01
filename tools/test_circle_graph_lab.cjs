@@ -1,5 +1,6 @@
 /* Manitoba 7.SP.3: construct, label and interpret circle graphs. */
 "use strict";
+const scriptSrcIndex=(html,src)=>[...html.matchAll(/<script src="([^"]+)"/g)].map(m=>m[1].split("?")[0]).indexOf(src);
 const assert=require("node:assert/strict"),fs=require("node:fs"),vm=require("node:vm"),path=require("node:path");
 const root=path.resolve(__dirname,".."),read=p=>fs.readFileSync(path.join(root,p),"utf8");
 const ctx={window:{HUB:{subject:"math",tools:{},units:[]}}};
@@ -37,7 +38,7 @@ const attack=G.chart([{label:'"><script>alert(1)</script>',count:1},{label:"Norm
 assert.ok(!attack.includes("<script>")&&!attack.includes('"><script>'));
 const out=G.report(G.EXAMPLE,"The largest category is sports, 12 out of 30.");
 assert.ok(out.includes("7.SP.3")&&out.includes("144°")&&out.includes("12 out of 30."));
-const page=read("math/index.html"),scripts=[...page.matchAll(/<script src="([^"]+)"/g)].map(m=>m[1]);
+const page=read("math/index.html"),scripts=[...page.matchAll(/<script src="([^"]+)"/g)].map(m=>m[1].split("?")[0]);
 assert.ok(scripts.includes("circle-graph-lab.js")&&scripts.indexOf("tools.js")<scripts.indexOf("circle-graph-lab.js")&&scripts.indexOf("circle-graph-lab.js")<scripts.indexOf("../assets/hub.js"));
 const data={window:{}};vm.runInNewContext(read("math/data.js"),data);
 const unit=data.window.HUB.units.find(u=>u.id==="area");
