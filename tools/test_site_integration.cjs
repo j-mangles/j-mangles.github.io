@@ -22,7 +22,10 @@ for(const [file,tools] of Object.entries(pages)){
   assert.ok(src.indexOf("data.js")<src.indexOf(tool),tool+" loads before its data");
   assert.ok(src.indexOf(tool)<hubIndex,tool+" loads after the lesson renderer");
  }
- for(const link of src)if(!/^https?:\/\//.test(link))assert.ok(fs.existsSync(path.resolve(dir,link)),file+" script missing on disk: "+link);
+ for(const link of src)if(!/^https?:\/\//.test(link)){
+  const pathname=link.split("?")[0];
+  assert.ok(fs.existsSync(path.resolve(dir,pathname)),file+" script missing on disk: "+link);
+ }
 }
 const tests=[
  "test_review_retries.cjs","check_content.cjs","test_atlas_lessons.cjs",
