@@ -288,6 +288,8 @@ figcaption{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.35}
 <script src="egypt-lessons.js"></script>
 <script src="greece-lessons.js"></script>
 <script src="greece-atlas.js"></script>
+<script src="rome-lessons.js?v=20261101a"></script>
+<script src="middle-ages-lessons.js?v=20261101a"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
 <script>
@@ -763,9 +765,60 @@ const UNITS = [
   footnote:"Places are located approximately for study and do not imply exact ancient urban boundaries. Historical place names and modern boundaries differ.",
   places:window.GreeceAtlas.places, timeline:window.GreeceAtlas.timeline, lessons:window.GreeceLessons },
 { id:"rome", n:"4", name:"Ancient Rome", status:"soon", span:"753 BCE – 476 CE", bbox:[-10,28,42,52], anchor:[12.5,41.9],
-  intro:"How one city grew into an empire around the whole Mediterranean, and why it fell apart." },
+  intro:"How one city grew into an empire around the whole Mediterranean, and why it fell apart.",
+  footnote:"Rome's founding date is traditional; the map and chronology use approximate study ranges.",
+  places:[
+    {id:"rome-city",name:"Rome",kind:"city",ll:[12.50,41.90],where:"central Italy",date:"traditional founding 753 BCE",text:"Rome grew beside the Tiber. Its traditional founding story is not the same thing as archaeological proof."},
+    {id:"carthage",name:"Carthage",kind:"city",ll:[10.32,36.85],where:"North Africa",date:"destroyed 146 BCE",text:"A major trading city and Rome's rival in the Punic Wars."},
+    {id:"cannae",name:"Cannae",kind:"site",ll:[16.13,41.30],where:"southern Italy",date:"216 BCE",text:"Hannibal defeated a much larger Roman force here during the Second Punic War."},
+    {id:"zama",name:"Zama",kind:"site",ll:[9.60,36.10],where:"North Africa",date:"202 BCE",text:"Scipio defeated Hannibal's army in the battle conventionally called Zama."},
+    {id:"athens",name:"Athens",kind:"city",ll:[23.73,37.98],where:"Greece",date:"sacked 146 BCE",text:"Rome conquered Greek kingdoms but adopted and adapted much Greek art, religion and learning."},
+    {id:"pompeii",name:"Pompeii",kind:"site",ll:[14.49,40.75],where:"southern Italy",date:"buried 79 CE",text:"Ash from Vesuvius preserved a partial snapshot of Roman urban life."},
+    {id:"alexandria",name:"Alexandria",kind:"city",ll:[29.92,31.20],where:"Egypt",date:"became Roman 30 BCE",text:"A major Hellenistic centre that became part of the Roman Empire after Augustus defeated Antony and Cleopatra."},
+    {id:"constantinople",name:"Constantinople",kind:"city",ll:[28.98,41.01],where:"modern Istanbul",date:"founded as imperial capital 330 CE",text:"Constantine's eastern capital became the centre of the continuing eastern Roman Empire."}
+  ],
+  timeline:[
+    {d:"traditional 753 BCE",t:"Rome's founding story",p:"rome-city"},
+    {d:"509 BCE",t:"Republic begins",p:"rome-city"},
+    {d:"264–241 BCE",t:"First Punic War",p:"carthage"},
+    {d:"218 BCE",t:"Hannibal crosses the Alps",p:"cannae"},
+    {d:"146 BCE",t:"Carthage and Corinth destroyed",p:"carthage"},
+    {d:"44 BCE",t:"Caesar assassinated",p:"rome-city"},
+    {d:"27 BCE",t:"Augustus becomes first emperor",p:"rome-city"},
+    {d:"79 CE",t:"Vesuvius buries Pompeii",p:"pompeii"},
+    {d:"330 CE",t:"Constantinople becomes an imperial capital",p:"constantinople"},
+    {d:"476 CE",t:"Last western emperor removed",p:"rome-city"}
+  ],
+  lessons:window.RomeLessons },
 { id:"middle-ages", n:"5", name:"Middle Ages", status:"soon", span:"c. 500 – 1500 CE", bbox:[-12,30,45,62], anchor:[3,48.5],
-  intro:"Castles and kingdoms, the Church, the Islamic world, and the trade routes that tied it all together." }
+  intro:"Castles and kingdoms, the Church, the Islamic world, and the trade routes that tied it all together.",
+  footnote:"The Middle Ages are a European period label; connected histories across Africa and Asia are included in the lessons.",
+  places:[
+    {id:"constantinople",name:"Constantinople",kind:"city",ll:[28.98,41.01],where:"eastern Mediterranean",date:"Byzantine capital",text:"A major eastern Roman capital connecting trade routes across Europe and Asia."},
+    {id:"mecca",name:"Mecca",kind:"city",ll:[39.83,21.42],where:"Arabian Peninsula",date:"seventh century",text:"A trading town and sacred centre in the history of Islam."},
+    {id:"medina",name:"Medina",kind:"city",ll:[39.61,24.47],where:"Arabian Peninsula",date:"Hijra 622 CE",text:"Muhammad and his followers migrated here from Mecca in 622 CE."},
+    {id:"baghdad",name:"Baghdad",kind:"city",ll:[44.36,33.31],where:"Mesopotamia",date:"founded 762 CE",text:"An Abbasid capital and centre of scholarship, trade and government."},
+    {id:"lindisfarne",name:"Lindisfarne",kind:"site",ll:[-1.80,55.68],where:"northeast England",date:"raided 793 CE",text:"A monastery whose raid became a famous written account of Viking activity."},
+    {id:"hastings",name:"Hastings",kind:"site",ll:[0.57,50.86],where:"southern England",date:"1066 CE",text:"The battle where William of Normandy defeated King Harold."},
+    {id:"jerusalem",name:"Jerusalem",kind:"city",ll:[35.21,31.77],where:"eastern Mediterranean",date:"captured by crusaders 1099 CE",text:"A sacred city for Muslims, Christians and Jews and a focus of several Crusades."},
+    {id:"timbuktu",name:"Timbuktu",kind:"city",ll:[-3.00,16.77],where:"West Africa",date:"medieval trade centre",text:"A centre connected to trans-Saharan trade and scholarship in West Africa."},
+    {id:"lnam",name:"L'Anse aux Meadows",kind:"site",ll:[-55.53,51.60],where:"Newfoundland",date:"around 1000 CE",text:"Archaeological evidence of a Norse presence in lands already inhabited by Indigenous peoples."},
+    {id:"samarkand",name:"Samarkand",kind:"city",ll:[66.97,39.65],where:"Central Asia",date:"Silk Road network",text:"A city connected to trade and exchange across Central Asia."}
+  ],
+  timeline:[
+    {d:"476 CE",t:"Western imperial office ends",p:"constantinople"},
+    {d:"622 CE",t:"Hijra from Mecca to Medina",p:"medina"},
+    {d:"762 CE",t:"Baghdad founded",p:"baghdad"},
+    {d:"793 CE",t:"Lindisfarne raid recorded",p:"lindisfarne"},
+    {d:"c. 800 CE",t:"Charlemagne crowned emperor",p:"hastings"},
+    {d:"1000 CE",t:"Norse presence at L'Anse aux Meadows",p:"lnam"},
+    {d:"1066 CE",t:"Battle of Hastings",p:"hastings"},
+    {d:"1095 CE",t:"Crusade called at Clermont",p:"jerusalem"},
+    {d:"1215 CE",t:"Magna Carta sealed",p:"hastings"},
+    {d:"1347 CE",t:"Plague reaches parts of Europe",p:"constantinople"},
+    {d:"1453 CE",t:"Constantinople conquered",p:"constantinople"}
+  ],
+  lessons:window.MiddleAgesLessons }
 ];
 
 /* Fertile Crescent band */
