@@ -1,5 +1,6 @@
 /* Science 8: Energy & Light unit and food-chain model regression checks. */
 "use strict";
+const scriptSrcIndex=(html,src)=>[...html.matchAll(/<script src="([^"]+)"/g)].map(m=>m[1].split("?")[0]).indexOf(src);
 const assert=require("node:assert/strict"),fs=require("node:fs"),path=require("node:path"),vm=require("node:vm");
 const root=path.resolve(__dirname,"..");
 const read=p=>fs.readFileSync(path.join(root,p),"utf8");
@@ -34,7 +35,7 @@ assert.throws(()=>model.calculate(-1,10));
 assert.throws(()=>model.calculate(1000,-1));
 assert.throws(()=>model.calculate(1000,101));
 const html=read("science/index.html");
-const scripts=[...html.matchAll(/<script src="([^"]+)"/g)].map(x=>x[1]);
+const scripts=[...html.matchAll(/<script src="([^"]+)"/g)].map(x=>x[1].split("?")[0]);
 assert.ok(scripts.includes("energy-pathway.js"));
 assert.ok(scripts.indexOf("data.js")<scripts.indexOf("energy-pathway.js"));
 assert.ok(scripts.indexOf("energy-pathway.js")<scripts.indexOf("../assets/hub.js"));
