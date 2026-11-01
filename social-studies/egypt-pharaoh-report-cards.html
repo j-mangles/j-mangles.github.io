@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f7f4ed">
+<title>Pharaoh Report Cards · Egypt Lesson 10</title>
+<style>
+:root{color-scheme:light dark;--paper:#f7f4ed;--card:#fffdf8;--ink:#20231f;--muted:#62695f;--line:#d9d6cc;--accent:#844d31;--accent-soft:#f2e6dc;--good:#286342;--focus:#145fa6}
+@media(prefers-color-scheme:dark){:root{--paper:#1c1d1a;--card:#252621;--ink:#f2efe6;--muted:#bab9ae;--line:#41423b;--accent:#efaa82;--accent-soft:#3a2d25;--good:#8bc59b;--focus:#90c9ff}}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:900px;margin:auto;padding:22px 16px 54px}a{color:var(--accent);font-weight:700}
+header{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding-bottom:15px;border-bottom:1px solid var(--line)}
+.kicker{margin:0;color:var(--muted);font-size:.78rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+h1,h2,h3{font-family:Georgia,"Times New Roman",serif;line-height:1.18}h1{font-size:clamp(2rem,6vw,3.2rem);margin:5px 0}h2{font-size:1.7rem;margin:0 0 8px}h3{font-size:1.25rem;margin:0 0 8px}
+p{margin:8px 0}.lede{max-width:70ch;color:var(--muted);margin:16px 0 20px}
+.tabs,.rulers{display:flex;gap:8px;overflow-x:auto;padding:3px 2px 12px}
+button{font:inherit;color:inherit;cursor:pointer}
+.tab,.ruler{white-space:nowrap;border:1px solid var(--line);border-radius:999px;padding:9px 13px;background:var(--card);font-weight:700}
+.tab[aria-pressed=true],.ruler[aria-pressed=true]{background:var(--ink);color:var(--card);border-color:var(--ink)}
+:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:clamp(17px,4vw,28px);box-shadow:0 8px 30px #0000000a}
+.note{color:var(--muted);font-size:.92rem}.summary{border-left:4px solid var(--accent);padding:9px 13px;background:var(--accent-soft);border-radius:6px;margin:12px 0}
+.grid{display:grid;gap:10px}
+.grade-row{display:grid;grid-template-columns:minmax(120px,1fr) auto;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid var(--line)}
+.grade-row label{font-weight:750}
+.grade-options{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.grade{min-width:46px;min-height:44px;border:1px solid var(--line);border-radius:7px;background:var(--paper);font-weight:800}
+.grade[aria-pressed=true]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent);background:var(--accent-soft)}
+.btn,.option{border:1px solid var(--line);border-radius:8px;background:var(--card);padding:10px 13px;min-height:46px;font-weight:750}
+.btn.primary{border-color:var(--ink);background:var(--ink);color:var(--card)}
+.btn:hover,.option:hover:not(:disabled){border-color:var(--accent);background:var(--accent-soft)}
+.btn.primary:hover{opacity:.88;background:var(--ink)}
+.actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:14px}
+.evidence{margin-top:14px;padding:13px 15px;background:var(--paper);border:1px solid var(--line);border-radius:8px}
+.evidence strong{display:block;margin-bottom:4px}
+.question{font-weight:750;margin:12px 0 8px}
+.options{display:grid;gap:8px}
+.option{text-align:left}
+.option[aria-pressed=true]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.option:disabled{cursor:default}
+.claimarea{width:100%;min-height:100px;resize:vertical;border:1px solid var(--line);border-radius:8px;background:var(--paper);color:var(--ink);padding:11px 13px;font:inherit}
+[hidden]{display:none!important}
+@media(max-width:600px){.grade-row{grid-template-columns:1fr}.grade-options{justify-content:flex-start}.grade{min-width:48px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<main>
+<header><div><p class="kicker">Unit 2 · Ancient Egypt · Lesson 10</p><h1>Pharaoh Report Cards</h1></div><a href="index.html">Back to the Egypt atlas</a></header>
+<p class="lede">What can one ruler actually change about a civilization? Use the four jobs of a pharaoh to make your own report cards, check the evidence behind three famous claims, and decide which changes lasted. Grades are your reasoned judgment, not an answer key.</p>
+<nav class="tabs" aria-label="Activity sections">
+<button class="tab" type="button" aria-pressed="true" data-tab="cards">1 · Grade the rulers</button>
+<button class="tab" type="button" aria-pressed="false" data-tab="spin">2 · Spin check</button>
+<button class="tab" type="button" aria-pressed="false" data-tab="case">3 · Make your case</button>
+</nav>
+<section class="panel" id="cards-panel">
+<p class="kicker">Station 1 · Make a judgment</p><h2>How well did each pharaoh do the job?</h2>
+<p class="note">The four jobs are keeping order (ma’at), defending Egypt, building for the gods, and providing for the people. Choose an evidence-based rating, or mark “?” if you need more evidence. Nothing is submitted or saved online.</p>
+<div class="rulers" id="rulers" aria-label="Choose a pharaoh"></div>
+<div id="ruler-info" class="summary"></div>
+<div id="grades" class="grid"></div>
+<div class="actions"><button class="btn primary" id="review-evidence" type="button">I’ve rated all four — review the evidence</button><span class="note" id="grade-count" aria-live="polite"></span></div>
+<div id="evidence" hidden></div>
+</section>
+<section class="panel" id="spin-panel" hidden>
+<p class="kicker">Station 2 · Read the source</p><h2>Fact or spin?</h2>
+<p>Choose a verdict, then check who benefits from telling the story that way. Try all three claims before moving on.</p>
+<div id="spin-questions"></div>
+</section>
+<section class="panel" id="case-panel" hidden>
+<p class="kicker">Station 3 · Explain your judgment</p><h2>Who changed Egypt the most?</h2>
+<p>Choose one pharaoh, use two specific pieces of evidence, and decide whether the change lasted. More than one answer can be defended.</p>
+<div class="options" id="case-options"></div>
+<p class="question">Your evidence-based claim</p>
+<label for="case-text">Name your pharaoh, give two pieces of evidence, and say whether the change lasted.</label>
+<textarea class="claimarea" id="case-text" placeholder="I think ___ changed Egypt most because…"></textarea>
+<div class="actions"><button class="btn primary" id="reflection" type="button">I’ve tried — show questions to check my reasoning</button><button class="btn" id="clear" type="button">Clear this tab’s work</button></div>
+<div class="evidence" id="reflection-notes" hidden>
+<strong>Check your reasoning</strong>
+<ul>
+<li>Did you distinguish what the pharaoh did from what later writers or monuments claimed?</li>
+<li>Did you explain whether the change lasted after the ruler died?</li>
+<li>Did you use two accurate details and acknowledge a limit in what the sources tell us?</li>
+<li>Could another pharaoh be a reasonable choice for a different reason?</li>
+</ul>
+<p class="note">There is no single winner. Akhenaten attempted a sweeping change that did not last; Ramesses II left many monuments and a peace treaty; Cleopatra’s defeat ended Egypt’s independence; Hatshepsut showed a woman could rule as pharaoh. Your evidence and explanation matter more than the name you choose.</p>
+</div>
+</section>
+<p class="note" style="margin-top:16px">Based on the student-facing Pharaoh Report Cards activity. Your ratings and writing remain in this browser tab only.</p>
+</main>
+<script>
+(function(){
+"use strict";
+const jobs=["Order","Defence","Building","Providing"];
+const rulers=[
+ {name:"Hatshepsut",dates:"1479–1458 BCE",intro:"She was regent, then ruled with full pharaonic titles for about 21 years. Her reign included trade and major building. Later rulers damaged some monuments and erased her name; political succession is one explanation, but the evidence does not reveal every motive.",evidence:[
+  "Her reign lasted about 21 years and was mostly peaceful. Later changes to monuments show her memory was contested, though the reason is inferred.",
+  "This lesson gives limited evidence about military campaigns. Mark “?” rather than guessing from her title.",
+  "She organized major building projects and an expedition to Punt that brought back goods, including live incense trees.",
+  "Trade and building were visible priorities. The sources here do not show exactly how benefits were shared among ordinary families."
+ ]},
+ {name:"Akhenaten",dates:"1353–1336 BCE",intro:"He promoted worship of the Aten, built a new capital at Akhetaten, and redirected resources from other priesthoods. After his death, the old gods returned, the city was abandoned, and later rulers removed his name from records.",evidence:[
+  "His religious changes disrupted long-standing institutions; later rulers restored older practices. Whether Egyptians saw this as a failure to keep ma’at is a judgment.",
+  "The lesson offers little evidence about military defence. Mark “?” if you cannot support a grade.",
+  "He built a new capital and changed royal art. That is clear evidence of a large building programme.",
+  "Temple resources were redirected, but the lesson gives little evidence about how this affected ordinary people. Avoid assuming it improved or harmed their lives."
+ ]},
+ {name:"Ramesses II",dates:"1279–1213 BCE",intro:"He ruled for 66 years, built widely, fought at Kadesh, and later signed a peace treaty with the Hittites. His monuments presented Kadesh as a victory; the battle was a stalemate.",evidence:[
+  "A long reign and major building suggest continuity. Consider whether his choices kept order for everyone or mainly strengthened royal power.",
+  "Kadesh ended without a decisive victory, and the later treaty shows diplomacy as well as conflict.",
+  "He built monuments including Abu Simbel and carved his version of events deeply into stone.",
+  "The task provides limited evidence about how resources supported ordinary people. Mark “?” or identify what else you would need."
+ ]},
+ {name:"Cleopatra VII",dates:"51–30 BCE",intro:"She was the last pharaoh of a Greek dynasty. She allied with Caesar and Antony, and Egypt remained independent during much of her reign before Rome took control. Most surviving accounts were written by Roman authors.",evidence:[
+  "Her reign ended when Rome took Egypt, but the sources also show she managed to preserve independence for years. Decide how you weigh the outcome and the earlier years.",
+  "She worked to defend Egypt’s independence through alliances and naval power, but the kingdom was ultimately conquered by Rome.",
+  "This lesson gives limited evidence about building projects. Mark “?” rather than inventing a project.",
+  "The lesson gives limited evidence about policies for ordinary people. Identify what sources would help you judge this job."
+ ]}
+];
+const grades=["A","B","C","D","?"];
+const gradeLabels={A:"Strong evidence of success",B:"Some evidence of success",C:"Mixed or limited evidence",D:"Little evidence of success","?":"I need more evidence"};
+const spins=[
+ {claim:"“Ramesses II won a great victory over the Hittites at Kadesh.”",answer:"Spin",why:"Kadesh was a stalemate. Ramesses’s monuments presented it as a victory, while the Hittite account and the later peace treaty help historians compare the claims."},
+ {claim:"“Hatshepsut’s stepson destroyed her monuments because he hated her.”",answer:"Spin",why:"That is an older explanation, not a proven motive. The erasure began years after her death, which points toward politics and succession, but historians cannot know every motive from the monuments alone."},
+ {claim:"“Cleopatra was the only ruler of her dynasty known to have learned Egyptian.”",answer:"Fact, as far as the surviving sources show",why:"This is the claim supported by the lesson’s sources. “Known to have” matters: evidence does not prove that no other ruler ever learned the language."}
+];
+const ratings=rulers.map(()=>Object.fromEntries(jobs.map(j=>[j,null])));
+const evidenceOpen=Array(rulers.length).fill(false),spinAnswers=Array(spins.length).fill(null),spinOpen=Array(spins.length).fill(false);
+let selected=0,caseChoice=null;
+function $(id){return document.getElementById(id)}
+function add(tag,cls,text){const n=document.createElement(tag);if(cls)n.className=cls;if(text!==undefined)n.textContent=text;return n}
+function renderRulers(){
+ const root=$("rulers");root.replaceChildren();
+ rulers.forEach((r,i)=>{const b=add("button","ruler",r.name);b.type="button";b.setAttribute("aria-pressed",selected===i?"true":"false");b.addEventListener("click",()=>{selected=i;renderCards()});root.appendChild(b)});
+}
+function renderCards(){
+ renderRulers();const r=rulers[selected];$("ruler-info").textContent=r.name+" · "+r.dates+". "+r.intro;
+ const root=$("grades");root.replaceChildren();let count=0;
+ jobs.forEach(job=>{const row=add("div","grade-row"),label=add("label","",job);row.appendChild(label);const group=add("div","grade-options");group.setAttribute("role","group");group.setAttribute("aria-label",job+" rating");
+ grades.forEach(g=>{const b=add("button","grade",g);b.type="button";b.setAttribute("aria-label",g+": "+gradeLabels[g]);b.setAttribute("aria-pressed",ratings[selected][job]===g?"true":"false");b.addEventListener("click",()=>{ratings[selected][job]=g;renderCards()});group.appendChild(b)});if(ratings[selected][job]!==null)count++;row.appendChild(group);root.appendChild(row)});
+ $("grade-count").textContent=count+" of 4 jobs rated.";
+ $("review-evidence").disabled=count<4;$("review-evidence").style.opacity=count<4?".55":"1";
+ $("evidence").hidden=!evidenceOpen[selected];$("evidence").replaceChildren();
+ if(evidenceOpen[selected]){
+  const heading=add("strong","",r.name+" · Evidence to revisit");
+  const list=add("div","grid");
+  jobs.forEach((job,i)=>{const card=add("div","evidence");card.append(add("strong","",job+" · "+ratings[selected][job]+" — "+gradeLabels[ratings[selected][job]]),add("span","",r.evidence[i]));list.appendChild(card)});
+  const reminder=add("p","note","These are evidence notes, not a mark scheme. Keep your grade if you can defend it; revise it if the evidence changes your mind.");
+  $("evidence").append(heading,list,reminder);
+ }
+}
+function renderSpin(){
+ const root=$("spin-questions");root.replaceChildren();
+ spins.forEach((s,i)=>{const box=add("article","evidence");box.append(add("div","question",(i+1)+". "+s.claim));const opts=add("div","options");
+ ["Fact","Spin"].forEach(answer=>{const b=add("button","option",answer);b.type="button";b.setAttribute("aria-pressed",spinAnswers[i]===answer?"true":"false");b.addEventListener("click",()=>{spinAnswers[i]=answer;renderSpin()});opts.appendChild(b)});box.appendChild(opts);
+ if(spinOpen[i]){const correct=spinAnswers[i]===s.answer;box.append(add("div","summary",correct?"Good call.":"Check the source and context again."),add("p","",s.why))}
+ const reveal=add("button","btn",spinOpen[i]?"Hide explanation":"I’ve made my call — reveal the source check");reveal.type="button";reveal.style.marginTop="10px";reveal.disabled=spinAnswers[i]===null;reveal.addEventListener("click",()=>{spinOpen[i]=!spinOpen[i];renderSpin()});box.appendChild(reveal);root.appendChild(box)});
+}
+function switchTab(id){
+ document.querySelectorAll(".tab").forEach(b=>b.setAttribute("aria-pressed",b.dataset.tab===id?"true":"false"));
+ $("cards-panel").hidden=id!=="cards";$("spin-panel").hidden=id!=="spin";$("case-panel").hidden=id!=="case";
+ if(id==="spin")renderSpin();
+}
+document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>switchTab(b.dataset.tab)));
+$("review-evidence").addEventListener("click",()=>{evidenceOpen[selected]=true;renderCards()});
+$("case-options").replaceChildren();
+rulers.forEach(r=>{const b=add("button","option",r.name);b.type="button";b.setAttribute("aria-pressed","false");b.addEventListener("click",()=>{caseChoice=r.name;Array.from($("case-options").children).forEach(x=>x.setAttribute("aria-pressed",x.textContent===caseChoice?"true":"false"))});$("case-options").appendChild(b)});
+$("reflection").addEventListener("click",()=>{$("reflection-notes").hidden=false});
+$("clear").addEventListener("click",()=>{ratings.forEach(row=>jobs.forEach(j=>row[j]=null));evidenceOpen.fill(false);spinAnswers.fill(null);spinOpen.fill(false);selected=0;caseChoice=null;$("case-text").value="";$("reflection-notes").hidden=true;Array.from($("case-options").children).forEach(x=>x.setAttribute("aria-pressed","false"));switchTab("cards");renderCards()});
+renderCards();
+})();
+</script>
+</body>
+</html>
