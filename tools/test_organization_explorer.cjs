@@ -1,5 +1,6 @@
 /* Structure, content and UI smoke tests for Science organization diagram. */
 "use strict";
+const scriptSrcIndex=(html,src)=>[...html.matchAll(/<script src="([^"]+)"/g)].map(m=>m[1].split("?")[0]).indexOf(src);
 const assert=require("node:assert/strict"),fs=require("node:fs"),vm=require("node:vm"),path=require("node:path");
 const root=path.resolve(__dirname,"..");
 const js=fs.readFileSync(path.join(root,"science/organization-explorer.js"),"utf8");
@@ -9,8 +10,8 @@ assert.equal(typeof H.lessonTools["cells/levels"],"function");
 assert.deepEqual(Array.from(H.organizationModel.stages,s=>s.name),["Cell","Tissue","Organ","Organ system","Organism"]);
 assert.match(H.organizationModel.stages[2].meaning,/several tissue types/);
 const index=fs.readFileSync(path.join(root,"science/index.html"),"utf8");
-assert.ok(index.indexOf('src="organization-explorer.js"')>=0);
-assert.ok(index.indexOf('src="organization-explorer.js"')<index.indexOf('src="../assets/hub.js"'));
+assert.ok(scriptSrcIndex(index,"organization-explorer.js")>=0);
+assert.ok(scriptSrcIndex(index,"organization-explorer.js")<scriptSrcIndex(index,"../assets/hub.js"));
 const node=(dataset={})=>({dataset,innerHTML:"",textContent:"",value:"",attrs:{},setAttribute(k,v){this.attrs[k]=v;}});
 const nodes=new Map(),pills=Array.from({length:5},(_,i)=>node({level:String(i)}));
 const selects=Array.from({length:5},(_,i)=>node({place:String(i)}));
