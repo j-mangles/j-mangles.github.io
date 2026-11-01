@@ -124,6 +124,6 @@ function render(el){
  };
  updateVisual();showScene();
 }
-H.tools=H.tools||{};H.tools.film=render;
+H.tools=H.tools||{};H.tools.film=render;H.lessonTools=H.lessonTools||{};H.lessonTools["film/l1"]=render;
 window.CameraStudioCore={SHOTS,SCENES,shotSVG,exportResponse};
 })();
