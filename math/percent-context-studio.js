@@ -20,7 +20,7 @@
         prompt:"A player made "+made+" of "+attempts+" free throws. The team scored 512 points and played 10 games. What percent of the player's free throws were made?",
         details:[{label:"Free throws made",value:made,needed:true},{label:"Free throws attempted",value:attempts,needed:true},{label:"Team points scored",value:512,needed:false},{label:"Games played",value:10,needed:false}],
         answer:rate,unit:"%",hint:"To find what percent, compare the part with the whole: part ÷ whole, then convert the decimal to a percent.",
-        steps:"Part = "+made;+" and whole = "+attempts+". Divide: "+made+" ÷ "+attempts+" = "+(made/attempts).toFixed(2)+". Convert to a percent: "+rate+"%."
+        steps:"Part = "+made+" and whole = "+attempts+". Divide: "+made+" ÷ "+attempts+" = "+(made/attempts).toFixed(2)+". Convert to a percent: "+rate+"%."
       };
     }
     if(kind==="part"){
