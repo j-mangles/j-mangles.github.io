@@ -7,8 +7,10 @@ const mapScript=read("assets/course-map.js");
 for(const subject of ["math","science","ela","critical-thinking"]){
  const html=read(subject+"/index.html"),src=[...html.matchAll(/<script src="([^"]+)"/g)].map(x=>x[1]);
  assert.ok(html.includes('id="course-map-link"'),subject+" missing course-map navigation");
- assert.ok(src.includes("../assets/course-map.js"),subject+" missing map script");
- assert.ok(src.indexOf("../assets/course-map.js")<src.indexOf("../assets/hub.js"),"map must load before hub");
+ const mapIndex=src.findIndex(link=>link.startsWith("../assets/course-map.js"));
+ const hubIndex=src.findIndex(link=>link.startsWith("../assets/hub.js"));
+ assert.ok(mapIndex>=0,subject+" missing map script");
+ assert.ok(mapIndex<hubIndex,"map must load before hub");
  assert.equal(new Set(src).size,src.length,"Duplicate scripts in "+subject);
  const ctx={window:{}};
  vm.runInNewContext(read(subject+"/data.js"),ctx,{filename:subject+"/data.js"});
