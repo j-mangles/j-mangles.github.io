@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#172b35">
+<title>Hammurabi Court Lab · Grade 8 Social Studies</title>
+<link rel="stylesheet" href="../assets/fonts.css">
+<style>
+:root{--ink:#172b35;--muted:#50636a;--paper:#f5f1e7;--card:#fffdf8;--line:#d8d0c0;--gold:#b87818;--blue:#dce9e7;--red:#9d4432;--green:#1f6257}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 Georgia,serif}a{color:#164e5d}button,input,textarea{font:inherit}button{cursor:pointer}button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid #187ca0;outline-offset:3px}.top{background:var(--ink);color:#f9f5eb;padding:14px max(22px,calc((100% - 1040px)/2))}.top a{color:#f5d99a}.wrap{max-width:1040px;margin:auto;padding:32px 22px 70px}.eyebrow{font:700 12px/1.3 Arial,sans-serif;text-transform:uppercase;letter-spacing:.14em;color:var(--gold)}h1,h2,h3{line-height:1.18;margin:0 0 .6em}h1{font-size:clamp(2.2rem,6vw,4.2rem);max-width:830px}h2{font-size:clamp(1.55rem,4vw,2.2rem)}h3{font-size:1.22rem}.dek{font-size:1.2rem;max-width:760px;color:var(--muted)}.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:clamp(18px,4vw,32px);margin:22px 0;box-shadow:0 8px 25px #172b350b}.callout{border-left:5px solid var(--gold);background:#fff8e9;padding:16px 20px;margin:20px 0}.case-grid,.class-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,270px),1fr));gap:14px}.case-card,.class-card{border:1px solid var(--line);border-radius:14px;padding:18px;background:#fff}.case-card blockquote{font-size:1.05rem;margin:16px 0;padding:14px;border-left:3px solid var(--gold);background:#fbf7ed}.case-card footer,.source-note,.fine{font:14px/1.5 Arial,sans-serif;color:var(--muted)}.prompt{font-weight:700}.case-card textarea,.workbox textarea{display:block;width:100%;min-height:95px;margin:8px 0 12px;padding:10px;border:1px solid #879295;border-radius:8px;background:#fff}.btn{border:0;border-radius:9px;padding:11px 16px;background:var(--ink);color:white;font:700 15px Arial,sans-serif}.btn:hover{background:#275663}.btn.secondary{background:#e7e1d4;color:var(--ink)}.result{margin-top:14px;padding:14px;border-radius:10px;background:var(--blue)}.result[hidden]{display:none}.status{display:block;min-height:1.4em;color:var(--green);font:700 14px Arial,sans-serif}.class-card{border-top:5px solid var(--gold)}.class-card .law{font:700 13px Arial,sans-serif;color:var(--red)}select{width:100%;padding:10px;border-radius:8px;border:1px solid #879295;background:white;margin:6px 0 10px}.options{display:grid;gap:8px;margin:16px 0}.option{display:flex;align-items:flex-start;gap:10px}.option input{margin-top:5px;accent-color:var(--green)}.output{min-height:50px;padding:13px;background:#f2eee4;border-radius:8px}.output.ready{background:#e4f0e8}.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}footer.page-foot{border-top:1px solid var(--line);margin-top:30px;padding-top:20px;color:var(--muted);font:14px/1.5 Arial,sans-serif}
+@media(max-width:560px){body{font-size:16px}.wrap{padding-inline:15px}.top{padding-inline:16px}.panel{border-radius:13px}.btn{width:100%}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="top"><a href="index.html">← Social Studies atlas</a> <span aria-hidden="true"> · </span><span>Unit 1 · Mesopotamia · Lesson 4B</span></header>
+<main class="wrap">
+<p class="eyebrow">Interactive evidence investigation</p>
+<h1>Hammurabi Court Lab</h1>
+<p class="dek">Predict a verdict, reveal the source, and investigate a difficult question: did written law create order, fairness, or both?</p>
+<div class="callout"><strong>Learning goal:</strong> Use at least two laws as evidence for a claim about order and fairness. The point is your reasoning, not guessing a single “right” opinion.</div>
+<p class="fine">The English versions below are historical translations. They are not modern legal advice or a full record of how every court case was decided. Student writing stays in this page and is not submitted or saved online.</p>
+
+<section class="panel" aria-labelledby="predict-title">
+<p class="eyebrow">Phase 1 · Predict before the evidence</p>
+<h2 id="predict-title">You be the judge</h2>
+<p>For each case, make a quick prediction first. Write a few words or think it through, then reveal what the surviving law says. You can disagree with the law and explain why.</p>
+<div class="case-grid">
+<article class="case-card" data-case-card>
+<h3>Case A · The unproved accusation</h3>
+<p>A person accuses a neighbour of a serious crime but cannot prove it.</p>
+<label class="prompt" for="predict-a">What consequence would you choose, and why?</label>
+<textarea id="predict-a" data-prediction autocomplete="off"></textarea>
+<button class="btn" type="button" data-reveal>Reveal the historical decision</button><span class="status" data-case-status aria-live="polite"></span>
+<div class="result" data-case-outcome hidden><strong>Law 1</strong><blockquote>“If a man bring an accusation against a man, and charge him with a (capital) crime, but cannot prove it, he, the accuser, shall be put to death.”</blockquote><p class="source-note">Translated by Robert F. Harper, 1904.</p><p>The law gives a severe penalty for an unproved accusation. What might it have been meant to discourage? The text alone cannot tell us how often this sentence was carried out.</p></div>
+</article>
+<article class="case-card" data-case-card>
+<h3>Case B · The fallen house</h3>
+<p>A builder works carelessly. The house collapses and kills its owner.</p>
+<label class="prompt" for="predict-b">What consequence would you choose, and why?</label>
+<textarea id="predict-b" data-prediction autocomplete="off"></textarea>
+<button class="btn" type="button" data-reveal>Reveal the historical decision</button><span class="status" data-case-status aria-live="polite"></span>
+<div class="result" data-case-outcome hidden><strong>Law 229</strong><blockquote>“If a builder build a house for some one, and does not construct it properly, and the house which he built fall in and kill its owner, then that builder shall be put to death.”</blockquote><p class="source-note">Translated by L. W. King, 1910.</p><h3>The twist · Law 230</h3><p>If the collapse kills the owner’s son, the law says the builder’s son is put to death. Who is punished here? What does this reveal about how the Code understood responsibility?</p><p class="source-note">Law 230 · L. W. King, 1910.</p></div>
+</article>
+<article class="case-card" data-case-card>
+<h3>Case C · The failed surgery</h3>
+<p>A doctor uses a bronze knife in surgery. The patient dies.</p>
+<label class="prompt" for="predict-c">What consequence would you choose, and why?</label>
+<textarea id="predict-c" data-prediction autocomplete="off"></textarea>
+<button class="btn" type="button" data-reveal>Reveal the historical decision</button><span class="status" data-case-status aria-live="polite"></span>
+<div class="result" data-case-outcome hidden><strong>Law 218</strong><blockquote>“If a physician make a large incision with the operating knife, and kill him … his hands shall be cut off.”</blockquote><p class="source-note">Translated by L. W. King, 1910. The ellipsis marks omitted words.</p><p>What did this law expect from professional work? What information about intent, training or the full trial is missing from the line?</p></div>
+</article>
+</div>
+</section>
+
+<section class="panel" aria-labelledby="class-title">
+<p class="eyebrow">Phase 2 · Compare the consequences</p>
+<h2 id="class-title">One injury, three punishments</h2>
+<p>All three laws describe an attacker putting out someone’s eye. Change only the victim’s social class and compare what happens.</p>
+<div class="class-grid">
+<article class="class-card"><span class="law">Law 196</span><h3>Free landowner</h3><p>The attacker’s own eye is put out.</p><p class="fine">The punishment is bodily retaliation; no payment is listed.</p></article>
+<article class="class-card"><span class="law">Law 198</span><h3>Commoner</h3><p>The attacker pays one mina of silver.</p><p class="fine">Older translations call this person a “freed man.”</p></article>
+<article class="class-card"><span class="law">Law 199</span><h3>Enslaved person</h3><p>The attacker pays half the person’s price.</p><p class="fine">The law says payment goes to the enslaved person’s owner.</p></article>
+</div>
+<div class="workbox">
+<label class="prompt" for="eye-victim">Inspect one case: choose the victim group</label>
+<select id="eye-victim" aria-label="Victim group"><option value="">Choose a group</option><option value="landowner">Free landowner</option><option value="commoner">Commoner</option><option value="enslaved">Enslaved person</option></select>
+<button class="btn" type="button" data-eye-check>Check the law</button>
+<p class="status" data-eye-feedback aria-live="polite"></p>
+<div class="result" data-eye-details hidden><p><strong>Compare:</strong> What stayed the same across the three laws? What changed? In Law 199, who receives the payment?</p><label for="class-observation">Write one observation</label><textarea id="class-observation" autocomplete="off"></textarea></div>
+</div>
+<p class="callout"><strong>Source check:</strong> The Code’s prologue says Hammurabi’s laws should stop “the strong” from harming “the weak.” How does that claim sit beside these three different outcomes?</p>
+</section>
+
+<section class="panel" aria-labelledby="claim-title" data-argument>
+<p class="eyebrow">Phase 3 · Make an evidence-based claim</p>
+<h2 id="claim-title">Order, fairness, or both?</h2>
+<p>Choose a position and at least two pieces of evidence. Use the generated scaffold to organize your own explanation.</p>
+<div class="options" role="group" aria-label="Choose a position">
+<label class="option"><input type="radio" name="position" value="order"> The Code was more concerned with order.</label>
+<label class="option"><input type="radio" name="position" value="fairness"> The Code was more concerned with fairness.</label>
+</div>
+<p class="prompt">Select at least two sources:</p>
+<div class="options">
+<label class="option"><input type="checkbox" name="evidence" value="law1"> Law 1 · the unproved accusation</label>
+<label class="option"><input type="checkbox" name="evidence" value="law229"> Laws 229–230 · the builder and his son</label>
+<label class="option"><input type="checkbox" name="evidence" value="laws196199"> Laws 196, 198 and 199 · eye injury and class</label>
+<label class="option"><input type="checkbox" name="evidence" value="prologue"> The Code’s prologue · “the strong” and “the weak”</label>
+</div>
+<button class="btn" type="button" data-build-argument>Build my claim scaffold</button>
+<p class="output" data-argument-output aria-live="polite"></p>
+<label class="prompt" for="explain">Now add your explanation: how does the evidence support your position?</label>
+<textarea id="explain" autocomplete="off"></textarea>
+<div class="actions"><button class="btn secondary" type="button" data-clear>Clear this page</button></div>
+</section>
+
+<footer class="page-foot">Based on the student notes and assignment for Unit 1, Lesson 4B. Laws 1, 229 and 218 use the translations named in that handout; Laws 198 and 199 are summarized in plain language there. For shared devices, clear the page before the next student uses it.</footer>
+</main>
+<script src="hammurabi-lab.js?v=20261101a"></script>
+</body>
+</html>
