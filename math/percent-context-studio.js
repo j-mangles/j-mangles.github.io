@@ -90,7 +90,7 @@
       '.pc-studio .pc-track span{display:block;height:100%;width:0;background:var(--accent);transition:width .2s ease}'+
       '.pc-studio .pc-snapshot-result{font-size:13px}'+
       '.pc-studio .pc-snapshot-status{min-height:1.5em;font-weight:650}'+
-      '@media(max-width:560px){.pc-studio{padding:12px}.pc-studio .pc-steps{grid-template-columns:repeat(2,minmax(0,1fr))}.pc-studio .pc-step:last-child{grid-column:1/-1}}'+
+      '@media(max-width:560px){.pc-studio{padding:12px}.pc-studio .pc-steps{grid-template-columns:repeat(2,minmax(0,1fr))}.pc-studio .pc-step:last-child{grid-column:1/-1}.pc-studio .pc-snapshot-row{grid-template-columns:1fr}}'+
       '</style>'+
       '<div class="pc-head"><div><div class="eyebrow">Number Workshop · Unit 1 · Lesson 8</div><h3>Percent in Context Studio</h3><p class="note" style="margin:0">Read carefully, choose the useful data, solve, check, and state your answer.</p></div><p class="pc-stats" id="pc-stats" aria-live="polite"></p></div>'+
       '<div class="pc-steps" aria-label="Five-step problem routine"><div class="pc-step">1 · Read</div><div class="pc-step">2 · Represent</div><div class="pc-step">3 · Solve</div><div class="pc-step">4 · Check</div><div class="pc-step">5 · State</div></div>'+
