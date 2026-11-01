@@ -77,7 +77,20 @@
       '.pc-studio label{display:grid;gap:5px;font-weight:650;max-width:380px}.pc-studio input,.pc-studio textarea{box-sizing:border-box;width:100%;max-width:380px;font:inherit;color:var(--ink);background:var(--paper);border:1px solid var(--rule);border-radius:var(--btn-radius);padding:10px;min-height:44px}'+
       '.pc-studio textarea{max-width:100%;min-height:66px}.pc-studio button:focus-visible,.pc-studio input:focus-visible,.pc-studio textarea:focus-visible{outline:3px solid var(--accent);outline-offset:2px}'+
       '.pc-studio .pc-actions{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}.pc-studio .pc-feedback{min-height:1.5em;font-weight:650}.pc-studio .pc-solution{border-left:4px solid var(--accent);padding:10px 13px;background:var(--soft);margin:12px 0}'+
-      '@media(max-width:560px){.pc-studio{padding:12px}.pc-studio .pc-steps{grid-template-columns:repeat(2,minmax(0,1fr))}.pc-studio .pc-step:last-child{grid-column:1/-1}}'+
+      '.pc-studio .pc-snapshot{border-top:1px solid var(--rule);margin-top:16px;padding-top:14px}'+
+      '.pc-studio .pc-snapshot summary{font-weight:750;cursor:pointer;padding:8px 0}'+
+      '.pc-studio .pc-snapshot-controls{display:flex;flex-wrap:wrap;align-items:end;gap:10px;margin:12px 0}'+
+      '.pc-studio .pc-snapshot-controls label{flex:1 1 150px}'+
+      '.pc-studio .pc-snapshot-controls input{max-width:180px}'+
+      '.pc-studio .pc-snapshot-rows{display:grid;gap:10px;margin:12px 0}'+
+      '.pc-studio .pc-snapshot-row{display:grid;grid-template-columns:minmax(180px,1.1fr) minmax(100px,1fr) minmax(170px,1fr);gap:12px;align-items:center;border:1px solid var(--rule);border-radius:8px;padding:10px}'+
+      '.pc-studio .pc-snapshot-row label{font-size:14px}'+
+      '.pc-studio .pc-snapshot-row input{max-width:110px}'+
+      '.pc-studio .pc-track{height:16px;background:var(--soft);border-radius:999px;overflow:hidden}'+
+      '.pc-studio .pc-track span{display:block;height:100%;width:0;background:var(--accent);transition:width .2s ease}'+
+      '.pc-studio .pc-snapshot-result{font-size:13px}'+
+      '.pc-studio .pc-snapshot-status{min-height:1.5em;font-weight:650}'+
+      '@media(max-width:560px){.pc-studio{padding:12px}.pc-studio .pc-steps{grid-template-columns:repeat(2,minmax(0,1fr))}.pc-studio .pc-step:last-child{grid-column:1/-1}.pc-studio .pc-snapshot-row{grid-template-columns:1fr}}'+
       '</style>'+
       '<div class="pc-head"><div><div class="eyebrow">Number Workshop · Unit 1 · Lesson 8</div><h3>Percent in Context Studio</h3><p class="note" style="margin:0">Read carefully, choose the useful data, solve, check, and state your answer.</p></div><p class="pc-stats" id="pc-stats" aria-live="polite"></p></div>'+
       '<div class="pc-steps" aria-label="Five-step problem routine"><div class="pc-step">1 · Read</div><div class="pc-step">2 · Represent</div><div class="pc-step">3 · Solve</div><div class="pc-step">4 · Check</div><div class="pc-step">5 · State</div></div>'+
@@ -87,7 +100,20 @@
       '<div class="pc-actions"><button class="btn ghost" type="button" id="pc-hint-button">Give me a hint</button><button class="btn ghost" type="button" id="pc-solution-button" disabled>Show worked model after an attempt</button><button class="btn" type="button" id="pc-next">New problem</button></div>'+
       '<div class="pc-solution" id="pc-solution" hidden></div>'+
       '<label for="pc-sentence">State your answer in a sentence with units <span class="note">(optional; stays on this page)</span></label><textarea id="pc-sentence" placeholder="For example: ___ students chose soccer."></textarea>'+
-      '<p class="note">Practice is not graded or submitted. Your response clears when you leave this lesson.</p></section>';
+      '<p class="note">Practice is not graded or submitted. Your response clears when you leave this lesson.</p>'+
+      '<details class="pc-snapshot"><summary>Class Snapshot Data Lab · count, convert, predict</summary>'+
+      '<p class="note">Use your class tally to convert a sample into a fraction, decimal, and percent. A sample prediction is an estimate, not a guarantee.</p>'+
+      '<div class="pc-snapshot-controls"><label for="pc-class-size">Class size<input id="pc-class-size" type="number" min="1" step="1" inputmode="numeric" placeholder="e.g. 26"></label>'+
+      '<label for="pc-grade-size">Grade 7 group size<input id="pc-grade-size" type="number" min="1" step="1" inputmode="numeric" placeholder="optional"></label>'+
+      '<button class="btn" type="button" id="pc-snapshot-calc">Calculate snapshot</button><button class="btn ghost" type="button" id="pc-snapshot-reset">Clear counts</button></div>'+
+      '<div class="pc-snapshot-rows">'+
+      '<div class="pc-snapshot-row"><label for="pc-count-0">I have at least one sibling · yes count<input id="pc-count-0" data-snapshot-count type="number" min="0" step="1" inputmode="numeric"></label><div class="pc-track" aria-hidden="true"><span id="pc-bar-0"></span></div><div class="pc-snapshot-result" id="pc-result-0"></div></div>'+
+      '<div class="pc-snapshot-row"><label for="pc-count-1">I have a pet at home · yes count<input id="pc-count-1" data-snapshot-count type="number" min="0" step="1" inputmode="numeric"></label><div class="pc-track" aria-hidden="true"><span id="pc-bar-1"></span></div><div class="pc-snapshot-result" id="pc-result-1"></div></div>'+
+      '<div class="pc-snapshot-row"><label for="pc-count-2">I walk or bike to school · yes count<input id="pc-count-2" data-snapshot-count type="number" min="0" step="1" inputmode="numeric"></label><div class="pc-track" aria-hidden="true"><span id="pc-bar-2"></span></div><div class="pc-snapshot-result" id="pc-result-2"></div></div>'+
+      '<div class="pc-snapshot-row"><label for="pc-count-3">I play a musical instrument · yes count<input id="pc-count-3" data-snapshot-count type="number" min="0" step="1" inputmode="numeric"></label><div class="pc-track" aria-hidden="true"><span id="pc-bar-3"></span></div><div class="pc-snapshot-result" id="pc-result-3"></div></div>'+
+      '<div class="pc-snapshot-row"><label for="pc-count-4">I prefer summer to winter · yes count<input id="pc-count-4" data-snapshot-count type="number" min="0" step="1" inputmode="numeric"></label><div class="pc-track" aria-hidden="true"><span id="pc-bar-4"></span></div><div class="pc-snapshot-result" id="pc-result-4"></div></div>'+
+      '</div><p class="pc-snapshot-status" id="pc-snapshot-status" role="status" aria-live="polite">Enter class size and tally counts to begin.</p>'+
+      '<p class="note">No student names are entered. Counts stay on this page and clear when you leave the lesson.</p></details></section>';
     const $=selector=>element.querySelector(selector);
     function draw(){
       problem=makeProblem();selected=new Set();attempted=false;credited=false;shown++;$("#pc-prompt").textContent=problem.prompt;
@@ -124,6 +150,30 @@
       $("#pc-solution").hidden=false;$("#pc-solution").innerHTML="<strong>Worked model:</strong> "+escapeHTML(problem.steps);
     };
     $("#pc-next").onclick=()=>{draw();$("#pc-answer").focus({preventScroll:true});};
+    $("#pc-snapshot-calc").onclick=()=>{
+      const classSize=Number($("#pc-class-size").value.trim());
+      const gradeRaw=$("#pc-grade-size").value.trim();
+      const gradeSize=gradeRaw===""?null:Number(gradeRaw);
+      const counts=[...element.querySelectorAll("[data-snapshot-count]")].map(input=>input.value.trim()===""?null:Number(input.value));
+      if(!Number.isInteger(classSize)||classSize<1){$("#pc-snapshot-status").textContent="Enter a positive whole-number class size first.";return;}
+      if(gradeSize!==null&&(!Number.isInteger(gradeSize)||gradeSize<1)){$("#pc-snapshot-status").textContent="The Grade 7 group size must be a positive whole number, or left blank.";return;}
+      if(counts.every(count=>count===null)){$("#pc-snapshot-status").textContent="Enter at least one yes count to build the snapshot.";return;}
+      if(counts.some(count=>count!==null&&(!Number.isInteger(count)||count<0||count>classSize))){$("#pc-snapshot-status").textContent="Each yes count must be a whole number from 0 to the class size.";return;}
+      counts.forEach((count,index)=>{
+        const result=$("#pc-result-"+index),bar=$("#pc-bar-"+index);
+        if(count===null){result.textContent="Enter a yes count.";bar.style.width="0%";return;}
+        const decimal=count/classSize,pct=Math.round(decimal*100);
+        result.textContent=count+"/"+classSize+" = "+decimal.toFixed(2)+" = "+pct+"%"+(gradeSize===null?"":" · about "+Math.round(decimal*gradeSize)+" of "+gradeSize);
+        bar.style.width=(decimal*100).toFixed(1)+"%";
+      });
+      $("#pc-snapshot-status").textContent=gradeSize===null?"Conversions are ready. Add a Grade 7 group size to estimate a count.":"Snapshot ready. Each larger-group count is an estimate based on this class sample.";
+    };
+    $("#pc-snapshot-reset").onclick=()=>{
+      $("#pc-class-size").value="";$("#pc-grade-size").value="";
+      [...element.querySelectorAll("[data-snapshot-count]")].forEach(input=>{input.value="";});
+      [0,1,2,3,4].forEach(index=>{$("#pc-result-"+index).textContent="";$("#pc-bar-"+index).style.width="0%";});
+      $("#pc-snapshot-status").textContent="Counts cleared from this page.";
+    };
     draw();
   }
   H.lessonTools=Object.assign(H.lessonTools||{},{"fdp/l08":mount});
