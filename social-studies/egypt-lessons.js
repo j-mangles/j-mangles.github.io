@@ -433,6 +433,7 @@ window.EgyptLessons = [
       ]
     ],
     "work": "The Scribe's Exam: analyze the biased career advice in the Satire of the Trades, then compare Egyptian and Mesopotamian writing.",
+    "activity": {"href":"egypt-scribe-school.html","title":"Try the Scribe School Lab"},
     "check": [
       {
         "q": "What did a cartouche tell a reader?",
