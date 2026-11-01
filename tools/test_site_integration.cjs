@@ -32,7 +32,8 @@ const tests=[
  "test_homeostasis.cjs","test_writer_studio.cjs","test_percent_strategy.cjs",
  "test_evidence_inspector.cjs","test_number_line_lab.cjs",
  "test_organization_explorer.cjs","test_chance_lab.cjs","test_hammurabi_lab.cjs","test_sargon_source_lab.cjs",
- "test_scribe_school.cjs"
+ "test_scribe_school.cjs",
+ "test_rosetta_investigation.cjs"
 ];
 for(const file of tests){
  const p=path.join(root,"tools",file);
