@@ -124,7 +124,7 @@ const ideas=[
  {fact:"Kush was often ruled by queens with real military power.",support:"This could be compared with powerful women in Egyptian history.",challenge:"It also points to a Kushite political tradition that was not simply the same as Egypt’s."},
  {fact:"Kushite pharaohs repaired Egyptian temples and revived Egyptian art styles.",support:"This is clear evidence that Kushite rulers adopted Egyptian traditions.",challenge:"They did so while governing as Kushite rulers; adopting traditions does not mean losing a distinct identity."}
 ];
-let phaseIndex=0;const phaseAnswers=Array(phases.length).fill(null);const phaseChecked=Array(phases.length).fill(false);
+let phaseIndex=0;const phaseAnswers=Array(phases.length).fill(null);const phaseChecked=Array(phases.length).fill(false);const sourceAnswers=Array(comparisons.length).fill(null);const ideaAnswers=Array(ideas.length).fill(null);const ideaShown=Array(ideas.length).fill(false);let sourceChecked=false;
 function $(id){return document.getElementById(id)}
 function el(tag,cls,txt){const n=document.createElement(tag);if(cls)n.className=cls;if(txt!==undefined)n.textContent=txt;return n}
 function renderPhases(){
@@ -137,23 +137,23 @@ function renderPhases(){
  if(checked){const fb=el("div","feedback");const correct=p.correct.includes(choice);fb.append(el("strong","",correct?"A defensible reading.":"Look again at the evidence."),el("span","",p.clue));card.appendChild(fb)}
  $("phase-count").textContent=(phaseIndex+1)+" of "+phases.length+" phases";
  $("phase-prev").disabled=phaseIndex===0;
- $("phase-next").textContent=phaseIndex===phases.length-1?"Go to sources →":"Next phase →";
+ $("phase-next").textContent=checked?(phaseIndex===phases.length-1?"Go to sources →":"Next phase →"):"Check this phase";
  $("phase-next").onclick=()=>{if(!checked){if(choice===null){$("phase-count").textContent="Choose a reading first.";return}phaseChecked[phaseIndex]=true;renderPhases();return}if(phaseIndex<phases.length-1){phaseIndex++;renderPhases()}else{switchTab("sources")}};
  $("phase-prev").onclick=()=>{if(phaseIndex>0){phaseIndex--;renderPhases()}};
 }
 function renderSources(){
  const root=$("source-questions");root.replaceChildren();
- comparisons.forEach((q,qi)=>{const box=el("div","phase");box.append(el("div","question",(qi+1)+". "+q.q));const opts=el("div","options");q.opts.forEach((t,oi)=>{const b=el("button","option",t);b.type="button";b.setAttribute("aria-pressed",b.dataset.choice===String(oi)?"true":"false");b.dataset.choice="";b.addEventListener("click",()=>{box.dataset.answer=String(oi);Array.from(opts.children).forEach((x,j)=>x.setAttribute("aria-pressed",j===oi?"true":"false"))});opts.appendChild(b)});box.appendChild(opts);root.appendChild(box)});
+ comparisons.forEach((q,qi)=>{const box=el("div","phase");box.append(el("div","question",(qi+1)+". "+q.q));const opts=el("div","options");q.opts.forEach((t,oi)=>{const b=el("button","option",t);b.type="button";b.setAttribute("aria-pressed",sourceAnswers[qi]===oi?"true":"false");b.addEventListener("click",()=>{sourceAnswers[qi]=oi;Array.from(opts.children).forEach((x,j)=>x.setAttribute("aria-pressed",j===oi?"true":"false"))});opts.appendChild(b)});box.appendChild(opts);root.appendChild(box)});if(sourceChecked)checkSources();
 }
 function checkSources(){
  let right=0,done=0;const boxes=$("source-questions").children;
- comparisons.forEach((q,i)=>{const box=boxes[i],ans=box.dataset.answer;if(ans===undefined)return;done++;if(Number(ans)===q.correct)right++;let fb=box.querySelector(".feedback");if(!fb){fb=el("div","feedback");box.appendChild(fb)}fb.replaceChildren(el("strong","",Number(ans)===q.correct?"Good source reading.":"Reconsider what the source can establish."),el("span","",q.why))});
- $("source-score").textContent=done+" of "+comparisons.length+" attempted; "+right+" strong readings.";
+ comparisons.forEach((q,i)=>{const box=boxes[i],ans=sourceAnswers[i];if(ans===null)return;done++;if(ans===q.correct)right++;let fb=box.querySelector(".feedback");if(!fb){fb=el("div","feedback");box.appendChild(fb)}fb.replaceChildren(el("strong","",ans===q.correct?"Good source reading.":"Reconsider what the source can establish."),el("span","",q.why))});
+ sourceChecked=true;$("source-score").textContent=done+" of "+comparisons.length+" attempted; "+right+" strong readings.";
 }
 function renderIdeas(){
  const root=$("claim-cards");root.replaceChildren();
- ideas.forEach((item,i)=>{const box=el("article","phase");box.append(el("div","question",(i+1)+". "+item.fact));const prompt=el("p","note","Choose how this evidence relates to “Kush just copied Egypt.”");box.appendChild(prompt);const opts=el("div","options");["Supports","Challenges","Could be used either way"].forEach((label,j)=>{const b=el("button","option",label);b.type="button";b.dataset.choice=String(j);b.setAttribute("aria-pressed","false");b.addEventListener("click",()=>{box.dataset.choice=String(j);Array.from(opts.children).forEach((x,k)=>x.setAttribute("aria-pressed",k===j?"true":"false"))});opts.appendChild(b)});box.appendChild(opts);
- const reveal=el("button","btn secondary","Show both readings");reveal.type="button";reveal.style.marginTop="8px";reveal.addEventListener("click",()=>{let f=box.querySelector(".feedback");if(!f){f=el("div","feedback");box.appendChild(f)}f.replaceChildren(el("strong","", "Possible reading"),el("span","",item.support+" "+item.challenge));});box.appendChild(reveal);root.appendChild(box)});
+ ideas.forEach((item,i)=>{const box=el("article","phase");box.append(el("div","question",(i+1)+". "+item.fact));const prompt=el("p","note","Choose how this evidence relates to “Kush just copied Egypt.”");box.appendChild(prompt);const opts=el("div","options");["Supports","Challenges","Could be used either way"].forEach((label,j)=>{const b=el("button","option",label);b.type="button";b.setAttribute("aria-pressed",ideaAnswers[i]===j?"true":"false");b.addEventListener("click",()=>{ideaAnswers[i]=j;renderIdeas()});opts.appendChild(b)});box.appendChild(opts);
+ const reveal=el("button","btn secondary",ideaShown[i]?"Hide both readings":"Show both readings");reveal.type="button";reveal.style.marginTop="8px";reveal.addEventListener("click",()=>{ideaShown[i]=!ideaShown[i];renderIdeas()});box.appendChild(reveal);if(ideaShown[i]){const f=el("div","feedback");f.append(el("strong","","Possible readings"),el("span","",item.support+" "+item.challenge));box.appendChild(f)}root.appendChild(box)});
 }
 function switchTab(id){
  document.querySelectorAll(".tab").forEach(b=>{const on=b.dataset.tab===id;b.setAttribute("aria-pressed",on?"true":"false")});
@@ -164,7 +164,7 @@ function switchTab(id){
 document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>switchTab(b.dataset.tab)));
 $("check-sources").addEventListener("click",checkSources);
 $("show-model").addEventListener("click",()=>{$("model").hidden=false});
-$("clear-work").addEventListener("click",()=>{phaseAnswers.fill(null);phaseChecked.fill(false);phaseIndex=0;$("claim").value="";$("model").hidden=true;switchTab("timeline");renderPhases()});
+$("clear-work").addEventListener("click",()=>{phaseAnswers.fill(null);phaseChecked.fill(false);sourceAnswers.fill(null);sourceChecked=false;ideaAnswers.fill(null);ideaShown.fill(false);phaseIndex=0;$("source-score").textContent="";$("claim").value="";$("model").hidden=true;switchTab("timeline");renderPhases()});
 renderPhases();
 })();
 </script>
