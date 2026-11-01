@@ -9,6 +9,7 @@ assert.match(page,/1,500 years/);
 assert.match(page,/simplified diagram/);
 assert.match(page,/data-check-claims/);
 assert.match(page,/data-check-empire/);
+assert.match(page,/army or court/);
 assert.match(page,/not submitted or stored online/);
 assert.doesNotMatch(page,/fetch\(|localStorage|sessionStorage/);
 const ctx={window:{},document:{readyState:"loading",addEventListener(){}}};
