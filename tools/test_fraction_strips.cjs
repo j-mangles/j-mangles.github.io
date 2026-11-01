@@ -1,5 +1,6 @@
 /* Grade 7 Manitoba 7.N.5: validate exact fraction arithmetic, diagrams, and unit registration. */
 "use strict";
+const scriptSrcIndex=(html,src)=>[...html.matchAll(/<script src="([^"]+)"/g)].map(m=>m[1].split("?")[0]).indexOf(src);
 const fs=require("node:fs"),vm=require("node:vm"),path=require("node:path"),assert=require("node:assert/strict");
 const root=path.resolve(__dirname,".."),read=p=>fs.readFileSync(path.join(root,p),"utf8");
 const ctx={window:{HUB:{subject:"math",units:[],tools:{}}}};
@@ -26,7 +27,7 @@ F.scenarios.forEach((p,i)=>{
  assert.ok(svg1.includes("A: ")&&!svg1.includes("Result"));
  assert.ok(svg2.includes("Result")&&svg2.includes(p.op==="+"?"Combine":"Remove"));
 });
-const main=read("math/index.html"),scripts=[...main.matchAll(/<script src="([^"]+)"/g)].map(m=>m[1]);
+const main=read("math/index.html"),scripts=[...main.matchAll(/<script src="([^"]+)"/g)].map(m=>m[1].split("?")[0]);
 assert.ok(scripts.includes("fraction-strips.js")&&scripts.indexOf("tools.js")<scripts.indexOf("fraction-strips.js")&&scripts.indexOf("fraction-strips.js")<scripts.indexOf("../assets/course-map.js"));
 const datCtx={window:{}};
 vm.runInNewContext(read("math/data.js"),datCtx);
