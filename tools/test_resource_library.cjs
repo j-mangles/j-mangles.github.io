@@ -1,5 +1,6 @@
 /* Validate published-only resource library for all four lesson-hub subjects. */
 "use strict";
+const scriptSrcIndex=(html,src)=>[...html.matchAll(/<script src="([^"]+)"/g)].map(m=>m[1].split("?")[0]).indexOf(src);
 const fs=require("node:fs"),vm=require("node:vm"),path=require("node:path"),assert=require("node:assert/strict");
 const root=path.resolve(__dirname,".."),read=p=>fs.readFileSync(path.join(root,p),"utf8");
 const library=read("assets/resource-library.js"),map=read("assets/course-map.js");
@@ -16,7 +17,7 @@ for(const subject of ["math","science","ela","critical-thinking"]){
  vm.runInNewContext(map,Hctx);
  vm.runInNewContext(library,Hctx);
  const H=Hctx.window.HUB;
- const registered=[...read(subject+"/tools.js").matchAll(/window\.HUB\.tools\.(\w+)\s*=/g)].map(x=>x[1]);
+ const registered=[...read(subject+"/tools.js").matchAll(/window\.HUB\.tools\.(\w+)\s*=/g)].map(x=>x[1].split("?")[0]);
  H.tools=Object.fromEntries(registered.map(x=>[x,()=>{}]));
  H.lessonTools=Object.fromEntries(lessonTools[subject].map(x=>[x,()=>{}]));
  const items=Hctx.window.StudentResources.collect(H);
@@ -36,7 +37,7 @@ for(const subject of ["math","science","ela","critical-thinking"]){
  assert.ok(html.includes('id="resource-search"')&&html.includes('id="resource-unit"')&&html.includes('id="resource-type"'));
  assert.ok(html.includes("Google Drive files are not downloadable here"),"Missing safe-sharing statement");
  assert.ok(!html.includes('href="https://drive.google.com'),"Unapproved Drive URL on page");
- const page=read(subject+"/index.html"),scripts=[...page.matchAll(/<script src="([^"]+)"/g)].map(m=>m[1]);
+ const page=read(subject+"/index.html"),scripts=[...page.matchAll(/<script src="([^"]+)"/g)].map(m=>m[1].split("?")[0]);
  assert.ok(page.includes('id="course-resources-link"'),subject+" no visible navigation");
  assert.ok(scripts.includes("../assets/resource-library.js")&&scripts.indexOf("../assets/resource-library.js")<scripts.indexOf("../assets/hub.js"),"Wrong resource script load order");
  console.log("PASS "+subject+": "+items.length+" published resources across "+H.units.length+" units");
@@ -50,7 +51,7 @@ const injected={subject:"sci",units:[{id:"safe",n:"1",name:"Visible Unit",lesson
 const poisoned=ctx.window.StudentResources.createMarkup(injected);
 assert.ok(!poisoned.includes('<script>alert')&&!poisoned.includes('<img src=x'));
 assert.ok(!poisoned.includes('https://private.example')&&!poisoned.includes("img/../private.jpg"));
-assert.ok(poisoned.includes('src="img/public.png"'));
+assert.ok(scriptSrcIndex(poisoned,"img/public.png")>=0);
 assert.ok(!poisoned.includes('teacherMaterials'));
 const hub=read("assets/hub.js");
 assert.ok(hub.includes('h==="resources"')&&hub.includes('window.StudentResources.render($("#main"),H)'),"Resource view route is missing");
