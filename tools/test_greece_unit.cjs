@@ -25,7 +25,7 @@ assert.ok(html.indexOf('src="greece-lessons.js"')>html.indexOf('src="egypt-lesso
 assert.ok(html.indexOf('src="greece-atlas.js"')<html.indexOf('<script src="https://cdnjs.cloudflare'));
 assert.match(html,/id:"greece", n:"3", name:"Ancient Greece", status:"soon"/);
 assert.match(html,/places:window\.GreeceAtlas\.places, timeline:window\.GreeceAtlas\.timeline, lessons:window\.GreeceLessons/);
-assert.ok(read("social-studies/greek-inquiry-lab.html").includes('src="greek-inquiry.js"'));
+assert.ok(/src="greek-inquiry\.js(?:\?[^"]*)?"/.test(read("social-studies/greek-inquiry-lab.html")));
 const source=read("social-studies/greek-inquiry.js");
 new Function(source);
 assert.ok(/scores/.test(source)&&/voters/.test(source)&&/lives/.test(source));
