@@ -1,5 +1,6 @@
 /* Grade 8 ELA: six stage plot board with editable evidence and tension chart. */
 "use strict";
+const scriptSrcIndex=(html,src)=>[...html.matchAll(/<script src="([^"]+)"/g)].map(m=>m[1].split("?")[0]).indexOf(src);
 const assert=require("node:assert/strict"),fs=require("node:fs"),path=require("node:path"),vm=require("node:vm");
 const root=path.resolve(__dirname,".."),read=p=>fs.readFileSync(path.join(root,p),"utf8");
 const ctx={window:{HUB:{subject:"ela",tools:{stories:()=>{}},lessonTools:{}}}};
@@ -23,7 +24,7 @@ const adversarial=P.initial();adversarial[0].moment='<img src=x onerror=alert(1)
 const chart=P.graph(adversarial);
 assert.ok(!chart.includes("<script>")&&!chart.includes("<img"));
 assert.ok(chart.includes("Exposition 0 of 10"));
-const page=read("ela/index.html"),scripts=[...page.matchAll(/<script src="([^"]+)"/g)].map(x=>x[1]);
+const page=read("ela/index.html"),scripts=[...page.matchAll(/<script src="([^"]+)"/g)].map(x=>x[1].split("?")[0]);
 assert.ok(scripts.includes("plot-evidence-board.js")&&scripts.indexOf("plot-evidence-board.js")<scripts.indexOf("../assets/hub.js"));
 const data={window:{}};vm.runInNewContext(read("ela/data.js"),data);
 assert.ok(data.window.HUB.units.some(u=>u.id==="stories"&&u.lessons.some(l=>l.id==="plot"&&l.title==="Plot Structure")));
