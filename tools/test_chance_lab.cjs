@@ -1,5 +1,6 @@
 /* Chance Lab regression checks: distribution math, charts, input and event wiring. */
 "use strict";
+const scriptSrcIndex=(html,src)=>[...html.matchAll(/<script src="([^"]+)"/g)].map(m=>m[1].split("?")[0]).indexOf(src);
 const assert=require("node:assert/strict");
 const fs=require("node:fs"),vm=require("node:vm"),path=require("node:path");
 const root=path.resolve(__dirname,"..");
@@ -27,8 +28,8 @@ assert.equal(counts.experimental[0],.375);
 assert.equal(m.summarize(spin,[]).experimental[0],null);
 assert.throws(()=>m.summarize(spin,[99]),/Invalid draw/);
 const html=fs.readFileSync(path.join(root,"math/index.html"),"utf8");
-assert.ok(html.includes('src="chance-lab.js"'));
-assert.ok(html.indexOf('src="chance-lab.js"')<html.indexOf('src="../assets/hub.js"'));
+assert.ok(scriptSrcIndex(html,"chance-lab.js")>=0);
+assert.ok(scriptSrcIndex(html,"chance-lab.js")<scriptSrcIndex(html,"../assets/hub.js"));
 const nodes=new Map();
 const make=(dataset={})=>({dataset,value:"",focus(){this.focused=true;}});
 const runButtons=[1,20,100,500].map(k=>make({plRun:String(k)}));
