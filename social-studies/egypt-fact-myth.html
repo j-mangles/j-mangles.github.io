@@ -121,6 +121,7 @@ const rounds=[
 let current=0;
 const answers=Array(rounds.length).fill(null);
 const evidenceShown=Array(rounds.length).fill(false);
+const recallDraft=Array(rounds.length).fill("");
 const $=id=>document.getElementById(id);
 function setText(id,value){$(id).textContent=value;}
 function countAnswered(){return answers.filter(v=>v!==null).length;}
@@ -142,7 +143,7 @@ function render(){
  $("feedback").replaceChildren();
  $("recall").hidden=answer===null;
  $("evidence").hidden=!evidenceShown[current];
- $("recall-answer").value="";
+ $("recall-answer").value=recallDraft[current];
  if(answer!==null){
    const box=document.createElement("div");box.className="feedback "+(answer===r.fact?"good":"bad");
    const heading=document.createElement("strong");heading.textContent=answer===r.fact?"That’s the right call.":"Not quite — keep the correction in mind.";
@@ -171,10 +172,11 @@ function finish(){
  $("finish").hidden=false;
  $("finish").scrollIntoView({block:"start",behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});
 }
+$("recall-answer").addEventListener("input",event=>{recallDraft[current]=event.target.value;});
 $("show-evidence").addEventListener("click",()=>{evidenceShown[current]=true;render();});
 $("previous").addEventListener("click",()=>{if(current>0){current--;render();}});
 $("next").addEventListener("click",()=>{if(current<rounds.length-1){current++;render();}else if(countAnswered()===rounds.length){finish();}else{setText("score","Answer each round before finishing");}});
-$("restart").addEventListener("click",()=>{current=0;answers.fill(null);evidenceShown.fill(false);$("checkin").value="";render();window.scrollTo({top:0,behavior:"auto"});});
+$("restart").addEventListener("click",()=>{current=0;answers.fill(null);evidenceShown.fill(false);recallDraft.fill("");$("checkin").value="";render();window.scrollTo({top:0,behavior:"auto"});});
 $("checkin").value="";
 render();
 })();
