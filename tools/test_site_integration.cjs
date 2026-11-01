@@ -15,11 +15,12 @@ for(const [file,tools] of Object.entries(pages)){
  const src=[...html.matchAll(/<script\s+src="([^"]+)"/g)].map(x=>x[1]);
  assert.equal(new Set(src).size,src.length,file+" has duplicate script tags");
  assert.ok(src.indexOf("data.js")>=0,file+" missing data.js");
- assert.ok(src.indexOf("../assets/hub.js")>=0,file+" missing shared lesson renderer");
+ const hubIndex=src.findIndex(link=>link.startsWith("../assets/hub.js"));
+ assert.ok(hubIndex>=0,file+" missing shared lesson renderer");
  for(const tool of tools){
   assert.ok(src.includes(tool),file+" missing "+tool);
   assert.ok(src.indexOf("data.js")<src.indexOf(tool),tool+" loads before its data");
-  assert.ok(src.indexOf(tool)<src.indexOf("../assets/hub.js"),tool+" loads after the lesson renderer");
+  assert.ok(src.indexOf(tool)<hubIndex,tool+" loads after the lesson renderer");
  }
  for(const link of src)if(!/^https?:\/\//.test(link))assert.ok(fs.existsSync(path.resolve(dir,link)),file+" script missing on disk: "+link);
 }
