@@ -875,6 +875,7 @@ window.EgyptLessons = [
       ]
     ],
     "work": "Crack the code: decode two royal names the way Champollion did, sort curse claims into proven, reasonable guess or legend, and argue whether the Rosetta Stone should go back to Egypt.",
+    "activity": {"href":"egypt-rosetta-investigation.html","title":"Open the Rosetta Stone Investigation"},
     "check": [
       {
         "q": "Why was the Rosetta Stone the key to reading hieroglyphs?",
