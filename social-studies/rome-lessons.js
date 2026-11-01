@@ -5,6 +5,7 @@ window.RomeLessons = [
     "n": "1",
     "title": "Seven Hills and a She-Wolf",
     "released": true,
+    "activity": {"href":"rome-evidence-desk.html","title":"Open the Rome Evidence Desk"},
     "big": "Rome's founding story matters as evidence of Roman identity, even where archaeology cannot confirm the legend.",
     "notes": [
       "Rome grew beside the Tiber in central Italy, where hills offered defensible ground and a river crossing supported trade.",
