@@ -9,7 +9,7 @@ const scope={window:{HUB:{subject:"ela",lessonTools:{}}}};
 vm.runInNewContext(code,scope,{filename:"ela/core-writing-workshop.js",timeout:3000});
 const tasks=scope.window.CoreWritingWorkshop.tasks;
 const lessonTools=scope.window.HUB.lessonTools;
-const expected=["thankyou","summer","landlady","paw","upswing"];
+const expected=["thankyou","summer","landlady","upswing","paw"];
 assert.deepEqual(Object.keys(tasks),expected);
 for(const key of expected){
  assert.equal(typeof lessonTools["stories/"+key],"function",key+" lacks lesson registration");
