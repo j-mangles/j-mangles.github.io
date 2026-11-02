@@ -188,6 +188,15 @@
     };
   }
 
+  function directLessonHTML(l){
+ const d=l.directLesson;if(!d)return "";
+ const steps=(d.steps||[]).map((s,i)=>'<li><span class="direct-step-num">'+(i+1)+'</span><div><b>'+esc(s.title)+'</b><p>'+esc(s.text)+'</p></div></li>').join("");
+ const evidence=d.model?(d.model.evidence||[]).map(x=>'<li>'+esc(x)+'</li>').join(""):"";
+ const model=d.model?'<section class="direct-model"><h4>Watch the thinking</h4><p><strong>'+esc(d.model.title)+':</strong> '+esc(d.model.prompt)+'</p><ul>'+evidence+'</ul><p><strong>Think-aloud:</strong> '+esc(d.model.thinking)+'</p><p class="direct-answer"><strong>Model response:</strong> '+esc(d.model.answer)+'</p></section>':"";
+ const practice=d.practice?'<details class="direct-practice"><summary>Try it: '+esc(d.practice.prompt)+'</summary><p class="direct-hint">'+esc(d.practice.hint||"Try it before opening the sample.")+'</p><details class="direct-sample"><summary>Reveal one sample response</summary><p>'+esc(d.practice.sample)+'</p></details></details>':"";
+ return '<section class="direct-lesson" aria-labelledby="direct-lesson-title"><p class="direct-kicker">Direct lesson'+(d.time?' · '+esc(d.time):"")+'</p><h3 id="direct-lesson-title">'+esc(d.title)+'</h3><p class="direct-goal"><strong>Learning target:</strong> '+esc(d.goal)+'</p><ol class="direct-steps">'+steps+'</ol>'+model+practice+'</section>';
+}
+
   function renderLesson(u,l){
     const exitWasOpen=!!document.getElementById("exit-ticket")?.open;
     if(window.UnitReview)window.UnitReview.remember(H.subject,u.id,l.id);
@@ -207,6 +216,7 @@
       <h2>${esc(l.title)}</h2>
       ${imgs[0]?`<figure class="hero"><img src="${imgs[0].src}" alt="" data-cap="${esc(imgs[0].cap)}"><figcaption>${esc(imgs[0].cap)}</figcaption></figure>`:""}
       ${l.big?`<div class="big"><div class="eyebrow">The big idea</div><p>${esc(l.big)}</p></div>`:""}
+      ${directLessonHTML(l)}
       ${LT?`<div id="ltool-slot"></div>`:""}
       ${(l.charts||[]).map((c,ci)=>`<div id="lc-${ci}"></div>`).join("")}
       ${l.notes&&l.notes.length?`<h3>What we covered</h3><ul class="notes">${l.notes.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:""}
