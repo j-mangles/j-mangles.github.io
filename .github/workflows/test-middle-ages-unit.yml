@@ -1,0 +1,27 @@
+name: Test Middle Ages Lesson Investigations
+on:
+  push:
+    paths:
+      - 'social-studies/middle-ages-lessons.js'
+      - 'social-studies/middle-ages-*.html'
+      - 'social-studies/medieval-knowledge-routes.html'
+      - 'social-studies/index.html'
+      - 'tools/test_middle_ages_unit.cjs'
+      - '.github/workflows/test-middle-ages-unit.yml'
+  pull_request:
+    paths:
+      - 'social-studies/middle-ages-lessons.js'
+      - 'social-studies/middle-ages-*.html'
+      - 'social-studies/medieval-knowledge-routes.html'
+      - 'social-studies/index.html'
+      - 'tools/test_middle_ages_unit.cjs'
+      - '.github/workflows/test-middle-ages-unit.yml'
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: node tools/test_middle_ages_unit.cjs
