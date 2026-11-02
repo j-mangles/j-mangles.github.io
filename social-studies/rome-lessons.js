@@ -625,6 +625,7 @@ window.RomeLessons = [
     "id": "l13",
     "n": "13",
     "title": "What Rome Left Us",
+    "activity": {"href":"rome-legacy-audit.html","title":"Run the Rome Legacy Audit"},
     "released": true,
     "big": "Roman legacies shaped languages, law, buildings and government, while conquest and slavery helped pay for them.",
     "notes": [
