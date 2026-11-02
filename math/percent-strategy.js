@@ -100,7 +100,7 @@ function studio(el,kind){
  };
  $("#ps-show").onclick=()=>{$("#ps-hint").hidden=false;$("#ps-hint").textContent="Worked solution: "+current.steps;};
  $("#ps-next").onclick=next;
- $("#ps-clear").onclick=()=>{level="friendly";solved=0;questions=0;attempts=0;hint=0;counted=false;$("[data-level]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.level==="friendly")));next();};
+ $("#ps-clear").onclick=()=>{level="friendly";solved=0;questions=0;attempts=0;hint=0;counted=false;$$("[data-level]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.level==="friendly")));next();};
  $$("[data-level]").forEach(b=>b.onclick=()=>{
   level=b.dataset.level; $$("[data-level]").forEach(x=>x.setAttribute("aria-pressed",String(x.dataset.level===level)));next();
  });
