@@ -56,6 +56,7 @@ window.RomeLessons = [
     "id": "l2",
     "n": "2",
     "title": "The Republic",
+    "activity": {"href":"rome-republic-power-map.html","title":"Open the Republic Power Map"},
     "released": true,
     "big": "Rome's Republic divided public power among offices and assemblies, while excluding many people from political rights.",
     "notes": [
@@ -209,6 +210,7 @@ window.RomeLessons = [
     "id": "l5",
     "n": "5",
     "title": "The Punic Wars",
+    "activity": {"href":"rome-punic-wars-maproom.html","title":"Open the Punic Wars Map Room"},
     "released": true,
     "big": "Rome defeated Carthage in three major wars, but the surviving accounts mostly present the conflict from a Roman perspective.",
     "notes": [
@@ -413,6 +415,7 @@ window.RomeLessons = [
     "id": "l9",
     "n": "9",
     "title": "Built to Last: Engineering and City Life",
+    "activity": {"href":"rome-water-network.html","title":"Try the Roman Water Network Studio"},
     "released": true,
     "big": "Roman infrastructure and urban life show technical skill alongside unequal living conditions and risks.",
     "notes": [
@@ -566,6 +569,7 @@ window.RomeLessons = [
     "id": "l12",
     "n": "12",
     "title": "The Fall of the West",
+    "activity": {"href":"rome-crash-model.html","title":"Build a Multi-Cause Model"},
     "released": true,
     "big": "The western empire changed through overlapping political, economic, military and environmental pressures; the eastern empire continued.",
     "notes": [
