@@ -83,10 +83,7 @@ window.EgyptLessons = [
         "why": "The timing was steady. The height swung between floods that destroyed villages and floods too weak to water the fields."
       }
     ],
-    "diagram": [
-      "flood",
-      "kemet"
-    ]
+    "diagram": "nileYear"
   },
   {
     "id": "l2",

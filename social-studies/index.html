@@ -178,6 +178,7 @@ figcaption{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.35}
 .diagram{overflow-x:auto;margin:14px 0 0}
 .diagram figcaption{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.4}
 .diagram svg{display:block;min-width:620px;width:100%;height:auto}
+.diagram.ix{background:var(--panel);border:1px solid var(--rule);border-radius:10px;padding:12px;overflow:visible}
 .l-cat{font:italic 500 12.5px var(--f-ui);fill:var(--muted)}
 .mk-cat{fill:var(--panel);stroke:var(--river);stroke-width:2}
 @media (max-width: 860px){.sheet-card{padding:22px 18px 24px}.sheet-card h2{font-size:28px}dl.terms{grid-template-columns:1fr}dl.terms dd{margin-bottom:8px}}
@@ -285,6 +286,7 @@ figcaption{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.35}
 
 <script src="../assets/review.js?v=20261101d"></script>
 <script src="egypt-diagrams.js"></script>
+<script src="egypt-interactives.js"></script>
 <script src="egypt-lessons.js"></script>
 <script src="greece-lessons.js?v=20261102c"></script>
 <script src="greece-atlas.js"></script>
@@ -1246,6 +1248,7 @@ function renderSheet(){
     </details>
     <div class="sheet-nav">${prev?`<button class="btn ghost" id="lprev">&larr; ${lessonLabel} ${esc(prev.n)}</button>`:"<span></span>"}${next?`<button class="btn ghost" id="lnext">${lessonLabel} ${esc(next.n)} &rarr;</button>`:""}</div>`;
   $("#sheet-x").onclick=closeLesson;
+  document.querySelectorAll("#sheetcard [data-ix]").forEach(d=>{const ix=window.EgyptInteractives&&window.EgyptInteractives[d.dataset.ix]; if(ix) try{ix.mount(d);}catch(e){d.textContent="This model didn't load. Refresh the page to try again.";}});
   document.querySelectorAll("#sheetcard .opt").forEach(b=>b.onclick=()=>{
     sheetCtx.answers[+b.dataset.q]=+b.dataset.o;
     const all=l.check.every((q,qi)=>sheetCtx.answers[qi]===q.c);
@@ -1272,6 +1275,8 @@ function diagramsFor(l){
   const keys=[].concat(l.diagram||[]);
   return keys.map(k=>{
     if(k==="bce")return `<div class="diagram">${bceDiagram()}</div>`;
+    const ix=window.EgyptInteractives&&window.EgyptInteractives[k];
+    if(ix)return `<figure class="diagram ix"><div data-ix="${k}"></div>${ix.cap?`<figcaption>${esc(ix.cap)}</figcaption>`:""}</figure>`;
     const f=window.EgyptDiagrams&&window.EgyptDiagrams[k]; if(!f)return "";
     const d=f(); return `<figure class="diagram">${d.svg}${d.cap?`<figcaption>${esc(d.cap)}</figcaption>`:""}</figure>`;
   }).join("");
