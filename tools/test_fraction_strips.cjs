@@ -5,6 +5,8 @@ const fs=require("node:fs"),vm=require("node:vm"),path=require("node:path"),asse
 const root=path.resolve(__dirname,".."),read=p=>fs.readFileSync(path.join(root,p),"utf8");
 const ctx={window:{HUB:{subject:"math",units:[],tools:{}}}};
 vm.runInNewContext(read("math/fraction-strips.js"),ctx,{filename:"math/fraction-strips.js"});
+vm.runInNewContext(read("math/fracops-visuals.js"),ctx,{filename:"math/fracops-visuals.js"});
+assert.equal(typeof ctx.window.HUB.lessonTools["fracops/l03"],"function","Fraction Strip Lab is not embedded in Lesson 3");
 const F=ctx.window.FractionStripCore;
 assert.equal(typeof ctx.window.HUB.tools.fracops,"function","Unit 4 tool not registered");
 assert.equal(F.gcd(42,30),6);assert.equal(F.lcm(4,6),12);
@@ -33,6 +35,7 @@ const datCtx={window:{}};
 vm.runInNewContext(read("math/data.js"),datCtx);
 const fractionUnit=datCtx.window.HUB.units.find(u=>u.id==="fracops");
 assert.ok(fractionUnit&&fractionUnit.name==="Fraction Operations");
+assert.ok(fractionUnit.lessons.find(l=>l.id==="l03").work.includes("Fraction Strip Lab"),"Lesson 3 practice points students to the embedded lab");
 assert.equal(JSON.stringify(fractionUnit.lessons.map(l=>l.title)),JSON.stringify(["GCF and LCM","Adding and Subtracting: Like Denominators","Adding and Subtracting: Unlike Denominators","Subtracting Mixed Numbers","Skill Check and Review"]),"Unit 4 lessons follow the L01-L05 decks");
 fractionUnit.lessons.forEach(l=>l.check.forEach(q=>assert.ok(q.c>=0&&q.c<q.a.length,l.id+" answer index")));
 const vis=read("math/fracops-visuals.js");["l01","l02","l03","l04","l05"].forEach(id=>assert.ok(vis.includes('"fracops/'+id+'"'),"visual for "+id));
