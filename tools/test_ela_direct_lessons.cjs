@@ -7,5 +7,5 @@ const expected=[["answering","day1"],["answering","day2"],["grammar","apostrophe
 for(const [unit,id] of expected){const l=find(unit,id);assert.ok(l&&l.directLesson,unit+"/"+id);const d=l.directLesson;assert.ok(d.goal&&d.steps.length>=3&&d.model&&d.practice,unit+"/"+id);assert.ok(d.model.answer&&d.practice.sample,unit+"/"+id);}
 assert.match(find("stories","snack").directLesson.model.answer,/assumption was wrong/);assert.doesNotMatch(find("stories","snack").directLesson.model.answer,/cookies were hers/);
 const engine=read("assets/hub.js");new Function(engine);assert.match(engine,/function directLessonHTML\(l\)/);assert.match(engine,/\$\{directLessonHTML\(l\)\}/);
-const page=read("ela/index.html");assert.match(page,/data\\.js\\?v=20261102b/);assert.match(page,/hub\.js\?v=20261102a/);assert.match(page,/\.direct-lesson/);assert.match(engine,/direct-practice/);
+const page=read("ela/index.html");assert.match(page,/data\.js\?v=20261102b/);assert.match(page,/hub\.js\?v=20261102a/);assert.match(page,/\.direct-lesson/);assert.match(engine,/direct-practice/);
 console.log("ELA direct lessons PASS: 11 guided lessons render inside Answering Well, Grammar and all eight Short Stories lessons.");
