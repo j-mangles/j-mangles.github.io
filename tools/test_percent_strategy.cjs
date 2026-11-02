@@ -15,8 +15,9 @@ assert.equal(P("discount",25,80).answer,60);
 assert.match(P("discount",25,80).steps,/BEFORE tax/);
 for(const id of ["fdp/l05","fdp/l06","fdp/l09"])assert.equal(typeof H.lessonTools[id],"function");
 const index=fs.readFileSync(path.join(root,"math","index.html"),"utf8");
-assert.ok(index.indexOf('src="percent-strategy.js"')>=0);
-assert.ok(index.indexOf('src="percent-strategy.js"')<index.indexOf('src="../assets/hub.js'));
+const scripts=[...index.matchAll(/<script src="([^"]+)"/g)].map(m=>m[1].split("?")[0]);
+assert.ok(scripts.includes("percent-strategy.js"));
+assert.ok(scripts.indexOf("percent-strategy.js")<scripts.indexOf("../assets/hub.js"));
 const element=(dataset={})=>({value:"",innerHTML:"",textContent:"",hidden:false,dataset,attrs:{},setAttribute(k,v){this.attrs[k]=v;}});
 const nodes=new Map(),levels=[element({level:"friendly"}),element({level:"stretch"})];
 const el={
@@ -27,6 +28,7 @@ const el={
 H.lessonTools["fdp/l05"](el);
 const get=q=>el.querySelector(q);
 assert.match(el.innerHTML,/Percent Strategy Studio/);
+assert.match(el.innerHTML,/Clear and restart/);
 assert.match(get("#ps-question").textContent,/10% of 40/);
 assert.match(get("#ps-grid").innerHTML,/ps-square on/);
 get("#ps-answer").value="4";
@@ -43,4 +45,8 @@ get("#ps-show").onclick();
 assert.match(get("#ps-hint").textContent,/Worked solution/);
 get("#ps-next").onclick();
 assert.match(get("#ps-score").textContent,/questions shown/);
+get("#ps-answer").value="82";get("#ps-clear").onclick();
+assert.equal(get("#ps-answer").value,"");assert.equal(get("#ps-feedback").textContent,"");
+assert.equal(get("#ps-hint").hidden,true);assert.equal(levels[0].attrs["aria-pressed"],"true");
+assert.equal(get("#ps-score").textContent,"0 solved · 1 questions shown");
 console.log("Percent Strategy Studio passed: maths, mounting, input, feedback, hints, levels and repeat practice.");
