@@ -18,11 +18,12 @@ for(const lesson of l){
 }
 for(const p of g.places)assert.ok(p.name&&p.text&&Number.isFinite(p.ll[0])&&Number.isFinite(p.ll[1])&&p.ll[0]>=-180&&p.ll[0]<=180&&p.ll[1]>=-90&&p.ll[1]<=90,p.id);
 for(const event of g.timeline)assert.ok(!event.p||ids.has(event.p),"Missing mapped timeline place "+event.p);
-const act=l.filter(x=>x.activity);assert.deepEqual(Array.from(act,x=>x.id),["l1","l2","l5","l6","l8","l12"]);
-const expectedLinks={"l1":"greek-inquiry-lab.html#","l5":"greek-inquiry-lab.html#","l6":"greek-inquiry-lab.html#","l2":"greece-troy-casefile.html","l8":"greece-league-hearing.html","l12":"greece-alexander-perspectives.html"};
+const act=l.filter(x=>x.activity);assert.deepEqual(Array.from(act,x=>x.id),["l1","l2","l5","l6","l7","l8","l10","l11","l12"]);
+const expectedLinks={"l1":"greek-inquiry-lab.html#","l5":"greek-inquiry-lab.html#","l6":"greek-inquiry-lab.html#","l2":"greece-troy-casefile.html","l7":"greece-persian-wars.html","l8":"greece-league-hearing.html","l10":"greece-missing-voices.html","l11":"greece-peloponnesian-war.html","l12":"greece-alexander-perspectives.html"};
 for(const x of act)assert.ok(x.activity.href.startsWith(expectedLinks[x.id]));
 const html=read("social-studies/index.html");
-assert.ok(html.indexOf('src="greece-lessons.js"')>html.indexOf('src="egypt-lessons.js"'));
+const scripts=[...html.matchAll(/<script src="([^"]+)"/g)].map(m=>m[1].split("?")[0]);
+assert.ok(scripts.indexOf("greece-lessons.js")>scripts.indexOf("egypt-lessons.js"));
 assert.ok(html.indexOf('src="greece-atlas.js"')<html.indexOf('<script src="https://cdnjs.cloudflare'));
 assert.match(html,/id:"greece", n:"3", name:"Ancient Greece", status:"soon"/);
 assert.match(html,/places:window\.GreeceAtlas\.places, timeline:window\.GreeceAtlas\.timeline, lessons:window\.GreeceLessons/);
@@ -32,5 +33,5 @@ new Function(source);
 assert.ok(/scores/.test(source)&&/voters/.test(source)&&/lives/.test(source));
 assert.ok(!/localStorage|sessionStorage|fetch\(/.test(source),"Classwork must not be transmitted or persisted");
 assert.ok(!/UnitTest|ANSWERKEY|TeacherGuide|AnswerKey/.test(JSON.stringify(l)),"Do not publish restricted assessment content");
-for(const file of ["greece-troy-casefile.html","greece-league-hearing.html","greece-alexander-perspectives.html"]){const page=read("social-studies/"+file);assert.match(page,/aria-live/);assert.match(page,/Clear my work/);assert.ok(!/localStorage|sessionStorage|fetch\(/.test(page),file+" must remain page-only");}
-console.log("Ancient Greece PASS: "+l.length+" lessons, "+total+" self-checks, "+g.places.length+" places, "+g.timeline.length+" timeline events and 6 lesson investigations.");
+for(const file of ["greece-troy-casefile.html","greece-league-hearing.html","greece-alexander-perspectives.html","greece-persian-wars.html","greece-missing-voices.html","greece-peloponnesian-war.html"]){const page=read("social-studies/"+file);assert.match(page,/aria-live/);assert.match(page,/Clear my work/);assert.ok(!/localStorage|sessionStorage|fetch\(/.test(page),file+" must remain page-only");const inline=page.match(/<script>([\s\S]*?)<\\/script>/);assert.ok(inline,file+" needs inline interaction code");new Function(inline[1]);}
+console.log("Ancient Greece PASS: "+l.length+" lessons, "+total+" self-checks, "+g.places.length+" places, "+g.timeline.length+" timeline events and 9 lesson investigations.");
