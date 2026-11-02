@@ -66,7 +66,8 @@ $("#check").addEventListener("click",function(){
  }
  const order=["t1","t2","t3","t4"].map(id=>$("#"+id).value);
  const timeOk=order.join(",")==="1,2,3,4"; if(timeOk)score++; total++;
- $("#f1").textContent=score>=2?notes.q1+" "+notes.q2:"Try the geography questions again. Think about mountains separating valleys and the sea connecting settlements.";
+ const geoOk=["q1","q2"].every(name=>{const choice=document.querySelector('input[name="'+name+'"]:checked');return choice&&choice.value===answer[name];});
+ $("#f1").textContent=geoOk?notes.q1+" "+notes.q2:"Try the geography questions again. Think about mountains separating valleys and the sea connecting settlements.";
  $("#f2").textContent="Check the evidence distinction: "+notes.q3;
  $("#f3").textContent="Use the notes to check who had citizenship and whose work supported the system.";
  $("#f4").textContent=timeOk?"Correct: 776 BCE, 490 BCE, 431 BCE, then 336 BCE.":"Review the sequence: 776 BCE → 490 BCE → 431 BCE → 336 BCE.";
@@ -83,7 +84,7 @@ $("#clear").addEventListener("click",function(){
  $("#synthesis").value="";
  ["#f1","#f2","#f3","#f4","#result"].forEach(s=>$(s).textContent="");
  $("#saved").textContent="Your writing is only in this page. It is not sent or saved online.";
- $("#q1").focus();
+ document.querySelector('input[name="q1"]').focus();
 });
 })();
 </script></body></html>
