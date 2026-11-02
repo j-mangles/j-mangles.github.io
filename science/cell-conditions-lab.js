@@ -32,7 +32,7 @@
   function render(root) {
     root.innerHTML = style + `
       <section class="ccm" aria-label="Plant cell conditions investigation">
-        <div class="eyebrow">Interactive model · SCI.8.E.19</div>
+        
         <h3>Plant Cell Conditions: Find the Limiting Resource</h3>
         <p>Plants need light, water and carbon dioxide for photosynthesis. Change one condition at a time, then use the model's output as evidence.</p>
         <p class="ccm-note"><strong>Model rule:</strong> Established science: plant photosynthesis needs light, water, and carbon dioxide. Simplified model: the lowest slider percentage sets the relative rate. The slider percentages are illustrative, not measurements; temperature, leaf age, and other real-plant interactions are not modelled.</p>

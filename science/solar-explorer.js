@@ -81,7 +81,7 @@ function explorer(el){
  '.solar-explorer input[type=range]{width:min(420px,100%);min-height:44px;accent-color:var(--accent)}'+
  '.solar-explorer .se-status{min-height:30px;color:var(--accent-ink);font-weight:650}'+
  '.solar-explorer .se-note{font-size:13px;color:var(--muted);margin-top:20px}'+
- '</style><div class="eyebrow">Science 8 · Solar Energy and Light</div>'+
+ '</style>'+
  '<h2>Solar Spectrum & Albedo Explorer</h2>'+
  '<p class="note">Explore how wavelength, frequency and energy are related, and why different surfaces reflect different proportions of sunlight.</p>'+
  '<div class="se-tabs" role="group" aria-label="Choose investigation">'+

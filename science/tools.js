@@ -165,7 +165,7 @@
   window.HUB.tools = window.HUB.tools || {};
   function explorer(el){
     let type="plant", mode="explore", labels=false, sel=null, target=null, score=0, tries=0, lab=null;
-    el.innerHTML = `<div class="eyebrow">Interactive diagram</div><h2>Cell Explorer</h2>
+    el.innerHTML = `<h2>Cell Explorer</h2>
       <div class="cx-row" id="cellctl" style="margin:10px 0 12px">
         <span class="cx-seg"><button id="t-plant">Plant cell</button><button id="t-animal">Animal cell</button></span>
         <span class="cx-seg"><button id="m-explore">Explore</button><button id="m-quiz">Quiz</button><button id="m-label">Label it</button></span>
@@ -315,7 +315,7 @@
     }
     function draw(){
       const secs=Math.round((Date.now()-start)/1000), finished=done.size===pairs.length;
-      el.innerHTML=`<div class="eyebrow">Matching</div><h2>Part &amp; Role</h2>
+      el.innerHTML=`<h2>Part &amp; Role</h2>
         <p class="note" style="margin:4px 0 12px">Tap a cell part, then tap the job it does. Wording is the same as your booklet.</p>
         <div class="cx-row"><button class="btn ghost ${type==="plant"?"seg-on":""}" data-t="plant">Plant cell · 9</button><button class="btn ghost ${type==="animal"?"seg-on":""}" data-t="animal">Animal cell · 7</button>
           <span style="flex:1"></span><span class="cx-stat"><b id="mt-clock">${mmss(finished?flash:secs)}</b> · ${misses} miss${misses===1?"":"es"}</span></div>
@@ -365,7 +365,7 @@
       draw(isBest&&prev!==null&&prev!==undefined, prev); }
     function upd(){ const t=el.querySelector("#rs-time"), bar=el.querySelector("#rs-bar"); if(t) t.textContent=left+"s"; if(bar){bar.style.width=(left/LEN*100)+"%"; bar.classList.toggle("low",left<=10);} }
     function draw(newBest, prev){
-      const head=`<div class="eyebrow">Game</div><h2>Organelle Rush</h2>`;
+      const head=`<h2>Organelle Rush</h2>`;
       if(state==="intro"){
         const best=store.get("cells-rush-best-"+type);
         el.innerHTML=head+`<p style="margin:6px 0 10px">You get ${LEN} seconds. Read the clue and tap the organelle it describes. Every right answer is 10 points, plus a bonus for each one in a row. A wrong answer costs ${PEN} seconds.</p>
@@ -475,7 +475,7 @@
     const TABS=[["perm","Permeability"],["diff","Simple diffusion"],["fac","Facilitated diffusion"],["osmo","Osmosis"],["active","Active transport"]];
     let tab="perm", P=[], running=true, raf=0, last=0, cfg={}, fx=[], atp=0, pump=null, lvl={L:0,R:0}, hist=[], readT=0;
 
-    el.innerHTML=`<div class="eyebrow">Live models</div><h2>Membrane Lab</h2>
+    el.innerHTML=`<h2>Membrane Lab</h2>
       <p class="note" style="margin:4px 0 12px">Every dot is a particle moving around at random, like real molecules. Nothing is scripted: watch what happens at the membrane.</p>
       <div class="ml-tabs" role="tablist" aria-label="Models">${TABS.map(([k,t])=>`<button role="tab" data-tab="${k}">${t}</button>`).join("")}</div>
       <div class="ml-ctl" id="ml-ctl"></div>
@@ -760,7 +760,7 @@
       return {v,a:a[0],b:b[0],ans:v*a[1]/b[1]};
     }
     function render(msg){
-      el.innerHTML=`<div class="eyebrow">Practice</div><h2>Metric Converter</h2>
+      el.innerHTML=`<h2>Metric Converter</h2>
         <p class="note" style="margin:4px 0 14px">New question every time. Type your answer and press Check.</p>
         <p style="font-family:var(--f-title);font-size:30px;font-weight:700;margin:0">${fmt(q.v)} ${q.a} = ? ${q.b}</p>
         <form id="cf" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px"><input id="ca" inputmode="decimal" autocomplete="off" aria-label="Your answer" style="font:inherit;font-size:20px;padding:8px 10px;border:1px solid var(--rule);border-radius:7px;width:min(220px,100%);background:var(--paper);color:var(--ink)"><button class="btn" type="submit">Check</button><button class="btn ghost" type="button" id="cn">New question</button></form>

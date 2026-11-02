@@ -16,7 +16,7 @@
   </style>`;
   function fairTestStudio(root){
     let current=0;
-    root.innerHTML=style+`<section class="fts" aria-label="Fair Test Studio"><div class="eyebrow">Interactive practice</div><h3>Fair Test Studio</h3><p class="fts-intro">Choose what changes, what you measure, and one thing to keep the same.</p><div class="fts-case" role="group" aria-label="Choose a test scenario"></div><div class="fts-body"></div></section>`;
+    root.innerHTML=style+`<section class="fts" aria-label="Fair Test Studio"><h3>Fair Test Studio</h3><p class="fts-intro">Choose what changes, what you measure, and one thing to keep the same.</p><div class="fts-case" role="group" aria-label="Choose a test scenario"></div><div class="fts-body"></div></section>`;
     const tabs=root.querySelector('.fts-case'),body=root.querySelector('.fts-body');
     function draw(){
       const c=cases[current];
@@ -46,7 +46,7 @@
     let mode='example', graph='line';
     const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
     root.innerHTML=style+`<section class="fts sugar-lab" aria-label="Sugar dissolving investigation">
-      <div class="eyebrow">Class 5 · Mini investigation</div><h3>Sugar Dissolving Investigation</h3>
+      <h3>Sugar Dissolving Investigation</h3>
       <p class="fts-intro">Explore the class example data or enter results from your own fair test. The example values are from the Unit 0 lesson slides; they are not new measurements from your class.</p>
       <div class="fts-case" role="group" aria-label="Choose data set">
         <button type="button" data-mode="example" aria-pressed="true">Explore example data</button>
@@ -137,7 +137,7 @@
       {label:'3. Which follow-up would make the comparison stronger?',options:['Ask more people who already use the bracelet whether they feel better.','Randomly compare a treatment group with a similar placebo group, then compare the results.'],answer:1,why:'A randomized comparison with a placebo helps separate the effect of the bracelet from expectations and other influences.'}
     ];
     root.innerHTML=style+`<section class="fts evidence-review" aria-label="Peer review an evidence claim">
-      <div class="eyebrow">Interactive practice</div><h3>Peer Review: Does the Evidence Support the Claim?</h3>
+      <h3>Peer Review: Does the Evidence Support the Claim?</h3>
       <p class="fts-intro">A website says a magnet bracelet helped three volunteers with headaches. The volunteers reported feeling better, but the website describes no comparison group or repeated study. Review the evidence before judging the claim.</p>
       <div class="fts-grid evidence-questions">${questions.map((q,i)=>'<div class="fts-field"><label for="ev-'+i+'">'+esc(q.label)+'</label><select id="ev-'+i+'"><option value="">Choose one…</option>'+q.options.map((o,n)=>'<option value="'+n+'">'+esc(o)+'</option>').join('')+'</select></div>').join('')}</div>
       <p class="fts-context">This is a classroom exercise about evidence quality, not advice about headaches or treatment.</p>

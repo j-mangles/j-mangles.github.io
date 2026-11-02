@@ -38,7 +38,7 @@
     function start(){ order=shuffle(BANK).slice(0,10); i=0; score=0; tries=0; answered=null; render(); }
     function render(){
       if(i>=order.length){
-        el.innerHTML=`<div class="eyebrow">Practice</div><h2>Grammar Quick-Fire</h2>
+        el.innerHTML=`<h2>Grammar Quick-Fire</h2>
           <p style="font-family:var(--f-title);font-size:44px;font-weight:700;margin:14px 0 0">${score} / ${order.length}</p>
           <p class="note">${score>=9?"Excellent.":score>=7?"Solid. Try another round.":"Look back at the Apostrophes and Your/Their/Whose lessons, then try again."}</p>
           <button class="btn" id="again">New round</button>`;
@@ -47,7 +47,7 @@
       const q=order[i];
       const parts=q[0].split("___");
       const filled = answered===null ? `<span style="border-bottom:2px solid var(--accent);padding:0 18px">&nbsp;</span>` : `<b style="color:${answered===q[2]?"var(--good)":"var(--bad)"}">${esc(q[1][q[2]])}</b>`;
-      el.innerHTML=`<div class="eyebrow">Practice · question ${i+1} of ${order.length}</div><h2>Grammar Quick-Fire</h2>
+      el.innerHTML=`<h2>Grammar Quick-Fire</h2><p class="span">Question ${i+1} of ${order.length}</p>
         <p style="font-size:24px;margin:16px 0 14px;line-height:1.4">${esc(parts[0])}${filled}${esc(parts[1]||"")}</p>
         <div class="opts">${q[1].map((o,k)=>{let c="opt";if(answered!==null){if(k===q[2])c+=" right";else if(k===answered)c+=" wrong";}return `<button class="${c}" data-k="${k}" ${answered!==null?"disabled":""} style="font-size:18px">${esc(o)}</button>`;}).join("")}</div>
         <div style="min-height:70px;margin-top:12px">${answered!==null?`<p class="why" style="margin:0">${answered===q[2]?"Right. ":"Not quite. "}${esc(q[3])}</p><button class="btn ghost" id="nx" style="margin-top:10px">${i+1<order.length?"Next":"See score"}</button>`:""}</div>
@@ -72,7 +72,7 @@
     const P=[[30,190],[110,190],[205,120],[300,40],[360,130],[430,175]];
     function draw(){
       const path="M10 190 L110 190 C 170 170, 250 90, 300 40 C 330 80, 350 120, 380 150 L 470 175";
-      el.innerHTML=`<div class="eyebrow">Interactive diagram</div><h2>The Plot Arc</h2>
+      el.innerHTML=`<h2>The Plot Arc</h2>
         <p class="note" style="margin:4px 0 8px">Notice how much wider the way up is than the way down.</p>
         <svg viewBox="0 0 480 220" style="width:100%;height:auto;display:block" role="img" aria-label="Plot arc with six stages">
           <path d="${path}" fill="none" stroke="var(--ink)" stroke-width="3" stroke-linejoin="round"/>

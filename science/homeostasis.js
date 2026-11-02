@@ -35,7 +35,7 @@ function render(el){
    @media(max-width:580px){.hx-lab .hx-layout{grid-template-columns:1fr}.hx-lab .hx-temperature{font-size:36px}}
    @media(prefers-reduced-motion:reduce){.hx-lab *{scroll-behavior:auto!important}}
   </style>
-  <div class="eyebrow">Virtual investigation · Systems of the Human Body</div>
+  
   <h2>Homeostasis Lab</h2>
   <p class="note">Change the environment, make a prediction, and compare core temperature with normal negative feedback versus feedback turned off.</p>
   <div class="hx-panel">

@@ -112,7 +112,7 @@ function render(el){
  '.integer-lab .il-note{border-left:3px solid var(--accent);padding:10px 12px;background:var(--paper);margin:12px 0;font-size:15px}'+
  '.integer-lab .il-input{width:150px}'+
  '.integer-lab .il-feedback{min-height:42px;margin:8px 0;font-weight:700}'+
- '</style><div class="eyebrow">Grade 7 · Integer Operations</div><h2 style="margin:7px 0 10px">Integer Tiles & Number Line</h2>'+
+ '</style><h2 style="margin:7px 0 10px">Integer Tiles & Number Line</h2>'+
  '<p class="note">Use zero pairs or number-line jumps to explain <strong>why</strong> integer addition and subtraction work. Every green + and red − pair has a total value of zero.</p>'+
  '<div class="il-row"><label>Choose a problem<select id="il-problem"></select></label><span id="il-score" class="note" aria-live="polite"></span></div>'+
  '<div class="il-mode" role="group" aria-label="Choose model">'+

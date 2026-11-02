@@ -37,7 +37,7 @@
       state = ok?"right":"wrong"; render();
     }
     function render(){
-      el.innerHTML = `<div class="eyebrow">Practice · new questions every time</div><h2>Percent Practice</h2>
+      el.innerHTML = `<h2>Percent Practice</h2><p class="span">New questions every time</p>
         <div class="opts" style="margin:10px 0 4px">${["Mixed",...TYPES].map(t=>`<button class="opt" data-t="${esc(t)}" style="font-size:14px;padding:5px 10px;${t===type?"border-color:var(--accent);color:var(--accent);font-weight:700":""}">${esc(t)}</button>`).join("")}</div>
         <p class="note" style="margin:10px 0 0">${esc(cur.t)}</p>
         <p style="font-size:22px;margin:4px 0 12px;line-height:1.35">${esc(cur.q)}</p>
@@ -72,7 +72,7 @@
     }
     function render(){
       const T=total(), D=draws();
-      el.innerHTML = `<div class="eyebrow">Interactive</div><h2>The Probability Bag</h2>
+      el.innerHTML = `<h2>The Probability Bag</h2>
         <p class="note" style="margin:4px 0 10px">Set what's in the bag. Pick a colour, then draw and see if the results match the theory.</p>
         <div style="display:flex;gap:18px;flex-wrap:wrap;align-items:flex-start">
           ${dots()}

@@ -125,7 +125,7 @@ function render(el){
  '.earth-explorer .ee-quiz{border-left:4px solid var(--accent);padding:4px 12px;margin-top:18px}'+
  '.earth-explorer .ee-response{font-weight:600;min-height:24px;color:var(--accent-ink)}'+
  '.earth-explorer .ee-micro{font-size:13px;color:var(--muted);margin:10px 0}'+
- '</style><div class="eyebrow">Science 8 · Earth Science</div>'+
+ '</style>'+
  '<h2>Earth & Plate Tectonics Explorer</h2>'+
  '<p class="note">Investigate Earth’s interior, the movement of plates and evidence for continental drift. The drawings show relationships, not actual sizes or motion speeds.</p>'+
  '<div class="ee-tabs" role="group" aria-label="Choose Earth science topic">'+

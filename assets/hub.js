@@ -62,20 +62,19 @@
   function renderUnit(u){
     const done=getDone(); const ls=u.lessons||[]; const tool=H.tools&&H.tools[u.id];
     const left = `<div>
-      <div class="eyebrow">Unit ${esc(u.n)} · ${statusLabel(u)}</div>
-      <h2>${esc(u.name)}</h2>${u.when?`<div class="span">${esc(u.when)}</div>`:""}
+      <h2>${esc(u.name)}</h2><div class="span">Unit ${esc(u.n)}${u.when?` · ${esc(u.when)}`:""} <span class="status s-${esc(u.status||"soon")}">${statusLabel(u)}</span></div>
       ${u.intro?`<p>${esc(u.intro)}</p>`:""}
-      ${ls.length?`<section class="last-review"><div class="eyebrow">Daily retrieval · last class</div><h3>Quick review</h3><p>${recentLesson(u.id)?`Last opened on this device: Lesson ${esc(recentLesson(u.id).n)} · ${esc(recentLesson(u.id).title)}`:"Choose the lesson you covered last class. The site will remember that lesson on this device."}</p><p>Choose individual practice or lead three questions aloud, with time to think before the explanation appears.</p><div class="last-review-controls"><label for="last-class-lesson">Lesson to review<select id="last-class-lesson">${ls.map(l=>`<option value="${esc(l.id)}" ${recentLesson(u.id)?.id===l.id?"selected":""}>Lesson ${esc(l.n)} · ${esc(l.title)}</option>`).join("")}</select></label><button class="btn" id="last-class-start">Practise individually</button><button class="btn ghost" id="last-class-class">Lead as a class</button></div><div id="last-class-round" aria-live="polite" aria-atomic="true"></div><p class="note">Only the lesson choice is remembered on this device. Answers stay on this page and clear when you leave.</p></section>`:""}
-      ${ls.length>1?`<button class="reviewcard" id="openreview"><span class="eyebrow">Unit review</span><b>Review ${esc(u.name)}</b><span>Big ideas, ${ls.reduce((a,l)=>a+(l.terms||[]).length,0)} flashcards and a practice test from every lesson.</span><span class="go">Start &rarr;</span></button>`:""}
-      ${ls.length?`<h3>Lessons</h3><p class="note">Missed a class? Open the lesson, read the notes, try the self-check, then get the handout from Mr. Mangles.</p>
+      ${ls.length>1?`<button class="reviewcard" id="openreview"><b>Review ${esc(u.name)}</b><span>Big ideas, ${ls.reduce((a,l)=>a+(l.terms||[]).length,0)} flashcards and a practice test from every lesson.</span><span class="go">Start &rarr;</span></button>`:""}
+      ${ls.length?`<h3>Lessons</h3>
       <ol class="lessons">${ls.map(l=>{const ok=done.has(u.id+"/"+l.id);
         return `<li><button data-l="${l.id}"><span class="n">${esc(l.n)}</span><span class="t">${esc(l.title)}</span><span class="s ${ok?"ok":""}">${ok?"Checked ✓":""}</span></button></li>`;}).join("")}</ol>`
       :`<p class="note">Lessons for this unit get added when we start it.</p>`}
+      ${ls.length?`<details class="last-review"><summary>Warm-up: review a past lesson</summary><p>${recentLesson(u.id)?`Last opened on this device: Lesson ${esc(recentLesson(u.id).n)} · ${esc(recentLesson(u.id).title)}`:"Pick a lesson from last class."}</p><p>Practise on your own, or lead three questions aloud with thinking time before each answer.</p><div class="last-review-controls"><label for="last-class-lesson">Lesson to review<select id="last-class-lesson">${ls.map(l=>`<option value="${esc(l.id)}" ${recentLesson(u.id)?.id===l.id?"selected":""}>Lesson ${esc(l.n)} · ${esc(l.title)}</option>`).join("")}</select></label><button class="btn" id="last-class-start">Practise individually</button><button class="btn ghost" id="last-class-class">Lead as a class</button></div><div id="last-class-round" aria-live="polite" aria-atomic="true"></div><p class="note">Only the lesson choice is remembered on this device. Answers stay on this page and clear when you leave.</p></details>`:""}
       ${u.after?`<p class="note" style="margin-top:16px">${esc(u.after)}</p>`:""}
     </div>`;
     const right = tool?`<div class="tool" id="tool"></div>`:"";
     $("#main").innerHTML = `<div class="wrap grid ${tool?"":"single"}">${left}${right}</div>`;
-    $("#main").querySelectorAll("[data-l]").forEach(b=>b.onclick=()=>go(u.id+"/"+b.dataset.l));
+    $("#main").querySelectorAll("[data-l]").forEach(b=>b.onclick=()=>{const t=b.querySelector(".t");if(t)t.style.viewTransitionName="lesson-title";go(u.id+"/"+b.dataset.l);});
     const rv=$("#openreview"); if(rv) rv.onclick=()=>go(u.id+"/review");
     const chosenLesson=()=>ls.find(x=>x.id===$("#last-class-lesson").value); const quick=$("#last-class-start"); if(quick) quick.onclick=()=>{const l=chosenLesson();if(l&&window.UnitReview)window.UnitReview.renderQuick($("#last-class-round"),l,{unitName:u.name,onLesson:()=>go(u.id+"/"+l.id)});}; const wholeClass=$("#last-class-class"); if(wholeClass) wholeClass.onclick=()=>{const l=chosenLesson();if(l&&window.UnitReview)window.UnitReview.renderWholeClass($("#last-class-round"),l,{onLesson:()=>go(u.id+"/"+l.id),onSolo:()=>window.UnitReview.renderQuick($("#last-class-round"),l,{unitName:u.name,onLesson:()=>go(u.id+"/"+l.id)})});};
     if(tool){ try{ tool($("#tool")); }catch(e){ $("#tool").textContent="This tool didn't load. Refresh the page to try again."; } }
@@ -194,9 +193,10 @@
  const evidence=d.model?(d.model.evidence||[]).map(x=>'<li>'+esc(x)+'</li>').join(""):"";
  const model=d.model?'<section class="direct-model"><h4>Watch the thinking</h4><p><strong>'+esc(d.model.title)+':</strong> '+esc(d.model.prompt)+'</p><ul>'+evidence+'</ul><p><strong>Think-aloud:</strong> '+esc(d.model.thinking)+'</p><p class="direct-answer"><strong>Model response:</strong> '+esc(d.model.answer)+'</p></section>':"";
  const practice=d.practice?'<details class="direct-practice"><summary>Try it: '+esc(d.practice.prompt)+'</summary><p class="direct-hint">'+esc(d.practice.hint||"Try it before opening the sample.")+'</p><details class="direct-sample"><summary>Reveal one sample response</summary><p>'+esc(d.practice.sample)+'</p></details></details>':"";
- return '<section class="direct-lesson" aria-labelledby="direct-lesson-title"><p class="direct-kicker">Direct lesson'+(d.time?' · '+esc(d.time):"")+'</p><h3 id="direct-lesson-title">'+esc(d.title)+'</h3><p class="direct-goal"><strong>Learning target:</strong> '+esc(d.goal)+'</p><ol class="direct-steps">'+steps+'</ol>'+model+practice+'</section>';
+ return '<section class="direct-lesson" aria-labelledby="direct-lesson-title"><h3 id="direct-lesson-title">'+esc(d.title)+'</h3><p class="direct-kicker">Direct lesson'+(d.time?' · '+esc(d.time):"")+'</p><p class="direct-goal"><strong>Learning target:</strong> '+esc(d.goal)+'</p><ol class="direct-steps">'+steps+'</ol>'+model+practice+'</section>';
 }
 
+  let justAnswered=-1;
   function renderLesson(u,l){
     const exitWasOpen=!!document.getElementById("exit-ticket")?.open;
     if(window.UnitReview)window.UnitReview.remember(H.subject,u.id,l.id);
@@ -204,16 +204,15 @@
     const imgs=l.imgs||[];
     const qs=(l.check||[]).map((q,qi)=>{
       const a=answers[qi];
-      return `<div class="q" role="group" aria-label="Question ${qi+1}: ${esc(q.q)}"><div class="qt">${qi+1}. ${esc(q.q)}</div><div class="opts">${q.a.map((o,oi)=>{
+      return `<div class="q${qi===justAnswered?" just":""}" role="group" aria-label="Question ${qi+1}: ${esc(q.q)}"><div class="qt">${qi+1}. ${esc(q.q)}</div><div class="opts">${q.a.map((o,oi)=>{
         let c="opt"; if(a!==undefined){ if(oi===q.c) c+=" right"; else if(oi===a) c+=" wrong"; }
         return `<button class="${c}" data-q="${qi}" data-o="${oi}" ${a!==undefined?"disabled":""}>${esc(o)}</button>`;}).join("")}</div>
         ${a!==undefined?`<div class="why">${a===q.c?"Right. ":"Not quite. "}${esc(q.why)}</div>`:""}</div>`;}).join("");
     const n=Object.keys(answers).length, right=(l.check||[]).filter((q,qi)=>answers[qi]===q.c).length;
     const ltKey=u.id+"/"+l.id, LT=H.lessonTools&&H.lessonTools[ltKey], keep=document.getElementById("ltool");
     $("#main").innerHTML = `<div class="wrap"><article class="lesson">
-      <button class="back" id="back">&larr; ${esc(u.name)} lessons</button>
-      <div class="eyebrow" style="margin-top:18px">Unit ${esc(u.n)} · Lesson ${esc(l.n)}</div>
-      <h2>${esc(l.title)}</h2>
+      <button class="back" id="back">&larr; Unit ${esc(u.n)}: ${esc(u.name)}</button>
+      <h2 class="lesson-title">${esc(l.title)}</h2><div class="span">Lesson ${esc(l.n)} of ${(u.lessons||[]).length}</div>
       ${imgs[0]?`<figure class="hero"><img src="${imgs[0].src}" alt="" data-cap="${esc(imgs[0].cap)}"><figcaption>${esc(imgs[0].cap)}</figcaption></figure>`:""}
       ${l.big?`<div class="big"><div class="eyebrow">The big idea</div><p>${esc(l.big)}</p></div>`:""}
       ${directLessonHTML(l)}
@@ -243,9 +242,9 @@
     document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>go(b.dataset.go));
     // Bind only lesson quiz choices; tool controls may also use the .opt style.
     document.querySelectorAll("article.lesson > .q .opts button[data-q][data-o]").forEach(b=>b.onclick=()=>{
-      answers[+b.dataset.q]=+b.dataset.o;
+      answers[+b.dataset.q]=+b.dataset.o; justAnswered=+b.dataset.q;
       if(l.check.every((q,qi)=>answers[qi]===q.c)) markDone(u.id+"/"+l.id);
-      const y=window.scrollY; renderLesson(u,l); window.scrollTo(0,y);
+      const y=window.scrollY; renderLesson(u,l); justAnswered=-1; window.scrollTo(0,y);
       const next=(l.check||[]).findIndex((q,qi)=>answers[qi]===undefined);
       const focusTarget=next>=0?document.querySelector(`article.lesson > .q .opts button[data-q="${next}"][data-o]`):document.querySelector("#retry");
       if(focusTarget) focusTarget.focus({preventScroll:true});
@@ -257,9 +256,8 @@
 
   function renderReview(u){
     $("#main").innerHTML=`<div class="wrap"><article class="lesson">
-      <button class="back" id="back">&larr; ${esc(u.name)} lessons</button>
-      <div class="eyebrow" style="margin-top:18px">Unit ${esc(u.n)} · Review</div>
-      <h2>${esc(u.name)}</h2><div id="review"></div><div id="unit-practice-quiz"></div></article></div>`;
+      <button class="back" id="back">&larr; Unit ${esc(u.n)}: ${esc(u.name)}</button>
+      <h2>Unit review</h2><div class="span">${esc(u.name)}</div><div id="review"></div><div id="unit-practice-quiz"></div></article></div>`;
     $("#back").onclick=()=>go(u.id);
     if(window.UnitReview) window.UnitReview.render($("#review"),{name:u.name,lessons:u.lessons,onLesson:l=>go(u.id+"/"+l.id)});
     if(window.UnitPracticeQuiz) window.UnitPracticeQuiz.mount($("#unit-practice-quiz"),u,lessonId=>go(u.id+"/"+lessonId));
@@ -272,6 +270,11 @@
   });
   $("#lightbox").addEventListener("click",()=>{$("#lightbox").hidden=true;});
   document.addEventListener("keydown",e=>{ if(e.key==="Escape") $("#lightbox").hidden=true; });
-  window.addEventListener("hashchange",route);
+  // Navigation continuity: the lesson title travels from the list to the lesson page (and back).
+  const calm=()=>window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+  window.addEventListener("hashchange",()=>{
+    if(!document.startViewTransition||calm()){ route(); return; }
+    document.startViewTransition(()=>{ route(); });
+  });
   route();
 })();

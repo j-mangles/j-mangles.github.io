@@ -51,7 +51,7 @@ function studio(el){
  .nl-lab .nl-msg{min-height:32px;font-weight:600}
  @media(max-width:600px){.nl-lab{padding:12px}.nl-lab .nl-cards{grid-template-columns:repeat(auto-fit,minmax(65px,1fr))}}
  </style>
- <div class="eyebrow">Number Workshop · Unit 1</div><h3>Number Line Lab</h3>
+ <h3>Number Line Lab</h3>
  <p class="note">Place mixed forms accurately, then find values strictly between two given numbers. Watch the spacing of the ticks.</p>
  <div class="nl-actions" role="group" aria-label="Activity">
  <button class="btn ghost" type="button" data-mode="place" aria-pressed="true">Human Number Line</button>

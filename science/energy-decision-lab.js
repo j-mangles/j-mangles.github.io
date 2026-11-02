@@ -31,7 +31,7 @@
   function render(root){
     root.innerHTML=style+`
     <section class="etl" aria-label="Energy resource decision lab">
-      <div class="eyebrow">Interactive decision lab · SCI.8.C.1 / SCI.8.D.5</div>
+      
       <h3>Energy Resources: Make a Manitoba Recommendation</h3>
       <p>A fictional Manitoba community is comparing two electricity sources. Use evidence from booklet pages 4–5 and class materials to rate each option, then write a recommendation that explains a benefit and a trade-off.</p>
       <p class="etl-note"><strong>There is no preset winner.</strong> Your ratings and importance weights are your choices. Use evidence to explain them; a higher total only means an option better matches the priorities you selected.</p>

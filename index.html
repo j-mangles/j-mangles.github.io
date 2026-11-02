@@ -38,7 +38,7 @@
   .n.math{font-family:"Inter",sans-serif;font-weight:340;letter-spacing:-.035em;font-size:33px}
   .n.ct{font-family:"League Gothic",sans-serif;text-transform:uppercase;font-size:40px;letter-spacing:.01em}
   .bar.ss{background:#CC785C}.bar.sci{background:#5968E8}.bar.ela{background:#6C63E8}.bar.math{background:#FF3D8B}.bar.ct{background:#3CFFD0}
-  .how{margin:34px 0 10px;max-width:62ch;padding:16px 18px;background:var(--school-soft);border-left:4px solid var(--school);border-radius:4px}
+  .how{margin:34px 0 10px;max-width:62ch;padding:16px 18px;background:var(--school-soft);border-radius:var(--radius,8px)}
   .how p{margin:6px 0 0}
   .how .eyebrow{color:var(--school)}
   footer.site{border-top:4px solid var(--school)}
@@ -53,9 +53,9 @@
   .home-tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
   .home-tile{position:relative;overflow:hidden;min-height:238px;border-radius:11px;border:1px solid var(--rule);background:var(--paper)}
   .home-tile>a{display:flex;flex-direction:column;padding:28px;min-height:238px;text-decoration:none;position:relative;z-index:1}
-  .home-tile .year{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;opacity:.8}
+  .home-tile .year{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.13em;text-transform:uppercase}
   .home-tile .name{font-size:clamp(28px,3.2vw,37px);font-weight:650;line-height:1.05;margin:16px 0 12px;letter-spacing:-.03em;max-width:78%}
-  .home-tile .detail{font-size:14px;line-height:1.5;max-width:39ch;opacity:.83}
+  .home-tile .detail{font-size:14px;line-height:1.5;max-width:39ch}
   .home-tile .tile-link{display:block;margin-top:auto;font-size:14px;font-weight:700;padding-top:21px}
   .home-tile:hover{border-color:currentColor}
   .home-tile a:focus-visible{outline-offset:-6px}
@@ -64,7 +64,7 @@
   .home-tile.ss .name{font-family:"Cormorant Garamond",Georgia,serif;font-size:clamp(38px,5vw,52px);font-weight:600}
   .home-tile.ss:before{width:260px;height:260px;right:25px;top:-40px;border-width:2px;box-shadow:0 0 0 27px #D9BFAE,0 0 0 29px #8A6650}
   .home-tile.sci{background:#EDEFFF;color:#303BB3}
-  .home-tile.ela{background:#F4EEE4;color:#5C53C4}
+  .home-tile.ela{background:#F4EEE4;color:#4F46B8}
   .home-tile.ela .name{font-family:"Newsreader",Georgia,serif;font-size:clamp(32px,4vw,41px);font-weight:550}
   .home-tile.math{background:#F8F3E5;color:#972954}
   .home-tile.math:before{border-radius:12px;transform:rotate(18deg);opacity:.19;border-color:#B581E4}
@@ -78,7 +78,7 @@
   .tool-row b{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding-top:2px}
   .tool-row a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:3px}
   .tool-row a:hover{text-decoration-color:currentColor}
-  .how{margin:34px 0 10px;max-width:62ch;padding:16px 18px;background:var(--school-soft);border-left:4px solid var(--school);border-radius:4px}
+  .how{margin:34px 0 10px;max-width:62ch;padding:16px 18px;background:var(--school-soft);border-radius:var(--radius,8px)}
   .how p{margin:6px 0 0}
   .how .eyebrow{color:var(--school)}
   footer.site{border-top:4px solid var(--school)}
@@ -93,9 +93,9 @@
   .home-tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
   .home-tile{position:relative;overflow:hidden;min-height:238px;border-radius:11px;border:1px solid var(--rule);background:var(--paper)}
   .home-tile>a{display:flex;flex-direction:column;padding:28px;min-height:238px;text-decoration:none;position:relative;z-index:1}
-  .home-tile .year{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;opacity:.8}
+  .home-tile .year{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.13em;text-transform:uppercase}
   .home-tile .name{font-size:clamp(28px,3.2vw,37px);font-weight:650;line-height:1.05;margin:16px 0 12px;letter-spacing:-.03em;max-width:78%}
-  .home-tile .detail{font-size:14px;line-height:1.5;max-width:39ch;opacity:.83}
+  .home-tile .detail{font-size:14px;line-height:1.5;max-width:39ch}
   .home-tile .tile-link{display:block;margin-top:auto;font-size:14px;font-weight:700;padding-top:21px}
   .home-tile:hover{border-color:currentColor}
   .home-tile a:focus-visible{outline-offset:-6px}
@@ -104,7 +104,7 @@
   .home-tile.ss .name{font-family:"Cormorant Garamond",Georgia,serif;font-size:clamp(38px,5vw,52px);font-weight:600}
   .home-tile.ss:before{width:260px;height:260px;right:25px;top:-40px;border-width:2px;box-shadow:0 0 0 27px #D9BFAE,0 0 0 29px #8A6650}
   .home-tile.sci{background:#EDEFFF;color:#303BB3}
-  .home-tile.ela{background:#F4EEE4;color:#5C53C4}
+  .home-tile.ela{background:#F4EEE4;color:#4F46B8}
   .home-tile.ela .name{font-family:"Newsreader",Georgia,serif;font-size:clamp(32px,4vw,41px);font-weight:550}
   .home-tile.math{background:#F8F3E5;color:#972954}
   .home-tile.math:before{border-radius:12px;transform:rotate(18deg);opacity:.19;border-color:#B581E4}
@@ -133,7 +133,6 @@
 <header class="homehero">
   <div class="band"><div class="wrap"><b>École Edward Schreyer School · Barons</b><span>Grade 7/8 · 2026–27</span></div></div>
   <div class="wrap">
-    <div class="eyebrow">Grade 7/8 · Sunrise School Division</div>
     <h1>Mr. Mangles' Class</h1>
     <p class="lede">Lessons, maps and practice for every subject. Missed a day? Pick the subject, open the lesson and catch up.</p>
   </div>
@@ -158,8 +157,7 @@
     </div>
   </section>
   <div class="how">
-    <div class="eyebrow">How to use the site</div>
-    <p>Pick a subject and it opens on the unit we're in now. Open a lesson for the notes, diagrams and a self-check. Nothing here is sent to your teacher, and checkmarks only save on this device.</p>
+    <p><b>How to use the site.</b> Pick a subject and it opens on the unit we're in now. Open a lesson for the notes, diagrams and a self-check. Nothing here is sent to your teacher, and checkmarks only save on this device.</p>
   </div>
 </main>
 <footer class="site"><div class="wrap">Mr. Mangles' Class · École Edward Schreyer School · 2026–27</div></footer>

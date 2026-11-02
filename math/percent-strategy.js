@@ -57,7 +57,6 @@ function studio(el,kind){
  '.ps-lab .ps-hint{margin:10px 0;padding:12px;background:var(--soft);border-left:3px solid var(--accent)}'+
  '@media(max-width:540px){.ps-lab .ps-layout{grid-template-columns:1fr}.ps-lab .ps-grid{width:130px;height:130px}}'+
  '</style>'+
- '<div class="eyebrow">Number Workshop · Unit 1</div>'+
  '<div class="ps-top"><div><h3 style="margin:4px 0">Percent Strategy Studio</h3><p class="note" style="margin:0">Estimate, solve, check, and explain your method. Practice is unlimited.</p></div><div class="note" id="ps-score">0 solved · 0 questions shown</div></div>'+
  '<div class="ps-choice" role="group" aria-label="Question difficulty"><button class="btn ghost" type="button" data-level="friendly" aria-pressed="true">Start with friendly numbers</button><button class="btn ghost" type="button" data-level="stretch" aria-pressed="false">Stretch my thinking</button></div>'+
  '<div class="ps-layout"><div><p id="ps-question" class="ps-question"></p><p id="ps-meaning" class="note"></p>'+

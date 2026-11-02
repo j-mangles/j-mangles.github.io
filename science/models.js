@@ -81,7 +81,7 @@
 
   function metabolismLab(el){
     let tab="enzyme";
-    el.innerHTML=`<div class="eyebrow">Live models</div><h2>Metabolism Lab</h2>
+    el.innerHTML=`<h2>Metabolism Lab</h2>
       <p class="note" style="margin:4px 0 12px">Two virtual experiments. Change one thing at a time and watch what happens.</p>
       <div class="mx-tabs" role="tablist"><button role="tab" data-tab="enzyme">Enzymes &amp; pH</button><button role="tab" data-tab="jar">The sealed jar</button></div>
       <div id="mx-body"></div>${STYLE}`;
@@ -370,7 +370,7 @@
 
   function bloodLab(el){
     let tab="flow";
-    el.innerHTML=`<div class="eyebrow">Live models</div><h2>Blood Flow</h2>
+    el.innerHTML=`<h2>Blood Flow</h2>
       <p class="note" style="margin:4px 0 12px">Follow one red blood cell all the way around the body, then see how your heart responds to exercise.</p>
       <div class="mx-tabs" role="tablist"><button role="tab" data-tab="flow">Follow a blood cell</button><button role="tab" data-tab="hr">Heart rate &amp; exercise</button></div>
       <div id="mx-body"></div>${STYLE}`;

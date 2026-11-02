@@ -1,7 +1,10 @@
 // Science Unit 2 Particle Lab: physics core behaves like matter, and the four lessons get the live model above their existing visual.
 const assert=require("assert"),fs=require("fs"),vm=require("vm"),path=require("path");
 const read=f=>fs.readFileSync(path.join(__dirname,"..",f),"utf8");
-const ctx={window:{HUB:{lessonTools:{"matter/states":()=>{},"matter/temperature":()=>{},"matter/pressure":()=>{},"matter/phase":()=>{}}}},requestAnimationFrame(){},getComputedStyle(){return{getPropertyValue:()=>""}}};
+// Fixed seed so the physics checks give the same result every run.
+let seed=12345;const rand=()=>{seed=(seed*1103515245+12345)%2147483648;return seed/2147483648;};
+const SeededMath=Object.create(Math);SeededMath.random=rand;
+const ctx={Math:SeededMath,window:{HUB:{lessonTools:{"matter/states":()=>{},"matter/temperature":()=>{},"matter/pressure":()=>{},"matter/phase":()=>{}}}},requestAnimationFrame(){},getComputedStyle(){return{getPropertyValue:()=>""}}};
 vm.runInNewContext(read("science/particle-lab.js"),ctx);
 const {Sim}=ctx.window.ParticleCore;
 ["matter/states","matter/temperature","matter/pressure","matter/phase"].forEach(k=>assert.equal(typeof ctx.window.HUB.lessonTools[k],"function",k));

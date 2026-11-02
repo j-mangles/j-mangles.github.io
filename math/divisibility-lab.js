@@ -46,7 +46,7 @@ H.tools.div=function(el){
   .div-detector .dd-scroller{overflow-x:auto}.div-detector table{border-collapse:collapse;width:100%;font-size:14px}
   .div-detector th,.div-detector td{border-bottom:1px solid var(--rule);padding:8px;text-align:left;vertical-align:top}
   .div-detector .dd-split{border-top:1px solid var(--rule);margin-top:18px;padding-top:16px}
-  </style><div class="eyebrow">Math 7 · 7.N.1 · Interactive practice</div><h3>Divisibility Detective</h3>
+  </style><h3>Divisibility Detective</h3>
   <p class="note">The goal is to explain WHY, not just get the right answer. No scores or responses are sent to anyone.</p>
   <label>Practice level <select id="dd-level"><option value="all" ${level==="all"?"selected":""}>All rules (2, 3, 4, 5, 6, 8, 9, 10, and zero)</option><option value="starter" ${level==="starter"?"selected":""}>Start here (2, 5, 10)</option></select></label>
   <div class="dd-question" id="dd-question">${esc(verdict)}</div>

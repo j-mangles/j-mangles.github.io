@@ -26,7 +26,7 @@ H.tools.matter=function(el){
  .density-studio button:focus-visible,.density-studio input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
  .density-studio .ds-check{border-top:1px solid var(--rule);padding-top:14px;margin-top:18px}
  </style>
- <div class="eyebrow">Grade 8 Science · SCI.8.E.1 · Interactive model</div><h3>Density Studio: Will it float?</h3>
+ <h3>Density Studio: Will it float?</h3>
  <p class="note">Adjust the mass or volume of a simplified solid block. Predict its behaviour in freshwater before revealing the result. This model uses approximately 1 g/cm³ for freshwater and assumes no trapped air or unusual shapes.</p>
  <div class="ds-presets" role="group" aria-label="Try a sample block"><button class="btn ghost" data-preset="light">Light block (60 g, 100 cm³)</button><button class="btn ghost" data-preset="equal">Equal-density block (100 g, 100 cm³)</button><button class="btn ghost" data-preset="heavy">Dense block (240 g, 80 cm³)</button></div>
  <div class="ds-controls"><label for="ds-mass">Mass: <strong id="ds-mass-value">60 g</strong></label><input id="ds-mass" type="range" min="20" max="300" step="5" value="60">

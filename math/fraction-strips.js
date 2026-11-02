@@ -93,7 +93,7 @@ function render(el){
  '.fraction-lab .fl-action{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:8px}'+
  '.fraction-lab button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}'+
  '</style>'+
- '<div class="eyebrow">Manitoba 7.N.5 · Fraction operations</div>'+
+ ''+
  '<h2 style="margin:8px 0 8px">Fraction Strip Lab</h2>'+
  '<p class="note">See how fractions change into equivalent pieces before adding or taking away. Use the pictures to explain your answer.</p>'+
  '<div class="fl-bar"><label>Choose a problem<select id="fl-case"></select></label>'+

@@ -30,7 +30,7 @@ function explorer(el){
  .org-explorer .org-feedback{min-height:26px;font-weight:650}
  @media(max-width:660px){.org-explorer{padding:12px}.org-explorer .org-check{grid-template-columns:repeat(2,minmax(0,1fr))}}
  </style>
- <div class="eyebrow">Grade 8 Science · Cells and Systems</div>
+ 
  <h3 style="margin:6px 0">Levels of Organization Explorer</h3>
  <p class="note">Explore how specialized cells build increasingly complex living systems. These are diagrams of <b>relationships</b>, not drawings to physical scale.</p>
  <div class="org-svgwrap"><svg id="org-svg" class="org-svg" viewBox="0 0 900 258" role="img" aria-label="Five levels of organization: cell, tissue, organ, organ system and organism"></svg></div>

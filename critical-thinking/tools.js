@@ -42,13 +42,13 @@
       const D=DECKS[deck];
       const tabs = Object.keys(DECKS).map(k=>`<button class="opt" data-d="${esc(k)}" style="font-size:14px;padding:5px 10px;${k===deck?"border-color:var(--accent);color:var(--accent);font-weight:700":""}">${esc(k)}</button>`).join("");
       if(i>=order.length){
-        el.innerHTML=`<div class="eyebrow">Quick-fire</div><h2>Spot It</h2><div class="opts" style="margin:8px 0">${tabs}</div>
+        el.innerHTML=`<h2>Spot It</h2><div class="opts" style="margin:8px 0">${tabs}</div>
           <p style="font-family:var(--f-title);font-size:44px;font-weight:700;margin:14px 0 0">${score} / ${order.length}</p>
           <p class="note">${score>=9?"Sharp eyes.":score>=7?"Solid. Go again.":"Reread the lesson notes, then try another round."}</p><button class="btn" id="again">New round</button>`;
         el.querySelector("#again").onclick=start; bind(); return;
       }
       const q=order[i];
-      el.innerHTML=`<div class="eyebrow">Quick-fire · ${i+1} of ${order.length}</div><h2>Spot It</h2>
+      el.innerHTML=`<h2>Spot It</h2><p class="span">${i+1} of ${order.length}</p>
         <div class="opts" style="margin:8px 0 12px">${tabs}</div>
         <p style="font-size:21px;line-height:1.4;margin:6px 0 12px">${esc(q[0])}</p>
         <div class="opts">${D.opts.map((o,k)=>{let c="opt";if(ans!==null){if(k===q[1])c+=" right";else if(k===ans)c+=" wrong";}return `<button class="${c}" data-k="${k}" ${ans!==null?"disabled":""}>${esc(o)}</button>`;}).join("")}</div>
@@ -80,7 +80,7 @@
     function render(){
       const my=hist.reduce((s,r)=>s+r.a,0), th=hist.reduce((s,r)=>s+r.b,0), over=hist.length>=ROUNDS;
       const cell = v => `<span style="display:inline-block;width:22px;height:22px;line-height:22px;text-align:center;border-radius:5px;font-size:12px;font-weight:700;color:#fff;background:${v==="C"?"var(--good)":"var(--bad)"}">${v}</span>`;
-      el.innerHTML=`<div class="eyebrow">Game · ${ROUNDS} rounds</div><h2>Beat the Bot</h2>
+      el.innerHTML=`<h2>Beat the Bot</h2><p class="span">${ROUNDS} rounds</p>
         <p class="note" style="margin:4px 0 10px">The computer is playing one of six strategies from class. Score as many points as you can, then guess its strategy.</p>
         <div class="tablewrap"><table class="data" style="font-size:14px"><thead><tr><th></th><th>Bot cooperates</th><th>Bot betrays</th></tr></thead>
           <tbody><tr><td>You cooperate</td><td>3 / 3</td><td>0 / 5</td></tr><tr><td>You betray</td><td>5 / 0</td><td>1 / 1</td></tr></tbody></table></div>

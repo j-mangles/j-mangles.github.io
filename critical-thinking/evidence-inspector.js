@@ -40,7 +40,7 @@ function inspector(el){
   '.ei .ei-reveal{border-left:4px solid var(--accent);padding:12px;margin-top:10px;background:var(--accent-soft)}'+
   '@media(max-width:680px){.ei .ei-two{grid-template-columns:1fr}}'+
   '</style>'+
-  '<div class="eyebrow">Think Lab · Evidence Ladder</div><h2 style="margin:6px 0">Evidence Inspector</h2>'+
+  '<h2 style="margin:6px 0">Evidence Inspector</h2>'+
   '<p class="note">Use the five-rung ladder to judge how well a claim is supported—not whether you personally agree. Make an initial judgement, uncover another detail, then reconsider.</p>'+
   '<label for="ei-case">Choose a practice case</label><select id="ei-case"></select>'+
   '<div class="ei-two"><div><div class="ei-panel"><div class="eyebrow">The claim</div><p id="ei-claim"></p><div class="eyebrow">Evidence currently available</div><p id="ei-evidence"></p></div>'+

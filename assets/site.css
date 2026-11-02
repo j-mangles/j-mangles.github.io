@@ -74,7 +74,7 @@ body[data-subject="ct"]{
 body[data-subject="ct"] .topbar{background:#000}
 body[data-subject="ct"] .task{color:#fff}
 body[data-subject="ct"] .task .note{color:#d9ccff}
-body[data-subject="ct"] .big{border-left-color:#5200FF}
+body[data-subject="ct"] .big{background:#1a1033;box-shadow:inset 0 0 0 1px #5200FF}
 body[data-subject="ct"] .tool{border-color:#3CFFD0}
 body[data-subject="ct"] .units button[aria-selected="true"]{color:#000;background:var(--accent);border-bottom-color:var(--accent)}
 
@@ -145,7 +145,7 @@ ol.lessons button:hover .t{text-decoration:underline;text-underline-offset:3px}
 .hero{margin:20px 0 0}
 .hero img{display:block;width:100%;max-height:440px;object-fit:contain;background:var(--soft);border:1px solid var(--rule);border-radius:var(--radius);cursor:zoom-in}
 figcaption{font-size:13.5px;color:var(--muted);margin-top:6px;line-height:1.4}
-.big{border-left:4px solid var(--accent);background:var(--bigbg,transparent);padding:4px 0 4px 16px;margin-top:22px}
+.big{background:var(--bigbg,var(--accent-soft));border-radius:var(--radius);padding:16px 20px 18px;margin-top:22px}
 .big p{font-family:var(--f-big);font-size:22px;line-height:1.35;margin:4px 0 0}
 ul.notes{margin:0;padding-left:22px;display:grid;gap:9px}
 dl.terms{display:grid;grid-template-columns:minmax(140px,auto) 1fr;gap:8px 20px;margin:0}
@@ -182,10 +182,10 @@ footer.site{border-top:1px solid var(--rule);padding-block:18px 30px;color:var(-
 
 /* unit review entry */
 .reviewcard{display:grid;grid-template-columns:1fr auto;gap:2px 16px;align-items:center;width:100%;text-align:left;margin-top:22px;background:var(--task,var(--accent-soft));border:0;border-radius:var(--radius);padding:16px 18px;cursor:pointer;color:var(--ink)}
-.reviewcard .eyebrow{grid-column:1/-1}
+
 .reviewcard b{font-family:var(--f-title);font-weight:var(--title-w);text-transform:var(--title-tt);font-size:calc(21px * var(--title-scale));line-height:1.15}
 .reviewcard span:not(.eyebrow):not(.go){grid-column:1;font-size:15px;color:var(--muted)}
-.reviewcard .go{grid-column:2;grid-row:2/4;font-weight:600;color:var(--accent-ink)}
+.reviewcard .go{grid-column:2;grid-row:1/3;font-weight:600;color:var(--accent-ink)}
 .reviewcard:hover b{text-decoration:underline;text-underline-offset:4px}
 body[data-subject="ct"] .reviewcard span:not(.eyebrow):not(.go){color:#d9ccff}
 body[data-subject="ct"] .reviewcard .go,body[data-subject="ct"] .reviewcard .eyebrow{color:#3CFFD0}
@@ -238,7 +238,7 @@ body[data-subject="ct"] .atlas-hero-art span:nth-child(n+4){display:none}
 .atlas-filter-label input:focus-visible{outline:2px solid var(--accent)}
 .atlas-result-count{font-size:13px;color:var(--muted);margin-bottom:14px}
 .atlas-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
-.atlas-unit{position:relative;display:flex;flex-direction:column;background:var(--paper);border:1px solid var(--rule);border-top:4px solid var(--accent);border-radius:var(--radius);padding:21px;min-width:0;min-height:280px}
+.atlas-unit{position:relative;display:flex;flex-direction:column;background:var(--paper);border:1px solid var(--rule);border-radius:var(--radius);padding:21px;min-width:0;min-height:280px}
 .atlas-unit:hover{border-color:var(--accent)}
 .atlas-unit-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:18px}
 .atlas-unit-number{font-family:var(--f-label);font-size:13px;font-weight:700;color:var(--accent-ink)}
@@ -286,7 +286,7 @@ body[data-subject="ct"] .atlas-hero-art span:nth-child(n+4){display:none}
 .resource-breadcrumb{margin-bottom:21px;font-size:14px}
 .resource-breadcrumb a{text-decoration:none;color:var(--accent-ink);font-weight:650}
 .resource-breadcrumb a:hover{text-decoration:underline}
-.resource-banner{position:relative;background:var(--paper);border:1px solid var(--rule);border-top:5px solid var(--accent);border-radius:var(--radius);padding:clamp(22px,4vw,42px);max-width:100%;overflow:hidden}
+.resource-banner{position:relative;background:var(--paper);border:1px solid var(--rule);border-radius:var(--radius);padding:clamp(22px,4vw,42px);max-width:100%;overflow:hidden}
 .resource-banner h2{font-size:calc(clamp(29px,4.5vw,43px)*var(--title-scale));margin:8px 0 16px}
 .resource-banner p{font-size:16px;color:var(--muted);margin:10px 0;max-width:62ch}
 .resource-banner .resource-privacy{font-size:13px;max-width:70ch;line-height:1.55;padding-top:12px;border-top:1px solid var(--rule);margin-top:23px}
@@ -298,10 +298,6 @@ body[data-subject="ct"] .atlas-hero-art span:nth-child(n+4){display:none}
 .resource-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
 .resource-card{display:flex;flex-direction:column;min-width:0;border:1px solid var(--rule);border-radius:var(--radius);background:var(--paper);overflow:hidden}
 .resource-card:hover{border-color:var(--accent)}
-.resource-card.notes{border-top:3px solid var(--accent)}
-.resource-card.practice{border-top:3px solid var(--good)}
-.resource-card.task{border-top:3px solid var(--muted)}
-.resource-card.visual{border-top:3px solid var(--accent)}
 .resource-preview{margin:0;height:165px;display:flex;align-items:center;justify-content:center;background:var(--soft);overflow:hidden;border-bottom:1px solid var(--rule)}
 .resource-preview img{max-height:100%;max-width:100%;width:auto;height:auto;object-fit:contain}
 .resource-card-body{display:flex;flex-direction:column;flex:1;padding:17px 19px}
@@ -313,3 +309,67 @@ body[data-subject="ct"] .atlas-hero-art span:nth-child(n+4){display:none}
 .resource-none{padding:28px;border:1px dashed var(--rule);color:var(--muted)}
 @media(max-width:950px){.resource-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:690px){.resource-controls{grid-template-columns:1fr}.resource-grid{grid-template-columns:1fr}.student-resources{padding-top:18px}.resource-preview{height:190px}}
+
+
+/* ---------- polish pass (Impeccable): browser surfaces, hierarchy, motion ---------- */
+html{scrollbar-color:color-mix(in srgb,var(--muted) 45%,transparent) transparent;accent-color:var(--accent)}
+::selection{background:color-mix(in srgb,var(--accent) 26%,transparent);color:inherit}
+input,textarea,select{caret-color:var(--accent)}
+a{text-underline-offset:.2em;text-decoration-thickness:1px}
+table,.terms,ol.lessons .n,.score{font-variant-numeric:tabular-nums}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:3px}
+
+/* header shortcuts: quiet links instead of a row of equal buttons */
+.course-shortcuts{gap:4px 18px;margin-top:16px}
+.course-shortcuts a{border:0;background:none;padding:4px 0;border-radius:0;font-weight:600;color:var(--accent-ink);text-decoration:underline;text-decoration-color:color-mix(in srgb,var(--accent) 40%,transparent);text-underline-offset:.25em}
+.course-shortcuts a:hover,.course-shortcuts a[aria-current="page"]{background:none;color:var(--ink);text-decoration-color:currentColor}
+.course-shortcuts span{display:none}
+.head .lede{margin-top:2px}
+
+/* unit tabs: show that the row scrolls */
+.units{mask-image:linear-gradient(90deg,#000 calc(100% - 40px),transparent);-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 40px),transparent);scroll-snap-type:x proximity;padding-right:32px}
+.units button{scroll-snap-align:start;transition:color .15s}
+.units button[aria-selected="true"]{position:relative;border-bottom-color:transparent}
+.units button[aria-selected="true"]::after{content:"";position:absolute;left:10px;right:10px;bottom:-1px;height:3px;border-radius:2px;background:var(--accent);view-transition-name:unit-tab}
+body[data-subject="ct"] .units button[aria-selected="true"]::after{display:none}
+
+/* unit meta line replaces the label that sat above the heading */
+.span .status{display:inline-block;margin-left:6px;font-size:12.5px;font-weight:700;padding:1px 8px;border-radius:99px;background:var(--accent-soft);color:var(--accent-ink);vertical-align:1px}
+.span .status.s-done,.span .status.s-soon{background:transparent;color:var(--muted);box-shadow:inset 0 0 0 1px var(--rule)}
+.lesson .lesson-title{margin-top:14px;view-transition-name:lesson-title}
+.lesson .lesson-title + .span{margin-top:2px}
+.direct-kicker{color:var(--muted);font-size:14px;margin:-4px 0 10px}
+
+/* warm-up review: tucked away below the lessons */
+details.last-review{margin-top:22px;border-top:1px solid var(--rule);padding-top:4px}
+details.last-review summary{cursor:pointer;list-style:none;padding:10px 0;font-weight:650;color:var(--accent-ink);display:flex;align-items:center;gap:8px}
+details.last-review summary::-webkit-details-marker{display:none}
+details.last-review summary::before{content:"";width:7px;height:7px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(-45deg);transition:transform .2s cubic-bezier(.16,1,.3,1)}
+details.last-review[open] summary::before{transform:rotate(45deg)}
+details.last-review > :not(summary){animation:vb-reveal .25s cubic-bezier(.16,1,.3,1)}
+
+/* press feedback */
+.btn,.opt,.reviewcard,ol.lessons button,.course-shortcuts a{transition:background-color .15s,border-color .15s,color .15s,transform .12s}
+.btn:active,.opt:active:not(:disabled),.reviewcard:active{transform:translateY(1px)}
+ol.lessons button{transition:background-color .15s}
+ol.lessons button:hover{background:color-mix(in srgb,var(--accent) 5%,transparent)}
+
+/* self-check: the answer you just picked settles in */
+.q.just .opt.right{animation:vb-right .45s cubic-bezier(.16,1,.3,1)}
+.q.just .opt.wrong{animation:vb-wrong .3s ease-out}
+.q.just .why{animation:vb-reveal .3s cubic-bezier(.16,1,.3,1)}
+@keyframes vb-right{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--good) 45%,transparent)}100%{box-shadow:0 0 0 10px transparent}}
+@keyframes vb-wrong{0%,100%{transform:none}30%{transform:translateX(-3px)}65%{transform:translateX(3px)}}
+@keyframes vb-reveal{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+
+/* page-to-page continuity (View Transitions) */
+::view-transition-old(root),::view-transition-new(root){animation-duration:.2s}
+::view-transition-group(lesson-title),::view-transition-group(unit-tab){animation-duration:.38s;animation-timing-function:cubic-bezier(.16,1,.3,1)}
+
+@media (prefers-reduced-motion:reduce){
+  .q.just .opt.right,.q.just .opt.wrong{animation:none}
+  .q.just .why,details.last-review > :not(summary){animation:vb-fade .2s ease-out}
+  .btn:active,.opt:active:not(:disabled),.reviewcard:active{transform:none}
+  @keyframes vb-fade{from{opacity:0}to{opacity:1}}
+}
+.lede .grade{color:var(--ink);font-weight:650}
