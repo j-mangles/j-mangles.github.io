@@ -9,6 +9,26 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231C3A5E'/%3E%3Ctext x='16' y='22' font-family='Georgia' font-size='17' font-weight='700' text-anchor='middle' fill='%23ffffff'%3EM%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="../assets/fonts.css">
 <link rel="stylesheet" href="../assets/site.css">
+<style>
+body[data-subject="ela"] .direct-lesson{margin:20px 0;padding:clamp(16px,3vw,24px);background:var(--accent-soft);border:1px solid var(--rule);border-left:5px solid var(--accent);border-radius:var(--radius);color:var(--ink)}
+body[data-subject="ela"] .direct-kicker{margin:0 0 5px;color:var(--accent-ink);font:600 12px/1.4 var(--f-label);letter-spacing:.08em;text-transform:uppercase}
+body[data-subject="ela"] .direct-lesson h3{margin:4px 0 10px;font:600 clamp(21px,3vw,28px)/1.2 var(--f-big)}
+body[data-subject="ela"] .direct-lesson h4{margin:8px 0;font:600 17px/1.3 var(--f-title)}
+body[data-subject="ela"] .direct-goal{margin:0 0 16px}
+body[data-subject="ela"] .direct-steps{display:grid;gap:10px;list-style:none;padding:0;margin:0 0 16px}
+body[data-subject="ela"] .direct-steps li{display:grid;grid-template-columns:30px 1fr;gap:10px;align-items:start;background:var(--paper);border:1px solid var(--rule);border-radius:var(--radius);padding:12px}
+body[data-subject="ela"] .direct-step-num{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--accent);color:var(--on-btn);font-weight:700}
+body[data-subject="ela"] .direct-steps p{margin:4px 0 0}
+body[data-subject="ela"] .direct-model{padding:14px;background:var(--paper);border:1px solid var(--rule);border-radius:var(--radius)}
+body[data-subject="ela"] .direct-model ul{margin:8px 0;padding-left:22px}
+body[data-subject="ela"] .direct-answer{padding:10px 12px;background:var(--soft);border-radius:var(--btn-radius)}
+body[data-subject="ela"] .direct-practice{margin-top:12px;padding:12px 14px;background:var(--paper);border:1px solid var(--rule);border-radius:var(--radius)}
+body[data-subject="ela"] .direct-practice summary{font-weight:650;cursor:pointer}
+body[data-subject="ela"] .direct-sample{margin-top:10px;padding-top:10px;border-top:1px solid var(--rule)}
+body[data-subject="ela"] .direct-sample summary{color:var(--accent-ink)}
+body[data-subject="ela"] .direct-lesson summary:focus-visible{outline:3px solid #d98b32;outline-offset:3px;border-radius:3px}
+body[data-subject="ela"] .direct-hint{color:var(--muted);margin:10px 0}
+</style>
 </head>
 <body data-subject="ela">
 <header class="topbar"><div class="wrap"><a class="home" href="../">Mr. Mangles' Class</a><nav class="subnav" aria-label="Subjects"><a href="../social-studies/">Social Studies</a><a href="../science/">Science</a><a href="../ela/" aria-current="page">ELA</a><a href="../math/">Math 7</a><a href="../critical-thinking/">Critical Thinking</a></nav></div></header>
@@ -22,7 +42,7 @@
 <main id="main"></main>
 <div class="lightbox" id="lightbox" hidden><img id="lbimg" alt=""><p id="lbcap"></p></div>
 <footer class="site"><div class="wrap">Mr. Mangles' Class · École Edward Schreyer School · 2026–27</div></footer>
-<script src="data.js"></script>
+<script src="data.js?v=20261102a"></script>
 <script src="tools.js"></script>
 <script src="writer-studio.js"></script>
 <script src="core-writing-workshop.js?v=20261102a"></script>
@@ -32,6 +52,6 @@
 <script src="../assets/review.js?v=20261101d"></script>
 <script src="../assets/course-map.js"></script>
 <script src="../assets/resource-library.js"></script>
-<script src="../assets/hub.js?v=20261101b"></script>
+<script src="../assets/hub.js?v=20261102a"></script>
 </body>
 </html>
