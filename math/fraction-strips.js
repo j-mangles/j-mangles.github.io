@@ -110,7 +110,7 @@ function render(el){
  '<div id="fl-feedback" class="fl-feedback" role="status" aria-live="polite"></div>'+
  '<div class="fl-action"><button type="button" class="btn ghost" id="fl-hint-button">Show a hint</button>'+
  '<button type="button" class="btn ghost" id="fl-solution-button">Show worked solution</button>'+
- '<button type="button" class="btn ghost" id="fl-next">Next problem</button></div>'+
+ '<button type="button" class="btn ghost" id="fl-next">Next problem</button><button type="button" class="btn ghost" id="fl-clear">Clear work and restart</button></div>'+
  '<p id="fl-hint" class="fl-hint" hidden></p>'+
  '<p class="note">Models are pictorial and not physically to scale. Practice stays in this browser session and is not submitted or graded.</p></section>';
  const $=id=>el.querySelector(id),selector=$("#fl-case");
@@ -124,7 +124,7 @@ function render(el){
    stage===1?"Both rows now show "+v.d+" equal parts per whole. The shaded amount has not changed.":
    p.op==="+"?"Combine "+v.a+" and "+v.b+" equal-size pieces in wholes of "+v.d+" parts.":
    "Start with "+v.a+" equal-size pieces, remove "+v.b+" pieces and count the green pieces left.";
-  $("#fl-progress").textContent=solved+" of "+scenarios.length+" examples solved this session";
+  $("#fl-progress").textContent=solved+" of "+scenarios.length+" solved · "+attempts+" attempts this session";
   $("#fl-feedback").textContent=feedback;
  }
  function select(n){
@@ -163,6 +163,7 @@ function render(el){
   draw();
  };
  $("#fl-next").onclick=()=>select((current+1)%scenarios.length);
+ $("#fl-clear").onclick=()=>{attempts=0;solved=0;credited.clear();select(0);};
  select(0);
 }
 H.tools=H.tools||{};
