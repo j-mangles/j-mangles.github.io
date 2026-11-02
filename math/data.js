@@ -436,7 +436,7 @@ window.HUB = {
       "Explain the rule you used. In Grade 7, a correct 'no' with clear reasoning is as valuable as a correct 'yes'."
      ],
      terms:[["Undefined","An operation that does not have a valid numerical result in this context."]],
-     work:"Open Divisibility Detective on this unit page. Check 360, 648 and 1,245, then write your own three mystery numbers.",
+     work:"Use the Divisibility Detective in this lesson. Check 360, 648 and 1,245, then write your own three mystery numbers.",
      check:[
       {q:"Which number is divisible by 6?",a:["225","224","234"],c:2,why:"234 is even and its digit sum is 9."},
       {q:"What is 14 ÷ 0?",a:["0","14","Undefined"],c:2,why:"Zero times any number is zero; it cannot produce 14."},
