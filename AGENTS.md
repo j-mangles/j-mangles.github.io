@@ -7,6 +7,12 @@ Static GitHub Pages site for a Grade 7/8 class (Manitoba). Subjects: `social-stu
 2. After your change, run every test: `for t in tools/*.cjs; do node "$t" || echo "FAIL $t"; done` (skip `tools/test_site_browser.cjs` unless a local server and Playwright are available). Fix failures before pushing.
 3. Push to `main` only when tests pass.
 
+## Coding discipline (from andrej-karpathy-skills, MIT)
+- **Surgical changes:** touch only what the task needs. Don't reformat, rename or "improve" files you weren't asked to change. Mention unrelated problems instead of fixing them. Remove only what your own change made unused.
+- **Simplicity first:** the least code that does the job. No extra features, single-use abstractions or speculative options.
+- **Think first:** state your assumptions. If a reasonable one exists, take it and say so; stop and ask only when a wrong guess would be costly.
+- **Verify:** define what "done" means (a passing test, a screenshot that looks right) and check it before pushing.
+
 ## Content
 - Build lessons only from the teacher's Drive decks, booklets and handouts. Don't invent content.
 - Student-facing text only: no teacher notes, setup instructions or planning language on the site.
