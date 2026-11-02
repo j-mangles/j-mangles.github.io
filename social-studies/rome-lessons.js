@@ -108,6 +108,7 @@ window.RomeLessons = [
     "id": "l3",
     "n": "3",
     "title": "Patricians, Plebeians and the Family",
+    "activity": {"href":"rome-social-status.html","title":"Compare Social Status in Rome"},
     "released": true,
     "big": "Roman society organized people through legal status, wealth, citizenship and family authority; these categories shaped daily life.",
     "notes": [
@@ -313,6 +314,7 @@ window.RomeLessons = [
     "id": "l7",
     "n": "7",
     "title": "Caesar and the End of the Republic",
+    "activity": {"href":"rome-caesar-crisis.html","title":"Build Caesar's Cause Chain"},
     "released": true,
     "big": "Civil conflict and concentration of power weakened republican norms; Caesar's assassination did not restore the old Republic.",
     "notes": [
@@ -364,6 +366,7 @@ window.RomeLessons = [
     "id": "l8",
     "n": "8",
     "title": "Augustus and the Empire",
+    "activity": {"href":"rome-augustus-image.html","title":"Compare Augustus' Image and Power"},
     "released": true,
     "big": "Augustus kept republican offices while concentrating real power; Roman peace and prosperity coexisted with conquest and inequality.",
     "notes": [
@@ -467,6 +470,7 @@ window.RomeLessons = [
     "id": "l10",
     "n": "10",
     "title": "Slavery in Rome",
+    "activity": {"href":"rome-slavery-source-lab.html","title":"Open the Slavery Source Lens"},
     "released": true,
     "big": "Enslavement was built into Roman law and economy; experiences varied, and the surviving evidence often comes from enslavers.",
     "notes": [
