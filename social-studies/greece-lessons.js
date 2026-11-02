@@ -440,6 +440,7 @@ window.GreeceLessons=[
     "id": "l7",
     "n": "7",
     "title": "The Persian Wars",
+    "activity": {"href":"greece-persian-wars.html","title":"Open the Persian Wars War Room"},
     "released": true,
     "places": [
       "marathon",
@@ -646,6 +647,7 @@ window.GreeceLessons=[
     "id": "l10",
     "n": "10",
     "title": "Left Out: Women, Slaves and Foreigners",
+    "activity": {"href":"greece-missing-voices.html","title":"Investigate the Missing Voices Evidence Lab"},
     "released": true,
     "places": [
       "athens",
@@ -707,6 +709,7 @@ window.GreeceLessons=[
     "id": "l11",
     "n": "11",
     "title": "The Peloponnesian War",
+    "activity": {"href":"greece-peloponnesian-war.html","title":"Open the Peloponnesian War Autopsy"},
     "released": true,
     "places": [
       "athens",
