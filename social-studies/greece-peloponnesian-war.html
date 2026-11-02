@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Peloponnesian War Autopsy · Ancient Greece</title><style>
+:root{--ink:#24333d;--muted:#53636b;--paper:#fbf8f0;--card:#fff;--line:#d8d4c9;--accent:#176c66;--soft:#e7f1ef}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:1rem/1.6 system-ui,sans-serif}main{max-width:940px;margin:auto;padding:clamp(1rem,4vw,2.5rem)}header,.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:clamp(1rem,3vw,1.6rem);margin:1rem 0}h1,h2{line-height:1.2}h1{font-size:clamp(1.8rem,5vw,2.7rem)}.tag{color:var(--accent);font-weight:700;letter-spacing:.05em;text-transform:uppercase}.hint{color:var(--muted)}.timeline{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:.7rem}.event{border-top:4px solid var(--accent);padding:.75rem;background:var(--soft);border-radius:0 0 9px 9px}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:.7rem}.factor{border:1px solid var(--line);border-radius:12px;padding:.9rem;background:#fff;text-align:left;color:var(--ink)}.factor[aria-pressed=true]{background:#dcece8;box-shadow:inset 0 0 0 2px var(--accent)}label{display:block;margin:.55rem 0}select,textarea,button{font:inherit}select,textarea{width:100%;border:1px solid #78878c;border-radius:8px;padding:.65rem;background:white;color:var(--ink)}textarea{min-height:130px}button.main{background:var(--accent);color:#fff;border:0;border-radius:9px;padding:.65rem 1rem;cursor:pointer}button.ghost{background:white;color:var(--accent);border:1px solid var(--accent);border-radius:9px;padding:.65rem 1rem;cursor:pointer}button:focus-visible,a:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #d98b32;outline-offset:3px}.actions{display:flex;flex-wrap:wrap;gap:.7rem;align-items:center;margin-top:1rem}.feedback{min-height:1.5em;font-weight:700}a{color:#075c57}@media(max-width:520px){.cards{grid-template-columns:1fr}}
+</style></head><body><main>
+<header><p class="tag">Grade 8 Social Studies · Ancient Greece · Lesson 11</p><h1>Peloponnesian War Autopsy</h1><p>Trace how conflict, resources, authority, sickness and habits or ideas weakened Athens. The C.R.A.S.H. framework organizes possible causes; it does not make one cause the only answer.</p><p class="hint">Your work stays in this page. Nothing is submitted or saved online.</p></header>
+<section class="panel"><h2>Evidence timeline</h2><div class="timeline">
+<div class="event"><strong>431 BCE</strong><br>The war begins.</div>
+<div class="event"><strong>430 BCE</strong><br>An epidemic strikes Athens; Pericles dies.</div>
+<div class="event"><strong>415–413 BCE</strong><br>The Sicilian expedition ends disastrously for Athens.</div>
+<div class="event"><strong>404 BCE</strong><br>Athens surrenders, losing its walls and empire.</div>
+</div></section>
+<section class="panel"><h2>C.R.A.S.H. cause cards</h2><p>Select one factor you think mattered most. Then defend your choice with a specific event from the timeline.</p>
+<div class="cards" role="group" aria-label="Choose a cause factor">
+<button type="button" class="factor" data-factor="Conflict" aria-pressed="false"><strong>C · Conflict</strong><br>Long war and the attack on Sicily.</button>
+<button type="button" class="factor" data-factor="Resources" aria-pressed="false"><strong>R · Resources</strong><br>Farms burned; the grain supply was cut.</button>
+<button type="button" class="factor" data-factor="Authority" aria-pressed="false"><strong>A · Authority</strong><br>Pericles died; later leaders were weaker.</button>
+<button type="button" class="factor" data-factor="Sickness" aria-pressed="false"><strong>S · Sickness</strong><br>The epidemic in Athens.</button>
+<button type="button" class="factor" data-factor="Habits and ideas" aria-pressed="false"><strong>H · Habits and ideas</strong><br>Athens came to believe power excused its choices.</button>
+</div>
+<p id="chosen" class="hint" aria-live="polite">No factor selected.</p>
+<label for="reason">Why did this factor matter? Connect it to an event and explain the effect.<textarea id="reason" placeholder="I think… mattered most because… The timeline evidence is… This weakened Athens by…"></textarea></label>
+<div class="actions"><button type="button" class="main" id="build">Build my explanation</button><button type="button" class="ghost" id="clear">Clear my work</button><a href="index.html#greece-l11">Back to Ancient Greece · Lesson 11</a></div>
+<p id="result" class="feedback" role="status" aria-live="polite"></p></section>
+<section class="panel"><h2>Quick check</h2>
+<label for="q1">1. According to Thucydides, what helped cause the war?<select id="q1"><option value="">Choose</option><option value="power">Athenian power grew, and Sparta feared it</option><option value="olympics">The Olympic Games were cancelled</option><option value="nile">A Nile flood</option></select></label>
+<label for="q2">2. Which C.R.A.S.H. factor is the epidemic?<select id="q2"><option value="">Choose</option><option value="sickness">Sickness</option><option value="resources">Resources</option><option value="conflict">Conflict</option></select></label>
+<div class="actions"><button type="button" class="ghost" id="check">Check quick check</button></div><p id="check-result" class="feedback" role="status" aria-live="polite"></p></section>
+</main><script>
+const factors=[...document.querySelectorAll("[data-factor]")],chosen=document.getElementById("chosen");
+factors.forEach(b=>b.addEventListener("click",()=>{factors.forEach(x=>x.setAttribute("aria-pressed",String(x===b&&x.getAttribute("aria-pressed")!=="true")));const active=factors.find(x=>x.getAttribute("aria-pressed")==="true");chosen.textContent=active?"Selected: "+active.dataset.factor+".":"No factor selected."; }));
+document.getElementById("build").addEventListener("click",()=>{const active=factors.find(x=>x.getAttribute("aria-pressed")==="true"),why=document.getElementById("reason").value.trim();document.getElementById("result").textContent=!active||!why?"Select a factor and explain your reasoning first.":"Explanation ready. You chose "+active.dataset.factor+". Check that you used a timeline event and explained how it weakened Athens."});
+document.getElementById("check").addEventListener("click",()=>{const a=document.getElementById("q1").value,b=document.getElementById("q2").value;if(!a||!b){document.getElementById("check-result").textContent="Answer both questions first.";return;}const n=(a==="power"?1:0)+(b==="sickness"?1:0);document.getElementById("check-result").textContent=n+"/2. "+(n===2?"Correct.":"Review the lesson timeline and C.R.A.S.H. cards.");});
+document.getElementById("clear").addEventListener("click",()=>{document.getElementById("reason").value="";document.getElementById("result").textContent="Work cleared.";document.getElementById("check-result").textContent="";document.getElementById("q1").value="";document.getElementById("q2").value="";factors.forEach(x=>x.setAttribute("aria-pressed","false"));chosen.textContent="No factor selected.";});
+</script></body></html>
