@@ -74,4 +74,5 @@ H.tools.div=function(el){
  }
  render();
 };
+H.lessonTools=Object.assign(H.lessonTools||{},{"div/d4":H.tools.div});
 })();

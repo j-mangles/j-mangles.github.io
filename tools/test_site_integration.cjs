@@ -29,7 +29,7 @@ for(const [file,tools] of Object.entries(pages)){
 }
 const tests=[
  "test_review_retries.cjs","check_content.cjs","test_atlas_lessons.cjs",
- "test_homeostasis.cjs","test_writer_studio.cjs","test_percent_strategy.cjs",
+ "test_homeostasis.cjs","test_writer_studio.cjs","test_percent_strategy.cjs","test_divisibility_lesson.cjs",
  "test_evidence_inspector.cjs","test_number_line_lab.cjs",
  "test_organization_explorer.cjs","test_chance_lab.cjs","test_hammurabi_lab.cjs","test_sargon_source_lab.cjs",
  "test_scribe_school.cjs",
