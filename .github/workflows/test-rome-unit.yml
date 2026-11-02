@@ -1,0 +1,25 @@
+name: Test Ancient Rome Lesson Labs
+on:
+  push:
+    paths:
+      - 'social-studies/rome-lessons.js'
+      - 'social-studies/rome-*.html'
+      - 'social-studies/index.html'
+      - 'tools/test_rome_unit.cjs'
+      - '.github/workflows/test-rome-unit.yml'
+  pull_request:
+    paths:
+      - 'social-studies/rome-lessons.js'
+      - 'social-studies/rome-*.html'
+      - 'social-studies/index.html'
+      - 'tools/test_rome_unit.cjs'
+      - '.github/workflows/test-rome-unit.yml'
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: node tools/test_rome_unit.cjs
