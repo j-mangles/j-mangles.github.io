@@ -64,7 +64,7 @@ function studio(el,kind){
  '<form id="ps-form"><label for="ps-answer"><b>My answer</b> (round to the nearest hundredth if needed)</label><div class="ps-actions"><input id="ps-answer" type="text" inputmode="decimal" autocomplete="off" aria-describedby="ps-feedback" placeholder="Type a number"><button class="btn" type="submit">Check answer</button></div></form>'+
  '<div id="ps-feedback" class="ps-feedback" role="status" aria-live="polite"></div>'+
  '<div id="ps-hint" class="ps-hint" hidden></div>'+
- '<div class="ps-actions"><button class="btn ghost" type="button" id="ps-help">Give me a hint</button><button class="btn ghost" type="button" id="ps-show">Show worked solution</button><button class="btn" type="button" id="ps-next">New question</button></div></div>'+
+ '<div class="ps-actions"><button class="btn ghost" type="button" id="ps-help">Give me a hint</button><button class="btn ghost" type="button" id="ps-show">Show worked solution</button><button class="btn" type="button" id="ps-next">New question</button><button class="btn ghost" type="button" id="ps-clear">Clear and restart</button></div></div>'+
  '<div><b class="eyebrow">Visual benchmark</b><div id="ps-grid" class="ps-grid" aria-hidden="true"></div><p class="note" id="ps-grid-label"></p></div></div>'+
  '<p class="note" style="margin-top:16px">Use scratch paper for your steps. This is practice, not a submitted assignment or a gradebook record.</p></section>';
  const $=s=>el.querySelector(s);
@@ -100,6 +100,7 @@ function studio(el,kind){
  };
  $("#ps-show").onclick=()=>{$("#ps-hint").hidden=false;$("#ps-hint").textContent="Worked solution: "+current.steps;};
  $("#ps-next").onclick=next;
+ $("#ps-clear").onclick=()=>{level="friendly";solved=0;questions=0;attempts=0;hint=0;counted=false;$("[data-level]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.level==="friendly")));next();};
  $$("[data-level]").forEach(b=>b.onclick=()=>{
   level=b.dataset.level; $$("[data-level]").forEach(x=>x.setAttribute("aria-pressed",String(x.dataset.level===level)));next();
  });
