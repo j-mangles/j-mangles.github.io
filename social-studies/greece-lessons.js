@@ -167,6 +167,7 @@ window.GreeceLessons=[
     "id": "l3",
     "n": "3",
     "title": "Gods, Myths and the Games",
+    "activity": {"href":"greece-myth-olympia.html","title":"Open the Myth and Olympia Lab"},
     "released": true,
     "places": [
       "olympia",
@@ -232,6 +233,7 @@ window.GreeceLessons=[
     "id": "l4",
     "n": "4",
     "title": "Sparta",
+    "activity": {"href":"greece-sparta-lives.html","title":"Explore Three Lives in Sparta"},
     "released": true,
     "places": [
       "sparta",
@@ -582,6 +584,7 @@ window.GreeceLessons=[
     "id": "l9",
     "n": "9",
     "title": "The Thinkers",
+    "activity": {"href":"greece-socratic-method.html","title":"Try the Socratic Question Lab"},
     "released": true,
     "places": [
       "agora-athens",
