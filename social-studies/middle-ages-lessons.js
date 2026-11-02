@@ -55,6 +55,7 @@ window.MiddleAgesLessons = [
     "id": "l2",
     "n": "2",
     "title": "Byzantium",
+    "activity": {"href":"middle-ages-byzantium-sources.html","title":"Compare Byzantine Sources"},
     "released": true,
     "big": "The eastern Roman Empire combined Roman government, Greek language and Christian traditions, while its sources preserve competing views.",
     "notes": [
@@ -209,6 +210,7 @@ window.MiddleAgesLessons = [
     "id": "l5",
     "n": "5",
     "title": "The Vikings",
+    "activity": {"href":"middle-ages-viking-evidence.html","title":"Open the Viking Evidence Lab"},
     "released": true,
     "big": "Norse communities were raiders, traders, settlers and explorers; evidence differs between written accounts and archaeology.",
     "notes": [
@@ -260,6 +262,7 @@ window.MiddleAgesLessons = [
     "id": "l6",
     "n": "6",
     "title": "Feudalism and the Manor",
+    "activity": {"href":"middle-ages-manor-model.html","title":"Model Manor Obligations"},
     "released": true,
     "big": "Land, protection and labour shaped many medieval relationships, but no single feudal system worked the same way everywhere.",
     "notes": [
@@ -413,6 +416,7 @@ window.MiddleAgesLessons = [
     "id": "l9",
     "n": "9",
     "title": "The Crusades",
+    "activity": {"href":"middle-ages-crusade-sources.html","title":"Open the Crusades Source Desk"},
     "released": true,
     "big": "The Crusades were a series of religiously framed wars with changing participants, motives and consequences across several centuries.",
     "notes": [
@@ -515,6 +519,7 @@ window.MiddleAgesLessons = [
     "id": "l11",
     "n": "11",
     "title": "Magna Carta",
+    "activity": {"href":"middle-ages-magna-carta-lab.html","title":"Test the Magna Carta Claim"},
     "released": true,
     "big": "Magna Carta constrained King John's authority for a narrow group in 1215, then gained wider significance through later reinterpretation.",
     "notes": [
@@ -618,6 +623,7 @@ window.MiddleAgesLessons = [
     "id": "l13",
     "n": "13",
     "title": "The Black Death",
+    "activity": {"href":"middle-ages-black-death-web.html","title":"Build the Black Death Impact Web"},
     "released": true,
     "big": "The Black Death spread through connected trade routes and caused severe population loss, with effects that varied across communities.",
     "notes": [
