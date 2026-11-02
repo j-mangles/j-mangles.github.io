@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Persian Wars War Room · Ancient Greece</title><style>
+:root{--ink:#24333d;--muted:#53636b;--paper:#fbf8f0;--card:#fff;--line:#d8d4c9;--accent:#176c66;--soft:#e7f1ef}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:1rem/1.6 system-ui,sans-serif}main{max-width:940px;margin:auto;padding:clamp(1rem,4vw,2.5rem)}header,.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:clamp(1rem,3vw,1.6rem);margin:1rem 0}h1,h2{line-height:1.2}h1{font-size:clamp(1.8rem,5vw,2.7rem)}.tag{color:var(--accent);font-weight:700;letter-spacing:.05em;text-transform:uppercase}.hint{color:var(--muted)}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(195px,1fr));gap:.8rem}.card{border:1px solid var(--line);border-radius:12px;padding:1rem;background:#fff}.card h3{margin:.1rem 0 .4rem}.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.6rem}.step{border-left:4px solid var(--accent);padding:.65rem;background:var(--soft);border-radius:0 8px 8px 0}label{display:block;margin:.55rem 0}select,textarea,button{font:inherit}select,textarea{width:100%;border:1px solid #78878c;border-radius:8px;padding:.65rem;background:white;color:var(--ink)}textarea{min-height:130px}button{background:var(--accent);color:#fff;border:0;border-radius:9px;padding:.65rem 1rem;cursor:pointer}button.ghost{background:white;color:var(--accent);border:1px solid var(--accent)}button[aria-pressed=true]{background:#dcece8;color:#173f3a;box-shadow:inset 0 0 0 2px var(--accent)}button:focus-visible,a:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #d98b32;outline-offset:3px}.actions{display:flex;flex-wrap:wrap;gap:.7rem;align-items:center;margin-top:1rem}.feedback{min-height:1.5em;font-weight:700}a{color:#075c57}@media(max-width:520px){.cards{grid-template-columns:1fr}}
+</style></head><body><main>
+<header><p class="tag">Grade 8 Social Studies · Ancient Greece · Lesson 7</p><h1>Persian Wars War Room</h1><p>Build a careful battle record, then defend a decision with evidence. A Greek account can tell us about Greek choices, but it is only one side of the story.</p><p class="hint">Your work stays in this page. Nothing is submitted or saved online.</p></header>
+<section class="panel"><h2>Battle record</h2><div class="cards">
+<article class="card"><h3>Marathon · 490 BCE</h3><p>Athenian forces confronted Persian forces.</p></article>
+<article class="card"><h3>Thermopylae · 480 BCE</h3><p>A Greek force led by Leonidas delayed the Persian army. Spartans were not the only Greeks who fought there.</p></article>
+<article class="card"><h3>Salamis · 480 BCE</h3><p>Greek naval forces won an important success at sea.</p></article>
+<article class="card"><h3>Plataea</h3><p>Later land fighting helped defeat the Persian invasions. The notes do not give a date for this battle.</p></article></div>
+<p class="hint">The locations and dates shown here follow the student lesson notes and atlas. This is a sequence, not a scale map.</p></section>
+<section class="panel"><h2>Choose evidence for your plan</h2><p>Pick one decision point and at least one clue. The plan is yours; explain what you knew at the time and what you would want to verify.</p>
+<label for="decision">Decision point<select id="decision"><option value="">Choose one</option><option>How should Athens use silver from its mines?</option><option>How should a Greek force respond at Thermopylae?</option><option>How could Greek forces use the sea?</option><option>How should leaders protect people when an invasion threatens?</option></select></label>
+<div class="cards" aria-label="Evidence choices">
+<button type="button" class="ghost evidence" aria-pressed="false">Athens invested mine silver in a fleet of triremes before 480 BCE.</button>
+<button type="button" class="ghost evidence" aria-pressed="false">The Greek force at Thermopylae included non-Spartans.</button>
+<button type="button" class="ghost evidence" aria-pressed="false">Greek naval forces succeeded at Salamis.</button>
+<button type="button" class="ghost evidence" aria-pressed="false">Most surviving war accounts are Greek, so the record has a perspective limit.</button>
+</div><p class="hint" id="count" aria-live="polite">0 evidence clues selected.</p>
+<label for="plan">My plan and reasoning<textarea id="plan" placeholder="I would… My evidence is… This matters because… I would still want to know…"></textarea></label>
+<div class="actions"><button type="button" id="build">Build my case</button><button type="button" class="ghost" id="clear">Clear my work</button><a href="index.html#greece-l7">Back to Ancient Greece · Lesson 7</a></div>
+<p id="result" class="feedback" role="status" aria-live="polite"></p></section>
+</main><script>
+const buttons=[...document.querySelectorAll(".evidence")],count=document.getElementById("count");
+function updateCount(){const n=buttons.filter(b=>b.getAttribute("aria-pressed")==="true").length;count.textContent=n+" evidence clue"+(n===1?"":"s")+" selected.";}
+buttons.forEach(b=>b.addEventListener("click",()=>{b.setAttribute("aria-pressed",String(b.getAttribute("aria-pressed")!=="true"));updateCount();}));
+document.getElementById("build").addEventListener("click",()=>{const d=document.getElementById("decision").value,n=buttons.filter(b=>b.getAttribute("aria-pressed")==="true").length,p=document.getElementById("plan").value.trim();document.getElementById("result").textContent=!d||!n||!p?"Choose a decision, select evidence, and write your reasoning first.":"Case ready: "+d+" You selected "+n+" evidence clue"+(n===1?"":"s")+". Review whether your plan uses the evidence and names a question the Greek account cannot answer."});
+document.getElementById("clear").addEventListener("click",()=>{document.getElementById("decision").value="";document.getElementById("plan").value="";document.getElementById("result").textContent="Work cleared.";buttons.forEach(b=>b.setAttribute("aria-pressed","false"));updateCount();});
+</script></body></html>
