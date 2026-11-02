@@ -666,7 +666,7 @@ window.HUB = {
     "Fractions that name the same amount, like 1/2 and 3/6."
    ]
   ],
-  "work": "Lesson 3 practice sheet, Parts A to E. Part F is a challenge.",
+  "work": "Use the Fraction Strip Lab to rename unlike denominators, then complete Lesson 3 practice sheet, Parts A to E. Part F is a challenge.",
   "check": [
    {
     "q": "The lowest common denominator for 3/4 and 1/6 is…",
