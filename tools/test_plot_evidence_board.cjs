@@ -9,6 +9,7 @@ vm.runInNewContext(read("ela/plot-evidence-board.js"),ctx,{filename:"ela/plot-ev
 const P=ctx.window.PlotEvidenceCore;
 assert.equal(ctx.window.HUB.tools.stories,old,"Preserve the original unit Plot Arc explorer");
 assert.equal(typeof ctx.window.HUB.lessonTools["stories/plot"],"function");
+assert.equal(typeof ctx.window.HUB.lessonTools["stories/snack"],"function","Embed the evidence board in the Snack Attack lesson");
 assert.deepEqual(Array.from(P.STAGES,x=>x.name),["Exposition","Inciting incident","Rising action","Climax","Falling action","Resolution"]);
 assert.deepEqual(Array.from(P.TEXTS,x=>x.id),["snack","thankyou"]);
 assert.equal(P.initial().length,6);
@@ -27,6 +28,8 @@ assert.ok(chart.includes("Exposition 0 of 10"));
 const page=read("ela/index.html"),scripts=[...page.matchAll(/<script src="([^"]+)"/g)].map(x=>x[1].split("?")[0]);
 assert.ok(scripts.includes("plot-evidence-board.js")&&scripts.indexOf("plot-evidence-board.js")<scripts.indexOf("../assets/hub.js"));
 const data={window:{}};vm.runInNewContext(read("ela/data.js"),data);
-assert.ok(data.window.HUB.units.some(u=>u.id==="stories"&&u.lessons.some(l=>l.id==="plot"&&l.title==="Plot Structure")));
+const shortStories=data.window.HUB.units.find(u=>u.id==="stories");
+assert.ok(shortStories&&shortStories.lessons.some(l=>l.id==="plot"&&l.title==="Plot Structure"));
+assert.ok(shortStories.lessons.some(l=>l.id==="snack"&&l.title==="Snack Attack (short film)"));
 assert.ok(read("index.html").includes('href="ela/#stories/plot"'));
 console.log("ELA Plot Evidence Board: six stages, editable response report, safe graph, source unit and original tool preserved.");

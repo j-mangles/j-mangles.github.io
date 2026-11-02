@@ -125,6 +125,6 @@ function render(el){
  };
  chooseText(story);
 }
-H.lessonTools=H.lessonTools||{};H.lessonTools["stories/plot"]=render;
+H.lessonTools=H.lessonTools||{};H.lessonTools["stories/plot"]=render;H.lessonTools["stories/snack"]=render;
 window.PlotEvidenceCore={STAGES,TEXTS,initial,graph,report};
 })();
