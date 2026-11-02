@@ -9,6 +9,8 @@ vm.runInNewContext(read("math/fracops-visuals.js"),ctx,{filename:"math/fracops-v
 assert.equal(typeof ctx.window.HUB.lessonTools["fracops/l03"],"function","Fraction Strip Lab is not embedded in Lesson 3");
 const F=ctx.window.FractionStripCore;
 assert.equal(typeof ctx.window.HUB.tools.fracops,"function","Unit 4 tool not registered");
+assert.ok(read("math/fraction-strips.js").includes("Clear work and restart"),"lab needs a clear control");
+assert.ok(read("math/fraction-strips.js").includes('credited.clear();select(0);'),"clear control resets inputs, score, attempts and selected question");
 assert.equal(F.gcd(42,30),6);assert.equal(F.lcm(4,6),12);
 assert.equal(F.format(7,3),"2 1/3");assert.equal(F.format(2,4),"1/2");
 assert.equal(F.format(4,4),"1");assert.equal(F.format(0,9),"0");
