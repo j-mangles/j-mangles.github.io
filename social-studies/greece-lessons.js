@@ -865,6 +865,7 @@ window.GreeceLessons=[
     "id": "l13",
     "n": "13",
     "title": "Greece in Review",
+    "activity": {"href":"greece-review-circuit.html","title":"Start the Greece in Review Circuit"},
     "released": true,
     "places": [
       "athens",
