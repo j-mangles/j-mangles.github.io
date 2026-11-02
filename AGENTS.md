@@ -20,12 +20,12 @@ Static GitHub Pages site for a Grade 7/8 class (Manitoba). Subjects: `social-stu
 - Units not yet taught stay `status:"soon"` (Social Studies: leave `released` flags as they are).
 - Canadian spelling. Plain, direct language for Grade 7/8.
 
-## Which design skill
-Skills aren't stored in this repo. Clone the one you need into a temp folder outside the repo when a task calls for it.
-- **Impeccable** (default for any change to an existing page, tool or lesson): `git clone --depth 1 https://github.com/pbakaus/impeccable.git /tmp/impeccable`, then follow `/tmp/impeccable/.agents/skills/impeccable/SKILL.md` (Claude: `.claude/skills/impeccable/SKILL.md`). Detector: `/tmp/impeccable/.agents/skills/impeccable/scripts/impeccable detect --json <files>`, run from this repo so `.impeccable/config.json` applies.
-- **Taste** (only when the teacher asks for a new look or a brand-new standalone page): `git clone --depth 1 https://github.com/Leonxlnx/taste-skill.git /tmp/taste`, follow `skills/taste-skill/SKILL.md`, deal three directions with its `draw.mjs` and let the teacher pick before building. Don't run it over existing hub pages unasked.
-- **Awesome Design** (github.com/VoltAgent/awesome-design-md): read one brand's DESIGN.md only when the teacher names it as inspiration; borrow ideas, don't copy a brand's identity.
-- **Three.js**: only for a genuine 3D teaching model (a cell you can rotate, Earth's layers). Pinned version from cdnjs, one lesson tool only, static fallback, pause rendering when off screen.
+## Skills (in `.agents/skills/`)
+These match the teacher's Claude skills. Each one is small and downloads the full, current tool from GitHub when used.
+- `impeccable-design`: the default for any change to an existing page, tool or lesson (polish, audit, layout, type, motion). Run its detector from this repo so `.impeccable/config.json` applies.
+- `design-taste`: only when the teacher asks for a new look or a brand-new standalone page. Deal three directions and let the teacher pick before building. Never run it over existing hub pages unasked.
+- `design-references`: brand inspiration (Awesome Design), the Open Design kit's themes, and the rules for Three.js 3D models.
+- `karpathy-coding-guidelines`: applies to every code change here.
 
 ## Design rules (Impeccable)
 - This is a **refinement** project. Each subject's look (fonts, colours, radius in `assets/site.css`) is the design authority. Polish within it; don't redesign or swap themes.
