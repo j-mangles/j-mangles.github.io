@@ -86,4 +86,6 @@ function flow(el){
 }
 
 H.lessonTools=Object.assign(H.lessonTools||{},{"fracops/l01":gcfLcm,"fracops/l02":like,"fracops/l03":unlike,"fracops/l04":borrow,"fracops/l05":flow});
+// The hands-on strip lab extends the Lesson 3 visual from a fixed example to student-chosen practice.
+H.lessonTools["fracops/l03"]=el=>H.tools.fracops(el);
 })();
