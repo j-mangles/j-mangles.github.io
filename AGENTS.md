@@ -14,8 +14,13 @@ Static GitHub Pages site for a Grade 7/8 class (Manitoba). Subjects: `social-stu
 - Units not yet taught stay `status:"soon"` (Social Studies: leave `released` flags as they are).
 - Canadian spelling. Plain, direct language for Grade 7/8.
 
-## Design (use the Impeccable skill)
-- Skill folders: `.agents/skills/impeccable` (Codex: `$impeccable`) and `.claude/skills/impeccable` (Claude Code: `/impeccable`).
+## Which design skill
+- **Impeccable** (`.agents/skills/impeccable`, `.claude/skills/impeccable`; Codex `$impeccable`, Claude Code `/impeccable`): the default. Use it for any change to an existing page, tool or lesson: polish, audit, layout, type, motion.
+- **Taste** (`.agents/skills/taste-skill`, `.claude/skills/taste-skill`): only when the teacher asks for a new look or a brand-new standalone page (for example a redesign of the home page). Use its `draw.mjs` to deal three directions and let the teacher pick before building. Needs Node 22+. Don't run it over existing hub pages unasked; the subject themes stay.
+- **Awesome Design** (github.com/VoltAgent/awesome-design-md): a reference library of brand DESIGN.md files. Read one only when the teacher names a brand or site as inspiration; borrow ideas, don't copy a brand's identity.
+- **Three.js**: only for a genuine 3D teaching model (e.g. a cell you can rotate, Earth's layers). Load a pinned version from cdnjs, keep it to that one lesson tool, give it a static fallback, and pause rendering when it's off screen.
+
+## Design rules (Impeccable)
 - This is a **refinement** project. Each subject's look (fonts, colours, radius in `assets/site.css`) is the design authority. Polish within it; don't redesign or swap themes.
 - Mode: **Read** for lesson pages, **Operate** for tools. Precision and restraint over spectacle.
 - No labels/eyebrows above headings, no coloured side stripes on cards, no boxes inside boxes. Put meta (unit, lesson number, question count) on a line under the heading.
