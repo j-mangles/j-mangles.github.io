@@ -27,6 +27,7 @@ const el={
 H.lessonTools["fdp/l05"](el);
 const get=q=>el.querySelector(q);
 assert.match(el.innerHTML,/Percent Strategy Studio/);
+assert.match(el.innerHTML,/Clear and restart/);
 assert.match(get("#ps-question").textContent,/10% of 40/);
 assert.match(get("#ps-grid").innerHTML,/ps-square on/);
 get("#ps-answer").value="4";
@@ -43,4 +44,8 @@ get("#ps-show").onclick();
 assert.match(get("#ps-hint").textContent,/Worked solution/);
 get("#ps-next").onclick();
 assert.match(get("#ps-score").textContent,/questions shown/);
+get("#ps-answer").value="82";get("#ps-clear").onclick();
+assert.equal(get("#ps-answer").value,"");assert.equal(get("#ps-feedback").textContent,"");
+assert.equal(get("#ps-hint").hidden,true);assert.equal(levels[0].attrs["aria-pressed"],"true");
+assert.equal(get("#ps-score").textContent,"0 solved · 1 questions shown");
 console.log("Percent Strategy Studio passed: maths, mounting, input, feedback, hints, levels and repeat practice.");
