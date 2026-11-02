@@ -128,6 +128,7 @@ window.GreeceLessons=[
         "Study of material traces of the past."
       ]
     ],
+    "activity": {"href":"greece-troy-casefile.html","title":"Open the Troy Evidence Case File"},
     "work": "Troy Case File: Classify claims as supported, plausible or legendary. Consider whether Schliemann was a reliable witness. Write a verdict with two clues and a counter-argument.",
     "check": [
       {
@@ -551,6 +552,7 @@ window.GreeceLessons=[
         "Large temple of Athena on the Athenian Acropolis."
       ]
     ],
+    "activity": {"href":"greece-league-hearing.html","title":"Open the Delian League Hearing"},
     "work": "Follow the Money: Trace the League's change to an empire, weigh an assembly argument, write from an islander's or worker's perspective, and examine the debate over Parthenon sculptures.",
     "check": [
       {
@@ -818,6 +820,7 @@ window.GreeceLessons=[
         "Person or group assuming power after a leader."
       ]
     ],
+    "activity": {"href":"greece-alexander-perspectives.html","title":"Build an Alexander Evidence Argument"},
     "work": "Alexander the ___: Follow his campaign on the map, compare arguments for and against calling him 'Great', consider missing perspectives, and give a defended title.",
     "check": [
       {
