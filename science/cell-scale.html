@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Explore the relative sizes of bacteria and typical plant and animal cells with an interactive logarithmic scale.">
+<title>Cell Scale Explorer · Science · Mr. Mangles’ Class</title>
+<link rel="stylesheet" href="../assets/fonts.css">
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+.scale-page{max-width:1050px;padding-top:28px;padding-bottom:72px}
+.scale-back{display:inline-flex;align-items:center;min-height:42px;color:var(--accent-ink);font-weight:650;text-decoration:none}
+.scale-back:hover{text-decoration:underline}
+.scale-page h1{font-family:var(--f-title);font-size:clamp(34px,5vw,54px);line-height:1.05;letter-spacing:var(--title-ls);margin:16px 0 10px}
+.scale-intro{max-width:70ch;color:var(--muted);font-size:17px;line-height:1.55;margin:0 0 24px}
+.scale-panel{background:var(--paper);border:1px solid var(--rule);border-radius:var(--radius);padding:clamp(16px,3vw,26px);margin-top:16px}
+.scale-panel h2{font-family:var(--f-title);font-size:24px;margin:0 0 8px}
+.scale-panel p{line-height:1.55}
+.scale-controls{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:18px 0 6px}
+.scale-controls label{font-weight:650}
+.scale-controls input{accent-color:var(--accent);width:min(380px,100%);min-height:36px}
+.scale-value{font-variant-numeric:tabular-nums;color:var(--accent-ink);font-weight:700;min-width:120px}
+.scale-chart-wrap{width:100%;overflow-x:auto}
+#scale-chart{display:block;width:100%;min-width:560px;height:auto}
+.scale-key{display:flex;flex-wrap:wrap;gap:12px 22px;font-size:13px;color:var(--muted);margin:6px 0 0}
+.scale-key span{display:inline-flex;align-items:center;gap:7px}
+.scale-swatch{display:inline-block;width:15px;height:10px;border-radius:3px;background:var(--accent)}
+.scale-swatch.bacteria{background:var(--accent-ink)}
+.scale-swatch.threshold{width:2px;height:14px;border-radius:0;background:var(--muted)}
+.specimen-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:16px 0}
+.specimen{font:inherit;text-align:left;color:var(--ink);background:var(--paper);border:1px solid var(--rule);border-radius:var(--radius);padding:13px 15px;cursor:pointer;min-height:62px}
+.specimen:hover{border-color:var(--accent)}
+.specimen[aria-pressed="true"]{border-color:var(--accent);background:var(--soft)}
+.specimen strong{display:block;font-size:15px}
+.specimen small{display:block;color:var(--muted);font-size:13px;margin-top:3px}
+.scale-readout{min-height:52px;padding:12px 14px;background:var(--soft);border-radius:var(--radius);line-height:1.5}
+.scale-note{font-size:13px;color:var(--muted);max-width:78ch}
+@media(max-width:620px){.scale-page{padding-top:16px}.specimen-list{grid-template-columns:1fr}.scale-intro{font-size:16px}.scale-controls{align-items:flex-start;flex-direction:column;gap:6px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+</head>
+<body data-subject="sci">
+<header class="topbar"><div class="wrap"><a class="home" href="../">Mr. Mangles' Class</a><nav class="subnav" aria-label="Subjects"><a href="../social-studies/">Social Studies</a><a href="./" aria-current="page">Science</a><a href="../ela/">ELA</a><a href="../math/">Math 7</a><a href="../critical-thinking/">Critical Thinking</a></nav></div></header>
+<main class="wrap scale-page">
+<a class="scale-back" href="./">← Back to Science</a>
+<h1>Cell Scale Explorer</h1>
+<p class="scale-intro">Cells vary in size. Many bacteria are about 0.1–5 micrometres (μm) across. Typical plant and animal cells are about 10–100 μm across. Zoom the scale below and select a range to explore it.</p>
+
+<section class="scale-panel" aria-labelledby="chart-title">
+<h2 id="chart-title">Compare the size ranges</h2>
+<p class="scale-note">This is a logarithmic scale: each labelled step is 10 times larger than the one before it. The bands show approximate ranges, not the size of every cell.</p>
+<div class="scale-controls">
+<label for="scale-zoom">Zoom the scale</label>
+<input id="scale-zoom" type="range" min="0" max="2" step="1" value="2" aria-describedby="zoom-value">
+<output class="scale-value" id="zoom-value" for="scale-zoom">0.1–1,000 μm</output>
+</div>
+<div class="scale-chart-wrap">
+<svg id="scale-chart" viewBox="0 0 820 230" role="img" aria-labelledby="scale-svg-title scale-svg-desc"></svg>
+</div>
+<div class="scale-key" aria-label="Diagram key">
+<span><i class="scale-swatch bacteria"></i>Many bacteria</span>
+<span><i class="scale-swatch"></i>Typical plant and animal cells</span>
+</div>
+<div class="specimen-list" role="group" aria-label="Select a cell size range">
+<button class="specimen" type="button" data-cell="bacteria" aria-pressed="true"><strong>Many bacteria</strong><small>about 0.1–5 μm across</small></button>
+<button class="specimen" type="button" data-cell="cells" aria-pressed="false"><strong>Typical plant and animal cells</strong><small>about 10–100 μm across</small></button>
+</div>
+<div class="scale-readout" id="scale-readout" role="status" aria-live="polite"></div>
+</section>
+
+<section class="scale-panel" aria-labelledby="remember-title">
+<h2 id="remember-title">Keep the units straight</h2>
+<p>One centimetre equals <strong>10,000 μm</strong>. A micrometre is one millionth of a metre. Cell diagrams in your notes are enlarged so the parts are visible; their drawings are not all to the same scale.</p>
+<p class="scale-note">These size ranges are approximate. Cells in the same group can differ, and diagrams are models that help us compare—not photographs of every cell.</p>
+</section>
+</main>
+<script>
+(function(){
+"use strict";
+const svg=document.getElementById("scale-chart");
+const slider=document.getElementById("scale-zoom");
+const output=document.getElementById("zoom-value");
+const readout=document.getElementById("scale-readout");
+const min=0.1, maxValues=[10,100,1000];
+let selected="bacteria";
+const rows=[
+  {id:"bacteria",label:"Many bacteria",start:0.1,end:5,color:"var(--accent-ink)"},
+  {id:"cells",label:"Typical plant and animal cells",start:10,end:100,color:"var(--accent)"}
+];
+const fmt=n=>Number(n).toLocaleString("en-CA");
+function render(){
+  const max=maxValues[Number(slider.value)]||1000;
+  const left=168,right=790,top=42,axisY=193;
+  const logMin=Math.log10(min),logMax=Math.log10(max);
+  const x=v=>left+(Math.log10(v)-logMin)/(logMax-logMin)*(right-left);
+  output.value="0.1–"+fmt(max)+" μm";
+  output.textContent=output.value;
+  const ticks=[0.1,1,10,100,1000].filter(v=>v<=max);
+  let markup='<title id="scale-svg-title">Approximate cell-size ranges on a logarithmic scale</title><desc id="scale-svg-desc">Bacteria range from about 0.1 to 5 micrometres. Typical plant and animal cells range from about 10 to 100 micrometres. Each tick is ten times larger than the previous tick.</desc>';
+  markup+='<line x1="'+left+'" y1="'+axisY+'" x2="'+right+'" y2="'+axisY+'" stroke="var(--rule)" stroke-width="2"/>';
+  ticks.forEach(v=>{
+    const px=x(v);
+    markup+='<line x1="'+px+'" y1="'+top+'" x2="'+px+'" y2="'+axisY+'" stroke="var(--rule)" stroke-width="1"/>';
+    markup+='<text x="'+px+'" y="'+(axisY+24)+'" text-anchor="middle" fill="var(--muted)" font-size="13">'+fmt(v)+'</text>';
+  });
+  markup+='<text x="'+((left+right)/2)+'" y="228" text-anchor="middle" fill="var(--muted)" font-size="13">Cell width in micrometres (μm)</text>';
+  rows.forEach((row,i)=>{
+    const y=73+i*58;
+    const start=x(Math.max(min,row.start)),end=x(Math.min(max,row.end));
+    const hidden=row.start>max;
+    markup+='<text x="0" y="'+(y+5)+'" fill="var(--ink)" font-size="14" font-weight="600">'+row.label+'</text>';
+    if(hidden){
+      markup+='<text x="'+right+'" y="'+(y+5)+'" text-anchor="end" fill="var(--muted)" font-size="13">Zoom out to see this range</text>';
+    }else{
+      const width=Math.max(8,end-start);
+      markup+='<rect x="'+start+'" y="'+(y-9)+'" width="'+width+'" height="18" rx="8" fill="'+row.color+'" opacity="'+(selected===row.id?"0.92":"0.48")+'"/>';
+      markup+='<line x1="'+start+'" y1="'+(y-14)+'" x2="'+start+'" y2="'+(y+14)+'" stroke="'+row.color+'" stroke-width="2"/>';
+      if(row.end<=max)markup+='<line x1="'+end+'" y1="'+(y-14)+'" x2="'+end+'" y2="'+(y+14)+'" stroke="'+row.color+'" stroke-width="2"/>';
+      markup+='<text x="'+Math.min(right-4,end+8)+'" y="'+(y+5)+'" fill="var(--ink)" font-size="12">'+fmt(row.start)+'–'+fmt(row.end)+' μm</text>';
+    }
+  });
+  svg.innerHTML=markup;
+  const info=rows.find(r=>r.id===selected);
+  readout.textContent=selected==="bacteria"
+    ?"Many bacteria are about 0.1–5 μm across. This range sits at the smaller end of the scale."
+    :"Typical plant and animal cells are about 10–100 μm across. This range is larger than the range shown for many bacteria.";
+}
+slider.addEventListener("input",render);
+document.querySelectorAll("[data-cell]").forEach(button=>button.addEventListener("click",()=>{
+  selected=button.dataset.cell;
+  document.querySelectorAll("[data-cell]").forEach(item=>item.setAttribute("aria-pressed",String(item===button)));
+  render();
+}));
+render();
+})();
+</script>
+</body>
+</html>
