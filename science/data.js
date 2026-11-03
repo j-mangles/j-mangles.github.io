@@ -133,6 +133,7 @@ window.HUB = {
          {q:"What did Hooke actually look at?", a:["Cork","Blood","Pond water"], c:0, why:"He saw the empty \"small rooms\" in cork."}
        ]},
       {id:"plant", n:"2", title:"Plant Cells and Their Organelles",
+       html:'<p><a class="btn" href="plant-cell-3d.html">Explore inside a plant cell in 3D</a></p>',
        big:"A cell is like a factory with specialized parts. Plant cells have nine major organelles, including two animal cells don't have.",
        notes:[
          "Organelles are the specialized parts inside a cell, and each has a job.",
