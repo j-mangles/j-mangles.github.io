@@ -81,7 +81,7 @@ const svg=document.getElementById("scale-chart");
 const slider=document.getElementById("scale-zoom");
 const output=document.getElementById("zoom-value");
 const readout=document.getElementById("scale-readout");
-const min=0.1, maxValues=[10,100,1000];
+const min=0.1, maxValues=[100,1000,10000];
 let selected="bacteria";
 const rows=[
   {id:"bacteria",label:"Many bacteria",start:0.1,end:5,color:"var(--accent-ink)"},
@@ -90,7 +90,7 @@ const rows=[
 const fmt=n=>Number(n).toLocaleString("en-CA");
 function render(){
   const max=maxValues[Number(slider.value)]||1000;
-  const left=168,right=790,top=42,axisY=193;
+  const left=242,right=790,top=42,axisY=193;
   const logMin=Math.log10(min),logMax=Math.log10(max);
   const x=v=>left+(Math.log10(v)-logMin)/(logMax-logMin)*(right-left);
   output.value="0.1–"+fmt(max)+" μm";
