@@ -195,7 +195,7 @@ function mount(el){
  '@media print{.bs-tabs,.bs-actions,.bs-organ-list,.bs-marker{display:none!important}.bs-layout{grid-template-columns:1fr 1fr}.bs-figure{background:white;border:1px solid #777}.bs-assignment textarea{min-height:75px;border:0;border-bottom:1px solid #555}.bs-homeostasis-intro{display:none}}'+
  '</style>'+
  '<h2 id="bs-title">Interactive Human Body Systems Model</h2>'+
- '<p class="bs-intro">Choose a system, then select an organ in the model or its list. The diagram shows approximate positions and relationships; it is not to scale.</p>'+
+ '<p class="bs-intro">Explore all 12 systems from Topic 5. The four systems studied in detail in Topic 6 and the circulatory system from Topic 7 include richer organ descriptions and guided pathways. Choose a system, then select an organ in the model or its list. Approximate positions are not to scale.</p>'+
  '<div class="bs-tabs" id="bs-tabs" role="group" aria-label="Choose a body system"></div>'+
  '<div class="bs-layout"><figure class="bs-figure"><svg class="bs-svg" id="bs-svg" viewBox="0 0 440 590" role="group" aria-label="Interactive simplified human body diagram"></svg><figcaption class="bs-caption">Select a numbered marker or an organ name. The same choices are available by keyboard.</figcaption></figure>'+
  '<div class="bs-side"><div class="bs-summary" aria-live="polite"><h3 id="bs-system-name">Choose a system</h3><p id="bs-system-job">Its organs work together to do a job.</p></div><div class="bs-system-detail" id="bs-system-more"></div>'+
@@ -291,11 +291,21 @@ function mount(el){
  }
  function stepProcess(delta){stepIndex=Math.max(0,Math.min(currentProcess.steps.length-1,stepIndex+delta));showProcessStep();}
  const tabs=el.querySelector("#bs-tabs");
- tabs.innerHTML='<button type="button" data-system="all" aria-pressed="true">All</button>'+systems.map(s=>'<button type="button" data-system="'+escape(s.id)+'" aria-pressed="false">'+escape(s.name)+(s.bridge?' · Topic 7':'')+'</button>').join("");
- tabs.querySelectorAll("[data-system]").forEach(b=>b.addEventListener("click",()=>chooseSystem(b.dataset.system)));
- 
- const storageKey="science-body-systems-assignment-v1";
- const fields=["bs-student-name","bs-system-choice","bs-organ-answer","bs-connection-answer","bs-homeostasis-answer"];
+ tabs.innerHTML='<button type="button" data-system="all" aria-pressed="true">All</button>'+systems.map(s=>'<button type="button" data-system="'+escape(s.id)+'" aria-pressed="false">'+escape(s.name)+(s.bridge?' · Topic 7':s.overview?' · Topic 5':'')+'</button>').join("");
+ tabs.querySelectorAll("[data-system]").forEach(b=>b.addEventListener("click",()=>{stopTrace();chooseSystem(b.dataset.system);}));
+ const processChoice=el.querySelector("#bs-process-choice");
+ processChoice.innerHTML=processes.map(p=>'<option value="'+escape(p.id)+'">'+escape(p.title)+'</option>').join("");
+ processChoice.addEventListener("change",()=>setProcess(processChoice.value));
+ el.querySelector("#bs-step-back").addEventListener("click",()=>stepProcess(-1));
+ el.querySelector("#bs-step-next").addEventListener("click",()=>stepProcess(1));
+ el.querySelector("#bs-step-play").addEventListener("click",()=>{
+  if(playTimer){stopTrace();el.querySelector("#bs-process-status").textContent="Trace paused. Continue with Next step or Play trace.";return;}
+  if(stepIndex===currentProcess.steps.length-1)stepIndex=-1;
+  const button=el.querySelector("#bs-step-play");button.textContent="Pause trace";
+  playTimer=setInterval(()=>{if(stepIndex>=currentProcess.steps.length-1){stopTrace();el.querySelector("#bs-process-status").textContent="Trace complete. Choose another process or try its quick check.";return;}stepProcess(1);},2300);
+ });
+ const storageKey="science-body-systems-assignment-v2";
+ const fields=["bs-student-name","bs-system-choice","bs-organ-answer","bs-assignment-process","bs-process-answer","bs-connection-answer","bs-homeostasis-answer","bs-system-network-answer"];
  function load(){
   try{const raw=localStorage.getItem(storageKey);if(raw){const data=JSON.parse(raw);fields.forEach(id=>{if(typeof data[id]==="string")el.querySelector("#"+id).value=data[id];});return true;}}
   catch(e){}
