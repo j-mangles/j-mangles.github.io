@@ -132,6 +132,25 @@ function mount(el){
  '.bs-organ-detail{min-height:88px;padding:12px 14px;border-radius:var(--radius);background:var(--soft)}'+
  '.bs-organ-detail p{margin:4px 0}'+
  '.bs-bridge{font-size:13px;color:var(--muted);margin-top:8px}'+
+ '.bs-system-detail{padding:13px 15px;border-left:4px solid var(--accent);background:var(--soft);border-radius:0 var(--radius) var(--radius) 0;margin:12px 0}'+
+ '.bs-system-detail p{margin:0}'+
+ '.bs-process{margin-top:26px;padding:20px 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}'+
+ '.bs-process-head{display:flex;align-items:end;justify-content:space-between;gap:18px;flex-wrap:wrap}'+
+ '.bs-process-head h2{margin:0 0 6px}'+
+ '.bs-process-picker{min-width:min(100%,260px);font-weight:650}'+
+ '.bs-process-picker select{display:block;width:100%;margin-top:5px;min-height:42px;padding:8px 10px;font:inherit;color:var(--ink);background:var(--paper);border:1px solid var(--rule);border-radius:var(--btn-radius,8px)}'+
+ '.bs-process-card{margin-top:14px;padding:16px;background:var(--soft);border:1px solid var(--rule);border-radius:var(--radius)}'+
+ '.bs-process-meta{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;color:var(--muted);font-size:13px;font-weight:650}'+
+ '.bs-process-card h3{font-size:20px;margin:10px 0 6px}'+
+ '.bs-process-card p{min-height:72px;margin:0;max-width:75ch}'+
+ '.bs-process-controls{display:flex;flex-wrap:wrap;gap:8px;margin-top:15px}'+
+ '.bs-process-controls button:disabled{opacity:.5;cursor:not-allowed}'+
+ '.bs-check{margin-top:15px;padding:14px 16px;border:1px solid var(--rule);border-radius:var(--radius)}'+
+ '.bs-check h3{margin:0 0 8px;font-size:16px}'+
+ '.bs-check-options{display:flex;flex-wrap:wrap;gap:8px}'+
+ '.bs-check-options button{font:inherit;color:var(--ink);background:var(--paper);border:1px solid var(--rule);border-radius:var(--btn-radius,8px);padding:8px 12px;min-height:42px;cursor:pointer;text-align:left}'+
+ '.bs-check-options button[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}'+
+ '.bs-check-feedback{min-height:24px;font-weight:650;margin:10px 0 0}'+
  '.bs-assignment{margin-top:22px;padding-top:19px;border-top:1px solid var(--rule)}'+
  '.bs-assignment-intro{color:var(--muted);max-width:70ch}'+
  '.bs-assignment label{display:block;font-weight:650;margin:14px 0 6px}'+
@@ -150,10 +169,11 @@ function mount(el){
  '<p class="bs-intro">Choose a system, then select an organ in the model or its list. The diagram shows approximate positions and relationships; it is not to scale.</p>'+
  '<div class="bs-tabs" id="bs-tabs" role="group" aria-label="Choose a body system"></div>'+
  '<div class="bs-layout"><figure class="bs-figure"><svg class="bs-svg" id="bs-svg" viewBox="0 0 440 590" role="group" aria-label="Interactive simplified human body diagram"></svg><figcaption class="bs-caption">Select a numbered marker or an organ name. The same choices are available by keyboard.</figcaption></figure>'+
- '<div class="bs-side"><div class="bs-summary" aria-live="polite"><h3 id="bs-system-name">Choose a system</h3><p id="bs-system-job">Its organs work together to do a job.</p></div>'+
+ '<div class="bs-side"><div class="bs-summary" aria-live="polite"><h3 id="bs-system-name">Choose a system</h3><p id="bs-system-job">Its organs work together to do a job.</p></div><div class="bs-system-detail" id="bs-system-more"></div>'+
  '<h3>Organs in this system</h3><div class="bs-organ-list" id="bs-organs" role="group" aria-label="Organs"></div>'+
  '<div class="bs-organ-detail" id="bs-organ-detail" aria-live="polite"><b>Select an organ</b><p>Its job will appear here.</p></div>'+
  '<p class="bs-bridge" id="bs-bridge"></p></div></div>'+
+ '<div class="bs-process" aria-labelledby="bs-process-title"><div class="bs-process-head"><div><h2 id="bs-process-title">Trace a body process</h2><p class="bs-assignment-intro">Choose a pathway, then move through it one step at a time. Watch the highlighted system and organ change as you follow the connections.</p></div><label class="bs-process-picker" for="bs-process-choice">Choose a process<select id="bs-process-choice"></select></label></div><div class="bs-process-card"><div class="bs-process-meta"><span id="bs-process-count"></span><span id="bs-process-systems"></span></div><h3 id="bs-step-title"></h3><p id="bs-step-text" aria-live="polite"></p><div class="bs-process-controls"><button type="button" class="btn ghost" id="bs-step-back">← Previous step</button><button type="button" class="btn" id="bs-step-play">Play trace</button><button type="button" class="btn ghost" id="bs-step-next">Next step →</button></div></div><div class="bs-check" id="bs-process-check"></div><p class="bs-footnote" id="bs-process-status" role="status" aria-live="polite"></p></div>'+
  '<div class="bs-assignment"><h2>Digital assignment: Systems at work</h2>'+
  '<p class="bs-assignment-intro">Use the model and your booklet to answer. Your writing saves in this browser on this device. It is not sent to your teacher; download or print your answers to submit using the class directions.</p>'+
  '<label for="bs-student-name">Name (optional)</label><input id="bs-student-name" type="text" autocomplete="name">'+
