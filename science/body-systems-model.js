@@ -198,7 +198,7 @@ function mount(el){
  '.bs-homeostasis-intro{border-top:1px solid var(--rule);margin-top:22px;padding-top:20px}'+
  '@media(max-width:720px){.bs-layout{grid-template-columns:1fr}.bs-figure{max-width:520px;margin:0 auto;width:100%}}'+
  '@media(prefers-reduced-motion:reduce){.bs-model *{scroll-behavior:auto!important}}'+
- '@media print{.bs-tabs,.bs-actions,.bs-organ-list,.bs-marker{display:none!important}.bs-layout{grid-template-columns:1fr 1fr}.bs-figure{background:white;border:1px solid #777}.bs-assignment textarea{min-height:75px;border:0;border-bottom:1px solid #555}.bs-homeostasis-intro{display:none}}'+
+ '@media print{.bs-tabs,.bs-actions,.bs-organ-list,.bs-marker,.bs-process-controls,.bs-check-options{display:none!important}.bs-layout{grid-template-columns:1fr 1fr}.bs-figure{background:white;border:1px solid #777}.bs-assignment textarea{min-height:75px;border:0;border-bottom:1px solid #555}.bs-homeostasis-intro{display:none}}'+
  '</style>'+
  '<h2 id="bs-title">Interactive Human Body Systems Model</h2>'+
  '<p class="bs-intro">Explore all 12 systems from Topic 5. The four systems studied in detail in Topic 6 and the circulatory system from Topic 7 include richer organ descriptions and guided pathways. Choose a system, then select an organ in the model or its list. Approximate positions are not to scale.</p>'+
@@ -359,15 +359,19 @@ function mount(el){
   el.querySelector("#bs-status").textContent="Assignment downloaded. Submit it using your teacher's class directions.";
  }
  load();
- fields.forEach(id=>el.querySelector("#"+id).addEventListener("input",save));
+ const assignmentProcess=el.querySelector("#bs-assignment-process");
+ setProcess(assignmentProcess.value||"food");
+ fields.forEach(id=>{const field=el.querySelector("#"+id),eventName=field.tagName==="SELECT"?"change":"input";field.addEventListener(eventName,()=>{save();updateProgress();});});
+ assignmentProcess.addEventListener("change",()=>{setProcess(assignmentProcess.value);save();updateProgress();});
+ updateProgress();
  el.querySelector("#bs-download").addEventListener("click",()=>{save();download();});
  el.querySelector("#bs-print").addEventListener("click",()=>window.print());
  el.querySelector("#bs-clear").addEventListener("click",()=>{
   fields.forEach(id=>el.querySelector("#"+id).value="");
   try{localStorage.removeItem(storageKey);}catch(e){}
+  assignmentProcess.value="food";setProcess("food");updateProgress();
   el.querySelector("#bs-status").textContent="Saved answers cleared from this device.";
  });
- chooseSystem("digestive");
  const status=el.querySelector("#bs-status");
  if(status.textContent==="")status.textContent="Your answers stay in this browser. No online submission occurs.";
 }
