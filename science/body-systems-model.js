@@ -197,10 +197,10 @@ function mount(el){
   const choice=byId(systemId);
   return ["Science · Cells & Systems — Digital Assignment","Systems at work","Name: "+(el.querySelector("#bs-student-name").value.trim()||"________________"),
    "1. System: "+(choice?choice.name+" system":"not selected"),
-   "Two organs and one job each:\\n"+(el.querySelector("#bs-organ-answer").value.trim()||""),
-   "2. How respiratory and circulatory systems work together:\\n"+(el.querySelector("#bs-connection-answer").value.trim()||""),
-   "3. How a system helps keep the body stable:\\n"+(el.querySelector("#bs-homeostasis-answer").value.trim()||"")
-  ].join("\\n\\n")+"\\n";
+   "Two organs and one job each:\n"+(el.querySelector("#bs-organ-answer").value.trim()||""),
+   "2. How respiratory and circulatory systems work together:\n"+(el.querySelector("#bs-connection-answer").value.trim()||""),
+   "3. How a system helps keep the body stable:\n"+(el.querySelector("#bs-homeostasis-answer").value.trim()||"")
+  ].join("\n\n")+"\\n";
  }
  function download(){
   const blob=new Blob([report()],{type:"text/plain;charset=utf-8"}),url=URL.createObjectURL(blob);
