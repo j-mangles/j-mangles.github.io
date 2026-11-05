@@ -187,7 +187,7 @@ function mount(el){
  '<p class="bs-footnote">The interactive diagrams simplify anatomy for Grade 8 learning. Use the Systems booklet and class diagrams for the full set of details.</p>'+
  '<div class="bs-homeostasis-intro" id="bs-homeostasis-intro"><p class="bs-intro"><b>Continue with the Homeostasis Lab:</b> make a prediction, change a condition, and compare how feedback helps keep body temperature near its set point.</p></div>'+
  '</section>';
- let active="all",selected=null;
+ let active="all",selected=null,currentProcess=processes[0],stepIndex=0,selectedProcessAnswer=-1,playTimer=null;
  const byId=id=>systems.find(s=>s.id===id);
  const visibleSystems=()=>active==="all"?systems:systems.filter(s=>s.id===active);
  const visibleOrgans=()=>visibleSystems().flatMap(s=>s.organs.map(o=>({system:s,organ:o})));
@@ -214,6 +214,7 @@ function mount(el){
   const system=active==="all"?null:byId(active);
   el.querySelector("#bs-system-name").textContent=system?system.name+" system":"All systems";
   el.querySelector("#bs-system-job").textContent=system?system.job:"Choose a system to see its job and organs. The circulatory system is included as a bridge to the next lesson.";
+  el.querySelector("#bs-system-more").innerHTML=system?"<p>"+escape(systemMore[system.id])+"</p>":"<p>Select a system to explore its parts, overall job, and connections with other systems.</p>";
   el.querySelector("#bs-bridge").textContent=system&&system.bridge?"Bridge to Topic 7: the heart and blood vessels move blood, carrying oxygen and nutrients to cells and carrying wastes away.":"";
   const detail=selected?visibleOrgans().find(x=>x.organ.id===selected):null;
   const detailEl=el.querySelector("#bs-organ-detail");
@@ -234,6 +235,32 @@ function mount(el){
   el.querySelectorAll("#bs-tabs [data-system]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.system===active)));
   diagram();renderDetail();
  }
+ function stopTrace(){
+  if(playTimer){clearInterval(playTimer);playTimer=null;}
+  const play=el.querySelector("#bs-step-play");if(play)play.textContent="Play trace";
+ }
+ function renderCheck(){
+  const check=currentProcess.check,box=el.querySelector("#bs-process-check");
+  box.innerHTML='<h3>Quick check</h3><p>'+escape(check.q)+'</p><div class="bs-check-options" role="group" aria-label="Answer the quick check">'+check.options.map((option,i)=>'<button type="button" data-answer="'+i+'" aria-pressed="'+(selectedProcessAnswer===i)+'">'+escape(option)+'</button>').join("")+'</div><p class="bs-check-feedback" id="bs-check-feedback" role="status" aria-live="polite">'+(selectedProcessAnswer<0?"Choose an answer to check your understanding.":selectedProcessAnswer===check.answer?"That’s right. "+escape(check.why):"Not quite. Revisit the steps and try again.")+'</p>';
+  box.querySelectorAll("[data-answer]").forEach(button=>button.addEventListener("click",()=>{selectedProcessAnswer=Number(button.dataset.answer);renderCheck();}));
+ }
+ function showProcessStep(){
+  const step=currentProcess.steps[stepIndex];active=step.system;selected=step.organ;
+  el.querySelectorAll("#bs-tabs [data-system]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.system===active)));
+  diagram();renderDetail();
+  el.querySelector("#bs-process-count").textContent="Step "+(stepIndex+1)+" of "+currentProcess.steps.length;
+  const involved=[...new Set(currentProcess.steps.map(s=>byId(s.system).name))];
+  el.querySelector("#bs-process-systems").textContent="Systems involved: "+involved.join(" · ");
+  el.querySelector("#bs-step-title").textContent=step.title;el.querySelector("#bs-step-text").textContent=step.text;
+  el.querySelector("#bs-step-back").disabled=stepIndex===0;
+  el.querySelector("#bs-step-next").disabled=stepIndex===currentProcess.steps.length-1;
+  el.querySelector("#bs-process-status").textContent="Highlighted in the model: "+byId(step.system).name+" system · "+step.organ.replace(/-/g," ");
+ }
+ function setProcess(id){
+  stopTrace();currentProcess=processes.find(p=>p.id===id)||processes[0];stepIndex=0;selectedProcessAnswer=-1;
+  el.querySelector("#bs-process-choice").value=currentProcess.id;renderCheck();showProcessStep();
+ }
+ function stepProcess(delta){stepIndex=Math.max(0,Math.min(currentProcess.steps.length-1,stepIndex+delta));showProcessStep();}
  const tabs=el.querySelector("#bs-tabs");
  tabs.innerHTML='<button type="button" data-system="all" aria-pressed="true">All</button>'+systems.map(s=>'<button type="button" data-system="'+escape(s.id)+'" aria-pressed="false">'+escape(s.name)+(s.bridge?' · Topic 7':'')+'</button>').join("");
  tabs.querySelectorAll("[data-system]").forEach(b=>b.addEventListener("click",()=>chooseSystem(b.dataset.system)));
