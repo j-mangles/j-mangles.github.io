@@ -217,7 +217,7 @@ function mount(el){
   try{localStorage.removeItem(storageKey);}catch(e){}
   el.querySelector("#bs-status").textContent="Saved answers cleared from this device.";
  });
- chooseSystem("all");
+ chooseSystem("digestive");
  const status=el.querySelector("#bs-status");
  if(status.textContent==="")status.textContent="Your answers stay in this browser. No online submission occurs.";
 }
