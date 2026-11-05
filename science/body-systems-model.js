@@ -170,6 +170,13 @@ function mount(el){
  '.bs-bridge{font-size:13px;color:var(--muted);margin-top:8px}'+
  '.bs-system-detail{padding:13px 15px;border-left:4px solid var(--accent);background:var(--soft);border-radius:0 var(--radius) var(--radius) 0;margin:12px 0}'+
  '.bs-system-detail p{margin:0}'+
+ '.bs-blood-panel{margin:12px 0;padding:13px 15px;border:1px solid var(--rule);border-radius:var(--radius)}'+
+ '.bs-blood-panel[hidden]{display:none}'+
+ '.bs-blood-panel h4{margin:0 0 9px;font-size:16px}'+
+ '.bs-blood-panel p{margin:10px 0 0}'+
+ '.bs-blood-tabs{display:flex;flex-wrap:wrap;gap:6px}'+
+ '.bs-blood-tabs button{font:inherit;color:var(--ink);background:var(--paper);border:1px solid var(--rule);border-radius:var(--btn-radius,8px);padding:7px 10px;min-height:40px;cursor:pointer}'+
+ '.bs-blood-tabs button[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);font-weight:700}'+
  '.bs-process{margin-top:26px;padding:20px 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}'+
  '.bs-process-head{display:flex;align-items:end;justify-content:space-between;gap:18px;flex-wrap:wrap}'+
  '.bs-process-head h2{margin:0 0 6px}'+
@@ -215,7 +222,7 @@ function mount(el){
  '<h3>Organs in this system</h3><div class="bs-organ-list" id="bs-organs" role="group" aria-label="Organs"></div>'+
  '<div class="bs-organ-detail" id="bs-organ-detail" aria-live="polite"><b>Select an organ</b><p>Its job will appear here.</p></div>'+
  '<p class="bs-bridge" id="bs-bridge"></p></div></div>'+
- '<div class="bs-process" aria-labelledby="bs-process-title"><div class="bs-process-head"><div><h2 id="bs-process-title">Trace a body process</h2><p class="bs-assignment-intro">Choose a pathway, then move through it one step at a time. Watch the highlighted system and organ change as you follow the connections.</p></div><label class="bs-process-picker" for="bs-process-choice">Choose a process<select id="bs-process-choice"></select></label></div><div class="bs-process-card"><div class="bs-process-meta"><span id="bs-process-count"></span><span id="bs-process-systems"></span></div><h3 id="bs-step-title"></h3><p id="bs-step-text" aria-live="polite"></p><div class="bs-process-controls"><button type="button" class="btn ghost" id="bs-step-back">← Previous step</button><button type="button" class="btn" id="bs-step-play">Play trace</button><button type="button" class="btn ghost" id="bs-step-next">Next step →</button></div></div><div class="bs-check" id="bs-process-check"></div><p class="bs-footnote" id="bs-process-status" role="status" aria-live="polite"></p></div>'+
+ '<div class="bs-process" aria-labelledby="bs-process-title"><div class="bs-process-head"><div><h2 id="bs-process-title">Trace a body process</h2><p class="bs-assignment-intro">Choose a pathway, then move through it one step at a time. Watch the highlighted system and organ change as you follow the connections.</p></div><label class="bs-process-picker" for="bs-process-choice">Choose a process<select id="bs-process-choice"></select></label></div><div class="bs-process-card"><div class="bs-process-meta"><span id="bs-process-count"></span><span id="bs-process-systems"></span></div><p id="bs-process-summary"></p><h3 id="bs-step-title"></h3><p id="bs-step-text" aria-live="polite"></p><div class="bs-process-controls"><button type="button" class="btn ghost" id="bs-step-back">← Previous step</button><button type="button" class="btn" id="bs-step-play">Play trace</button><button type="button" class="btn ghost" id="bs-step-next">Next step →</button></div></div><div class="bs-check" id="bs-process-check"></div><p class="bs-footnote" id="bs-process-status" role="status" aria-live="polite"></p></div>'+
  '<div class="bs-assignment"><h2>Digital assignment: Systems at work</h2>'+
  '<p class="bs-assignment-intro">Use the model, process traces, and Systems booklet. Plan for about 25–35 minutes. Your answers save in this browser on this device; nothing is sent online. Download or print your completed work and submit it using your teacher’s class directions.</p>'+
  '<div class="bs-progress"><div class="bs-progress-label"><b>Assignment progress</b><span id="bs-progress-count">0 of 5 sections complete</span></div><div class="bs-progress-track" id="bs-progress-track" role="progressbar" aria-label="Assignment progress" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0"><span id="bs-progress-fill"></span></div></div>'+
@@ -237,10 +244,10 @@ function mount(el){
  '<div class="bs-homeostasis-intro" id="bs-homeostasis-intro"><p class="bs-intro"><b>Continue with the Homeostasis Lab:</b> make a prediction, change a condition, and compare how feedback helps keep body temperature near its set point.</p></div>'+
  '</section>';
  let active="all",selected=null,currentProcess=processes[0],stepIndex=0,selectedProcessAnswer=-1,playTimer=null;
- const byId=id=>systems.find(s=>s.id===id);
+ const byId=id=>systems.find(s=>s.id===id);\nconst bloodParts={plasma:"Plasma is the liquid part of blood. It carries water and dissolved substances, including nutrients and wastes.",red:"Red blood cells contain hemoglobin, a protein that helps carry oxygen from the lungs to body cells and carbon dioxide back toward the lungs.",white:"White blood cells help defend the body against infection and disease. They are part of the immune system.",platelets:"Platelets help stop bleeding by helping blood form clots when a blood vessel is damaged."};\nfunction renderBlood(id){\n el.querySelector("#bs-blood-detail").textContent=bloodParts[id];\n el.querySelectorAll("[data-blood]").forEach(button=>button.setAttribute("aria-pressed",String(button.dataset.blood===id)));\n}
  const visibleSystems=()=>active==="all"?systems:systems.filter(s=>s.id===active);
  const visibleOrgans=()=>visibleSystems().flatMap(s=>s.organs.map(o=>({system:s,organ:o})));
- const svg=el.querySelector("#bs-svg");
+ const svg=el.querySelector("#bs-svg");\nel.querySelectorAll("[data-blood]").forEach(button=>button.addEventListener("click",()=>renderBlood(button.dataset.blood)));\nrenderBlood("plasma");
  function diagram(){
   const people='<circle cx="218" cy="68" r="32" class="bs-body"/>'+
    '<path d="M187 106 Q169 108 155 121 Q145 134 149 166 L158 218 L143 286 Q141 297 151 300 L161 300 L177 251 L178 337 L169 518 Q168 534 182 536 Q196 537 198 520 L218 369 L238 520 Q240 537 254 536 Q268 534 267 518 L258 337 L259 251 L275 300 L285 300 Q296 297 293 286 L278 218 L287 166 Q291 134 281 121 Q267 108 249 106 Z" class="bs-body"/>'+
@@ -263,7 +270,7 @@ function mount(el){
   const system=active==="all"?null:byId(active);
   el.querySelector("#bs-system-name").textContent=system?system.name+" system":"All systems";
   el.querySelector("#bs-system-job").textContent=system?system.job:"Choose a system to see its job and organs. The circulatory system is included as a bridge to the next lesson.";
-  el.querySelector("#bs-system-more").innerHTML=system?"<p>"+escape(systemMore[system.id])+"</p>":"<p>Select a system to explore its parts, overall job, and connections with other systems.</p>";
+  el.querySelector("#bs-system-more").innerHTML=system?"<p>"+escape(systemMore[system.id])+"</p>":"<p>Select a system to explore its parts, overall job, and connections with other systems.</p>";\n  el.querySelector("#bs-blood-panel").hidden=!(system&&system.id==="circulatory");
   el.querySelector("#bs-bridge").textContent=system&&system.bridge?"Bridge to Topic 7: the heart and blood vessels move blood, carrying oxygen and nutrients to cells and carrying wastes away.":"";
   const detail=selected?visibleOrgans().find(x=>x.organ.id===selected):null;
   const detailEl=el.querySelector("#bs-organ-detail");
@@ -297,7 +304,7 @@ function mount(el){
   const step=currentProcess.steps[stepIndex];active=step.system;selected=step.organ;
   el.querySelectorAll("#bs-tabs [data-system]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.system===active)));
   diagram();renderDetail();
-  el.querySelector("#bs-process-count").textContent="Step "+(stepIndex+1)+" of "+currentProcess.steps.length;
+  el.querySelector("#bs-process-count").textContent="Step "+(stepIndex+1)+" of "+currentProcess.steps.length;\n  el.querySelector("#bs-process-summary").textContent=currentProcess.summary;
   const involved=[...new Set(currentProcess.steps.map(s=>byId(s.system).name))];
   el.querySelector("#bs-process-systems").textContent="Systems involved: "+involved.join(" · ");
   el.querySelector("#bs-step-title").textContent=step.title;el.querySelector("#bs-step-text").textContent=step.text;
