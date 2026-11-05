@@ -30,8 +30,15 @@ const systems=[
  {id:"circulatory",name:"Circulatory",job:"Moves blood around the body, delivering nutrients and oxygen and carrying away wastes.",bridge:true,organs:[
   {id:"heart",name:"Heart",job:"A muscular organ that pumps blood through the body's blood vessels."},
   {id:"blood-vessels",name:"Blood vessels",job:"Arteries, veins and capillaries carry blood through the body; capillaries exchange materials with cells."}
- ]}
-];
+ ]},
+ {id:"endocrine",name:"Endocrine",job:"Uses hormones—chemical messengers carried in the blood—to coordinate processes such as growth and metabolism.",overview:true,organs:[{id:"endocrine-glands",name:"Endocrine glands",job:"Glands release hormones into the blood. Different hormones carry different messages to target parts of the body."}]},
+ {id:"immune",name:"Immune",job:"Defends the body against pathogens and helps protect it from disease.",overview:true,organs:[{id:"immune-cells",name:"White blood cells",job:"White blood cells help recognize and fight pathogens. The immune system also includes structures such as bone marrow and the thymus."}]},
+ {id:"lymphatic",name:"Lymphatic",job:"Returns excess fluid from body tissues to the blood and supports immune defense.",overview:true,organs:[{id:"lymph-nodes",name:"Lymph nodes and vessels",job:"Lymph vessels carry lymph, a fluid from body tissues. Lymph nodes filter lymph and contain immune cells."}]},
+ {id:"muscular",name:"Muscular",job:"Muscles contract to move the body, hold posture, and produce heat.",overview:true,organs:[{id:"skeletal-muscles",name:"Skeletal muscles",job:"Skeletal muscles attach to bones and contract to move body parts. They work with the skeletal and nervous systems."}]},
+ {id:"reproductive",name:"Reproductive",job:"Produces sex cells and enables reproduction; reproductive organs and processes vary between individuals.",overview:true,organs:[{id:"reproductive-organs",name:"Reproductive organs",job:"Reproductive organs produce sex cells and support reproduction. The structures differ among individuals; this model shows a general body region only."}]},
+ {id:"skeletal",name:"Skeletal",job:"Supports and protects the body and works with muscles to enable movement.",overview:true,organs:[{id:"bones",name:"Bones and joints",job:"Bones support the body and protect some organs. Joints connect bones and allow movement. Bone marrow inside some bones makes blood cells."}]},
+ {id:"urinary",name:"Urinary",job:"Filters wastes from the blood and helps regulate the body's water balance.",overview:true,organs:[{id:"kidneys",name:"Kidneys",job:"The kidneys filter blood, remove wastes, and adjust how much water leaves the body in urine."},{id:"bladder",name:"Bladder",job:"The bladder stores urine until it leaves the body."}]}
+ ];
 const nodes=[
  {id:"mouth",system:"digestive",x:218,y:122},
  {id:"esophagus",system:"digestive",x:218,y:167},
@@ -49,6 +56,14 @@ const nodes=[
  {id:"lungs",system:"respiratory",x:218,y:193},
  {id:"heart",system:"circulatory",x:218,y:226},
  {id:"blood-vessels",system:"circulatory",x:276,y:278}
+ {id:"endocrine-glands",system:"endocrine",x:218,y:146},
+ {id:"immune-cells",system:"immune",x:165,y:240},
+ {id:"lymph-nodes",system:"lymphatic",x:276,y:180},
+ {id:"skeletal-muscles",system:"muscular",x:157,y:194},
+ {id:"reproductive-organs",system:"reproductive",x:218,y:353},
+ {id:"bones",system:"skeletal",x:218,y:425},
+ {id:"kidneys",system:"urinary",x:190,y:278},
+ {id:"bladder",system:"urinary",x:218,y:337}
 ];
 const processes=[
  {id:"food",title:"Trace a bite of food",summary:"Follow food from the mouth to the small intestine, then see how absorbed nutrients enter the blood.",steps:[
@@ -86,9 +101,23 @@ const systemMore={
  integumentary:"The integumentary system includes skin, hair, and nails. Skin forms a protective outer barrier and helps regulate temperature. Sweating and changes in blood flow near the skin help the body respond to temperature changes. The skin is the body's largest organ.",
  nervous:"The brain and spinal cord make up the central nervous system (CNS). The peripheral nervous system (PNS) is a network of nerves connecting the CNS to the rest of the body. Nerves carry information to the CNS and carry instructions back, helping coordinate responses.",
  respiratory:"The respiratory system moves air into and out of the lungs. Oxygen passes from the lungs into the blood, while carbon dioxide passes from the blood into the lungs to be exhaled. The circulatory system carries these gases between the lungs and body cells.",
- circulatory:"The heart pumps blood through blood vessels. Arteries carry blood away from the heart, veins carry blood toward it, and capillaries allow materials to exchange between blood and body cells. The circulatory system delivers oxygen and nutrients and carries some wastes away."
+ circulatory:"The heart pumps blood through blood vessels. Arteries carry blood away from the heart, veins carry blood toward it, and capillaries allow materials to exchange between blood and body cells. The circulatory system delivers oxygen and nutrients and carries some wastes away.",
+ endocrine:"Topic 5 overview: glands release hormones, chemical messengers that travel in blood and coordinate body processes. The endocrine and nervous systems both help coordinate the body, using different kinds of signals.",
+ immune:"Topic 5 overview: the immune system helps defend the body against pathogens. White blood cells and structures such as bone marrow and the thymus contribute to this defense.",
+ lymphatic:"Topic 5 overview: lymph vessels collect excess fluid from tissues and return it to the blood. Lymph nodes filter lymph and support immune defense. The lymphatic and immune systems are closely connected.",
+ muscular:"Topic 5 overview: muscles contract to create movement. Skeletal muscles work with bones and receive signals from nerves; smooth and cardiac muscle perform other jobs inside the body.",
+ reproductive:"Topic 5 overview: reproductive systems produce sex cells and enable reproduction. Anatomy varies among individuals; this model provides a respectful, general overview.",
+ skeletal:"Topic 5 overview: bones support the body, protect organs, and work with muscles to create movement. Bone marrow inside some bones produces blood cells.",
+ urinary:"Topic 5 overview: kidneys filter blood and remove wastes in urine. By adjusting how much water leaves in urine, the urinary system helps the body maintain fluid balance."
 };
 const paths={
+ endocrine:'<path d="M218 70 L218 145 M218 145 L244 216" class="bs-path"/>',
+ immune:'<path d="M165 240 C190 225 245 225 270 240 M190 278 C210 266 230 266 250 278" class="bs-path"/>',
+ lymphatic:'<path d="M218 145 L218 205 L190 280 M218 205 L246 280 M190 280 L218 338 L246 280" class="bs-path"/>',
+ muscular:'<path d="M157 178 Q169 185 173 205 M278 178 Q266 185 262 205 M190 225 Q218 245 246 225 M195 345 L187 500 M241 345 L249 500" class="bs-organ"/>',
+ reproductive:'<path d="M218 333 L198 354 M218 333 L238 354" class="bs-path"/>',
+ skeletal:'<path d="M218 40 L218 360 M190 150 Q218 130 246 150 M184 165 Q218 145 252 165 M180 182 Q218 162 256 182 M218 360 L195 520 M218 360 L241 520 M188 150 L155 280 M248 150 L281 280" class="bs-path"/>',
+ urinary:'<path d="M190 267 C177 270 180 291 190 297 C200 301 203 286 197 273 Z M246 267 C259 270 256 291 246 297 C236 301 233 286 239 273 Z M192 295 L218 333 L244 295" class="bs-organ"/>',
  digestive:'<path d="M218 128 C216 151 219 165 218 178" class="bs-path"/><path d="M213 178 C200 187 193 198 190 211 C185 230 199 242 213 237 C225 234 229 219 221 211 C215 203 206 211 208 219" class="bs-path"/><path d="M230 219 C252 213 258 226 251 238 C246 247 233 247 229 257" class="bs-path"/><path d="M196 260 C183 270 185 292 198 298 C210 304 228 299 239 300 C253 301 258 315 247 325 C236 335 207 329 197 337" class="bs-path"/>',
  integumentary:'<path d="M218 39 C196 39 184 54 184 76 C184 94 194 105 181 112 C159 118 149 130 150 158 L158 211 L143 290 Q141 303 152 306 L164 303 L174 260 L178 337 L171 517 Q170 533 184 535 Q197 536 199 520 L218 366 L237 520 Q239 536 252 535 Q266 533 265 517 L258 337 L262 260 L275 303 L287 306 Q299 303 293 290 L278 211 L286 158 C287 130 277 118 255 112 C242 105 252 94 252 76 C252 54 240 39 218 39 Z" class="bs-outline-highlight"/>',
  nervous:'<path d="M218 79 L218 341 M218 132 L186 164 L168 202 M218 132 L250 164 L268 202 M218 198 L184 232 L167 267 M218 198 L251 233 L270 269 M218 252 L190 296 L177 329 M218 252 L247 296 L260 329" class="bs-path"/>',
