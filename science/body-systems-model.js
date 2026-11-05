@@ -182,6 +182,12 @@ function mount(el){
  '.bs-check-feedback{min-height:24px;font-weight:650;margin:10px 0 0}'+
  '.bs-assignment{margin-top:22px;padding-top:19px;border-top:1px solid var(--rule)}'+
  '.bs-assignment-intro{color:var(--muted);max-width:70ch}'+
+ '.bs-progress{margin:18px 0;padding:12px 14px;background:var(--soft);border:1px solid var(--rule);border-radius:var(--radius)}'+
+ '.bs-progress-label{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:14px;margin-bottom:8px}'+
+ '.bs-progress-track{height:10px;overflow:hidden;background:var(--paper);border:1px solid var(--rule);border-radius:99px}'+
+ '.bs-progress-track span{display:block;height:100%;width:0;background:var(--accent);transition:width .2s ease}'+
+ '.bs-self-check{margin-top:18px;padding:14px 16px;background:var(--soft);border-radius:var(--radius)}'+
+ '.bs-self-check ul{margin:8px 0 0;padding-left:22px}'+
  '.bs-assignment label{display:block;font-weight:650;margin:14px 0 6px}'+
  '.bs-assignment input,.bs-assignment select,.bs-assignment textarea{width:100%;max-width:100%;min-height:42px;padding:9px 11px;font:inherit;color:var(--ink);background:var(--paper);border:1px solid var(--rule);border-radius:var(--btn-radius,8px)}'+
  '.bs-assignment textarea{min-height:92px;resize:vertical}'+
@@ -323,14 +329,27 @@ function mount(el){
   try{localStorage.setItem(storageKey,JSON.stringify(data));el.querySelector("#bs-status").textContent="Saved on this device.";return true;}
   catch(e){el.querySelector("#bs-status").textContent="Autosave is unavailable here. Download or print before leaving.";return false;}
  }
+ function updateProgress(){
+  const done=[
+   el.querySelector("#bs-system-choice").value&&el.querySelector("#bs-organ-answer").value.trim(),
+   el.querySelector("#bs-assignment-process").value&&el.querySelector("#bs-process-answer").value.trim(),
+   el.querySelector("#bs-connection-answer").value.trim(),
+   el.querySelector("#bs-homeostasis-answer").value.trim(),
+   el.querySelector("#bs-system-network-answer").value.trim()
+  ].filter(Boolean).length;
+  el.querySelector("#bs-progress-count").textContent=done+" of 5 sections complete";
+  const track=el.querySelector("#bs-progress-track");track.setAttribute("aria-valuenow",String(done));
+  el.querySelector("#bs-progress-fill").style.width=(done*20)+"%";
+ }
  function report(){
-  const systemId=el.querySelector("#bs-system-choice").value;
-  const choice=byId(systemId);
+  const choice=byId(el.querySelector("#bs-system-choice").value);
+  const path=processes.find(p=>p.id===el.querySelector("#bs-assignment-process").value);
   return ["Science · Cells & Systems — Digital Assignment","Systems at work","Name: "+(el.querySelector("#bs-student-name").value.trim()||"________________"),
-   "1. System: "+(choice?choice.name+" system":"not selected"),
-   "Two organs and one job each:\n"+(el.querySelector("#bs-organ-answer").value.trim()||""),
-   "2. How respiratory and circulatory systems work together:\n"+(el.querySelector("#bs-connection-answer").value.trim()||""),
-   "3. How a system helps keep the body stable:\n"+(el.querySelector("#bs-homeostasis-answer").value.trim()||"")
+   "1. Organ systems have jobs — "+(choice?choice.name+" system":"not selected")+"\n"+(el.querySelector("#bs-organ-answer").value.trim()||""),
+   "2. Trace a body process — "+(path?path.title:"")+"\n"+(el.querySelector("#bs-process-answer").value.trim()||""),
+   "3. Respiratory and circulatory teamwork\n"+(el.querySelector("#bs-connection-answer").value.trim()||""),
+   "4. Apply homeostasis\n"+(el.querySelector("#bs-homeostasis-answer").value.trim()||""),
+   "5. Connect two additional systems\n"+(el.querySelector("#bs-system-network-answer").value.trim()||"")
   ].join("\n\n")+"\n";
  }
  function download(){
