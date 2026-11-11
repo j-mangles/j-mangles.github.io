@@ -20,7 +20,7 @@ const activities=[
   ]},
   {title:"Interpret",intro:"Now connect movement across the membrane to what happens inside a living cell.",questions:[
    {id:"sc4",type:"choice",prompt:"Which process moves a substance from low concentration to high concentration using ATP?",options:["Simple diffusion","Active transport","Osmosis"],correct:1,why:"Active transport uses energy to move against a concentration gradient."},
-   {id:"sc5",type:"order",prompt:"Put the events in a sensible order when a plant cell is placed in a solution with less solute outside than inside.",items:["Water enters across the membrane","The central vacuole becomes fuller","Cell contents press against the cell wall","The cell becomes firm (turgid)"],correct:[0,1,2,3],why:"Water enters, increases pressure inside the cell, and the wall resists further expansion."},
+   {id:"sc5",type:"order",prompt:"Put the events in a sensible order when a plant cell is placed in a solution with less solute outside than inside.",items:["The cell becomes firm (turgid)","Water enters across the membrane","Cell contents press against the cell wall","The central vacuole becomes fuller"],correct:[1,3,2,0],why:"Water enters, increases pressure inside the cell, and the wall resists further expansion."},
    {id:"sc6",type:"text",prompt:"Why can a plant cell become firm as water enters while an animal cell may swell differently?",placeholder:"A plant cell has ... An animal cell ...",minWords:16}
   ]},
   {title:"Explain the evidence",intro:"A strong explanation includes a claim, an observation from the model and scientific reasoning.",questions:[
@@ -45,7 +45,7 @@ const activities=[
    {id:"ss3",type:"text",prompt:"Identify one advantage and one challenge of settling near these rivers.",placeholder:"Advantage: ... Challenge: ...",minWords:18}
   ]},
   {title:"Make a decision",intro:"The scenario is invented so you can practise using evidence, not memorize a historical answer.",questions:[
-   {id:"ss4",type:"order",prompt:"Place these developments in a logical possible sequence (not a claim that every city followed this exact order).",items:["People settle near a river","Farmers organize irrigation","Some people specialize in non-farming jobs","Leaders develop rules for shared resources"],correct:[0,1,2,3],why:"Reliable food production can support specialization and increasingly organized leadership."},
+   {id:"ss4",type:"order",prompt:"Place these developments in a logical possible sequence (not a claim that every city followed this exact order).",items:["Leaders develop rules for shared resources","Some people specialize in non-farming jobs","People settle near a river","Farmers organize irrigation"],correct:[2,3,1,0],why:"Reliable food production can support specialization and increasingly organized leadership."},
    {id:"ss5",type:"choice",prompt:"Which GRAPES category focuses most directly on the settlement leader's decision about grain contributions?",options:["Politics","Arts","Science"],correct:0,why:"Politics includes leadership, rules, power and decisions about shared resources."},
    {id:"ss6",type:"text",prompt:"Propose a fair canal-repair plan. Explain whose needs your plan considers and one possible downside.",placeholder:"I would ... This considers ... A challenge might be ...",minWords:30}
   ]},
@@ -104,7 +104,7 @@ const activities=[
    {id:"el3",type:"choice",prompt:"Which moment is the story's climax?",options:["The team begins working two afternoons earlier","Eva admits she deleted the photo-credit slide","Nia finds the photographs"],correct:1,why:"Eva's decision to speak up resolves the central choice she has been struggling with."}
   ]},
   {title:"Map the plot",intro:"Place four events in a logical plot sequence.",questions:[
-   {id:"el4",type:"order",prompt:"Put these major events in the order they occur in the story.",items:["Sam discovers the blank credit slide","Eva remembers deleting a slide","Eva admits her mistake","The group rebuilds the credits"],correct:[0,1,2,3],why:"The missing slide creates the problem, Eva recognizes the mistake, she makes a decision, and the group responds."},
+   {id:"el4",type:"order",prompt:"Put these major events in the order they occur in the story.",items:["The group rebuilds the credits","Eva admits her mistake","Sam discovers the blank credit slide","Eva remembers deleting a slide"],correct:[2,3,1,0],why:"The missing slide creates the problem, Eva recognizes the mistake, she makes a decision, and the group responds."},
    {id:"el5",type:"text",prompt:"In 2–3 sentences, explain how the ending changes the relationship between Eva and Nia.",placeholder:"At first ... By the end ...",minWords:22}
   ]},
   {title:"Answer, Evidence, Explain",intro:"A strong paragraph makes a point and proves it with a specific detail.",questions:[
@@ -128,7 +128,7 @@ const activities=[
   {title:"Separate facts and guesses",intro:"Treat an observation as something directly confirmed; an inference is an explanation added to the facts.",questions:[
    {id:"ct1",type:"choice",prompt:"Which statement is a directly reported observation?",options:["The basketball broke the case","A basketball was found near the case at 3:20","A student was careless"],correct:1,why:"The ball's location and time were reported. Its role in causing the crack was not."},
    {id:"ct2",type:"choice",prompt:"What kind of statement is “The basketball probably cracked the glass”?",options:["A proven fact","An inference","A direct measurement"],correct:1,why:"It is an explanation of the situation, but there is no observation confirming it."},
-   {id:"ct3",type:"order",prompt:"Put these reported events in time order.",items:["Photograph shows the crack at 3:10","Basketball found at 3:20","A bang is heard at 3:22","Crack noticed at 3:25"],correct:[0,1,2,3],why:"The photograph is earlier than all three other observations."}
+   {id:"ct3",type:"order",prompt:"Put these reported events in time order.",items:["A bang is heard at 3:22","Photograph shows the crack at 3:10","Crack noticed at 3:25","Basketball found at 3:20"],correct:[1,3,0,2],why:"The photograph is earlier than all three other observations."}
   ]},
   {title:"Revise the theory",intro:"Good investigators change their conclusions when the evidence changes.",questions:[
    {id:"ct4",type:"choice",prompt:"What does the 3:10 photograph rule out?",options:["The crack was first created by the 3:22 bang","Anyone entering the hallway that day","The possibility that the glass had a crack earlier"],correct:0,why:"The photograph confirms the crack existed before the 3:22 noise."},
