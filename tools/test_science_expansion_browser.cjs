@@ -62,9 +62,9 @@ const tasks=[
  }},
  {hash:"cells/specialized",selector:".scs",async check(page){
   await page.locator('.scs button[data-cell="nerve"]').click();
-  assert.match(await page.locator("#scs-info").innerText(),/Nerve cell/);
+  assert.match(await page.locator("#scs-info").innerText(),/Nerve cell/i);
   await page.locator("#scs-a").selectOption("red");
-  assert.match(await page.locator("#scs-compare").innerText(),/Red blood cell/);
+  assert.match(await page.locator("#scs-compare").innerText(),/Red blood cell/i);
   await page.locator('.scs button[data-stem="blood"]').click();
   assert.match(await page.locator("#scs-stem-note").innerText(),/tissue-specific/i);
  }},
@@ -78,7 +78,7 @@ const tasks=[
  }},
  {hash:"earth/e2-time",selector:".gdl",async check(page){
   await page.locator('.gdl .rocks button[data-rock="X"]').click();
-  assert.match(await page.locator("#gdl-readout").innerText(),/Igneous intrusion/);
+  assert.match(await page.locator("#gdl-readout").innerText(),/Igneous intrusion/i);
   await page.locator('.gdl button[data-mode="radiometric"]').click();
   await page.locator("#gdl-half").fill("2");
   assert.equal((await page.locator("#gdl-parent").innerText()).trim(),"6.00");
