@@ -11,6 +11,7 @@ on:
       - science/earthquake-lab.js
       - science/index.html
       - tools/test_science_expansion.cjs
+      - tools/test_science_expansion_browser.cjs
       - .github/workflows/test-science-expansion.yml
   pull_request:
     paths:
@@ -26,7 +27,7 @@ on:
   workflow_dispatch:
 jobs:
   science-check:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -37,3 +38,24 @@ jobs:
       - run: node tools/test_matter_unit.cjs
       - run: node tools/test_energy_light_unit.cjs
       - run: node tools/test_earth_unit.cjs
+      - name: Install browser QA dependency
+        run: npm install --no-save --no-package-lock playwright-core@1.56.1
+      - name: Start local website
+        run: |
+          python3 -m http.server 8765 --bind 127.0.0.1 > /tmp/science-site.log 2>&1 &
+          for i in {1..20}; do
+            if curl --fail -s http://127.0.0.1:8765/ > /dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/science-site.log
+          exit 1
+      - name: Test seven labs in Chrome at desktop and phone sizes
+        run: node tools/test_science_expansion_browser.cjs
+      - name: Save Science visual check screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: science-seven-labs-mobile
+          path: browser-artifacts/science-*-mobile.png
+          if-no-files-found: ignore
+          retention-days: 7
