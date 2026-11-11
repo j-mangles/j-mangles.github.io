@@ -16,8 +16,8 @@ const surfaces={white:["r","g","b"],red:["r"],green:["g"],blue:["b"],yellow:["r"
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 function observed(lamp,surface){
  if(!lamps[lamp]||!surfaces[surface])throw Error("Unknown lamp or surface");
- const passes=lamps[lamp].filter(x=>surfaces[surface].includes(x));
- const label={r:"red",g:"green",b:"blue",rg:"yellow",rb:"magenta",gb:"cyan",rgb:"white"}[passes.sort().join("")]||"dark";
+ const passes=["r","g","b"].filter(x=>lamps[lamp].includes(x)&&surfaces[surface].includes(x));
+ const label={r:"red",g:"green",b:"blue",rg:"yellow",rb:"magenta",gb:"cyan",rgb:"white"}[passes.join("")]||"dark";
  // Dark objects are not perfectly black in real life.
  const colours={red:"#d9444e",green:"#32a967",blue:"#427ce0",yellow:"#f0c54c",magenta:"#b24acc",cyan:"#43b9cc",white:"#f4f4f2",dark:"#30343b"};
  return {label,colour:colours[label],channels:passes};
