@@ -15,6 +15,11 @@ on:
       - science/energy-flow-studio.js
       - science/geological-dating-lab.js
       - science/prism-colour-lab.js
+      - science/graphing-studio.js
+      - science/measurement-challenge.js
+      - science/osmosis-cell-response.js
+      - science/continental-drift-evidence.js
+      - tools/test_science_graph_measure_osmosis_drift.cjs
       - tools/test_science_next_wave.cjs
       - tools/test_science_expansion.cjs
       - tools/test_science_expansion_browser.cjs
@@ -34,6 +39,11 @@ on:
       - science/energy-flow-studio.js
       - science/geological-dating-lab.js
       - science/prism-colour-lab.js
+      - science/graphing-studio.js
+      - science/measurement-challenge.js
+      - science/osmosis-cell-response.js
+      - science/continental-drift-evidence.js
+      - tools/test_science_graph_measure_osmosis_drift.cjs
       - tools/test_science_next_wave.cjs
       - tools/test_science_expansion.cjs
   workflow_dispatch:
@@ -47,6 +57,7 @@ jobs:
           node-version: '22'
       - run: node tools/test_science_expansion.cjs
       - run: node tools/test_science_next_wave.cjs
+      - run: node tools/test_science_graph_measure_osmosis_drift.cjs
       - run: node tools/test_homeostasis.cjs
       - run: node tools/test_matter_unit.cjs
       - run: node tools/test_energy_light_unit.cjs
@@ -62,13 +73,13 @@ jobs:
           done
           cat /tmp/science-site.log
           exit 1
-      - name: Test seven labs in Chrome at desktop and phone sizes
+      - name: Test fifteen labs in Chrome at desktop and phone sizes
         run: node tools/test_science_expansion_browser.cjs
       - name: Save Science visual check screenshots
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: science-seven-labs-mobile
+          name: science-fifteen-labs-mobile
           path: browser-artifacts/science-*-mobile.png
           if-no-files-found: ignore
           retention-days: 7
