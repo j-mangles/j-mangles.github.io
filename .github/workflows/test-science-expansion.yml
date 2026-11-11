@@ -11,6 +11,11 @@ on:
       - science/earthquake-lab.js
       - science/index.html
       - science/labs.html
+      - science/specialized-cell-explorer.js
+      - science/energy-flow-studio.js
+      - science/geological-dating-lab.js
+      - science/prism-colour-lab.js
+      - tools/test_science_next_wave.cjs
       - tools/test_science_expansion.cjs
       - tools/test_science_expansion_browser.cjs
       - .github/workflows/test-science-expansion.yml
@@ -25,6 +30,11 @@ on:
       - science/earthquake-lab.js
       - science/index.html
       - science/labs.html
+      - science/specialized-cell-explorer.js
+      - science/energy-flow-studio.js
+      - science/geological-dating-lab.js
+      - science/prism-colour-lab.js
+      - tools/test_science_next_wave.cjs
       - tools/test_science_expansion.cjs
   workflow_dispatch:
 jobs:
@@ -36,6 +46,7 @@ jobs:
         with:
           node-version: '22'
       - run: node tools/test_science_expansion.cjs
+      - run: node tools/test_science_next_wave.cjs
       - run: node tools/test_homeostasis.cjs
       - run: node tools/test_matter_unit.cjs
       - run: node tools/test_energy_light_unit.cjs
