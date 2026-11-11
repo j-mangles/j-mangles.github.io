@@ -1,0 +1,50 @@
+name: Test Computer Class assignments
+on:
+  push:
+    paths:
+      - computer-class/**
+      - index.html
+      - science/index.html
+      - social-studies/index.html
+      - ela/index.html
+      - math/index.html
+      - critical-thinking/index.html
+      - tools/test_computer_class.cjs
+      - tools/test_computer_class_browser.cjs
+      - .github/workflows/test-computer-class.yml
+  pull_request:
+    paths:
+      - computer-class/**
+      - tools/test_computer_class.cjs
+      - tools/test_computer_class_browser.cjs
+  workflow_dispatch:
+jobs:
+  assignments:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node tools/test_computer_class.cjs
+      - name: Install browser test dependency
+        run: npm install --no-save --no-package-lock playwright-core@1.56.1
+      - name: Run local classroom website
+        run: |
+          python3 -m http.server 8765 --bind 127.0.0.1 > /tmp/computer-class-server.log 2>&1 &
+          for i in {1..20}; do
+            if curl --fail -s http://127.0.0.1:8765/computer-class/ > /dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/computer-class-server.log
+          exit 1
+      - name: Test five assignments on mobile and desktop
+        run: node tools/test_computer_class_browser.cjs
+      - name: Save browser screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: computer-class-browser-qa
+          path: browser-artifacts/computer-class-mobile-*.png
+          if-no-files-found: ignore
+          retention-days: 7
