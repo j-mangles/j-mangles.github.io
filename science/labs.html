@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<title>Interactive Labs · Grade 8 Science</title>
+<meta name="description" content="Explore interactive diagrams, simulations and investigations for Grade 8 Science.">
+<link rel="stylesheet" href="../assets/fonts.css">
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+ .labs-page{padding-block:35px 75px}
+ .labs-page h1{font-size:clamp(32px,4.5vw,46px);line-height:1.1;margin:13px 0 11px}
+ .labs-page .intro{color:var(--muted);max-width:70ch;margin:0 0 25px;line-height:1.6}
+ .labs-page .back{color:var(--accent-ink);font-size:.85rem;font-weight:700;text-decoration:none}
+ .labs-page .controls{display:flex;align-items:center;gap:12px;flex-wrap:wrap;border-bottom:1px solid var(--rule);padding-bottom:22px}
+ .labs-page .controls input{background:var(--paper);color:var(--ink);border:1px solid var(--rule);padding:11px 15px;border-radius:var(--btn-radius);font:inherit;font-size:.92rem;min-width:min(100%,230px);flex:1 1 240px}
+ .labs-page .filters{display:flex;flex-wrap:wrap;gap:6px}
+ .labs-page .filters button{font:inherit;font-size:.78rem;border:1px solid var(--rule);background:var(--paper);color:var(--ink);border-radius:var(--btn-radius);padding:9px 12px;cursor:pointer}
+ .labs-page .filters button[aria-pressed=true]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+ .labs-page input:focus-visible,.labs-page button:focus-visible,.labs-page a:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+ .labs-page .unit{margin:29px 0 38px}
+ .labs-page .unit-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:7px 16px;margin-bottom:9px}
+ .labs-page h2{font-size:1.45rem;letter-spacing:-.02em;margin:0}
+ .labs-page .unit-meta{font-size:.85rem;color:var(--muted)}
+ .labs-page .rows{border-top:1px solid var(--rule)}
+ .labs-page .entry{display:grid;grid-template-columns:43px minmax(0,1fr) 110px;gap:14px;align-items:center;padding:16px 2px;border-bottom:1px solid var(--rule)}
+ .labs-page .index{color:var(--muted);font-size:.88rem;font-variant-numeric:tabular-nums}
+ .labs-page .entry h3{font-size:1.02rem;margin:0 0 4px;font-weight:700}
+ .labs-page .entry p{font-size:.85rem;color:var(--muted);margin:0;line-height:1.5}
+ .labs-page .entry a{font-size:.87rem;font-weight:700;color:var(--accent-ink);text-decoration:underline;text-underline-offset:3px;text-align:right}
+ .labs-page .soon{font-size:.78rem;color:var(--muted);text-align:right}
+ .labs-page .empty{padding:34px 0;color:var(--muted)}
+ .labs-page .key{font-size:.82rem;color:var(--muted);padding-top:12px}
+ @media(max-width:570px){.labs-page{padding-block:24px 60px}.labs-page .entry{grid-template-columns:29px minmax(0,1fr);gap:10px}.labs-page .entry>a,.labs-page .entry>.soon{grid-column:2;text-align:left;margin-top:-3px}.labs-page .controls input{width:100%}.labs-page .filters button{padding:8px 9px}}
+</style>
+</head>
+<body data-subject="sci">
+<header class="topbar"><div class="wrap"><a class="home" href="../">Mr. Mangles' Class</a><nav class="subnav" aria-label="Subjects"><a href="../social-studies/">Social Studies</a><a href="./" aria-current="page">Science</a><a href="../ela/">ELA</a><a href="../math/">Math 7</a><a href="../critical-thinking/">Critical Thinking</a></nav></div></header>
+<main class="wrap labs-page">
+<a class="back" href="./">← Science lessons</a>
+<h1>Interactive Science Labs</h1>
+<p class="intro">Explore a diagram, change a variable, make a prediction, and use the result to explain a science idea. Current lessons are ready to open. Later units are listed so you can see what is coming next.</p>
+<div class="controls">
+<label for="lab-search" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Search science labs</label>
+<input id="lab-search" type="search" placeholder="Search diagrams and labs…" autocomplete="off">
+<div class="filters" aria-label="Filter science unit" role="group">
+<button type="button" data-unit="all" aria-pressed="true">All units</button>
+<button type="button" data-unit="skills" aria-pressed="false">Skills</button>
+<button type="button" data-unit="cells" aria-pressed="false">Cells</button>
+<button type="button" data-unit="matter" aria-pressed="false">Matter</button>
+<button type="button" data-unit="light" aria-pressed="false">Energy</button>
+<button type="button" data-unit="earth" aria-pressed="false">Earth</button>
+</div>
+</div>
+<div id="lab-results" aria-live="polite"></div>
+<p class="key">Activities use simplified learning models. Investigations saved as downloads are not automatically submitted.</p>
+</main>
+<footer class="site"><div class="wrap">Mr. Mangles' Class · École Edward Schreyer School · 2026–27</div></footer>
+<script>
+(function(){
+"use strict";
+const units=[
+ {id:"skills",name:"Science Skills",status:"Available",items:[
+ ["Fair Test Studio","Change one variable, keep others controlled, and plan a fair investigation.","skills/fair"],
+ ["Metric Converter","Practise measurement and SI unit conversion with new questions.","skills"]
+ ]},
+ {id:"cells",name:"Cells & Systems",status:"Available",items:[
+ ["Cell Explorer","Investigate plant and animal cell diagrams and organelles.","cells"],
+ ["Membrane Transport Lab","Explore movement across a selectively permeable membrane.","cells/transport"],
+ ["Metabolism Lab","Explore enzymes, pH and the reactions that release usable energy.","cells/metabolism"],
+ ["Cell Division Studio","Step through DNA copying and compare models of controlled division.","cells/reproduction"],
+ ["Levels of Organization","Explore how cells form tissues, organs and organ systems.","cells/levels"],
+ ["Human Systems & Digestion","Select organs, follow body-system pathways and trace a nutrient.","cells/systems"],
+ ["Blood Flow & Oxygen Delivery","Follow circulation and test how body systems meet muscle demand.","cells/circulatory"]
+ ]},
+ {id:"matter",name:"Matter, Density & Fluids",status:"Coming soon",items:[
+ ["Particle Motion Lab","Model particle spacing, heating and changes of state.","matter/states"],
+ ["Density Investigation","Use mass and volume to predict floating and sinking.","matter/lab"],
+ ["Viscosity Ramp Lab","Compare liquid flow, temperature and fair-test conditions.","matter/viscosity"],
+ ["Pressure & Compressibility","Investigate gas particles, temperature and compression.","matter/pressure"],
+ ["Winter Lake Density Lab","Explore why ice floats and where denser freshwater settles.","matter/water"]
+ ]},
+ {id:"light",name:"Solar Energy & Light",status:"Coming soon",items:[
+ ["Solar Spectrum & Albedo","Explore electromagnetic waves and reflection of sunlight.","light"],
+ ["Refraction Ray Lab","Change materials and angles to see how light bends.","light/u3t2-refraction"],
+ ["Energy Pathways","Trace energy transfer through producers and consumers.","light/u3t4-chains"],
+ ["Greenhouse Effect Explorer","Investigate absorption and re-emission of infrared energy.","light/u3t5-greenhouse"]
+ ]},
+ {id:"earth",name:"Earth Science",status:"Coming soon",items:[
+ ["Earth Interior & Plates","Explore Earth's layers, moving plates and boundary types.","earth"],
+ ["Seafloor Spreading Lab","Compare ocean-floor ages and mirrored magnetic patterns.","earth/e6-seafloor"],
+ ["Earthquake Origins Lab","Investigate focus depth, epicentres, waves and tsunami formation.","earth/e11-quakes"],
+ ["River & Watershed Models","Investigate erosion, runoff, flooding and changing landforms.","earth/e13-rivers"]
+ ]}
+];
+let filter="all",search="";
+const holder=document.getElementById("lab-results"),query=document.getElementById("lab-search");
+function escape(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function render(){
+ const chosen=units.filter(u=>filter==="all"||u.id===filter);
+ let total=0;
+ const out=chosen.map(u=>{
+  const matches=u.items.filter(item=>(item[0]+" "+item[1]+" "+u.name).toLowerCase().includes(search));
+  if(!matches.length)return "";
+  total+=matches.length;
+  return '<section class="unit" id="unit-'+u.id+'"><div class="unit-head"><h2>'+escape(u.name)+'</h2><span class="unit-meta">'+u.status+' · '+matches.length+' activities</span></div><div class="rows">'+matches.map(item=>{
+   const number=u.items.indexOf(item)+1,available=u.status==="Available";
+   return '<article class="entry"><span class="index">'+String(number).padStart(2,"0")+'</span><div><h3>'+escape(item[0])+'</h3><p>'+escape(item[1])+'</p></div>'+
+    (available?'<a href="./#'+encodeURI(item[2])+'">Open lesson</a>':'<span class="soon">Coming soon</span>')+'</article>';
+  }).join("")+'</div></section>';
+ }).join("");
+ holder.innerHTML=out||'<p class="empty">No labs found. Try another search.</p>';
+ document.querySelectorAll("[data-unit]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.unit===filter)));
+}
+query.addEventListener("input",()=>{search=query.value.trim().toLowerCase();render();});
+document.querySelector(".filters").addEventListener("click",e=>{const b=e.target.closest("[data-unit]");if(!b)return;filter=b.dataset.unit;render();});
+render();
+})();
+</script>
+</body>
+</html>
