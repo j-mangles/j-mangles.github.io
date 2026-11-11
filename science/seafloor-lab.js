@@ -30,7 +30,7 @@ const css=[
 "@media(max-width:640px){.sf .controls,.sf .questions{grid-template-columns:1fr}.sf .readouts{grid-template-columns:1fr 1fr}}"
 ].join("\n");
 function svg(rate,distance){
- const W=800,H=265,centre=W/2,scale=3.3,extent=180,intervalKm=rate*10,selected=distance*scale,fragments=[];
+ const W=800,H=265,centre=W/2,scale=2.2,extent=180,intervalKm=rate*10,selected=distance*scale,fragments=[];
  const background=rate?Math.ceil(extent/intervalKm):0;
  for(let i=0;i<background;i++){
   const start=i*intervalKm*scale,end=Math.min(extent*scale,(i+1)*intervalKm*scale),width=end-start;
