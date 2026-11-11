@@ -10,6 +10,7 @@ on:
       - science/seafloor-lab.js
       - science/earthquake-lab.js
       - science/index.html
+      - science/labs.html
       - tools/test_science_expansion.cjs
       - tools/test_science_expansion_browser.cjs
       - .github/workflows/test-science-expansion.yml
@@ -23,6 +24,7 @@ on:
       - science/seafloor-lab.js
       - science/earthquake-lab.js
       - science/index.html
+      - science/labs.html
       - tools/test_science_expansion.cjs
   workflow_dispatch:
 jobs:
