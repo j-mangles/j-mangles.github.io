@@ -1,0 +1,25 @@
+name: Science systems interactives
+on:
+  push:
+    paths:
+      - science/system-interactions.js
+      - science/index.html
+      - tools/test_system_interactions.cjs
+      - .github/workflows/test-system-interactions.yml
+  pull_request:
+    paths:
+      - science/system-interactions.js
+      - science/index.html
+      - tools/test_system_interactions.cjs
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node tools/test_system_interactions.cjs
+      - run: node tools/test_homeostasis.cjs
+      - run: node tools/test_course_map.cjs
