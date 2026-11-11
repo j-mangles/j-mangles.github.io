@@ -91,13 +91,13 @@ function render(root){
  function paintRock(){
   const feature=L.find(x=>x.id===rock);
   $("#gdl-diagram").innerHTML=rockSvg(rock);
-  $("#gdl-readout").innerHTML='<b>'+escape(feature.name)+'</b><p>'+escape(feature.why)+'</p>';
+  $("#gdl-readout").innerHTML='<b>'+esc(feature.name)+'</b><p>'+esc(feature.why)+'</p>';
   root.querySelectorAll(".rocks [data-rock]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.rock===rock)));
  }
  function paintQuiz(){
   const question=Q[qi];
   $("#gdl-question").textContent=(qi+1)+" of "+Q.length+": "+question[0];
-  $("#gdl-options").innerHTML=question[1].map((t,i)=>'<button type="button" data-answer="'+i+'" '+(answer!==null?'disabled':'')+'>'+escape(t)+'</button>').join("");
+  $("#gdl-options").innerHTML=question[1].map((t,i)=>'<button type="button" data-answer="'+i+'" '+(answer!==null?'disabled':'')+'>'+esc(t)+'</button>').join("");
   $("#gdl-feedback").textContent=answer===null?"":(answer===question[2]?"Correct. ":"Not quite. ")+question[3];
   $("#gdl-next").disabled=answer===null;$("#gdl-next").textContent=qi===Q.length-1?"Start again":"Next question";
  }
@@ -129,7 +129,7 @@ function render(root){
   if(mode==="relative")drawRelative();else drawDecay();
  }
  function paintTrials(){
-  $("#gdl-trials").innerHTML=records.length?records.map((x,i)=>'<tr><td>'+(i+1)+'</td><td>'+escape(x.method)+'</td><td>'+escape(x.result)+'</td></tr>').join(""):
+  $("#gdl-trials").innerHTML=records.length?records.map((x,i)=>'<tr><td>'+(i+1)+'</td><td>'+esc(x.method)+'</td><td>'+esc(x.result)+'</td></tr>').join(""):
    '<tr><td colspan="3">No observations recorded.</td></tr>';
  }
  root.addEventListener("click",ev=>{
