@@ -1,0 +1,39 @@
+name: Test Science Interactive Expansion
+on:
+  push:
+    paths:
+      - science/digestion-pathway.js
+      - science/cell-division-studio.js
+      - science/viscosity-race.js
+      - science/lake-density-lab.js
+      - science/refraction-ray-lab.js
+      - science/seafloor-lab.js
+      - science/earthquake-lab.js
+      - science/index.html
+      - tools/test_science_expansion.cjs
+      - .github/workflows/test-science-expansion.yml
+  pull_request:
+    paths:
+      - science/digestion-pathway.js
+      - science/cell-division-studio.js
+      - science/viscosity-race.js
+      - science/lake-density-lab.js
+      - science/refraction-ray-lab.js
+      - science/seafloor-lab.js
+      - science/earthquake-lab.js
+      - science/index.html
+      - tools/test_science_expansion.cjs
+  workflow_dispatch:
+jobs:
+  science-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node tools/test_science_expansion.cjs
+      - run: node tools/test_homeostasis.cjs
+      - run: node tools/test_matter_unit.cjs
+      - run: node tools/test_energy_light_unit.cjs
+      - run: node tools/test_earth_unit.cjs
