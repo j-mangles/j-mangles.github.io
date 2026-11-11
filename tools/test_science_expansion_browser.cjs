@@ -1,4 +1,4 @@
-/* In-browser smoke tests for the eleven expanded Grade 8 science labs.
+/* In-browser smoke tests for fifteen expanded Grade 8 science labs.
    Start: python3 -m http.server 8765
    Requires playwright-core and locally installed Google Chrome. */
 "use strict";
@@ -96,6 +96,50 @@ const tasks=[
   assert.match(await page.locator("#pc-reading").innerText(),/yellow/i);
   await page.locator("#pc-record").click();
   assert.equal(await page.locator("#pc-rows tr").count(),1);
+ }},
+ {hash:"skills/graph",selector:".glab",async check(page){
+  await page.locator("#glab-data").selectOption("liquids");
+  assert.equal(await page.locator("#glab-rows tr").count(),4);
+  await page.locator('.glab button[data-graph="line"]').click();
+  await page.locator("#glab-check").click();
+  assert.match(await page.locator("#glab-feedback").innerText(),/Try another graph type/);
+  await page.locator('.glab button[data-graph="bar"]').click();
+  await page.locator("#glab-check").click();
+  assert.match(await page.locator("#glab-feedback").innerText(),/Suitable graph type/);
+  await page.locator('[data-measure="0"]').fill("8");
+  assert.ok((await page.locator("#glab-chart svg rect").count())>=4);
+ }},
+ {hash:"skills/si",selector:".msl",async check(page){
+  await page.locator("#msl-answer").fill("3.4");
+  await page.locator("#msl-check").click();
+  assert.match(await page.locator("#msl-feedback").innerText(),/Correct/);
+  await page.locator("#msl-next").click();
+  await page.locator("#msl-answer").fill("6.7");
+  await page.locator("#msl-check").click();
+  assert.match(await page.locator("#msl-feedback").innerText(),/Correct/);
+  await page.locator('[data-tool="cylinder"]').click();
+  await page.locator("#msl-answer").fill("17");
+  await page.locator("#msl-check").click();
+  assert.equal(await page.locator("#msl-results tr").count(),3);
+ }},
+ {hash:"cells/transport",selector:".osmo",async check(page){
+  await page.locator("#osmo-inside").fill("60");
+  await page.locator("#osmo-outside").fill("30");
+  assert.match(await page.locator("#osmo-reading").innerText(),/Turgid/i);
+  await page.locator('[data-cell="animal"]').click();
+  assert.match(await page.locator("#osmo-reading").innerText(),/Swollen/i);
+  await page.locator("#osmo-record").click();
+  assert.equal(await page.locator("#osmo-trials tr").count(),1);
+  assert.ok(await page.locator("#ltool").innerText().then(x=>x.length>100),"Older membrane lab remains");
+ }},
+ {hash:"earth/e5-drift",selector:".wed",async check(page){
+  await page.locator("#wed-distance").fill("0");
+  assert.match(await page.locator("#wed-reading").innerText(),/closer together/);
+  for(const id of ["fossil","rocks","glacial","shape"])await page.locator('#wed-answer-'+id).selectOption(id);
+  await page.locator("#wed-check").click();
+  assert.match(await page.locator("#wed-total").innerText(),/4 correct/);
+  await page.locator("#wed-claim").fill("The continents were once connected.");
+  await page.locator("#wed-reason").fill("Matching fossils and rocks suggest land connections.");
  }}
 ];
 (async()=>{
@@ -107,14 +151,14 @@ const tasks=[
    await page.goto(origin+"/science/labs.html",{waitUntil:"domcontentloaded",timeout:30000});
    await page.locator(".labs-page").waitFor({state:"visible",timeout:15000});
    assert.equal(await page.locator(".unit").count(),5,"Five Science units in the Lab Library");
-   assert.equal(await page.locator(".entry a").count(),10,"Only current Science labs should link");
-   assert.equal(await page.locator(".entry .soon").count(),17,"Upcoming labs must stay unavailable in the library");
+   assert.equal(await page.locator(".entry a").count(),13,"Only current Science labs should link");
+   assert.equal(await page.locator(".entry .soon").count(),18,"Upcoming labs must stay unavailable in the library");
    await page.locator("#lab-search").fill("refraction");
    assert.equal(await page.locator(".entry").count(),1,"Science Lab Library search");
    assert.equal(await page.locator(".entry a").count(),0,"Future labs must not open from the library");
    await page.locator("#lab-search").fill("");
    await page.locator('[data-unit="cells"]').click();
-   assert.equal(await page.locator(".entry").count(),8,"Cells lab filter");
+   assert.equal(await page.locator(".entry").count(),9,"Cells lab filter");
    await page.locator('[data-unit="all"]').click();
    const libraryOverflow=await page.evaluate(()=>({w:window.innerWidth,s:document.documentElement.scrollWidth}));
    assert.ok(libraryOverflow.s<=libraryOverflow.w+5,"Science Lab Library horizontal overflow");
@@ -126,13 +170,13 @@ const tasks=[
     await t.check(page);
     const overflow=await lab.evaluate(el=>({content:el.scrollWidth,width:el.clientWidth}));
     assert.ok(overflow.content<=overflow.width+5,t.hash+" "+width+" tool overflow: "+JSON.stringify(overflow));
-    if(width===390&&["cells/systems","light/u3t2-refraction","earth/e11-quakes","cells/specialized","light/u3t3-colour"].includes(t.hash)){
+    if(width===390&&["cells/systems","light/u3t2-refraction","earth/e11-quakes","cells/specialized","light/u3t3-colour","skills/graph","cells/transport","earth/e5-drift"].includes(t.hash)){
      await page.screenshot({path:path.join(screenshots,"science-"+t.hash.replace("/","-")+"-mobile.png"),fullPage:true,animations:"disabled"});
     }
    }
    assert.deepEqual(errors,[],"Uncaught browser JS errors at "+width+"px");
    await page.close();
   }
-  console.log("Eleven Science labs and the library passed in real Chrome at 390px and 1100px.");
+  console.log("Fifteen Science labs and the library passed in real Chrome at 390px and 1100px.");
  } finally {await browser.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;});
