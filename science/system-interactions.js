@@ -8,14 +8,18 @@ const SYSTEMS={
  respiratory:{name:"Respiratory",organs:"Lungs",job:"Moves air in and out to bring oxygen in and remove carbon dioxide.",link:"The circulatory system carries oxygen from the lungs to cells.",path:[["Inhale","Air enters the lungs."],["Gas exchange","Oxygen enters the blood while carbon dioxide leaves it."],["Transport","Blood carries oxygen to body cells."],["Exhale","Carbon dioxide is breathed out."]]},
  circulatory:{name:"Circulatory",organs:"Heart and blood vessels",job:"Pumps blood to carry oxygen and nutrients to cells and take wastes away.",link:"The respiratory system supplies oxygen; the digestive system supplies absorbed nutrients.",path:[["Heart","Heart muscle pumps blood."],["Arteries","Carry blood away from the heart."],["Capillaries","Exchange materials with body cells."],["Veins","Carry blood back toward the heart."]]},
  digestive:{name:"Digestive",organs:"Stomach and intestines",job:"Breaks food into nutrients that the body can absorb.",link:"Blood transports nutrients absorbed by the small intestine.",path:[["Mouth","Food enters and begins to break down."],["Stomach","Acid and muscular movement break food down."],["Small intestine","Most nutrient absorption happens here."],["Transport","Nutrients can be carried to cells in the blood."]]},
- nervous:{name:"Nervous",organs:"Brain, spinal cord and nerves",job:"Sends electrical signals between the brain and the rest of the body.",link:"The brain and nerves coordinate responses involving other systems.",path:[["Brain","Processes information and directs responses."],["Spinal cord","Part of the central nervous system."],["Other nerves","Carry signals to and from the body."],["Response","The body responds to incoming information."]]},
+ nervous:{name:"Nervous",organs:"Brain, spinal cord and nerves",job:"Sends electrical signals between the brain and the rest of the body.",link:"Motor neurons can direct muscles to contract, producing movement around joints.",path:[["Sensory information","Receptors detect a change, such as a light or sound."],["Brain and spinal cord","The central nervous system processes information and coordinates a response."],["Motor nerves","Signals travel from the central nervous system to muscles."],["Response","Muscles contract to move body parts."]]},
+ muscular:{name:"Muscular",organs:"Skeletal muscles and tendons",job:"Skeletal muscle fibres contract and produce forces that move bones across joints.",link:"Motor nerves activate muscles. Tendons connect muscles to bones, allowing the skeleton to move.",path:[["Signal","A motor nerve sends a signal to a muscle."],["Contraction","Muscle fibres generate tension as they contract."],["Tendon","The tendon transfers force from muscle to bone."],["Movement","A bone rotates around a joint; opposing muscles help control the movement."]]},
+ skeletal:{name:"Skeletal",organs:"Bones, joints, cartilage and ligaments",job:"Supports the body, protects organs, and supplies the levers and joints used in movement.",link:"Muscles attached through tendons pull on bones; ligaments help stabilize joints.",path:[["Framework","Bones support the body's shape and protect organs."],["Joint","A joint permits movement where bones meet."],["Muscle force","An attached muscle pulls through a tendon."],["Motion","Bones act as levers as the joint changes position."]]},
  integumentary:{name:"Integumentary",organs:"Skin, hair and nails",job:"Protects the body and helps regulate body temperature.",link:"Works with nervous and circulatory systems in homeostasis.",path:[["Skin","Creates a protective barrier."],["Conditions","Skin can detect conditions around the body."],["Temperature","The body can adjust heat loss through the skin."],["Homeostasis","Systems work together to maintain stable conditions."]]}
 };
 const QUIZ=[
  {q:"Where are most digested nutrients absorbed?",a:["Stomach","Small intestine","Large intestine"],c:1,why:"Most nutrient absorption takes place in the small intestine."},
  {q:"How does oxygen reach body cells after entering the lungs?",a:["In blood","In the stomach","Through skin"],c:0,why:"The respiratory and circulatory systems work together."},
  {q:"Which two organs form the central nervous system?",a:["Brain and spinal cord","Heart and lungs","Stomach and liver"],c:0,why:"The brain and spinal cord form the central nervous system."},
- {q:"Which vessels allow exchange with cells?",a:["Arteries","Capillaries","Veins"],c:1,why:"Capillaries exchange gases, nutrients and wastes with cells."}
+ {q:"Which vessels allow exchange with cells?",a:["Arteries","Capillaries","Veins"],c:1,why:"Capillaries exchange gases, nutrients and wastes with cells."},
+ {q:"How do skeletal muscles move bones?",a:["By pushing directly on their centres","By contracting and pulling through tendons","By circulating blood through joints"],c:1,why:"Skeletal muscle contraction produces pulling forces; tendons attach muscles to bones."},
+ {q:"Which is a function of joints in the skeletal system?",a:["Allow movement where bones meet","Carry oxygen through blood","Produce nerve impulses"],c:0,why:"Joints connect bones and permit different types of movement."}
 ];
 const STYLE=[
  ".hsi,.odi{color:var(--ink);min-width:0;line-height:1.5}",
@@ -36,6 +40,7 @@ const STYLE=[
  ".hsi .tabs button[aria-pressed=true],.hsi .steps button[aria-current=step]{background:var(--accent);border-color:var(--accent);color:var(--paper)}",
  ".hsi .detail{min-height:154px}.hsi .step-detail{background:var(--soft);padding:12px;border-radius:var(--radius,12px);min-height:80px}",
  ".hsi .quiz{margin-top:22px;border-top:1px solid var(--rule);padding-top:16px}.hsi .answers button{flex:1 1 150px;text-align:left}",
+ ".hsi .movement{margin-top:20px;border-top:1px solid var(--rule);padding-top:17px}.hsi .movement p{color:var(--muted);font-size:.9rem}.hsi .movement label{display:block;font-weight:700;font-size:.85rem;margin:0 0 6px}.hsi .movement select{background:var(--paper);color:var(--ink);border:1px solid var(--rule);border-radius:var(--btn-radius);padding:10px;font:inherit;width:100%;min-height:41px}.hsi .movement-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px;margin:12px 0}.hsi .movement-feedback{font-weight:700;min-height:24px}.hsi .movement button{background:var(--btn);color:var(--on-btn);border-color:var(--btn)}",
  ".hsi .feedback{min-height:29px;font-weight:650}.hsi .next:disabled{opacity:.45}",
  ".odi .diagram svg text{font:600 15px var(--f-body,system-ui);fill:var(--ink)}.odi .diagram .box{fill:var(--paper);stroke:var(--rule);stroke-width:2}",
  ".odi .diagram .flow{fill:none;stroke:var(--accent);stroke-width:5;stroke-dasharray:8 8;stroke-linecap:round}.odi .diagram .flow.limited{stroke:var(--bad)}",
@@ -49,7 +54,7 @@ const STYLE=[
  ".odi select,.odi textarea{box-sizing:border-box;width:100%;padding:10px;background:var(--paper);color:var(--ink);border:1px solid var(--rule);border-radius:var(--btn-radius,8px);font:inherit}",
  ".odi textarea{min-height:86px;resize:vertical}.odi .table-scroll{overflow-x:auto;max-width:100%}.odi table{border-collapse:collapse;width:100%;font-size:.84rem}",
  ".odi td,.odi th{padding:8px 5px;text-align:left;border-bottom:1px solid var(--rule)}.odi th{white-space:nowrap}",
- "@media(max-width:740px){.hsi .layout{grid-template-columns:1fr}.hsi .diagram{max-width:330px;margin:auto;width:100%}.odi .controls,.odi .investigate{grid-template-columns:1fr}}",
+ "@media(max-width:740px){.hsi .layout,.hsi .movement-grid{grid-template-columns:1fr}.hsi .diagram{max-width:330px;margin:auto;width:100%}.odi .controls,.odi .investigate{grid-template-columns:1fr}}",
  "@media(max-width:450px){.odi .bars{grid-template-columns:1fr}}",
  "@media(prefers-reduced-motion:reduce){.hsi .organ .part,.odi .fill{transition:none}}"
 ].join("\n");
@@ -62,6 +67,12 @@ const body=[
  '<g class="organ" data-organ="nervous" role="button" tabindex="0" aria-label="Brain and nerves, nervous system">',
  '<path class="part" d="M187 53 Q181 27 209 28 Q236 19 247 40 Q262 59 246 82 Q218 96 193 79 Z"/>',
  '<path d="M215 87 L215 320 M215 162 L189 188 M215 194 L245 216 M215 256 L191 282" fill="none" stroke="var(--accent)" stroke-width="4" stroke-dasharray="8 4"/></g>',
+ '<g class="organ" data-organ="muscular" role="button" tabindex="0" aria-label="Skeletal muscles, muscular system">',
+ '<path class="part" d="M151 174 Q137 187 126 229 L89 293 Q80 309 91 310 L137 242 Q158 214 165 188 Z"/>',
+ '<path class="part" d="M163 334 L195 337 L184 440 L174 490 L164 486 L170 430 Z"/></g>',
+ '<g class="organ" data-organ="skeletal" role="button" tabindex="0" aria-label="Bones and joints, skeletal system">',
+ '<path class="part" d="M290 185 L306 190 L348 289 L339 294 L300 224 Z"/>',
+ '<rect class="part" x="251" y="346" width="17" height="148" rx="8"/><circle class="part" cx="258" cy="351" r="11"/><circle class="part" cx="259" cy="444" r="10"/></g>',
  '<g class="organ" data-organ="respiratory" role="button" tabindex="0" aria-label="Lungs, respiratory system">',
  '<path class="part" d="M202 168 Q163 142 153 195 Q143 232 166 258 Q187 269 202 250 Z"/><path class="part" d="M230 168 Q269 142 280 195 Q289 232 265 258 Q245 269 230 250 Z"/>',
  '<path d="M215 129 L215 171 L201 185 M215 171 L230 185" fill="none" stroke="var(--ink)" stroke-width="4"/></g>',
@@ -81,8 +92,19 @@ function renderSystems(el){
  '<div class="layout"><div class="diagram">'+body+'</div><div><div class="tabs" role="group" aria-label="Choose a body system"></div>'+
  '<div class="detail" aria-live="polite"></div><h3>Trace the pathway</h3><div class="steps" role="group" aria-label="Pathway stages"></div><div class="step-detail" aria-live="polite"></div></div></div>'+
  '<div class="quiz"><h3>Check the connections</h3><div class="question"></div><div class="answers"></div><p class="feedback" aria-live="polite"></p><button class="next" type="button" disabled>Next question</button></div>'+
+ '<div class="movement"><h3>Movement pathway challenge</h3><p>A student hears the whistle and starts running. Put three body systems in the order that best represents a simplified movement response.</p>'+
+ '<div class="movement-grid">'+[1,2,3].map(n=>'<div><label for="hsi-motion-'+n+'">Step '+n+'</label><select id="hsi-motion-'+n+'" data-motion="'+n+'">'+
+ '<option value="">Choose a system</option><option value="nervous">Nervous — signal</option><option value="muscular">Muscular — contraction</option><option value="skeletal">Skeletal — movement at joints</option></select></div>').join("")+'</div>'+
+ '<button type="button" data-check-motion>Check movement pathway</button><p class="movement-feedback" aria-live="polite"></p></div>'+
  '<p class="hint">This diagram is simplified. Real systems include many more structures, and the shapes are not anatomically to scale.</p></section>';
  const get=k=>el.querySelector(k),keys=Object.keys(SYSTEMS);
+ function checkMovement(){
+  const chosen=[1,2,3].map(n=>get("#hsi-motion-"+n).value);
+  const good=chosen.join(",")==="nervous,muscular,skeletal";
+  get(".movement-feedback").textContent=good?"Correct. The nervous system sends signals; muscles contract and pull; bones and joints allow movement.":
+   "Not quite. Start with the message to the muscles, then think about force and movement at joints.";
+  return good;
+ }
  function draw(){
   const s=SYSTEMS[chosen];get(".tabs").innerHTML=keys.map(k=>'<button data-system="'+k+'" type="button" aria-pressed="'+(k===chosen)+'">'+SYSTEMS[k].name+'</button>').join("");
   get(".detail").innerHTML='<h3>'+esc(s.name)+' system</h3><p><b>Organs:</b> '+esc(s.organs)+'</p><p>'+esc(s.job)+'</p><p class="hint"><b>Connection:</b> '+esc(s.link)+'</p>';
@@ -98,15 +120,16 @@ function renderSystems(el){
  }
  function choose(k){if(!SYSTEMS[k])return;chosen=k;step=0;draw();}
  el.addEventListener("click",e=>{
-  const b=e.target.closest("[data-system],[data-organ],[data-step],[data-answer],.next");if(!b||!el.contains(b))return;
-  if(b.dataset.system||b.dataset.organ)choose(b.dataset.system||b.dataset.organ);
+  const b=e.target.closest("[data-system],[data-organ],[data-step],[data-answer],[data-check-motion],.next");if(!b||!el.contains(b))return;
+  if(b.hasAttribute&&b.hasAttribute("data-check-motion"))checkMovement();
+  else if(b.dataset.system||b.dataset.organ)choose(b.dataset.system||b.dataset.organ);
   else if(b.dataset.step!==undefined){step=Number(b.dataset.step);draw();}
   else if(b.dataset.answer!==undefined&&selected===null){selected=Number(b.dataset.answer);quiz();}
   else if(b.classList.contains("next")&&selected!==null){q=(q+1)%QUIZ.length;selected=null;quiz();}
  });
  el.addEventListener("keydown",e=>{const a=e.target.closest("[data-organ]");if(a&&(e.key===" "||e.key==="Enter")){e.preventDefault();choose(a.dataset.organ);}});
  draw();quiz();
- el.systemsExplorer={select:choose,get current(){return chosen},get step(){return step}};
+ el.systemsExplorer={select:choose,checkMovement,get current(){return chosen},get step(){return step}};
 }
 function oxygenModel(v){
  for(const k of ["breathing","circulation","activity"])if(!Number.isFinite(v[k])||v[k]<0||v[k]>100)throw Error("Values must be 0 to 100");

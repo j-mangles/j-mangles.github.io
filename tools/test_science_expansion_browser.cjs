@@ -8,11 +8,64 @@ const origin=process.env.SITE_TEST_ORIGIN||"http://127.0.0.1:8765";
 const screenshots=path.resolve(__dirname,"../browser-artifacts");
 fs.mkdirSync(screenshots,{recursive:true});
 const tasks=[
+ {hash:"matter/density",selector:".bu",async check(page){
+  assert.match(await page.locator("#bu-reading").innerText(),/1.2 g\/cm³/);
+  await page.locator('[data-bu-guess="sinks"]').click();
+  assert.match(await page.locator("#bu-status").innerText(),/Correct/);
+  await page.locator("#bu-record").click();
+  await page.locator("#bu-fluid").selectOption("syrup");
+  assert.match(await page.locator("#bu-reading").innerText(),/1.33 g\/cm³/);
+  await page.locator('[data-bu-guess="floats"]').click();
+  assert.match(await page.locator("#bu-status").innerText(),/Correct/);
+  await page.locator("#bu-record").click();
+  await page.locator("#bu-fluid").selectOption("oil");
+  await page.locator('[data-bu-guess="sinks"]').click();
+  await page.locator("#bu-record").click();
+  assert.equal(await page.locator("#bu-trials tr").count(),3);
+  assert.match(await page.locator("#bu-status").innerText(),/3 different liquids/);
+  assert.match(await page.locator("#ltool").innerText(),/Density|density/,"Legacy Matter visual remains");
+ }},
+ {hash:"cells/theory",selector:".ms",async check(page){
+  assert.equal((await page.locator("#ms-total").innerText()).trim(),"40×");
+  assert.match(await page.locator("#ms-field").innerText(),/4.5 mm/);
+  await page.locator('input[name="ms-predict"][value="smaller"]').check();
+  await page.locator("#ms-record").click();
+  await page.locator("#ms-objective").selectOption("10");
+  assert.equal((await page.locator("#ms-total").innerText()).trim(),"100×");
+  assert.match(await page.locator("#ms-field").innerText(),/1.8 mm/);
+  await page.locator("#ms-record").click();
+  await page.locator("#ms-objective").selectOption("40");
+  assert.equal((await page.locator("#ms-total").innerText()).trim(),"400×");
+  assert.match(await page.locator("#ms-field").innerText(),/450 μm/);
+  await page.locator("#ms-focus").fill("15");
+  assert.match(await page.locator("#ms-caption").innerText(),/out of focus/);
+  await page.locator("#ms-reset").click();
+  assert.match(await page.locator("#ms-caption").innerText(),/in focus/);
+  await page.locator("#ms-specimen").selectOption("cheek");
+  assert.match(await page.locator("#ms-description").innerText(),/animal cells/);
+  await page.locator("#ms-record").click();
+  assert.equal(await page.locator("#ms-rows tr").count(),3);
+  assert.match(await page.locator("#ms-status").innerText(),/3\/3 objective powers/);
+  await page.locator("#ms-question-mag").fill("400");
+  await page.locator("#ms-question-field").fill("450");
+  await page.locator("#ms-check").click();
+  assert.match(await page.locator("#ms-feedback").innerText(),/Correct/);
+ }},
  {hash:"cells/systems",selector:".dn",async check(page){
   await page.locator('.dn button[data-stage="3"]').click();
   assert.match(await page.locator(".dn .readout").innerText(),/Small intestine/);
   assert.ok(await page.locator(".hsi").count()===1,"Human systems explorer must remain present");
   assert.ok(await page.locator(".hx-lab").count()===1,"Homeostasis lab must remain present");
+  assert.equal(await page.locator('.hsi .tabs button').count(),7,"Seven selectable body systems");
+  await page.locator('.hsi .tabs button[data-system="muscular"]').click();
+  assert.match(await page.locator('.hsi .detail').innerText(),/tendons/i);
+  await page.locator('.hsi .tabs button[data-system="skeletal"]').click();
+  assert.match(await page.locator('.hsi .detail').innerText(),/joints/i);
+  await page.locator('#hsi-motion-1').selectOption("nervous");
+  await page.locator('#hsi-motion-2').selectOption("muscular");
+  await page.locator('#hsi-motion-3').selectOption("skeletal");
+  await page.locator('[data-check-motion]').click();
+  assert.match(await page.locator('.hsi .movement-feedback').innerText(),/Correct/);
  }},
  {hash:"cells/reproduction",selector:".cd",async check(page){
   await page.locator("#cd-cycle").click();
@@ -151,14 +204,14 @@ const tasks=[
    await page.goto(origin+"/science/labs.html",{waitUntil:"domcontentloaded",timeout:30000});
    await page.locator(".labs-page").waitFor({state:"visible",timeout:15000});
    assert.equal(await page.locator(".unit").count(),5,"Five Science units in the Lab Library");
-   assert.equal(await page.locator(".entry a").count(),13,"Only current Science labs should link");
-   assert.equal(await page.locator(".entry .soon").count(),18,"Upcoming labs must stay unavailable in the library");
+   assert.equal(await page.locator(".entry a").count(),14,"Only current Science labs should link");
+   assert.equal(await page.locator(".entry .soon").count(),19,"Upcoming labs must stay unavailable in the library");
    await page.locator("#lab-search").fill("refraction");
    assert.equal(await page.locator(".entry").count(),1,"Science Lab Library search");
    assert.equal(await page.locator(".entry a").count(),0,"Future labs must not open from the library");
    await page.locator("#lab-search").fill("");
    await page.locator('[data-unit="cells"]').click();
-   assert.equal(await page.locator(".entry").count(),9,"Cells lab filter");
+   assert.equal(await page.locator(".entry").count(),10,"Cells lab filter");
    await page.locator('[data-unit="all"]').click();
    const libraryOverflow=await page.evaluate(()=>({w:window.innerWidth,s:document.documentElement.scrollWidth}));
    assert.ok(libraryOverflow.s<=libraryOverflow.w+5,"Science Lab Library horizontal overflow");
@@ -170,13 +223,13 @@ const tasks=[
     await t.check(page);
     const overflow=await lab.evaluate(el=>({content:el.scrollWidth,width:el.clientWidth}));
     assert.ok(overflow.content<=overflow.width+5,t.hash+" "+width+" tool overflow: "+JSON.stringify(overflow));
-    if(width===390&&["cells/systems","light/u3t2-refraction","earth/e11-quakes","cells/specialized","light/u3t3-colour","skills/graph","cells/transport","earth/e5-drift"].includes(t.hash)){
+    if(width===390&&["matter/density","cells/theory","cells/systems","light/u3t2-refraction","earth/e11-quakes","cells/specialized","light/u3t3-colour","skills/graph","cells/transport","earth/e5-drift"].includes(t.hash)){
      await page.screenshot({path:path.join(screenshots,"science-"+t.hash.replace("/","-")+"-mobile.png"),fullPage:true,animations:"disabled"});
     }
    }
    assert.deepEqual(errors,[],"Uncaught browser JS errors at "+width+"px");
    await page.close();
   }
-  console.log("Fifteen Science labs and the library passed in real Chrome at 390px and 1100px.");
+  console.log("Seventeen Science labs including microscope and buoyancy, and the library, passed in real Chrome at 390px and 1100px.");
  } finally {await browser.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;});
