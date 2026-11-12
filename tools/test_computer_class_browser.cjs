@@ -5,7 +5,13 @@ const {chromium}=require("playwright-core");
 const BASE=process.env.SITE_TEST_ORIGIN||"http://127.0.0.1:8765";
 const shots=path.resolve(__dirname,"../browser-artifacts");
 fs.mkdirSync(shots,{recursive:true});
-const routes=["science-membranes","social-mesopotamia","math-store","ela-slides","thinking-case"];
+const routes=[
+"science-membranes","science-organelle-rescue","science-oxygen-systems",
+"social-mesopotamia","social-hammurabi-justice","social-trade-network",
+"math-store","math-fraction-kitchen","math-decimal-detective",
+"ela-slides","ela-second-draft","ela-the-choice",
+"thinking-case","thinking-misinformation","thinking-fair-test"
+];
 function checkOverflow(actual,where,width){assert.ok(actual.scroll<=actual.viewport+4,where+" width="+width+" overflow: "+JSON.stringify(actual));}
 (async()=>{
  const browser=await chromium.launch({channel:"chrome",headless:true,args:["--disable-dev-shm-usage"]});
@@ -17,7 +23,7 @@ function checkOverflow(actual,where,width){assert.ok(actual.scroll<=actual.viewp
   await page.locator(".home-computer-link").waitFor({state:"visible"});
   assert.equal(await page.locator(".home-computer-link").getAttribute("href"),"computer-class/");
   await page.goto(BASE+"/computer-class/",{waitUntil:"domcontentloaded"});
-  assert.equal(await page.locator(".cc-entry").count(),5,"All subjects listed");
+  assert.equal(await page.locator(".cc-entry").count(),15,"All 15 assignments listed");
   assert.ok(await page.locator(".cc-policy").innerText().then(x=>x.includes("Nothing is submitted")));
   checkOverflow(await page.evaluate(()=>({scroll:document.documentElement.scrollWidth,viewport:window.innerWidth})),"directory",width);
   for(const id of routes){
@@ -32,7 +38,7 @@ function checkOverflow(actual,where,width){assert.ok(actual.scroll<=actual.viewp
   await page.goto(BASE+"/computer-class/#science-membranes");
   const answer="Water moves through the membrane toward the higher solute concentration, so water leaves Cell A overall.";
   await page.locator('textarea[data-id="sc3"]').fill(answer);
-  assert.ok(await page.locator("#cc-progress-count").innerText().then(x=>x.includes("1 of 8")));
+  assert.ok(await page.locator("#cc-progress-count").innerText().then(x=>x.includes("1 of 9")));
   await page.reload({waitUntil:"domcontentloaded"});
   assert.equal(await page.locator('textarea[data-id="sc3"]').inputValue(),answer,"Draft survived refresh");
   await page.locator('input[name="choice-sc1"][value="0"]').check();
@@ -45,6 +51,40 @@ function checkOverflow(actual,where,width){assert.ok(actual.scroll<=actual.viewp
   for(let i=0;i<order.length;i++)await page.locator('select[data-id="sc5"][data-position="'+i+'"]').selectOption(String(order[i]));
   await page.locator('[data-action="check"][data-id="sc5"]').click();
   assert.match(await page.locator("#cc-feedback-sc5").innerText(),/Correct/);
+  const osm=page.locator("#cc-lab-sc9");
+  await osm.locator("[data-record]").click();
+  await osm.locator('[data-field="outside"]').fill("20");
+  await osm.locator("[data-record]").click();
+  await osm.locator('[data-field="cell"]').selectOption("animal");
+  await osm.locator("[data-record]").click();
+  assert.equal(await osm.locator("[data-trials] tr").count(),3,"Three osmosis trials recorded");
+  await page.reload({waitUntil:"domcontentloaded"});
+  assert.equal(await page.locator("#cc-lab-sc9 [data-trials] tr").count(),3,"Recorded trials persist");
+  assert.ok(await page.locator("#cc-progress-count").innerText().then(x=>x.includes("3 of 9")),"Osmosis adds a response");
+  await page.goto(BASE+"/computer-class/#math-fraction-kitchen");
+  const kitchen=page.locator("#cc-lab-fk0");
+  await kitchen.locator('[data-field="servings"]').fill("8");
+  assert.match(await kitchen.locator(".cc-lab-result").innerText(),/Flour 3\.000/);
+  await kitchen.locator("[data-record]").click();
+  await kitchen.locator('[data-field="servings"]').fill("2");
+  await kitchen.locator("[data-record]").click();
+  await kitchen.locator('[data-field="servings"]').fill("6");
+  await kitchen.locator("[data-record]").click();
+  assert.equal(await kitchen.locator("[data-trials] tr").count(),3);
+  await page.goto(BASE+"/computer-class/#science-oxygen-systems");
+  const oxygen=page.locator("#cc-lab-ox4");
+  await oxygen.locator('[data-field="breathing"]').fill("10");
+  assert.match(await oxygen.locator(".cc-lab-result").innerText(),/Limiting supply: breathing/);
+  await oxygen.locator("[data-record]").click();
+  await page.goto(BASE+"/computer-class/#social-trade-network");
+  const canal=page.locator("#cc-lab-tr4");
+  await canal.locator('[data-field="north"]').fill("40");
+  await canal.locator('[data-field="centre"]').fill("35");
+  assert.match(await canal.locator(".cc-lab-result").innerText(),/3 of 3/);
+  await canal.locator("[data-record]").click();
+  await canal.locator('[data-field="north"]').fill("60");
+  await canal.locator("[data-record]").click();
+  assert.equal(await canal.locator("[data-trials] tr").count(),2);
   await page.goto(BASE+"/computer-class/#math-store");
   const values={ma1:"18",ma2:"54",ma3:"6.48",ma4:"60.48",ma5:"19.52",ma6:"51"};
   for(const [id,v] of Object.entries(values))await page.locator('input[data-id="'+id+'"]').fill(v);
@@ -81,6 +121,6 @@ function checkOverflow(actual,where,width){assert.ok(actual.scroll<=actual.viewp
   assert.deepEqual(errors,[],"No uncaught JS errors at "+width+"px");
   await page.close();
  }
- console.log("Computer Class browser pass: 5 subjects, 2 widths, self-checks, draft reload, full completion, download and clearing.");
+ console.log("Computer Class Chrome pass: 15 assignments, four interactive labs, 2 widths, autosave, grading, export and clearing.");
  }finally{await browser.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;});
