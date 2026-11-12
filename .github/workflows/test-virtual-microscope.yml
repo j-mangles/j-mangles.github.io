@@ -55,3 +55,11 @@ jobs:
         run: |
           node tools/test_virtual_microscope_browser.cjs
           node tools/test_buoyancy_browser.cjs
+      - name: Save responsive Science investigation previews
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: science-microscope-buoyancy-qa
+          path: browser-artifacts/science-*.png
+          if-no-files-found: ignore
+          retention-days: 14
