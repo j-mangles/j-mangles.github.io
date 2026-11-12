@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%231c2b3a'/%3E%3Cpath d='M9 22c3-6 5-11 7-12s2 5 7 2' stroke='%23e0b14f' stroke-width='2.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
-<style>*,*::before,*::after{box-sizing:border-box}body{margin:0;font-family:system-ui,sans-serif;font-size:14px}img{max-width:100%}[hidden]{display:none!important}.atlas-compare-link{display:inline-flex;align-items:center;white-space:nowrap;text-decoration:none;border:1px solid var(--accent);border-radius:6px;color:var(--accent);padding:7px 12px;min-height:40px;font-weight:650;font-size:13px}.atlas-compare-link:hover{background:color-mix(in srgb,var(--accent) 10%,transparent)}.atlas-compare-link:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+<style>*,*::before,*::after{box-sizing:border-box}body{margin:0;font-family:system-ui,sans-serif;font-size:14px}img{max-width:100%}[hidden]{display:none!important}.atlas-compare-link{display:inline-flex;align-items:center;white-space:nowrap;text-decoration:none;border:1px solid var(--accent);border-radius:6px;color:var(--accent);padding:7px 12px;min-height:40px;font-weight:650;font-size:13px}.atlas-compare-link:hover{background:color-mix(in srgb,var(--accent) 10%,transparent)}.atlas-compare-link:focus-visible{outline:2px solid var(--accent);outline-offset:3px}.lesson-activities{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
 </style>
 
 <link rel="stylesheet" href="../assets/fonts.css">
@@ -1207,7 +1207,7 @@ function renderSheet(){
   const {u,l,answers}=sheetCtx;
   const exitWasOpen=!!document.getElementById("ss-exit-ticket")?.open;
   const lessonLabel="Lesson";
-  const activity=l.activity || (u.id==="mesopotamia" && ["l1","l5"].includes(l.id) ? {href:"river-valley-lab.html?civilization=mesopotamia",title:"Try the River Valley Decision Lab"} : null);
+  const activities=l.activities || (l.activity ? [l.activity] : (u.id==="mesopotamia" && ["l1","l5"].includes(l.id) ? [{href:"river-valley-lab.html?civilization=mesopotamia",title:"Try the River Valley Decision Lab"}] : []));
   const rel=u.lessons.filter(x=>x.released); const i=rel.indexOf(l);
   const prev=rel[i-1], next=rel[i+1];
   const places=l.places.map(id=>placeById(u,id)).filter(Boolean);
@@ -1229,7 +1229,7 @@ function renderSheet(){
     ${l.terms.length?`<h3>Key terms</h3><dl class="terms">${l.terms.map(t=>`<dt>${esc(t[0])}</dt><dd>${esc(t[1])}</dd>`).join("")}</dl>`:""}
     ${places.length?`<h3>On the map</h3><div class="chips">${places.map(p=>`<button class="chip" data-place="${p.id}">${glyph(p.kind)}${esc(p.name)}</button>`).join("")}</div>`:""}
     <h3>Your work</h3><p>${esc(l.work)}</p>
-    ${activity?`<p><a class="atlas-compare-link" href="${esc(activity.href)}">${esc(activity.title||"Open investigation")}</a></p>`:""}<p class="fine">Get the handout from Mr. Mangles if you don't have it.</p>
+    ${activities.length?`<div class="lesson-activities">${activities.map(activity=>`<a class="atlas-compare-link" href="${esc(activity.href)}">${esc(activity.title||"Open investigation")}</a>`).join("")}</div>`:""}<p class="fine">Get the handout from Mr. Mangles if you don't have it.</p>
     <h3>Check yourself</h3>${qs}
     ${nAns===l.check.length?`<div class="qscore">${nRight} out of ${l.check.length}${nRight===l.check.length?". Nice, you've got this lesson.":". Have another look at the notes above, then try again."} <button class="btn ghost" id="retry" style="margin-left:8px">Try again</button></div>`:""}
     <details class="exit-ticket" id="ss-exit-ticket">
