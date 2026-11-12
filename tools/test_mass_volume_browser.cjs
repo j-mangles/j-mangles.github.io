@@ -39,6 +39,11 @@ const BASE=process.env.SITE_TEST_ORIGIN||"http://127.0.0.1:8765";
    for(const id of ["claim","evidence","reason"]){
     await lab.locator("#mvg-"+id).fill("I measured different blocks and compared the mass versus volume slopes to infer density.");
    }
+   const [graphFile]=await Promise.all([page.waitForEvent("download",{timeout:10000}),lab.locator("#mvg-export-graph").click()]);
+   assert.equal(graphFile.suggestedFilename(),"mass-volume-graph.svg");
+   const graphSvg=fs.readFileSync(await graphFile.path(),"utf8");
+   assert.match(graphSvg,/xmlns="http:\/\/www.w3.org\/2000\/svg"/);
+   assert.match(graphSvg,/Volume \(cm³\)/);
    const [download]=await Promise.all([page.waitForEvent("download",{timeout:10000}),lab.locator("#mvg-export").click()]);
    assert.equal(download.suggestedFilename(),"mass-volume-investigation.txt");
    const report=fs.readFileSync(await download.path(),"utf8");
