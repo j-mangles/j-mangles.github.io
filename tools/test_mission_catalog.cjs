@@ -24,11 +24,28 @@ for(const [key,dir]of Object.entries(dirs)){
   }
  }
 }
+const source=read("social-studies/index.html");
+const from=source.indexOf("const UNITS = ["),to=source.indexOf("\n];",from);
+assert.ok(from>=0&&to>from,"Social Studies unit data must be present");
+const stub=new Proxy({},{get(target,key){
+ if(!(key in target))target[key]=String(key).endsWith("Lessons")?[]:
+  {places:[],rivers:[],labels:[],routes:[],timeline:[],lessons:[],activities:[]};
+ return target[key];
+}});
+const socialUnits=vm.runInNewContext(source.slice(from,to+3)+";UNITS",{window:stub},{timeout:3000});
+for(const unit of socialUnits.filter(x=>["done","now","ongoing"].includes(x.status))){
+ for(const lesson of (unit.lessons||[]).filter(x=>x.released)){
+  expected.push({
+   id:"released-ss-"+unit.id+"-"+lesson.id,subject:"ss",kind:"Course lesson",
+   title:lesson.title,href:"../social-studies/#"+unit.id+"-"+lesson.id,description:unit.name
+  });
+ }
+}
 const generated={};
 vm.runInNewContext(read("today/released-lessons.js"),{window:generated},{timeout:2500,filename:"released-lessons.js"});
 const actual=JSON.parse(JSON.stringify(generated.MissionReleasedLessons));
 assert.deepEqual(actual,expected,"Generated lesson catalog must match the current released units");
-assert.equal(expected.length,63);
+assert.equal(expected.length,76);
 const ids=new Set(actual.map(x=>x.id));
 assert.equal(ids.size,actual.length);
 for(const item of actual)assert.ok(!/soon|future|next/i.test(item.id));
