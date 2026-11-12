@@ -63,7 +63,7 @@ function showDirectory(){
  '<div class="cc-intro-facts"><span>5 subjects</span><span>'+ACT.length+' complete assignments</span><span>Interactive trials, self-checks and written responses</span></div></div>'+
  '<div class="cc-directory">'+groups.map(s=>'<section class="cc-subject-section"><div class="cc-group-head"><h2>'+escape(subjectLabels[s])+'</h2><span>'+ACT.filter(a=>a.subject===s).length+' activities</span></div>'+
  '<div class="cc-entry-list">'+ACT.filter(a=>a.subject===s).map(directoryCard).join("")+'</div></section>').join("")+'</div>'+
- '<div class="cc-policy"><strong>How saving works</strong><p>Draft answers save in this browser only, not across different devices. Nothing is submitted to your teacher automatically. Download your work or print a copy to hand in as instructed. On a shared computer, clear your answers after saving your copy.</p></div>';
+ '<div class="cc-policy"><strong>How saving works</strong><p>Draft answers save in this browser only, not across different devices. Nothing is submitted to your teacher automatically. Download your work or print a copy to hand in as instructed. On a shared computer, clear your answers after saving your copy.</p><p><a href="teacher.html">Teacher review desk</a> · Import downloaded teacher copies on a trusted device; no upload.</p></div>';
 }
 function inputFor(q,i){
  const id="cc-input-"+q.id,v=answers[q.id];
@@ -119,12 +119,16 @@ function showActivity(activity){
  '<input id="cc-student-name" autocomplete="name" placeholder="First and last name" maxlength="100" value="">'+
  '<div class="cc-finish-actions"><button data-action="review" type="button" class="cc-primary">Review completion</button>'+
  '<button data-action="download" type="button">Download work (.txt)</button>'+
- '<button data-action="print" type="button">Print / Save PDF</button></div>'+
+ '<button data-action="print" type="button">Print / Save PDF</button>'+
+ '<button data-action="teacher-copy" type="button">Download teacher copy (.json)</button></div>'+
+ '<label class="cc-import-label" for="cc-import">Resume from a saved teacher copy (.json)</label>'+
+ '<input id="cc-import" type="file" accept=".json,application/json">'+
+ '<p class="cc-import-note">This file includes your answers and name. Keep it private and hand it in only through your teacher’s approved method.</p>'+
  '<p class="cc-finish-status" id="cc-finish-status" role="status"></p>'+
  '<button data-action="clear" type="button" class="cc-clear">Clear my answers on this device</button></section></div>'+
  '<aside class="cc-sidebar"><div class="cc-side-inner"><h2>Assignment guide</h2>'+
  '<p class="cc-side-focus">'+escape(activity.focus)+'</p><ol>'+activity.sections.map((s,i)=>'<li><a href="#cc-section-'+i+'" data-scroll="'+i+'">'+escape(s.title)+'</a></li>').join("")+'</ol>'+
- '<p><b>'+n.length+' responses</b> · '+n.filter(q=>q.type!=="text").length+' self-checks</p>'+
+ '<p><b>'+n.length+' responses</b> · '+n.filter(q=>q.type!=="text"&&q.type!=="lab").length+' self-checks</p>'+
  '<div class="cc-side-divider"></div><h3>Before you leave</h3>'+
  '<p>Download your work. A draft on this device is not the same as handing it in.</p>'+
  '<a class="cc-side-lesson" href="'+escape(activity.lesson)+'">Review the related lesson ↗</a></div></aside></div>'+
@@ -212,6 +216,37 @@ function download(){
  setTimeout(()=>URL.revokeObjectURL(url),1000);
  status("Downloaded a copy. Follow your teacher's instructions to submit it.");
 }
+function teacherPayload(){
+ if(!current)return null;
+ const safe={};for(const q of allQuestions(current)){if(Object.prototype.hasOwnProperty.call(answers,q.id))safe[q.id]=answers[q.id];}
+ return {schema:"eess-computer-class-submission-v1",version:config.version,activity_id:current.id,
+  student_name:getName().slice(0,100),exported_at:new Date().toISOString(),answers:safe};
+}
+function downloadTeacherCopy(){
+ const payload=teacherPayload();
+ if(!payload.student_name){status("Enter your first and last name before making a teacher copy.");document.getElementById("cc-student-name")?.focus();return;}
+ const file=(current.id+"-"+payload.student_name).toLowerCase().normalize("NFKD").replace(/[^a-z0-9-]+/g,"-").replace(/-+/g,"-").slice(0,90)+".json";
+ const url=URL.createObjectURL(new Blob([JSON.stringify(payload,null,2)],{type:"application/json;charset=utf-8"}));
+ const a=document.createElement("a");a.href=url;a.download=file;document.body.appendChild(a);a.click();a.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+ status("Teacher copy downloaded. This did NOT submit your work; hand in the file through an approved school method.");
+}
+async function importTeacherCopy(file){
+ if(!file||file.size>1024*1024){status("Choose a valid saved JSON file smaller than 1 MB.");return;}
+ try{
+  const payload=JSON.parse(await file.text());
+  if(payload?.schema!=="eess-computer-class-submission-v1"||payload.version!==config.version||payload.activity_id!==current.id||
+   !payload.answers||typeof payload.answers!=="object"||Array.isArray(payload.answers))throw Error("Mismatched or unsupported assignment file.");
+  const safe={};for(const q of allQuestions(current)){
+   if(Object.prototype.hasOwnProperty.call(payload.answers,q.id))safe[q.id]=payload.answers[q.id];
+  }
+  if(Object.keys(answers).length&&!window.confirm("Replace the current draft with answers from this file?"))return;
+  const oldActivity=current;answers=safe;draftCache[oldActivity.id]=safe;saveDraft();showActivity(oldActivity);
+  const filename=String(payload.student_name||"").slice(0,100);const nameField=document.getElementById("cc-student-name");
+  if(nameField&&filename){nameField.value=filename;name=filename;}
+  status("Answers restored from the selected file. Remember to download your updated work before leaving.");
+ }catch(err){status("Could not import this file. Check that it is a saved copy of this exact assignment.");}
+}
 function status(text){const el=document.getElementById("cc-finish-status");if(el)el.textContent=text;}
 function buildPrintReport(){
  const el=document.getElementById("cc-print-report");if(!el)return;
@@ -233,6 +268,7 @@ function onAction(action,id){
   return;
  }
  if(action==="download"){download();return;}
+ if(action==="teacher-copy"){downloadTeacherCopy();return;}
  if(action==="print"){buildPrintReport();window.print();return;}
  if(action==="clear"){
   if(!window.confirm("Clear all saved responses for this assignment on this device? This cannot be undone. Download a copy first if you want to keep it."))return;
@@ -243,7 +279,10 @@ root.addEventListener("input",event=>{
  if(event.target.id==="cc-student-name"){name=event.target.value;return;}
  if(event.target.dataset?.id)updateField(event.target);
 });
-root.addEventListener("change",event=>{if(event.target.dataset?.id)updateField(event.target);});
+root.addEventListener("change",event=>{
+ if(event.target.id==="cc-import"){const file=event.target.files?.[0];if(file)importTeacherCopy(file);return;}
+ if(event.target.dataset?.id)updateField(event.target);
+});
 root.addEventListener("click",event=>{
  const btn=event.target.closest("[data-action]");if(btn&&root.contains(btn)){event.preventDefault();onAction(btn.dataset.action,btn.dataset.id);return;}
  const scroll=event.target.closest("[data-scroll]");if(scroll&&root.contains(scroll)){
@@ -255,5 +294,5 @@ function route(){
  window.scrollTo(0,0);
 }
 window.addEventListener("hashchange",route);route();
-window.ComputerClassEngine={progress,answered,grade,words,allQuestions,readDraft,reportText,version:config.version};
+window.ComputerClassEngine={progress,answered,grade,words,allQuestions,readDraft,reportText,teacherPayload,version:config.version};
 })();
