@@ -6,10 +6,19 @@ const SCHEMA=1, STORE_KEY="eess-classroom-mission-control-v1";
 const SUBJECTS=["math","sci","ss","ela","ct"];
 function catalog(){
  const configured=g.MissionResources||{lessons:[],subjects:{}};
- const lessons=configured.lessons.map(x=>({
+ const lessonEntries=[...(configured.lessons||[]).map(x=>({
   id:"lesson:"+x.id,subject:x.subject,kind:x.kind,title:x.title,
   description:x.description||"",href:x.href
- }));
+ })),...(g.MissionReleasedLessons||[]).map(x=>({
+  id:"lesson:"+x.id,subject:x.subject,kind:x.kind,title:x.title,
+  description:x.description||"",href:x.href
+ }))];
+ // Prefer curated labels for featured lessons; never display the same lesson twice.
+ const usedPaths=new Set();
+ const lessons=lessonEntries.filter(x=>{
+  if(usedPaths.has(x.href))return false;
+  usedPaths.add(x.href);return true;
+ });
  const assignments=(g.ComputerClassData?.activities||[]).map(x=>({
   id:"assignment:"+x.id,subject:x.subject,kind:"Digital assignment",title:x.title,
   description:x.summary||"",href:"../computer-class/#"+encodeURIComponent(x.id),
