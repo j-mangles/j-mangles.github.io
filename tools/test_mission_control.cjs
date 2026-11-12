@@ -10,14 +10,14 @@ for(const name of ["computer-class/data.js","computer-class/activities-2.js","co
 const core=window.MissionCore,resource=window.MissionResources,list=core.catalog();
 assert.equal(resource.periods.length,5);
 assert.deepEqual(Array.from(resource.periods,p=>p.number),[1,2,3,4,5]);
-assert.equal(list.length,104,"Released lessons, featured tools and 15 assignments");
+assert.equal(list.length,104,"Released lessons, featured tools and 20 assignments");
 assert.equal(new Set(list.map(x=>x.id)).size,99,"All IDs unique");
 assert.equal(list.filter(x=>x.kind==="Digital assignment").length,20);
 assert.equal(window.MissionReleasedLessons.length,76,"Only released lessons are generated");
 assert.equal(list.some(x=>x.href==="../math/#fracops"),false,"Future fraction unit stays hidden");
-assert.equal(list.filter(x=>x.subject==="math").length,23);
-assert.equal(list.filter(x=>x.subject==="sci").length,21);
-assert.equal(list.filter(x=>x.subject==="ss").length,19);
+assert.equal(list.filter(x=>x.subject==="math").length,24);
+assert.equal(list.filter(x=>x.subject==="sci").length,22);
+assert.equal(list.filter(x=>x.subject==="ss").length,20);
 for(const x of list){
  assert.ok(core.SUBJECTS.includes(x.subject),"Recognized subject");
  assert.ok(x.href.startsWith("../")&&!x.href.includes("../../"),"Only same-site relative links");
@@ -82,4 +82,4 @@ assert.ok(source("index.html").includes('href="today/"'),"Homepage entry point")
 assert.ok(source("today/launch.js").includes("parseBoardHash"),"Student screen only takes safe catalog IDs");
 assert.ok(!source("today/launch.js").includes("localStorage"),"Student presentation cannot read teacher browser notes");
 assert.ok(source("today/style.css").includes("prefers-reduced-motion"),"Motion-reduction support");
-console.log("Mission Control passed: 99 released resources, six days, five periods, backup/restore, privacy-safe board links and homepage integration.");
+console.log("Mission Control passed: 104 released resources, six days, five periods, backup/restore, privacy-safe board links and homepage integration.");
