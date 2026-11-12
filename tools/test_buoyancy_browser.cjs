@@ -1,6 +1,6 @@
 /* Real Chrome buoyancy investigation regression test. Matter unit remains marked coming soon. */
 "use strict";
-const assert=require("node:assert/strict"),fs=require("node:fs"),{chromium}=require("playwright-core");
+const assert=require("node:assert/strict"),fs=require("node:fs"),path=require("node:path"),{chromium}=require("playwright-core");
 const BASE=process.env.SITE_TEST_ORIGIN||"http://127.0.0.1:8765";
 (async()=>{
  const browser=await chromium.launch({channel:"chrome",headless:true,args:["--disable-dev-shm-usage"]});
@@ -41,6 +41,9 @@ const BASE=process.env.SITE_TEST_ORIGIN||"http://127.0.0.1:8765";
    assert.equal(download.suggestedFilename(),"buoyancy-investigation.txt");
    const text=fs.readFileSync(await download.path(),"utf8");
    assert.match(text,/Trial 3/);assert.match(text,/Salty water/);
+   const artifactDir=path.resolve(__dirname,"../browser-artifacts");
+   fs.mkdirSync(artifactDir,{recursive:true});
+   await page.screenshot({path:path.join(artifactDir,"science-buoyancy-"+width+".png"),fullPage:true,animations:"disabled"});
    const dims=await page.evaluate(()=>({scroll:document.documentElement.scrollWidth,viewport:innerWidth}));
    assert.ok(dims.scroll<=dims.viewport+4,"No horizontal overflow at "+width);
    assert.deepEqual(errors,[]);
