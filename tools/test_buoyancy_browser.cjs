@@ -8,8 +8,15 @@ const BASE=process.env.SITE_TEST_ORIGIN||"http://127.0.0.1:8765";
   for(const width of [390,1100]){
    const page=await browser.newPage({viewport:{width,height:820},acceptDownloads:true});
    const errors=[];page.on("pageerror",e=>errors.push(e.message));
-   await page.goto(BASE+"/science/#matter/density",{waitUntil:"domcontentloaded",timeout:30000});
-   const lab=page.locator(".bl");await lab.waitFor({state:"visible",timeout:15000});
+   await page.goto(BASE+"/science/#cells/theory",{waitUntil:"domcontentloaded",timeout:30000});
+   // Matter is intentionally unreleased; mount the module only inside this automated QA page.
+   await page.evaluate(()=>{
+    const testRoot=document.createElement("section");
+    testRoot.id="test-buoyancy-qa";
+    document.body.appendChild(testRoot);
+    window.HUB.lessonTools["matter/density"](testRoot);
+   });
+   const lab=page.locator("#test-buoyancy-qa .bl");await lab.waitFor({state:"visible",timeout:15000});
    assert.match(await lab.locator("h3").innerText(),/Buoyancy/i);
    await lab.locator("#bl-liquid").selectOption("water");
    await lab.locator("#bl-predict").selectOption("float");
