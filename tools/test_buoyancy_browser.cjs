@@ -9,13 +9,16 @@ const BASE=process.env.SITE_TEST_ORIGIN||"http://127.0.0.1:8765";
    const page=await browser.newPage({viewport:{width,height:820},acceptDownloads:true});
    const errors=[];page.on("pageerror",e=>errors.push(e.message));
    await page.goto(BASE+"/science/#cells/theory",{waitUntil:"domcontentloaded",timeout:30000});
+   await page.locator(".vm").waitFor({state:"visible",timeout:15000});
    // Matter is intentionally unreleased; mount the module only inside this automated QA page.
-   await page.evaluate(()=>{
+   const mounted=await page.evaluate(()=>{
     const testRoot=document.createElement("section");
     testRoot.id="test-buoyancy-qa";
     document.body.appendChild(testRoot);
     window.HUB.lessonTools["matter/density"](testRoot);
+    return {html:testRoot.innerHTML.slice(0,240),count:testRoot.querySelectorAll(".bl").length,types:Object.keys(window.HUB.lessonTools).filter(x=>x.includes("matter/density"))};
    });
+   assert.equal(mounted.count,1,"Buoyancy module must mount: "+JSON.stringify(mounted));
    const lab=page.locator("#test-buoyancy-qa .bl");await lab.waitFor({state:"visible",timeout:15000});
    assert.match(await lab.locator("h3").innerText(),/Buoyancy/i);
    await lab.locator("#bl-liquid").selectOption("water");
