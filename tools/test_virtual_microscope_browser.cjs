@@ -24,7 +24,7 @@ const {chromium}=require("playwright-core"),BASE=process.env.SITE_TEST_ORIGIN||"
    assert.match(await lab.locator("#vm-record-status").innerText(),/Focus/);
    await lab.locator("#vm-focus").fill("100");
    await lab.locator("#vm-record").click();
-   assert.match(await lab.locator("#vm-record-status").innerText(),/Trial/);
+   assert.match(await lab.locator("#vm-record-status").innerText(),/recorded trial/i);
    await lab.locator("#vm-record").click();
    assert.match(await lab.locator("#vm-record-status").innerText(),/Already recorded/);
    await lab.locator("#vm-slide").selectOption("cheek");
