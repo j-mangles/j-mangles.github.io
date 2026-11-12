@@ -20,7 +20,6 @@ g.MissionResources={
  ],
  lessons:[
   {id:"math-home",subject:"math",kind:"Lesson hub",title:"Grade 7 Mathematics",href:"../math/",description:"Open the current Math 7 unit and lessons."},
-  {id:"math-fractions",subject:"math",kind:"Interactive lesson",title:"Fraction Strip Lab",href:"../math/#fracops",description:"Visualize and work with equivalent fractions and operations."},
   {id:"math-percent",subject:"math",kind:"Interactive lesson",title:"Percent Strategy Studio",href:"../math/#fdp/l05",description:"Explore the connection between fractions, decimals and percents."},
   {id:"sci-home",subject:"sci",kind:"Lesson hub",title:"Science 8",href:"../science/",description:"Open the current Science lesson and unit resources."},
   {id:"sci-cells",subject:"sci",kind:"Interactive lesson",title:"Inside Plant & Animal Cells",href:"../science/#cells",description:"Study organelles, functions and the parts of cells."},
