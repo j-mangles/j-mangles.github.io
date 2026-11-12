@@ -14,7 +14,10 @@ const routes=[
 ];
 function checkOverflow(actual,where,width){assert.ok(actual.scroll<=actual.viewport+4,where+" width="+width+" overflow: "+JSON.stringify(actual));}
 (async()=>{
- const browser=await chromium.launch({channel:"chrome",headless:true,args:["--disable-dev-shm-usage"]});
+ const launchOptions={headless:true,args:["--disable-dev-shm-usage"]};
+ if(process.env.CHROME_PATH)launchOptions.executablePath=process.env.CHROME_PATH;
+ else launchOptions.channel="chrome";
+ const browser=await chromium.launch(launchOptions);
  try{
  for(const width of [390,1200]){
   const page=await browser.newPage({viewport:{width,height:844},acceptDownloads:true,deviceScaleFactor:1});
@@ -76,6 +79,48 @@ function checkOverflow(actual,where,width){assert.ok(actual.scroll<=actual.viewp
   await oxygen.locator('[data-field="breathing"]').fill("10");
   assert.match(await oxygen.locator(".cc-lab-result").innerText(),/Limiting supply: breathing/);
   await oxygen.locator("[data-record]").click();
+  const organReport="Human Systems · Organ Inspector\nSelected structures: lungs, heart and diaphragm.\nThe lungs exchange gases; the heart pumps blood.";
+  await page.locator('input[data-evidence-file="ox10"]').setInputFiles({
+   name:"organ-systems-investigation.txt",mimeType:"text/plain",buffer:Buffer.from(organReport,"utf8")
+  });
+  await page.locator("#cc-q-ox10 .cc-evidence-loaded").waitFor({state:"visible"});
+  await page.locator('textarea[data-id="ox10"]').fill("The report says the lungs exchange gases and the heart pumps blood. They work together because oxygen enters blood in the lungs before the heart moves it around the body.");
+  assert.match(await page.locator("#cc-progress-count").innerText(),/2 of 10/);
+  await page.reload({waitUntil:"domcontentloaded"});
+  assert.equal(await page.locator("#cc-q-ox10 .cc-evidence-loaded pre").innerText(),organReport,"Imported evidence stays in the local draft");
+  const [scienceReportDownload]=await Promise.all([
+   page.waitForEvent("download",{timeout:10000}),
+   page.locator('[data-action="download"]').click()
+  ]);
+  assert.match(fs.readFileSync(await scienceReportDownload.path(),"utf8"),/Selected structures: lungs, heart and diaphragm/);
+  await page.locator("#cc-student-name").fill("Sam Example");
+  const [teacherCopyDownload]=await Promise.all([
+   page.waitForEvent("download",{timeout:10000}),
+   page.locator('[data-action="teacher-copy"]').click()
+  ]);
+  const evidenceTeacherCopy=fs.readFileSync(await teacherCopyDownload.path(),"utf8");
+  await page.goto(BASE+"/computer-class/teacher.html",{waitUntil:"domcontentloaded"});
+  await page.locator("#tr-files").setInputFiles({name:"oxygen-mission.json",mimeType:"application/json",buffer:Buffer.from(evidenceTeacherCopy,"utf8")});
+  await page.locator(".tr-entry").waitFor({state:"visible",timeout:10000});
+  await page.locator(".tr-entry").click();
+  assert.match(await page.locator(".tr-answer-text").filter({hasText:"Imported investigation: organ-systems-investigation.txt"}).innerText(),/Selected structures: lungs, heart and diaphragm/);
+  page.once("dialog",dialog=>dialog.accept());
+  await page.goto(BASE+"/computer-class/#science-oxygen-systems");
+  await page.locator('[data-action="clear-evidence"][data-id="ox10"]').click();
+  assert.equal(await page.locator("#cc-q-ox10 .cc-evidence-empty").innerText(),"No report selected yet.");
+  page.once("dialog",dialog=>dialog.accept());
+  await page.locator('[data-action="clear"]').click();
+  await page.locator("#cc-import").setInputFiles({name:"oxygen-mission.json",mimeType:"application/json",buffer:Buffer.from(evidenceTeacherCopy,"utf8")});
+  await page.locator("#cc-q-ox10 .cc-evidence-loaded").waitFor({state:"visible",timeout:10000});
+  assert.match(await page.locator("#cc-q-ox10 .cc-evidence-loaded pre").innerText(),/Selected structures: lungs, heart and diaphragm/);
+  await page.goto(BASE+"/computer-class/#science-microscope-evidence");
+  const microscopeReport="Virtual Microscope Investigation\nTrial 1: Onion epidermis, 400× total, estimated cell width 82 µm.\nThis is a schematic model.";
+  await page.locator('input[data-evidence-file="mi11"]').setInputFiles({
+   name:"virtual-microscope-investigation.txt",mimeType:"text/plain",buffer:Buffer.from(microscopeReport,"utf8")
+  });
+  await page.locator("#cc-q-mi11 .cc-evidence-loaded").waitFor({state:"visible"});
+  await page.locator('textarea[data-id="mi11"]').fill("One trial estimates a cell width of 82 micrometres at 400 times magnification. This is an estimate because the microscope image is schematic.");
+  assert.match(await page.locator("#cc-progress-count").innerText(),/1 of 11/);
   await page.goto(BASE+"/computer-class/#social-trade-network");
   const canal=page.locator("#cc-lab-tr4");
   await canal.locator('[data-field="north"]').fill("40");

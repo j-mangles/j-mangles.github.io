@@ -7,6 +7,7 @@ const C=(id,prompt,options,correct,why)=>({id,type:"choice",prompt,options,corre
 const T=(id,prompt,minWords=22,placeholder="Use specific evidence and explain your thinking.")=>({id,type:"text",prompt,minWords,placeholder});
 const N=(id,prompt,answer,why,tolerance=.005)=>({id,type:"number",prompt,answer,tolerance,unit:"",why});
 const O=(id,prompt,items,correct,why)=>({id,type:"order",prompt,items,correct,why});
+const E=(id,prompt,minWords,placeholder,reflectionLabel)=>({id,type:"evidence",prompt,minWords,placeholder,reflectionLabel});
 store.activities.push(
 {
  id:"science-microscope-evidence",subject:"sci",subjectName:"Science",grade:"Grade 8",
@@ -33,7 +34,8 @@ store.activities.push(
   ]},
   {title:"Claim, evidence, reasoning",intro:"Treat drawings and measurements as approximations rather than exact biological measurements.",questions:[
    C("mi9","Which statement correctly identifies a limitation of the interactive model?",["All real cells have exactly the shown dimensions","The drawings simplify real tissue and field dimensions","Real microscopes do not have objective lenses"],1,"The model illustrates principles but cannot replace calibrated observations."),
-   T("mi10","Write a Claim–Evidence–Reasoning paragraph: how does changing magnification affect what a scientist can observe? Include one calculation, one observation and a limitation.",56,"Claim: ... Evidence: ... Reasoning: ... Limitation: ...")
+   T("mi10","Write a Claim–Evidence–Reasoning paragraph: how does changing magnification affect what a scientist can observe? Include one calculation, one observation and a limitation.",56,"Claim: ... Evidence: ... Reasoning: ... Limitation: ..."),
+   E("mi11","Import your Virtual Microscope Investigation report, then explain one observation it records.",18,"My report shows... This supports the idea that...","What specific trial or measurement from your report supports your explanation?")
   ]}
  ]
 },

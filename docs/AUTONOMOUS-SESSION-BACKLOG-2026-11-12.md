@@ -29,6 +29,13 @@
 - New JavaScript and real Chrome mobile/desktop workflow with screenshots; **passed** on the feature branch.
 - No account, tracking, student name collection, persistent storage or syllabus release change.
 
+### Completed: Local Science evidence hand-off
+- Added a reusable Computer Class response for a student-selected `.txt` investigation report. Students can import the Virtual Microscope or Organ Inspector report, read it in the assignment, write a reflection, and include both in the text or teacher-copy export.
+- Imports are limited to 64 KB, escaped before display, and kept in the existing browser-local draft. Students choose each report themselves; nothing is uploaded or submitted.
+- Added the response to the microscope and Oxygen Mission assignments without changing existing assignment IDs, version, or answer keys.
+- Added data/schema checks and real-Chrome tests for both report types, refresh persistence, assignment export, teacher review and removal. Computer Class now has **193 response prompts**.
+- Automated Computer Class, teacher review, course-catalog and Mission Control checks pass. The full non-browser suite passed 61 checks; one existing Science interaction assertion still expects five systems while the current model has seven. Local real-Chrome execution is blocked because Chromium cannot start in this container (`socket() failed: Operation not permitted`); the expanded browser suite is wired into the existing GitHub Actions job.
+
 ### New QA
 - Automated JS model and actual Chrome tests for mass-volume calculations, density slope, 3-series plotted graph, exports and responsive page widths.
 - Automated organ-model and actual Chrome tests for twelve structures, keyboard navigation, knowledge checking, progress, local export and page widths.
@@ -36,12 +43,11 @@
 - All new tests have produced successful Science CI runs. Later updates also trigger routine Computer Class and Mission Control regression checks.
 
 ### Next highest-impact priorities
-1. Student-device/teacher visual review of the new graphs, numbered organ hotspots and their instruction length.
-2. Link student-exported investigations into an opt-in reusable Computer Class evidence importer; keep data local and require deliberate student action.
-3. Create a multi-variable, data-based human circulation/gas-exchange lab with explicit model assumptions rather than anatomical decoration.
-4. The Unit 1 Math Error Detective is complete. Next create a problem-specific feedback engine and number-sense diagnostic for future arithmetic units.
-5. Audit all Science lesson-tool wrapper registration ordering and implement a collision test covering future unit modules.
-6. Extend source-based historical inquiry using dated and licensed artefacts from museums.
+1. Classroom review of the exported-report hand-off on student devices; confirm the file picker and reflection prompt are clear.
+2. Create a multi-variable, data-based human circulation/gas-exchange lab with explicit model assumptions rather than anatomical decoration.
+3. Audit all Science lesson-tool wrapper registration ordering and implement a collision test covering future unit modules.
+4. Extend Math number-sense diagnostics with problem-specific feedback while preserving existing manipulatives.
+5. Extend source-based historical inquiry using dated and licensed artefacts from museums.
 7. Classroom pilot and teacher content review before changing the `main` branch.
 
 ## Completed
@@ -100,14 +106,12 @@
 
 1. **Full Science interaction audit.** Verify every lesson-tool registration and ensure later scripts cannot overwrite earlier models. Add a test for duplicate/overwritten tool registrations where practical.
 2. **Microscope evidence improvements.** Offer cell-size estimation feedback when counts are clearly implausible and optional support scaffolds; do not auto-grade open-ended scientific reasoning.
-3. **Density graphing.** Add a mass-versus-volume graph with slope interpretation and multiple objects, not another decorative graph.
-4. **Human-body systems.** Complete the linked oxygen/nutrient transport investigation and add organ-level annotation support to the seven-system explorer. Preserve the new muscle/bone selection and existing digestion/circulation interactions.
-5. **Computer Class integration.** The microscope reasoning assignment is complete; next incorporate actual microscope observation tables into a reusable cross-page assignment component without changing existing draft formats.
-6. **Math.** The fraction-budget assignment is complete; next expand interactive number sense and fraction manipulatives with multi-step reasoning prompts.
-7. **Social Studies.** A Mesopotamian source-reasoning assignment is complete; next work with genuine dated and licensed historical materials for artifact investigation.
-8. **ELA.** The original Lost Page narrative and revision assignment are complete; next build a reusable plot/paragraph organizer with local revision history.
-9. **Critical Thinking.** The AI source-verification assignment is complete; next extend the fair-test builder and add a citation provenance checker.
-10. **Cross-site UX.** Audit mobile/iPad focus, keyboard operation, scroll behavior, link validity, colour contrast and heading hierarchy.
+3. **Human-body systems.** Add a multi-variable, data-based circulation/gas-exchange investigation with explicit model limits.
+4. **Math.** Expand number sense and fraction manipulatives with multi-step reasoning prompts.
+5. **Social Studies.** Work with genuine dated and licensed historical materials for artifact investigation.
+6. **ELA.** Build a reusable plot/paragraph organizer with local revision history.
+7. **Critical Thinking.** Extend the fair-test builder and add a citation provenance checker.
+8. **Cross-site UX.** Audit mobile/iPad focus, keyboard operation, scroll behavior, link validity, colour contrast and heading hierarchy.
 
 ## Future improvements
 
@@ -131,5 +135,5 @@
 - Browser tests run at phone and desktop widths; no unhandled errors or horizontal page overflow.
 - Existing Science modules remain functional and the Matter release gate remains unchanged.
 - Muscle and skeleton can be selected using mouse/touch or keyboard, with correct four-step explanatory pathways.
-- Computer Class displays 20 activities with 191 unique question IDs; the standard teacher-copy and browser-local draft workflows still pass.
+- Computer Class displays 20 activities with 193 unique question IDs; the standard teacher-copy and browser-local draft workflows still pass.
 - All changes stay in a draft pull request until approved.

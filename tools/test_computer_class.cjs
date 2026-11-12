@@ -43,6 +43,7 @@ for(const activity of data.activities){
     assert.ok(win.ComputerClassLabs.config[q.lab],"Supported lab "+q.lab);
     assert.ok(q.minTrials>=2);
    }
+   else if(q.type==="evidence"){assert.ok(q.minWords>=8);assert.match(q.prompt,/report/i);}
    else if(q.type==="order"){
     assert.equal(q.correct.length,q.items.length);
     assert.equal(new Set(q.correct).size,q.items.length);
@@ -51,7 +52,7 @@ for(const activity of data.activities){
   }
  }
 }
-assert.equal(qids.size,191);
+assert.equal(qids.size,193);
 const core=win.ComputerClassLabs;
 assert.equal(core.calculate("osmosis",{cell:"plant",inside:30,outside:60}).effect,"plasmolysed");
 assert.equal(core.calculate("oxygen",{breathing:10,circulation:100,activity:100}).limitedBy,"breathing");
@@ -90,6 +91,9 @@ const order=engine.allQuestions(ct).find(q=>q.id==="ct3");
 assert.equal(engine.grade(order,order.correct.map(String)),true);
 assert.equal(engine.grade(order,["0","1","2","3"]),false);
 assert.equal(engine.words("alpha   beta\n gamma"),3);
+const evidence=data.activities.flatMap(a=>engine.allQuestions(a)).find(q=>q.type==="evidence");
+assert.equal(engine.answered(evidence,{content:"Microscope report",reflection:"A microscope trial records a measurement that supports my claim because the observed values provide evidence for the scientific explanation."}),true);
+assert.equal(engine.answered(evidence,{content:"Microscope report",reflection:""}),false);
 const p0=engine.progress(math,{});
 assert.equal(p0.complete,0);
 assert.equal(p0.total,10);
@@ -115,4 +119,4 @@ assert.match(html,/src="data.js/);
 assert.match(html,/src="app.js/);
 for(const name of ["activities-2.js","activities-3.js","activities-4.js","labs.js"])assert.ok(html.includes('src="'+name));
 assert.match(fs.readFileSync(path.join(root,"computer-class","style.css"),"utf8"),/@media print/);
-console.log("Computer Class passed: 20 assignments, 191 responses, six models, autosave, reports, links.");
+console.log("Computer Class passed: 20 assignments, 193 responses, evidence imports, six models, autosave, reports, links.");

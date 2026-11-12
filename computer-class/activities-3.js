@@ -7,6 +7,7 @@ const T=(id,prompt,minWords=20,placeholder="Explain your reasoning with evidence
 const N=(id,prompt,answer,why,tolerance=.005)=>({id,type:"number",prompt,answer,tolerance,unit:"",why});
 const O=(id,prompt,items,correct,why)=>({id,type:"order",prompt,items,correct,why});
 const L=(id,prompt,lab,minTrials=3)=>({id,type:"lab",prompt,lab,minTrials});
+const E=(id,prompt,minWords,placeholder,reflectionLabel)=>({id,type:"evidence",prompt,minWords,placeholder,reflectionLabel});
 store.activities.push(
 {
  id:"science-oxygen-systems",subject:"sci",subjectName:"Science",grade:"Grade 8",title:"Oxygen Mission: Systems Working Together",time:"35–45 min",
@@ -32,7 +33,8 @@ store.activities.push(
   ]},
   {title:"Explain and evaluate",intro:"Connect model evidence to real structures without treating the numbers as physiological measurements.",questions:[
    O("ox8","Order the main path of oxygen to a working muscle cell.",["Oxygen is transported in the bloodstream","Oxygen enters the lungs with inhaled air","Oxygen is used by body cells","Oxygen diffuses into blood at the lungs"],[1,3,0,2],"Air enters lungs, oxygen moves into blood, blood transports it, and cells use it."),
-   T("ox9","Write a Claim–Evidence–Reasoning paragraph explaining how lungs, heart, blood and working muscle cells cooperate. Include one oxygen-model trial, an organ-inspector detail and a model limitation.",52,"Claim: ... Trial evidence: ... Structure evidence: ... Reasoning: ... Limitation: ...")
+   T("ox9","Write a Claim–Evidence–Reasoning paragraph explaining how lungs, heart, blood and working muscle cells cooperate. Include one oxygen-model trial, an organ-inspector detail and a model limitation.",52,"Claim: ... Trial evidence: ... Structure evidence: ... Reasoning: ... Limitation: ..."),
+   E("ox10","Import your Organ Inspector report, then use one structure detail as evidence about how systems work together.",20,"The report identifies... This structure helps...","Which structure and related system from your report support your explanation?")
   ]}
  ]
 },
