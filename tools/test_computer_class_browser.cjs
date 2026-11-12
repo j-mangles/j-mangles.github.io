@@ -160,8 +160,27 @@ function checkOverflow(actual,where,width){assert.ok(actual.scroll<=actual.viewp
    page.locator("#tr-feedback-download").click()
   ]);
   assert.match(fs.readFileSync(await feedbackDownload.path(),"utf8"),/Clear reasoning/);
+  assert.match(await page.locator("#tr-session-state").innerText(),/not backed up/);
+  const [sessionDownload]=await Promise.all([
+   page.waitForEvent("download",{timeout:10000}),
+   page.locator("#tr-session-save").click()
+  ]);
+  const reviewBackup=fs.readFileSync(await sessionDownload.path(),"utf8");
+  const reviewObject=JSON.parse(reviewBackup);
+  assert.equal(reviewObject.schema,"eess-computer-class-review-session-v1");
+  assert.equal(reviewObject.entries[0].review.ma9.note,"Clear reasoning. Next: show a complete equation.");
+  assert.match(await page.locator("#tr-session-state").innerText(),/Session backed up/);
   await page.reload({waitUntil:"domcontentloaded"});
   assert.equal((await page.locator("#tr-count").innerText()).trim(),"0 files loaded","Teacher data never stored");
+  await page.locator("#tr-session-file").setInputFiles({
+   name:"review-session.json",mimeType:"application/json",buffer:Buffer.from(reviewBackup,"utf8")
+  });
+  await page.locator(".tr-entry").waitFor({state:"visible",timeout:10000});
+  await page.locator(".tr-entry").click();
+  assert.equal(await page.locator('[data-rating="ma9"]').inputValue(),"meeting");
+  assert.equal(await page.locator('[data-feedback="ma9"]').inputValue(),"Clear reasoning. Next: show a complete equation.");
+  assert.equal(await page.locator("#tr-overall-note").inputValue(),"Strong calculations and attention to units.");
+
   await page.goto(BASE+"/computer-class/#math-store");
   page.once("dialog",dialog=>dialog.accept());
   await page.locator('[data-action="clear"]').click();
@@ -186,6 +205,6 @@ function checkOverflow(actual,where,width){assert.ok(actual.scroll<=actual.viewp
   assert.deepEqual(errors,[],"No uncaught JS errors at "+width+"px");
   await page.close();
  }
- console.log("Computer Class Chrome pass: 15 assignments, teacher review, structured export/import, six labs and two screen sizes.");
+ console.log("Computer Class Chrome pass: 15 assignments, teacher review session backup/restore, structured export/import, six labs and two screen sizes.");
  }finally{await browser.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;});
