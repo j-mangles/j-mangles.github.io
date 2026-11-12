@@ -123,7 +123,7 @@ store.activities.push(
  ]
 },
 {
- id:"thinking-misinformation",subject:"ct",subjectName:"Critical Thinking",grade:"Grade 7/8",title:"The Viral Claim: Check Before Sharing",time:"35–40 min",
+ id:"thinking-misinformation",subject:"ct",subjectName:"Critical Thinking",grade:"Grade 7/8",title:"The Viral Claim: Check Before Sharing",time:"40–45 min",
  summary:"Evaluate a viral post, compare source quality, and revise a claim using available evidence.",
  lesson:"../critical-thinking/",lessonText:"Explore critical thinking lessons",focus:"Evidence, source reliability and responsible reasoning",
  reading:[
@@ -145,7 +145,9 @@ store.activities.push(
   ]},
   {title:"Reflect on decisions",intro:"Think about what you would do before sharing an alarming claim.",questions:[
    T("vc8","Give a real-life example of when checking the source could prevent a misunderstanding. Do not share private information about classmates.",28,"For example... I would check..."),
-   T("vc9","Write a three-step personal checklist for evaluating online claims, explaining why each step matters.",45,"First... Second... Third...")
+   T("vc9","Write a three-step personal checklist for evaluating online claims, explaining why each step matters.",45,"First... Second... Third..."),
+   L("vc10","Use the Source Verification Board to record three different source-check profiles. Include one source with no checks met and one with all three.","sources",3),
+   T("vc11","Explain why a source can pass several verification checks without proving that its claim is true.",25,"A named and dated source can still... We also need...")
   ]}
  ]
 }
