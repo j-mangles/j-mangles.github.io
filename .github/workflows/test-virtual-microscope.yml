@@ -1,0 +1,45 @@
+name: Test Virtual Microscope Investigation
+on:
+  push:
+    branches:
+      - feat/science-investigations-2026-11-12
+    paths:
+      - science/virtual-microscope.js
+      - science/virtual-microscope.css
+      - science/index.html
+      - science/labs.html
+      - tools/test_virtual_microscope.cjs
+      - tools/test_virtual_microscope_browser.cjs
+      - .github/workflows/test-virtual-microscope.yml
+  pull_request:
+    paths:
+      - science/virtual-microscope.js
+      - science/virtual-microscope.css
+      - science/index.html
+      - science/labs.html
+      - tools/test_virtual_microscope.cjs
+      - tools/test_virtual_microscope_browser.cjs
+  workflow_dispatch:
+jobs:
+  microscope:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Test microscope logic and wiring
+        run: node tools/test_virtual_microscope.cjs
+      - name: Install browser harness
+        run: npm install --no-save --no-package-lock playwright-core@1.56.1
+      - name: Serve site locally
+        run: |
+          python3 -m http.server 8765 --bind 127.0.0.1 > /tmp/microscope-site.log 2>&1 &
+          for i in {1..20}; do
+            if curl -fsS http://127.0.0.1:8765/science/ > /dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/microscope-site.log
+          exit 1
+      - name: Test student microscope on mobile and desktop
+        run: node tools/test_virtual_microscope_browser.cjs
