@@ -67,8 +67,8 @@ function mount(root){
  let current=model.result(mass,volume,liquid);
  function diagram(){
   const color=model.liquids[liquid].color;
-  const height=86,top=current.state==="float"?156-height*current.submerged:
-   current.state==="sink"?225:162;
+  const height=86,top=current.state==="float"?156-height*(1-current.submerged):
+   current.state==="sink"?220:162;
   const visible=observed;
   $("#bl-diagram").innerHTML='<rect x="38" y="35" width="324" height="274" rx="10" fill="#f7faf9" stroke="#4d6762" stroke-width="4"/>'+
    '<rect x="41" y="156" width="318" height="151" fill="'+color+'" opacity=".65"/>'+
