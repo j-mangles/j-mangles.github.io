@@ -28,6 +28,7 @@ function allQuestions(activity){return activity.sections.flatMap(section=>sectio
 function words(s){return String(s||"").trim().split(/\s+/).filter(Boolean).length;}
 function answered(q,value){
  if(q.type==="text")return words(value)>=(q.minWords||1);
+ if(q.type==="lab")return Array.isArray(value)&&new Set(value.map(x=>JSON.stringify(x))).size>=(q.minTrials||1);
  if(q.type==="choice")return /^[0-9]+$/.test(String(value??""))&&Number(value)<q.options.length;
  if(q.type==="number")return String(value??"").trim()!==""&&Number.isFinite(Number(value));
  if(q.type==="order")return Array.isArray(value)&&value.length===q.items.length&&value.every(x=>/^[0-9]+$/.test(String(x??"")))&&new Set(value.map(String)).size===q.items.length;
@@ -41,7 +42,7 @@ function grade(q,value){
  return null;
 }
 function progress(activity,state){
- const qs=allQuestions(activity),complete=qs.filter(q=>answered(q,state[q.id])).length,checkables=qs.filter(q=>q.type!=="text");
+ const qs=allQuestions(activity),complete=qs.filter(q=>answered(q,state[q.id])).length,checkables=qs.filter(q=>q.type!=="text"&&q.type!=="lab");
  return {complete,total:qs.length,percent:Math.round(100*complete/qs.length),checkables:checkables.length,
   accurate:checkables.filter(q=>grade(q,state[q.id])===true).length};
 }
@@ -59,13 +60,14 @@ function showDirectory(){
  const groups=["sci","ss","math","ela","ct"];
  root.innerHTML='<div class="cc-head"><a class="cc-back" href="../">← Class homepage</a>'+
  '<h1>Computer Class</h1><p>Choose a subject. Read the instructions, complete each activity on this page, and save a copy of your answers when you finish.</p>'+
- '<div class="cc-intro-facts"><span>5 subjects</span><span>5 complete assignments</span><span>Self-checks and written responses</span></div></div>'+
- '<div class="cc-directory">'+groups.map(s=>'<section class="cc-subject-section"><div class="cc-group-head"><h2>'+escape(subjectLabels[s])+'</h2><span>1 activity</span></div>'+
+ '<div class="cc-intro-facts"><span>5 subjects</span><span>'+ACT.length+' complete assignments</span><span>Interactive trials, self-checks and written responses</span></div></div>'+
+ '<div class="cc-directory">'+groups.map(s=>'<section class="cc-subject-section"><div class="cc-group-head"><h2>'+escape(subjectLabels[s])+'</h2><span>'+ACT.filter(a=>a.subject===s).length+' activities</span></div>'+
  '<div class="cc-entry-list">'+ACT.filter(a=>a.subject===s).map(directoryCard).join("")+'</div></section>').join("")+'</div>'+
  '<div class="cc-policy"><strong>How saving works</strong><p>Draft answers save in this browser only, not across different devices. Nothing is submitted to your teacher automatically. Download your work or print a copy to hand in as instructed. On a shared computer, clear your answers after saving your copy.</p></div>';
 }
 function inputFor(q,i){
  const id="cc-input-"+q.id,v=answers[q.id];
+ if(q.type==="lab")return '<div class="cc-lab-mount" id="cc-lab-'+q.id+'">Loading investigation…</div>';
  if(q.type==="text"){
   return '<textarea id="'+id+'" data-id="'+q.id+'" rows="5" placeholder="'+escape(q.placeholder||"Write your response...")+'">'+escape(v||"")+'</textarea>'+
    '<p class="cc-word-count" id="cc-words-'+q.id+'">'+words(v)+' / '+(q.minWords||1)+' words minimum to mark complete</p>';
@@ -89,9 +91,9 @@ function renderQuestion(q,index){
  '<div class="cc-question-heading"><span class="cc-question-no">'+String(index+1).padStart(2,"0")+'</span>'+
  '<h3>'+escape(q.prompt)+'</h3><span class="cc-q-status" id="cc-state-'+q.id+'"></span></div>'+
  '<div class="cc-response">'+inputFor(q,index)+'</div>'+
- (q.type!=="text"?'<div class="cc-q-actions"><button type="button" class="cc-check" data-action="check" data-id="'+q.id+'">Check answer</button>'+
+ (q.type!=="text"&&q.type!=="lab"?'<div class="cc-q-actions"><button type="button" class="cc-check" data-action="check" data-id="'+q.id+'">Check answer</button>'+
  '<p id="cc-feedback-'+q.id+'" class="cc-feedback" aria-live="polite"></p></div>':
- '<p class="cc-writing-tip">This response is reviewed by your teacher, not automatically graded.</p>')+
+ '<p class="cc-writing-tip">'+(q.type==="lab"?"Record different trials to complete this investigation.":"This response is reviewed by your teacher, not automatically graded.")+'</p>')+
  '</article>';
 }
 function showActivity(activity){
@@ -127,7 +129,20 @@ function showActivity(activity){
  '<p>Download your work. A draft on this device is not the same as handing it in.</p>'+
  '<a class="cc-side-lesson" href="'+escape(activity.lesson)+'">Review the related lesson ↗</a></div></aside></div>'+
  '<div class="cc-print-report" id="cc-print-report"></div>';
+ mountLabs();
  updateProgress();
+}
+function mountLabs(){
+ if(!current)return;
+ const labs=window.ComputerClassLabs;
+ for(const q of allQuestions(current).filter(q=>q.type==="lab")){
+  const target=document.getElementById("cc-lab-"+q.id);
+  if(!target||!labs)continue;
+  labs.mount(target,q,answers[q.id],trials=>{
+   answers[q.id]=trials;
+   saveDraft();updateProgress();
+  });
+ }
 }
 function updateProgress(){
  if(!current)return;
@@ -174,6 +189,7 @@ function feedbackFor(q){
 function getName(){return (document.getElementById("cc-student-name")?.value||name).trim();}
 function printableAnswer(q,value){
  if(q.type==="choice")return q.options[Number(value)]||"(no answer)";
+ if(q.type==="lab")return Array.isArray(value)&&value.length?value.map((trial,i)=>"Trial "+(i+1)+": "+window.ComputerClassLabs.trialSummary(q.lab,trial)).join("\n"):"(no trials recorded)";
  if(q.type==="order")return Array.isArray(value)?value.map((id,i)=>(i+1)+". "+(q.items[Number(id)]||"(not answered)")).join("\n"):"(not answered)";
  return String(value??"").trim()||"(not answered)";
 }
