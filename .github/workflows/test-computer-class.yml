@@ -10,12 +10,14 @@ on:
       - math/index.html
       - critical-thinking/index.html
       - tools/test_computer_class.cjs
+      - tools/test_computer_class_teacher.cjs
       - tools/test_computer_class_browser.cjs
       - .github/workflows/test-computer-class.yml
   pull_request:
     paths:
       - computer-class/**
       - tools/test_computer_class.cjs
+      - tools/test_computer_class_teacher.cjs
       - tools/test_computer_class_browser.cjs
   workflow_dispatch:
 jobs:
@@ -27,6 +29,7 @@ jobs:
         with:
           node-version: '22'
       - run: node tools/test_computer_class.cjs
+      - run: node tools/test_computer_class_teacher.cjs
       - name: Install browser test dependency
         run: npm install --no-save --no-package-lock playwright-core@1.56.1
       - name: Run local classroom website
@@ -38,7 +41,7 @@ jobs:
           done
           cat /tmp/computer-class-server.log
           exit 1
-      - name: Test five assignments on mobile and desktop
+      - name: Test fifteen assignments and teacher review on mobile and desktop
         run: node tools/test_computer_class_browser.cjs
       - name: Save browser screenshots
         if: always()
