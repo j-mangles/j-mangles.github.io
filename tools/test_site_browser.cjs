@@ -153,6 +153,7 @@ async function checkNoHorizontalOverflow(page,label){
   await capture(page,"science-earth-river-watershed-desktop");
   stage="Earth review evidence writing";
   await goto(page,"/science/#earth/e16-review","#ltool");
+  await page.waitForFunction(()=>document.querySelectorAll("#lesson-activity textarea[data-field]").length>=4,null,{timeout:10000});
   assert.ok(await page.locator("#lesson-activity textarea[data-field]").count()>=4);
   await page.locator("#lesson-activity textarea[data-field]").first().fill("My claim links moving water to sediment deposition.");
   assert.match(await page.locator("#lesson-activity #la-status").innerText(),/held on this page|Draft/i);
