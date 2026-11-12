@@ -25,7 +25,8 @@ const activities=[
   ]},
   {title:"Explain the evidence",intro:"A strong explanation includes a claim, an observation from the model and scientific reasoning.",questions:[
    {id:"sc7",type:"text",prompt:"Write a short Claim–Evidence–Reasoning conclusion about what solute concentration can tell you about osmosis.",placeholder:"Claim: ... Evidence: ... Reasoning: ...",minWords:30},
-   {id:"sc8",type:"choice",prompt:"Which is a limitation of this model?",options:["Real membranes always block water","It shows net direction but not actual transport rates or proteins","All cells have a cell wall"],correct:1,why:"The model simplifies transport; real cells also have proteins and complex regulation."}
+   {id:"sc8",type:"choice",prompt:"Which is a limitation of this model?",options:["Real membranes always block water","It shows net direction but not actual transport rates or proteins","All cells have a cell wall"],correct:1,why:"The model simplifies transport; real cells also have proteins and complex regulation."},
+   {id:"sc9",type:"lab",prompt:"Run three different osmosis trials. Change the solute concentrations and compare at least one plant and one animal cell.",lab:"osmosis",minTrials:3}
   ]}
  ]
 },
@@ -52,7 +53,8 @@ const activities=[
   {title:"Think like a historian",intro:"A rule can establish order and still be open to criticism.",questions:[
    {id:"ss7",type:"choice",prompt:"What is the strongest cautious conclusion about Hammurabi's written laws?",options:["Written rules meant everyone had equal rights","The laws show how rulers tried to organize society, but treatment could differ by social position","The laws prove every person obeyed"],correct:1,why:"Written laws reveal values and systems of authority, not necessarily equal treatment or universal obedience."},
    {id:"ss8",type:"text",prompt:"Explain how geography and government worked together in the classroom river-settlement scenario. Use at least two specific details.",placeholder:"Because the river ... the community needed ... The leader ...",minWords:30},
-   {id:"ss9",type:"text",prompt:"What is one question you would ask if you were studying a real ancient law collection as a historical source?",placeholder:"I would ask ... because ...",minWords:12}
+   {id:"ss9",type:"text",prompt:"What is one question you would ask if you were studying a real ancient law collection as a historical source?",placeholder:"I would ask ... because ...",minWords:12},
+   {id:"ss10",type:"lab",prompt:"Model two irrigation plans for the fictional city. Record how the different farm areas are supported.",lab:"canal",minTrials:2}
   ]}
  ]
 },
