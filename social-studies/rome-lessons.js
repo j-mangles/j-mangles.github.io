@@ -418,7 +418,7 @@ window.RomeLessons = [
     "id": "l9",
     "n": "9",
     "title": "Built to Last: Engineering and City Life",
-    "activity": {"href":"rome-water-network.html","title":"Try the Roman Water Network Studio"},
+    "activity": {"href":"rome-pompeii-walkabout.html","title":"Open the Pompeii Walkabout"},
     "released": true,
     "big": "Roman infrastructure and urban life show technical skill alongside unequal living conditions and risks.",
     "notes": [
@@ -442,7 +442,7 @@ window.RomeLessons = [
         "Writing or images placed on a wall or surface."
       ]
     ],
-    "work": "City systems sketch: show how water, roads and housing connect. Label one benefit and one inequality in the system.",
+    "work": "Pompeii Walkabout: classify eight archaeological finds, read Pliny as a source, solve engineering comparisons, and use town evidence to reconstruct daily life while noting what Pompeii cannot represent.",
     "check": [
       {
         "q": "How did a Roman aqueduct usually move water?",

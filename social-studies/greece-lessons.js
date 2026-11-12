@@ -555,7 +555,7 @@ window.GreeceLessons=[
         "Large temple of Athena on the Athenian Acropolis."
       ]
     ],
-    "activity": {"href":"greece-league-hearing.html","title":"Open the Delian League Hearing"},
+    "activity": {"href":"greece-follow-the-money.html","title":"Open Follow the Money"},
     "work": "Follow the Money: Trace the League's change to an empire, weigh an assembly argument, write from an islander's or worker's perspective, and examine the debate over Parthenon sculptures.",
     "check": [
       {

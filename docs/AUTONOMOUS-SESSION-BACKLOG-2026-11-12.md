@@ -165,3 +165,13 @@
 - Muscle and skeleton can be selected using mouse/touch or keyboard, with correct four-step explanatory pathways.
 - Computer Class displays 20 activities with 194 unique question IDs; the standard teacher-copy and browser-local draft workflows still pass.
 - All changes stay in a draft pull request until approved.
+
+## Ancient Greece and Rome source integration (Nov 12)
+
+- Compared the 13-lesson Greece and Rome sequences against their Drive unit overviews and student-facing investigations.
+- Built a student-facing Greece Lesson 8 investigation from “Follow the Money”: alliance chronology, the Plutarch debate with source limitations, a perspective letter, and a balanced Parthenon-sculptures argument.
+- Built a student-facing Rome Lesson 9 “Pompeii Walkabout”: eight evidence stops, Pliny source analysis, quantitative engineering questions, and a reconstruction task that highlights Pompeii's limits as a sample of Roman life.
+- Corrected the Rome lesson link so the Water Network Studio remains an extension instead of displacing the assigned Pompeii investigation.
+- Added responsive, keyboard-visible activity styling and browser-local downloadable work; no student response is uploaded or stored.
+- Kept Greece and Rome behind the current “soon” unit gates. No teacher guides, marking notes, answer keys or tests were copied into the student pages.
+- Greece, Rome and integrated smoke tests pass locally; browser/device QA is still needed.
