@@ -20,6 +20,8 @@ on:
       - science/osmosis-cell-response.js
       - science/continental-drift-evidence.js
       - science/microscope-studio.js
+      - science/buoyancy-liquid-comparison.js
+      - tools/test_buoyancy_liquids.cjs
       - tools/test_microscope_studio.cjs
       - tools/test_science_graph_measure_osmosis_drift.cjs
       - tools/test_science_next_wave.cjs
@@ -46,6 +48,8 @@ on:
       - science/osmosis-cell-response.js
       - science/continental-drift-evidence.js
       - science/microscope-studio.js
+      - science/buoyancy-liquid-comparison.js
+      - tools/test_buoyancy_liquids.cjs
       - tools/test_microscope_studio.cjs
       - tools/test_science_graph_measure_osmosis_drift.cjs
       - tools/test_science_next_wave.cjs
@@ -63,6 +67,7 @@ jobs:
       - run: node tools/test_science_next_wave.cjs
       - run: node tools/test_science_graph_measure_osmosis_drift.cjs
       - run: node tools/test_microscope_studio.cjs
+      - run: node tools/test_buoyancy_liquids.cjs
       - run: node tools/test_homeostasis.cjs
       - run: node tools/test_matter_unit.cjs
       - run: node tools/test_energy_light_unit.cjs
@@ -78,13 +83,13 @@ jobs:
           done
           cat /tmp/science-site.log
           exit 1
-      - name: Test sixteen labs in Chrome at desktop and phone sizes
+      - name: Test seventeen labs in Chrome at desktop and phone sizes
         run: node tools/test_science_expansion_browser.cjs
       - name: Save Science visual check screenshots
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: science-sixteen-labs-mobile
+          name: science-seventeen-labs-mobile
           path: browser-artifacts/science-*-mobile.png
           if-no-files-found: ignore
           retention-days: 7
