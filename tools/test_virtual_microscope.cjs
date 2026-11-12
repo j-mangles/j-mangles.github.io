@@ -25,6 +25,7 @@ assert.ok(core.specimens.onion.note.includes("chloroplasts"));
 const science=fs.readFileSync(path.join(root,"science/index.html"),"utf8");
 assert.ok(science.includes("virtual-microscope.js"));
 assert.ok(science.includes("virtual-microscope.css"));
+assert.ok(js.includes("../computer-class/#science-microscope-evidence"),"Independent follow-up lesson linked");
 const library=fs.readFileSync(path.join(root,"science/labs.html"),"utf8");
 assert.match(library,/Virtual Microscope Investigation/);
 assert.match(library,/cells\/theory/);
