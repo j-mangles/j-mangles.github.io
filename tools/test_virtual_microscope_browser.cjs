@@ -42,6 +42,9 @@ const {chromium}=require("playwright-core"),BASE=process.env.SITE_TEST_ORIGIN||"
    assert.equal(download.suggestedFilename(),"virtual-microscope-investigation.txt");
    const report=fs.readFileSync(await download.path(),"utf8");
    assert.match(report,/Trial 3/);assert.match(report,/450 µm/);
+   const artifactDir=path.resolve(__dirname,"../browser-artifacts");
+   fs.mkdirSync(artifactDir,{recursive:true});
+   await page.screenshot({path:path.join(artifactDir,"science-microscope-"+width+".png"),fullPage:true,animations:"disabled"});
    const dims=await page.evaluate(()=>({scroll:document.documentElement.scrollWidth,viewport:innerWidth}));
    assert.ok(dims.scroll<=dims.viewport+4,"No horizontal overflow at "+width);
    assert.deepEqual(errors,[],"No JavaScript errors at "+width);
