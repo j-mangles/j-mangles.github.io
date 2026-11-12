@@ -31,7 +31,7 @@ function calculate(tool,s){
   return {beginning:s.beginning,turning:s.turning,ending:s.ending,shape:peak?"clear turning-point peak":"flat or unusual tension pattern"};
  }
  if(tool==="sources"){
-  const named=s.named?1:0,dated=s.dated?1:0,direct=s.direct?1:0;
+  const named=Number(s.named)===1?1:0,dated=Number(s.dated)===1?1:0,direct=Number(s.direct)===1?1:0;
   return {named,dated,direct,checks:named+dated+direct,limits:"This score does not establish whether a claim is true."};
  }
  throw Error("Unknown Computer Class model "+tool);
@@ -103,9 +103,9 @@ const CONFIG={
   note:"Test three source-check criteria. A named source, clear date and direct evidence can make a claim easier to verify. These checks are not a truth percentage.",
   initial:{named:0,dated:0,direct:0},
   fields:[
-   {key:"named",label:"Named, accountable source",min:0,max:1,step:1},
-   {key:"dated",label:"Date and context clear",min:0,max:1,step:1},
-   {key:"direct",label:"Direct supporting evidence",min:0,max:1,step:1}
+   {key:"named",type:"select",label:"Named, accountable source",options:[[0,"No"],[1,"Yes"]]},
+   {key:"dated",type:"select",label:"Date and context clear",options:[[0,"No"],[1,"Yes"]]},
+   {key:"direct",type:"select",label:"Direct supporting evidence",options:[[0,"No"],[1,"Yes"]]}
   ],
   headings:["Named","Dated","Direct","Checks met"],
   cells:r=>[r.named?"Yes":"No",r.dated?"Yes":"No",r.direct?"Yes":"No",r.checks+"/3"],
