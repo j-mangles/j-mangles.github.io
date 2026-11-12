@@ -9,7 +9,7 @@ for(const name of ["computer-class/data.js","computer-class/activities-2.js","co
 }
 const core=window.MissionCore,resource=window.MissionResources,list=core.catalog();
 assert.equal(resource.periods.length,5);
-assert.deepEqual(resource.periods.map(p=>p.number),[1,2,3,4,5]);
+assert.deepEqual(Array.from(resource.periods,p=>p.number),[1,2,3,4,5]);
 assert.equal(list.length,33,"18 vetted lesson links and 15 assignments");
 assert.equal(new Set(list.map(x=>x.id)).size,33,"All IDs unique");
 assert.equal(list.filter(x=>x.kind==="Digital assignment").length,15);
