@@ -60,7 +60,7 @@ function checkOverflow(actual,where,width){assert.ok(actual.scroll<=actual.viewp
   assert.equal(await osm.locator("[data-trials] tr").count(),3,"Three osmosis trials recorded");
   await page.reload({waitUntil:"domcontentloaded"});
   assert.equal(await page.locator("#cc-lab-sc9 [data-trials] tr").count(),3,"Recorded trials persist");
-  assert.ok(await page.locator("#cc-progress-count").innerText().then(x=>x.includes("3 of 9")),"Osmosis adds a response");
+  assert.ok(await page.locator("#cc-progress-count").innerText().then(x=>x.includes("4 of 9")),"Osmosis adds a response");
   await page.goto(BASE+"/computer-class/#math-fraction-kitchen");
   const kitchen=page.locator("#cc-lab-fk0");
   await kitchen.locator('[data-field="servings"]').fill("8");
