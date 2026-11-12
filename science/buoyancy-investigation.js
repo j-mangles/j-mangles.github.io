@@ -14,6 +14,7 @@ const model={
  objects:{
   wood:{name:"Light wood block",density:.7},
   wax:{name:"Wax block",density:.9},
+  ice:{name:"Ice block (0°C)",density:.917},
   plastic:{name:"Dense plastic block",density:1.1},
   aluminium:{name:"Aluminium block",density:2.7},
   steel:{name:"Steel block",density:7.8},
@@ -41,7 +42,7 @@ function mount(root){
  '<div class="bl-layout"><div class="bl-graphic"><svg id="bl-diagram" viewBox="0 0 400 350" role="img" aria-label="Tank with liquid and a solid block"></svg></div>'+
  '<div class="bl-controls"><label>Block material<select id="bl-object">'+Object.entries(model.objects).map(([id,v])=>'<option value="'+id+'">'+esc(v.name)+'</option>').join("")+'</select></label>'+
  '<label>Liquid<select id="bl-liquid">'+Object.entries(model.liquids).map(([id,v])=>'<option value="'+id+'">'+esc(v.name)+'</option>').join("")+'</select></label>'+
- '<label>Mass (g)<input type="number" id="bl-mass" min="1" max="1000" step="1" value="70"></label>'+
+ '<label>Mass (g)<input type="number" id="bl-mass" min="1" max="1000" step="0.1" value="70"></label>'+
  '<label>Volume (cm³)<input type="number" id="bl-volume" min="1" max="500" step="1" value="100"></label>'+
  '<div class="bl-measures"><span>Object density<br><b id="bl-rho-object">0.70</b> g/cm³</span>'+
  '<span>Liquid density<br><b id="bl-rho-liquid">1.00</b> g/cm³</span></div>'+
@@ -96,7 +97,7 @@ function mount(root){
  }
  $("#bl-object").addEventListener("change",e=>{
   object=e.target.value;
-  mass=Math.min(1000,Math.round(model.objects[object].density*100));volume=100;
+  mass=Math.min(1000,Math.round(model.objects[object].density*1000)/10);volume=100;
   $("#bl-mass").value=mass;$("#bl-volume").value=volume;update();
  });
  $("#bl-liquid").addEventListener("change",e=>{liquid=e.target.value;update();});
