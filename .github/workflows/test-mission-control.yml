@@ -11,6 +11,7 @@ on:
       - science/data.js
       - ela/data.js
       - critical-thinking/data.js
+      - social-studies/index.html
       - tools/test_mission_catalog.cjs
       - tools/test_mission_control.cjs
       - tools/test_mission_control_browser.cjs
