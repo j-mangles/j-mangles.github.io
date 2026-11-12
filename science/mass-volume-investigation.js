@@ -19,7 +19,7 @@ const core={
   return {id,volume,mass:Number((samples[id].density*volume).toFixed(2))};
  },
  slope(points){
-  if(!Array.isArray(points)||!points.length)throw Error("Two or more measured volumes are required");
+  if(!Array.isArray(points)||points.length<2)throw Error("Two or more measured volumes are required");
   if(points.some(p=>!p||!Number.isFinite(p.volume)||p.volume<=0||!Number.isFinite(p.mass)||p.mass<0))
    throw Error("Invalid mass-volume trial");
   const sumXY=points.reduce((a,p)=>a+p.volume*p.mass,0);
