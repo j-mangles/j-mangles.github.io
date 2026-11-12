@@ -22,6 +22,13 @@
 - Predictions, observable float/sink/neutral results, approximate submerged fractions, evidence table and CER export.
 - Maintained the Matter unit's `soon` status; this is built for future classroom release, not released now.
 
+### Science — Human Systems Explorer (currently released)
+- Added the **Muscular** and **Skeletal** systems to the existing interactive body explorer rather than creating a disconnected model.
+- Each new system has its organ group, role, cross-system relationships and four-stage explanation of how movement is produced.
+- Added selectable schematic muscle/bone overlays with keyboard access and two student comprehension questions.
+- Existing nervous, circulatory, digestive, respiratory and integumentary views remain available.
+- Added unit tests and real Chrome checks for tabs, pathways and keyboard selection.
+
 ### Engineering and QA
 - Kept Science tools within the established `HUB.lessonTools` registration architecture.
 - Added independent JavaScript model tests and real Chromium student-workflow tests at 390 px and desktop widths.
@@ -40,7 +47,7 @@
 1. **Full Science interaction audit.** Verify every lesson-tool registration and ensure later scripts cannot overwrite earlier models. Add a test for duplicate/overwritten tool registrations where practical.
 2. **Microscope evidence improvements.** Offer cell-size estimation feedback when counts are clearly implausible and optional support scaffolds; do not auto-grade open-ended scientific reasoning.
 3. **Density graphing.** Add a mass-versus-volume graph with slope interpretation and multiple objects, not another decorative graph.
-4. **Human-body systems.** Extend the existing six-system explorer with a complete linked oxygen/nutrient transport investigation and organ-level annotations. Preserve current diagrams and digest/circulation interactions.
+4. **Human-body systems.** Complete the linked oxygen/nutrient transport investigation and add organ-level annotation support to the seven-system explorer. Preserve the new muscle/bone selection and existing digestion/circulation interactions.
 5. **Computer Class integration.** Incorporate microscope observations in a reusable assignment component without compromising browser-local backups and current exports.
 6. **Math.** Expand interactive number sense and fraction manipulatives using the established Math 7 design, with multi-step reasoning prompts.
 7. **Social Studies.** Add source-evaluation activities tied to existing Mesopotamia and Egypt materials, not generic fantasy maps.
@@ -69,4 +76,5 @@
 - Student can compare a block in different liquids, see the density-based outcome and export three observed trials.
 - Browser tests run at phone and desktop widths; no unhandled errors or horizontal page overflow.
 - Existing Science modules remain functional and the Matter release gate remains unchanged.
+- Muscle and skeleton can be selected using mouse/touch or keyboard, with correct four-step explanatory pathways.
 - All changes stay in a draft pull request until approved.
