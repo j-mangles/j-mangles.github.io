@@ -29,6 +29,10 @@ assert.equal(s.correct,8);
 assert.equal(s.possible,8);
 assert.equal(s.writtenDone,2);
 assert.equal(s.written,2);
+assert.equal(t.hasTeacherReview(e),false);
+assert.equal(t.hasTeacherReview({...e,review:{ma9:{level:"meeting"}}}),true);
+assert.equal(t.hasTeacherReview({...e,overall:"Strength and next step"}),true);
+
 assert.throws(()=>t.sanitize({...payload,student_name:""}));
 assert.throws(()=>t.sanitize({...payload,schema:"incorrect"}));
 assert.throws(()=>t.sanitize({...payload,activity_id:"unknown"}));
