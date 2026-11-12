@@ -11,7 +11,7 @@ const core=window.MissionCore,resource=window.MissionResources,list=core.catalog
 assert.equal(resource.periods.length,5);
 assert.deepEqual(Array.from(resource.periods,p=>p.number),[1,2,3,4,5]);
 assert.equal(list.length,104,"Released lessons, featured tools and 20 assignments");
-assert.equal(new Set(list.map(x=>x.id)).size,99,"All IDs unique");
+assert.equal(new Set(list.map(x=>x.id)).size,list.length,"All IDs unique");
 assert.equal(list.filter(x=>x.kind==="Digital assignment").length,20);
 assert.equal(window.MissionReleasedLessons.length,76,"Only released lessons are generated");
 assert.equal(list.some(x=>x.href==="../math/#fracops"),false,"Future fraction unit stays hidden");
