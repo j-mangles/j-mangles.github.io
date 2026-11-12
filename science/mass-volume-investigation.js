@@ -78,6 +78,11 @@ function plot(records){
  out+='</svg>';
  return out;
 }
+function portableSvg(records){
+ const graphic=plot(records);
+ const stable=graphic.replace('<svg viewBox=', '<svg xmlns="http://www.w3.org/2000/svg" viewBox=');
+ return stable.replace(/(<svg[^>]*>)/, '$1<style>text{font-family:Arial,sans-serif;fill:#173328;font-size:13px}.axis{stroke:#173328;stroke-width:2}.grid{stroke:#cbd6d0;stroke-width:1}</style>');
+}
 function mount(root){
  let selected="wood",vol=20,records=[];
  root.innerHTML='<section class="mvg"><style>'+css+'</style><h3>Mass–Volume Graphing Investigation</h3>'+
@@ -102,7 +107,7 @@ function mount(root){
  '<label>Claim<textarea id="mvg-claim" placeholder="The material with the steepest mass–volume line…"></textarea></label>'+
  '<label>Evidence<textarea id="mvg-evidence" placeholder="At the same volume, Sample A has…"></textarea></label>'+
  '<label>Reasoning<textarea id="mvg-reason" placeholder="For a uniform material, density equals…"></textarea></label>'+
- '<div class="actions"><button type="button" class="primary" id="mvg-export">Download investigation (.txt)</button><button type="button" id="mvg-clear">Clear measurements</button></div>'+
+ '<div class="actions"><button type="button" class="primary" id="mvg-export">Download investigation (.txt)</button><button type="button" id="mvg-export-graph">Download labelled graph (.svg)</button><button type="button" id="mvg-clear">Clear measurements</button></div>'+
  '<p class="feedback" id="mvg-export-status" role="status"></p>'+
  '<p class="small">Idealized uniform solids, 20–120 cm³ and no measuring error. For an independent assignment, keep your observations and include a fair-test explanation. Work stays in this tab until downloaded; nothing is submitted automatically.</p>'+
  '</section></section>';
@@ -160,6 +165,16 @@ function mount(root){
   setTimeout(()=>URL.revokeObjectURL(url),1000);
   $("#mvg-export-status").textContent="Report downloaded; submit it using your teacher's instructions.";
  });
+ $("#mvg-export-graph").addEventListener("click",()=>{
+  if(!core.complete(records)){
+   $("#mvg-export-status").textContent="Collect two different volumes per material before exporting the graph.";return;
+  }
+  const svg=portableSvg(records);
+  const url=URL.createObjectURL(new Blob([svg],{type:"image/svg+xml;charset=utf-8"}));
+  const a=document.createElement("a");a.href=url;a.download="mass-volume-graph.svg";document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+  $("#mvg-export-status").textContent="Graph image downloaded; you can insert it into a document or print it.";
+ });
  $("#mvg-clear").addEventListener("click",()=>{
   if(!g.confirm("Clear all measured trials and written explanations? Download your work first if you need a copy."))return;
   records=[];["#mvg-claim","#mvg-evidence","#mvg-reason"].forEach(k=>$(k).value="");redraw();
@@ -174,5 +189,5 @@ H.lessonTools["matter/density"]=root=>{
  if(prior){const existing=document.createElement("div");root.appendChild(existing);prior(existing);}
  const extra=document.createElement("div");root.appendChild(extra);mount(extra);
 };
-g.MassVolumeCore=core;
+g.MassVolumeCore={...core,portableSvg};
 })(window);
