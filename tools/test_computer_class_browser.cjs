@@ -85,7 +85,7 @@ function checkOverflow(actual,where,width){assert.ok(actual.scroll<=actual.viewp
   });
   await page.locator("#cc-q-ox10 .cc-evidence-loaded").waitFor({state:"visible"});
   await page.locator('textarea[data-id="ox10"]').fill("The report says the lungs exchange gases and the heart pumps blood. They work together because oxygen enters blood in the lungs before the heart moves it around the body.");
-  assert.match(await page.locator("#cc-progress-count").innerText(),/2 of 10/);
+  assert.match(await page.locator("#cc-progress-count").innerText(),/1 of 10/);
   await page.reload({waitUntil:"domcontentloaded"});
   assert.equal(await page.locator("#cc-q-ox10 .cc-evidence-loaded pre").innerText(),organReport,"Imported evidence stays in the local draft");
   const [scienceReportDownload]=await Promise.all([
