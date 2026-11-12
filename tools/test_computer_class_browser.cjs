@@ -150,7 +150,7 @@ function checkOverflow(actual,where,width){assert.ok(actual.scroll<=actual.viewp
   await page.locator("#tr-files").setInputFiles({
    name:"math-store-alex-example-resubmission.json",mimeType:"application/json",buffer:Buffer.from(jsonText,"utf8")
   });
-  assert.match(await page.locator("#tr-file-message").innerText(),/protected from replacement/);
+  await page.waitForFunction(()=>document.querySelector("#tr-file-message")?.textContent?.includes("protected from replacement"),null,{timeout:10000});
   assert.equal(await page.locator('[data-rating="ma9"]').inputValue(),"meeting");
   assert.equal(await page.locator('[data-feedback="ma9"]').inputValue(),"Clear reasoning. Next: show a complete equation.");
 
