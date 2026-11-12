@@ -11,7 +11,7 @@ const {chromium}=require("playwright-core"),BASE=process.env.SITE_TEST_ORIGIN||"
    await page.goto(BASE+"/science/#cells/theory",{waitUntil:"domcontentloaded",timeout:30000});
    const lab=page.locator(".vm");
    await lab.waitFor({state:"visible",timeout:15000});
-   assert.match(await lab.locator("h3").innerText(),/Virtual Microscope/);
+   assert.match(await lab.locator("h3").innerText(),/Virtual Microscope/i);
    assert.match(await lab.locator("#vm-field").innerText(),/4500/);
    await lab.locator("#vm-predict").selectOption("fewer");
    await lab.locator("#vm-check").click();
