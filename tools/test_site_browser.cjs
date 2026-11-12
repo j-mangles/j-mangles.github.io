@@ -180,15 +180,18 @@ async function checkNoHorizontalOverflow(page,label){
   assert.match(await page.locator("#cw-now").innerText(),/revised draft/);
   await capture(page,"ela-core-writing-thankyou-desktop");
   await goto(page,"/ela/#stories/summer","#cw-ev1");
+  await page.waitForFunction(()=>document.querySelector(".cw-question")?.textContent?.includes("setting and group behaviour"));
   assert.match(await page.locator(".cw-question").innerText(),/setting and group behaviour/);
   assert.match(await page.locator(".cw-evidence").first().innerText(),/Setting evidence/);
   assert.match(await page.locator(".cw-evidence").nth(1).innerText(),/Group-behaviour evidence/);
   await goto(page,"/ela/#stories/landlady","#cw-tech1");
+  await page.waitForFunction(()=>document.querySelector(".cw-question")?.textContent?.includes("ordinary act of hospitality"));
   await page.locator("#cw-tech1").fill("Foreshadowing");
   await page.locator("#cw-tech2").fill("Setting");
   assert.match(await page.locator(".cw-question").innerText(),/ordinary act of hospitality/);
   await capture(page,"ela-core-writing-landlady-desktop");
   await goto(page,"/ela/#stories/paw","#cw-other");
+  await page.waitForFunction(()=>document.querySelector(".cw-question")?.textContent?.includes("supernatural fate or by human choice"));
   assert.match(await page.locator(".cw-question").innerText(),/supernatural fate or by human choice/);
   assert.ok(await page.locator("#cw-reply").count()===1);
   assert.ok(await page.locator("#cw-tech1").count()===0);
