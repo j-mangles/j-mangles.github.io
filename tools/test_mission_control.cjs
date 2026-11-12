@@ -4,15 +4,19 @@ const assert=require("node:assert/strict"),fs=require("node:fs"),path=require("n
 const root=path.resolve(__dirname,"..");
 const source=(p)=>fs.readFileSync(path.join(root,p),"utf8");
 const window={};
-for(const name of ["computer-class/data.js","computer-class/activities-2.js","computer-class/activities-3.js","today/resources.js","today/core.js"]){
+for(const name of ["computer-class/data.js","computer-class/activities-2.js","computer-class/activities-3.js","today/resources.js","today/released-lessons.js","today/core.js"]){
  vm.runInNewContext(source(name),{window,console},{filename:name,timeout:3000});
 }
 const core=window.MissionCore,resource=window.MissionResources,list=core.catalog();
 assert.equal(resource.periods.length,5);
 assert.deepEqual(Array.from(resource.periods,p=>p.number),[1,2,3,4,5]);
-assert.equal(list.length,33,"18 vetted lesson links and 15 assignments");
-assert.equal(new Set(list.map(x=>x.id)).size,33,"All IDs unique");
+assert.equal(list.length,86,"Released lessons, featured tools and 15 assignments");
+assert.equal(new Set(list.map(x=>x.id)).size,86,"All IDs unique");
 assert.equal(list.filter(x=>x.kind==="Digital assignment").length,15);
+assert.equal(window.MissionReleasedLessons.length,63,"Only released lessons are generated");
+assert.equal(list.some(x=>x.href==="../math/#fracops"),false,"Future fraction unit stays hidden");
+assert.equal(list.filter(x=>x.subject==="math").length,23);
+assert.equal(list.filter(x=>x.subject==="sci").length,21);
 for(const x of list){
  assert.ok(core.SUBJECTS.includes(x.subject),"Recognized subject");
  assert.ok(x.href.startsWith("../")&&!x.href.includes("../../"),"Only same-site relative links");
@@ -21,6 +25,7 @@ for(const x of list){
 const byId=core.index(list);
 assert.equal(byId.get("assignment:science-membranes").href,"../computer-class/#science-membranes");
 assert.equal(byId.get("lesson:sci-transport").href,"../science/#cells/transport");
+assert.equal(byId.get("lesson:released-math-fdp-l01").href,"../math/#fdp/l01");
 const plan=core.defaultPlan();
 assert.equal(plan.schema,1);
 assert.equal(plan.days.length,6);
@@ -66,6 +71,7 @@ assert.throws(()=>core.sanitizePlan({...plan,schema:999},list));
 for(const page of ["today/index.html","today/launch.html"]){
  const html=source(page);
  assert.ok(html.includes('src="resources.js'),page);
+ assert.ok(html.includes('src="released-lessons.js'),page);
  assert.ok(html.includes('src="core.js'),page);
  assert.ok(html.includes('src="../computer-class/activities-3.js'),page);
  assert.ok(html.includes('name="viewport"'),page);
@@ -74,4 +80,4 @@ assert.ok(source("index.html").includes('href="today/"'),"Homepage entry point")
 assert.ok(source("today/launch.js").includes("parseBoardHash"),"Student screen only takes safe catalog IDs");
 assert.ok(!source("today/launch.js").includes("localStorage"),"Student presentation cannot read teacher browser notes");
 assert.ok(source("today/style.css").includes("prefers-reduced-motion"),"Motion-reduction support");
-console.log("Mission Control passed: 33 resources, six days, five periods, backup/restore, safe public board links and homepage integration.");
+console.log("Mission Control passed: 86 released resources, six days, five periods, backup/restore, privacy-safe board links and homepage integration.");
