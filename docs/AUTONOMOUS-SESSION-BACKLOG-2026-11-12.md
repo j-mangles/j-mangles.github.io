@@ -21,6 +21,13 @@
 - Preserved original systemic body diagrams, pathways, digestion and oxygen-model interactions by wrapping the existing `cells/systems` lesson tool after its other registrations.
 - Updated the existing `science-oxygen-systems` Computer Class activity to link directly to the Organ Inspector and require organ-level evidence in the CER paragraph; retained the same question IDs and existing draft storage.
 
+### Completed: Science — Fair Test Planner
+- Extended the existing released Science Skills Fair Test Studio with a student-authored investigation plan.
+- Students can start from one of three existing classroom examples, then write a testable question, prediction, changed and measured variables, three distinct controlled variables, repeat count and reproducible procedure.
+- The planner checks for missing fields, identical independent/dependent variables, reused controls and fewer than three or more than twenty repeats; it does not grade the prediction or procedure quality.
+- Produces a local `.txt` plan only after the student chooses download. The page does not save or upload the plan.
+- Added deterministic validation checks and phone/desktop Chrome coverage for template fill, complete export and no-upload feedback.
+
 ### Completed: Grade 7 Math — Worked-Solution Error Detective
 - Created `math/error-detective.js` and added it to the existing released Unit 1 **Percent Skill Check and Unit Review** lesson (`fdp/l21`).
 - Nine original worked examples target common misconceptions: percent-to-decimal place value, negative-number ordering, finding a percentage, fraction-to-percent conversion, discount and tax order, percents over 100, mixed-form comparison, finding the whole and mixed-number conversion.

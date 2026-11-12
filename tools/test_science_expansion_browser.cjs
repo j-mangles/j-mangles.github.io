@@ -161,6 +161,22 @@ const tasks=[
   assert.match(await page.locator("#wed-total").innerText(),/4 correct/);
   await page.locator("#wed-claim").fill("The continents were once connected.");
   await page.locator("#wed-reason").fill("Matching fossils and rocks suggest land connections.");
+ }},
+ {hash:"skills/fair",selector:".fts",async check(page){
+  await page.locator(".fts-plan-toggle").click();
+  assert.equal(await page.locator(".fts-plan").isVisible(),true,"Complete investigation planner opens");
+  await page.locator("#fts-plan-example").selectOption("0");
+  assert.match(await page.locator("#fts-plan-question").inputValue(),/water temperature/i);
+  await page.locator("#fts-plan-prediction").fill("If the water is warmer, the sugar will dissolve faster because its particles move more quickly.");
+  await page.locator("#fts-plan-cv2").fill("Volume of water");
+  await page.locator("#fts-plan-cv3").fill("Stirring rate");
+  await page.locator("#fts-plan-method").fill("1. Measure the same amount of water.\n2. Change only its temperature.\n3. Add the same sugar, stir consistently, and time how long it takes to dissolve. Repeat three times.");
+  const [download]=await Promise.all([page.waitForEvent("download"),page.locator(".fts-plan-download").click()]);
+  assert.equal(download.suggestedFilename(),"fair-test-plan.txt");
+  const report=fs.readFileSync(await download.path(),"utf8");
+  assert.match(report,/Independent variable \(changed\): Water temperature/);
+  assert.match(report,/Repeat trials per condition: 3/);
+  assert.match(await page.locator(".fts-plan-status").innerText(),/No information was uploaded/);
  }}
 ];
 (async()=>{

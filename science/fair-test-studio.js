@@ -8,16 +8,60 @@
     {title:'Rose fertilizer',question:'How does the amount of fertilizer affect the number of flowers on rose bushes after two months?',iv:'Amount of fertilizer',dv:'Number of flowers',cv:'Amount of water',options:{iv:['Number of flowers','Amount of fertilizer','Two months'],dv:['Amount of water','Number of flowers','Amount of fertilizer'],cv:['Amount of fertilizer','Amount of water','Number of flowers']},why:{iv:'The amount of fertilizer is changed on purpose.',dv:'The number of flowers is counted as the result.',cv:'Keeping water amounts consistent helps make fertilizer the likely cause of differences.'}},
     {title:'Toy car ramp',question:'How does ramp height affect how far a toy car rolls?',iv:'Ramp height',dv:'Distance the car rolls',cv:'The toy car used',options:{iv:['Distance the car rolls','Ramp height','The toy car used'],dv:['Ramp height','Distance the car rolls','The floor colour'],cv:['Ramp height','The toy car used','Distance the car rolls']},why:{iv:'Ramp height is what the investigator changes.',dv:'Distance travelled is the measurement.',cv:'Using the same toy car removes car differences as another possible cause.'}}
   ];
+  const normalize=s=>String(s||'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
+  function validatePlan(v){
+    const missing=[];
+    if(!v.question)missing.push('testable question');if(!v.prediction)missing.push('prediction and reason');if(!v.iv)missing.push('independent variable');if(!v.dv)missing.push('dependent variable');
+    if(v.cvs.some(x=>!x))missing.push('all three controlled variables');if(!Number.isInteger(v.trials)||v.trials<3||v.trials>20)missing.push('3 to 20 repeat trials');if(!v.method)missing.push('procedure');
+    const iv=normalize(v.iv),dv=normalize(v.dv),cvs=v.cvs.map(normalize);
+    if(iv&&dv&&iv===dv)missing.push('different independent and dependent variables');
+    if(cvs.some(x=>x&&(x===iv||x===dv)))missing.push('controlled variables that differ from the changed and measured variables');
+    if(cvs.filter(Boolean).length===3&&new Set(cvs).size!==3)missing.push('three different controlled variables');
+    return missing;
+  }
+  H.fairTestPlanCore={validate:validatePlan};
   const style=`<style>
   .fts{padding:18px;background:var(--paper);border:1px solid var(--rule);border-radius:var(--radius)}
   .fts h3{margin:0 0 6px}.fts-intro,.fts-context{color:var(--muted)}.fts-case{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:14px 0}.fts-case button{border:1px solid var(--rule);border-radius:999px;background:var(--paper);color:var(--ink);padding:7px 12px;font:inherit;cursor:pointer}.fts-case button[aria-pressed=true]{border-color:var(--accent);background:var(--accent-soft);color:var(--accent-ink)}
   .fts-question{padding:14px 16px;background:var(--soft);border-radius:var(--radius);font-weight:600}.fts-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:16px}.fts-field label{display:block;font-size:13px;font-weight:700;margin-bottom:6px}.fts-field select{width:100%;min-height:44px;padding:8px 10px;border:1px solid var(--rule);border-radius:10px;background:var(--paper);color:var(--ink);font:inherit}.fts-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.fts-actions button{min-height:42px;padding:0 16px;border:0;border-radius:var(--btn-radius);background:var(--btn);color:var(--on-btn);font:inherit;font-weight:700;cursor:pointer}.fts-actions .fts-secondary{border:1px solid var(--rule);background:var(--paper);color:var(--ink)}.fts-feedback{margin-top:14px;padding:12px 14px;border-radius:10px;background:var(--soft)}.fts-feedback p{margin:6px 0}.fts-feedback .fts-right{color:var(--good)}.fts-feedback .fts-wrong{color:var(--bad)}.fts-summary{font-weight:700}.fts button:focus-visible,.fts select:focus-visible{outline:3px solid color-mix(in srgb,var(--accent) 40%,transparent);outline-offset:2px}
-  @media(max-width:650px){.fts-grid{grid-template-columns:1fr}}
+  .fts-plan{margin-top:18px;padding-top:16px;border-top:1px solid var(--rule)}.fts-plan[hidden]{display:none}.fts-plan h4{margin:8px 0}.fts-plan-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px}.fts-plan label{display:block;font-size:13px;font-weight:700;margin:10px 0 5px}.fts-plan input,.fts-plan textarea,.fts-plan select{box-sizing:border-box;width:100%;min-height:42px;padding:9px 10px;border:1px solid var(--rule);border-radius:9px;background:var(--paper);color:var(--ink);font:inherit}.fts-plan textarea{min-height:76px;resize:vertical}.fts-plan-status{min-height:26px;margin:10px 0;font-weight:700}.fts-plan input:focus-visible,.fts-plan textarea:focus-visible,.fts-plan select:focus-visible{outline:3px solid color-mix(in srgb,var(--accent) 40%,transparent);outline-offset:2px}
+  @media(max-width:650px){.fts-grid,.fts-plan-grid{grid-template-columns:1fr}}
   </style>`;
   function fairTestStudio(root){
     let current=0;
-    root.innerHTML=style+`<section class="fts" aria-label="Fair Test Studio"><h3>Fair Test Studio</h3><p class="fts-intro">Choose what changes, what you measure, and one thing to keep the same.</p><div class="fts-case" role="group" aria-label="Choose a test scenario"></div><div class="fts-body"></div></section>`;
+    root.innerHTML=style+`<section class="fts" aria-label="Fair Test Studio"><h3>Fair Test Studio</h3><p class="fts-intro">Choose what changes, what you measure, and one thing to keep the same.</p><div class="fts-case" role="group" aria-label="Choose a test scenario"></div><div class="fts-body"></div><div class="fts-actions"><button type="button" class="fts-plan-toggle fts-secondary" aria-expanded="false">Plan a complete investigation</button></div><section class="fts-plan" aria-label="Plan a complete fair test" hidden></section></section>`;
     const tabs=root.querySelector('.fts-case'),body=root.querySelector('.fts-body');
+    const plan=root.querySelector('.fts-plan'),planToggle=root.querySelector('.fts-plan-toggle');
+    planToggle.addEventListener('click',()=>{
+      const opening=plan.hidden;plan.hidden=!opening;planToggle.setAttribute('aria-expanded',String(opening));
+      if(opening&&!plan.dataset.ready)drawPlan();
+    });
+    function drawPlan(){
+      plan.dataset.ready='true';
+      plan.innerHTML=`<h4>Build a test someone else could repeat</h4><p class="fts-context">Write a question, predict the pattern, decide what to change and measure, keep other conditions consistent, and describe repeat trials. Your plan stays in this tab until you download it.</p>
+        <label for="fts-plan-example">Start with a class example (optional)</label><select id="fts-plan-example"><option value="">Choose a starter…</option>${cases.map((c,i)=>`<option value="${i}">${esc(c.title)}: ${esc(c.question)}</option>`).join('')}</select>
+        <label for="fts-plan-question">Testable question</label><textarea id="fts-plan-question" placeholder="How does … affect …?"></textarea>
+        <label for="fts-plan-prediction">Prediction and reason</label><textarea id="fts-plan-prediction" placeholder="If …, then …, because …"></textarea>
+        <div class="fts-plan-grid"><div><label for="fts-plan-iv">What will you change? (independent variable)</label><input id="fts-plan-iv" type="text"></div><div><label for="fts-plan-dv">What will you measure? Include units. (dependent variable)</label><input id="fts-plan-dv" type="text"></div></div>
+        <div class="fts-plan-grid">${[1,2,3].map(i=>`<div><label for="fts-plan-cv${i}">What will you keep the same? Controlled variable ${i}</label><input id="fts-plan-cv${i}" type="text"></div>`).join('')}</div>
+        <label for="fts-plan-trials">How many repeat trials will you do for each condition? (at least 3)</label><input id="fts-plan-trials" type="number" min="3" max="20" step="1" inputmode="numeric" value="3">
+        <label for="fts-plan-method">Procedure: list the steps another group should follow</label><textarea id="fts-plan-method" placeholder="1. Set up …&#10;2. Change … while keeping … the same.&#10;3. Measure … and record the result. Repeat … times."></textarea>
+        <div class="fts-actions"><button type="button" class="fts-plan-download">Check and download my plan</button><button type="button" class="fts-plan-clear fts-secondary">Clear plan</button></div><p class="fts-plan-status" role="status" aria-live="polite"></p>`;
+      const input=id=>plan.querySelector('#fts-plan-'+id);
+      input('example').addEventListener('change',()=>{
+        const c=cases[Number(input('example').value)];if(!c)return;
+        input('question').value=c.question;input('iv').value=c.iv;input('dv').value=c.dv;input('cv1').value=c.cv;
+        input('prediction').focus();
+      });
+      plan.querySelector('.fts-plan-clear').addEventListener('click',()=>{plan.querySelectorAll('input,textarea').forEach(el=>{if(el.id==='fts-plan-trials')el.value='3';else el.value='';});input('example').value='';plan.querySelector('.fts-plan-status').textContent='Plan cleared.';});
+      plan.querySelector('.fts-plan-download').addEventListener('click',()=>{
+        const values={question:input('question').value.trim(),prediction:input('prediction').value.trim(),iv:input('iv').value.trim(),dv:input('dv').value.trim(),cvs:[1,2,3].map(i=>input('cv'+i).value.trim()),trials:Number(input('trials').value),method:input('method').value.trim()};
+        const status=plan.querySelector('.fts-plan-status'),missing=validatePlan(values);
+        if(missing.length){status.textContent='Complete or revise: '+missing.join('; ')+'.';return;}
+        const report=['GRADE 8 SCIENCE · FAIR TEST PLAN','', 'Testable question: '+values.question,'Prediction and reason: '+values.prediction,'','Independent variable (changed): '+values.iv,'Dependent variable (measured): '+values.dv,'Controlled variables (kept the same):',...values.cvs.map((v,i)=>(i+1)+'. '+v),'Repeat trials per condition: '+values.trials,'','Procedure:',values.method,'','A plan is not evidence that the test was performed. Record actual observations separately.'].join('\n');
+        const link=document.createElement('a'),url=URL.createObjectURL(new Blob([report],{type:'text/plain;charset=utf-8'}));link.href=url;link.download='fair-test-plan.txt';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);status.textContent='Your plan is ready to download. No information was uploaded.';
+      });
+    }
     function draw(){
       const c=cases[current];
       tabs.innerHTML=cases.map((item,i)=>`<button type="button" data-case="${i}" aria-pressed="${i===current}">${esc(item.title)}</button>`).join('');
