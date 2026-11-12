@@ -29,16 +29,28 @@
 - Existing nervous, circulatory, digestive, respiratory and integumentary views remain available.
 - Added unit tests and real Chrome checks for tabs, pathways and keyboard selection.
 
+### Computer Class — five new independent digital lessons
+- Expanded the shared Computer Class library from **15 to 20 activities** and from **141 to 191 question/response prompts** without changing existing draft storage keys or schema versions.
+- **Science:** Microscope Field Notes — prediction, magnification and field-width calculations, observations, limitations, and CER writing, linked to the released Cell Theory lesson.
+- **Math 7:** Fraction Budget — fractions of a budget, discounts, a practice sales-tax calculation, checking the order of operations and explaining decisions.
+- **Social Studies 8:** Mesopotamian Historical Evidence Desk — invented classroom source cards *clearly labeled as reconstructions*, real historical reasoning, GRAPES and cautious conclusions.
+- **ELA 8:** The Lost Page — original school-appropriate short narrative with plot sequencing, conflict, characterization and evidence-based paragraph revision.
+- **Critical Thinking / Computer Skills:** AI Fact-Check Lab — inspect a deliberately flawed fictional AI answer, check claims and citations, evaluate reputable sources and explain responsible use.
+- Reused the existing self-checking, locally saved drafts, student file export, teacher-copy review and Student Board lesson catalog rather than introducing a second assignment engine.
+- Updated Computer Class, Teacher Review Desk and Mission Control script loading and regression tests for all 20 assignments.
+
 ### Engineering and QA
 - Kept Science tools within the established `HUB.lessonTools` registration architecture.
 - Added independent JavaScript model tests and real Chromium student-workflow tests at 390 px and desktop widths.
 - Added responsive stylesheets with keyboard focus states and scrolling for narrow table views.
-- Added a GitHub Actions workflow to test both investigations and retain preview screenshots.
+- Added a GitHub Actions workflow testing microscope, buoyancy, and body-system investigation logic and real Chrome interactions at phone and desktop widths. Screenshots are retained as workflow artifacts.
+- Expanded Computer Class and Mission Control regression tests for all 20 assignments, review compatibility, and published lesson links.
+- All three workstream test suites passed on the feature branch in GitHub Actions (Science, Computer Class, Classroom Mission Control).
 - Inspected actual course materials through the connected Google Drive. The teacher's Science course outline confirms that the Energy and Earth unit sequence is intentional. Do not reorganize or unlock units based solely on a generic curriculum summary.
 
 ## In progress
 
-- Final PR-wide CI verification and review of responsive screenshots.
+- Visual review of responsive screenshots and full pull-request review before merging; automatic tests have passed.
 - Student pilot of wording, estimated completion time and numerical challenge level (requires classroom use).
 - Cross-checking the model's assumption labels against the upcoming unit materials.
 
@@ -48,11 +60,11 @@
 2. **Microscope evidence improvements.** Offer cell-size estimation feedback when counts are clearly implausible and optional support scaffolds; do not auto-grade open-ended scientific reasoning.
 3. **Density graphing.** Add a mass-versus-volume graph with slope interpretation and multiple objects, not another decorative graph.
 4. **Human-body systems.** Complete the linked oxygen/nutrient transport investigation and add organ-level annotation support to the seven-system explorer. Preserve the new muscle/bone selection and existing digestion/circulation interactions.
-5. **Computer Class integration.** Incorporate microscope observations in a reusable assignment component without compromising browser-local backups and current exports.
-6. **Math.** Expand interactive number sense and fraction manipulatives using the established Math 7 design, with multi-step reasoning prompts.
-7. **Social Studies.** Add source-evaluation activities tied to existing Mesopotamia and Egypt materials, not generic fantasy maps.
-8. **ELA.** Make a reusable plot and paragraph evidence organizer with meaningful revision history stored locally.
-9. **Critical Thinking.** Build a fair-test and source verification assignment that can be completed and exported independently.
+5. **Computer Class integration.** The microscope reasoning assignment is complete; next incorporate actual microscope observation tables into a reusable cross-page assignment component without changing existing draft formats.
+6. **Math.** The fraction-budget assignment is complete; next expand interactive number sense and fraction manipulatives with multi-step reasoning prompts.
+7. **Social Studies.** A Mesopotamian source-reasoning assignment is complete; next work with genuine dated and licensed historical materials for artifact investigation.
+8. **ELA.** The original Lost Page narrative and revision assignment are complete; next build a reusable plot/paragraph organizer with local revision history.
+9. **Critical Thinking.** The AI source-verification assignment is complete; next extend the fair-test builder and add a citation provenance checker.
 10. **Cross-site UX.** Audit mobile/iPad focus, keyboard operation, scroll behavior, link validity, colour contrast and heading hierarchy.
 
 ## Future improvements
@@ -77,4 +89,5 @@
 - Browser tests run at phone and desktop widths; no unhandled errors or horizontal page overflow.
 - Existing Science modules remain functional and the Matter release gate remains unchanged.
 - Muscle and skeleton can be selected using mouse/touch or keyboard, with correct four-step explanatory pathways.
+- Computer Class displays 20 activities with 191 unique question IDs; the standard teacher-copy and browser-local draft workflows still pass.
 - All changes stay in a draft pull request until approved.
