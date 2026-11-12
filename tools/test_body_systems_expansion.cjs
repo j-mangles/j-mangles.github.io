@@ -12,7 +12,7 @@ assert.deepEqual(Object.keys(data.systems).sort(),["circulatory","digestive","in
 for(const [id,x] of Object.entries(data.systems)){
  assert.ok(x.name&&x.organs&&x.job&&x.link, "System has labeled parts and connections: "+id);
  assert.equal(x.path.length,4,"Four explorable steps: "+id);
- assert.ok(x.path.every(step=>step.length===2&&step.every(v=>v.length>=8)));
+ assert.ok(x.path.every(step=>step.length===2&&step[0].length>=3&&step[1].length>=15),"Pathway stages have meaningful labels and explanations");
 }
 assert.match(data.systems.muscular.link,/nervous/i);
 assert.match(data.systems.skeletal.job,/protection/i);
