@@ -3,7 +3,7 @@
 const assert=require("node:assert/strict"),fs=require("node:fs"),path=require("node:path"),vm=require("node:vm");
 const root=path.resolve(__dirname,"..");
 const src=fs.readFileSync(path.join(root,"science","system-interactions.js"),"utf8");
-const systems=["respiratory","circulatory","digestive","nervous","integumentary"];
+const systems=["respiratory","circulatory","digestive","nervous","integumentary","muscular","skeletal"];
 function element(){
  const selectors=new Map(),listeners={},children=[];
  function control(){return {textContent:"",innerHTML:"",value:"",style:{},disabled:false,classList:{toggle(){}},addEventListener(){},setAttribute(){}};}
@@ -17,8 +17,8 @@ const H={lessonTools:{
 }};
 const scope={window:{HUB:H},document:{createElement:element},console};
 vm.runInNewContext(src,scope,{filename:"science/system-interactions.js",timeout:3000});
-assert.equal(Object.keys(H.systemInteractions.systems).length,5);
-assert.equal(H.systemInteractions.questions.length,4);
+assert.equal(Object.keys(H.systemInteractions.systems).length,7);
+assert.equal(H.systemInteractions.questions.length,6);
 const model=H.systemInteractions.oxygenModel;
 const at=(b,c,a)=>model({breathing:b,circulation:c,activity:a});
 assert.equal(at(60,60,30).delivered,72);
@@ -41,7 +41,7 @@ const quizBtn=(dataset,css)=>({dataset,classList:{contains:k=>css===k}});
 explorer.listeners.click({target:{closest:()=>quizBtn({answer:"1"},"")}});
 assert.match(explorer.querySelector(".feedback").textContent,/Correct/);
 explorer.listeners.click({target:{closest:()=>quizBtn({},"next")}});
-assert.match(explorer.querySelector(".question").innerHTML,/2 \/ 4/);
+assert.match(explorer.querySelector(".question").innerHTML,/2 \/ 6/);
 const circulation=element();
 H.lessonTools["cells/circulatory"](circulation);
 assert.equal(circulation.children.length,2);

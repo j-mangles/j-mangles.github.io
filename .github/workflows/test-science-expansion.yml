@@ -73,13 +73,13 @@ jobs:
           done
           cat /tmp/science-site.log
           exit 1
-      - name: Test fifteen labs in Chrome at desktop and phone sizes
+      - name: Test the current Science labs in Chrome at desktop and phone sizes
         run: node tools/test_science_expansion_browser.cjs
       - name: Save Science visual check screenshots
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: science-fifteen-labs-mobile
+          name: science-current-labs-mobile
           path: browser-artifacts/science-*-mobile.png
           if-no-files-found: ignore
           retention-days: 7

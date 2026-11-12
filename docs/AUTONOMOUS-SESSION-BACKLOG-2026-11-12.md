@@ -34,7 +34,7 @@
 - Imports are limited to 64 KB, escaped before display, and kept in the existing browser-local draft. Students choose each report themselves; nothing is uploaded or submitted.
 - Added the response to the microscope and Oxygen Mission assignments without changing existing assignment IDs, version, or answer keys.
 - Added data/schema checks and real-Chrome tests for both report types, refresh persistence, assignment export, teacher review and removal. Computer Class now has **193 response prompts**.
-- Automated Computer Class, teacher review, course-catalog and Mission Control checks pass. The full non-browser suite passed 61 checks; one existing Science interaction assertion still expects five systems while the current model has seven. Local real-Chrome execution is blocked because Chromium cannot start in this container (`socket() failed: Operation not permitted`); the expanded browser suite is wired into the existing GitHub Actions job.
+- All 62 non-browser project suites pass. Updated two stale regression expectations to match the existing seven-system explorer and 14 current Science lab links. Local real-Chrome execution is blocked because Chromium cannot start in this container (`socket() failed: Operation not permitted`); the browser suites run in the existing GitHub Actions workflows.
 
 ### New QA
 - Automated JS model and actual Chrome tests for mass-volume calculations, density slope, 3-series plotted graph, exports and responsive page widths.
