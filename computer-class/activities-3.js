@@ -11,17 +11,18 @@ store.activities.push(
 {
  id:"science-oxygen-systems",subject:"sci",subjectName:"Science",grade:"Grade 8",title:"Oxygen Mission: Systems Working Together",time:"35–45 min",
  summary:"Run a model of breathing, circulation and muscle demand, then explain how systems cooperate.",
- lesson:"../science/#cells/circulatory",lessonText:"Open the circulatory lesson",focus:"Cells & Systems · Respiratory and circulatory connections",
+ lesson:"../science/#cells/systems",lessonText:"Explore the organs and systems",focus:"Cells & Systems · Respiratory, circulatory and muscular connections",
  reading:[
   "When you breathe, the respiratory system moves air into the lungs. Oxygen passes into the blood, and carbon dioxide passes from the blood into the lungs to be exhaled. The circulatory system then transports oxygen to body cells. Cells use oxygen in cellular respiration to release usable energy from nutrients.",
   "In this activity, the digital model expresses supply and demand using illustrative indexes. The smaller of the breathing and circulation capacities limits oxygen delivery. Muscle activity controls demand. These values are NOT medical readings, oxygen saturation values or heart rates.",
-  "A limitation is that real respiratory and circulatory systems are connected and adapt to exercise in more complicated ways. Still, a simple model can help identify relationships and make useful predictions."
+  "A limitation is that real respiratory and circulatory systems are connected and adapt to exercise in more complicated ways. Still, a simple model can help identify relationships and make useful predictions.",
+  "Open the linked Human Systems Explorer and its Organ Inspector. Select the lungs and heart; identify how blood transports oxygen to active muscles. The organ-level questions provide evidence for the explanation you write here."
  ],
  sections:[
   {title:"Predict the system connection",intro:"Think about why two different systems are necessary.",questions:[
    C("ox1","Which system moves oxygen from the lungs to body cells?",["Digestive system","Circulatory system","Integumentary system"],1,"Blood vessels and the heart move oxygen through the circulatory system."),
    C("ox2","Where does oxygen enter the blood?",["In the lungs","In the stomach","In bones"],0,"Gas exchange in the lungs allows oxygen into blood."),
-   T("ox3","Explain what happens to a body cell if oxygen cannot be delivered efficiently.",25,"Cells need oxygen... Without sufficient delivery...")
+   T("ox3","Using the lungs, heart and a working muscle as examples, explain what may happen when oxygen is not delivered efficiently to body cells.",25,"The lungs... The heart... The muscle cells...")
   ]},
   {title:"Run the oxygen model",intro:"Test at least three combinations, including one with low breathing capacity and one with low circulation capacity.",questions:[
    L("ox4","Use the Oxygen Delivery Model to record three different trials. Compare delivery with demand.","oxygen",3),
@@ -31,7 +32,7 @@ store.activities.push(
   ]},
   {title:"Explain and evaluate",intro:"Connect model evidence to real structures without treating the numbers as physiological measurements.",questions:[
    O("ox8","Order the main path of oxygen to a working muscle cell.",["Oxygen is transported in the bloodstream","Oxygen enters the lungs with inhaled air","Oxygen is used by body cells","Oxygen diffuses into blood at the lungs"],[1,3,0,2],"Air enters lungs, oxygen moves into blood, blood transports it, and cells use it."),
-   T("ox9","Write a Claim–Evidence–Reasoning paragraph explaining why the respiratory and circulatory systems must work together. Cite one model trial and one model limitation.",52,"Claim: ... Evidence: ... Reasoning: ... Limitation: ...")
+   T("ox9","Write a Claim–Evidence–Reasoning paragraph explaining how lungs, heart, blood and working muscle cells cooperate. Include one oxygen-model trial, an organ-inspector detail and a model limitation.",52,"Claim: ... Trial evidence: ... Structure evidence: ... Reasoning: ... Limitation: ...")
   ]}
  ]
 },
