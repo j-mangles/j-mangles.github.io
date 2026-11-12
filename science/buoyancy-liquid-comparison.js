@@ -67,6 +67,8 @@ function mount(root){
  '<button id="bu-clear" type="button">Clear</button></div>'+
  '<div class="table-wrap"><table><thead><tr><th>#</th><th>Mass (g)</th><th>Volume (cm³)</th><th>Object density</th><th>Liquid density</th><th>Prediction</th><th>Outcome</th></tr></thead>'+
  '<tbody id="bu-trials"><tr><td colspan="7">No trials recorded.</td></tr></tbody></table></div>'+
+ '<section class="table-wrap" aria-label="Density chart" style="margin:15px 0;border:1px solid var(--rule);padding:12px"><h4>Graph your evidence</h4><p class="note">Bars compare object and liquid densities (g/cm³) in recorded trials.</p>'+ 
+ '<svg id="bu-chart" role="img" aria-label="Density bar chart for the recorded buoyancy trials" viewBox="0 0 520 260" style="display:block;width:520px;height:260px"></svg></section>'+ 
  '<label for="bu-conclusion"><strong>Explain your evidence.</strong> Record at least three liquids with the same block. Why might an object sink in freshwater but float in syrup?</label>'+
  '<textarea id="bu-conclusion" placeholder="The block density was… In freshwater… In syrup… This tells us…"></textarea>'+
  '<p class="note">Your work stays in this tab until exported. It is not automatically saved or submitted.</p></section>';
@@ -88,6 +90,36 @@ function mount(root){
   return r;
  }
  function reset(){prediction="";revealed=false;draw();}
+ function graph(){
+  const svg=$("bu-chart"),ns="http://www.w3.org/2000/svg";
+  function add(tag,attrs,label){
+   const node=document.createElementNS(ns,tag);
+   Object.entries(attrs||{}).forEach(([key,val])=>node.setAttribute(key,String(val)));
+   if(label!==undefined)node.textContent=String(label);
+   svg.appendChild(node);return node;
+  }
+  svg.replaceChildren();
+  const width=Math.max(520,95+Math.max(3,records.length)*91),bottom=213,left=48,height=189;
+  svg.setAttribute("viewBox","0 0 "+width+" 260");svg.style.width=width+"px";
+  if(!records.length){add("text",{x:width/2,y:125,"text-anchor":"middle",fill:"var(--muted)","font-size":14},"Record two or more trials to compare densities.");return;}
+  const max=Math.ceil(Math.max(1.5,...records.map(r=>Math.max(r.density,r.liquidDensity)))*2)/2;
+  add("text",{x:left,y:13,"font-size":12,"font-weight":700,fill:"var(--ink)"},"Density (g/cm³)");
+  for(let i=0;i<=4;i++){
+   const value=max*i/4,y=bottom-value/max*height;
+   add("line",{x1:left,x2:width-12,y1:y,y2:y,stroke:"var(--rule)","stroke-width":1});
+   add("text",{x:left-6,y:y+4,"font-size":11,"text-anchor":"end",fill:"var(--muted)"},fmt(value));
+  }
+  records.forEach((r,i)=>{
+   const x=left+18+i*91,a=r.density/max*height,b=r.liquidDensity/max*height;
+   add("rect",{x,y:bottom-a,width:24,height:a,fill:"#B2804A",rx:2});
+   add("rect",{x:x+29,y:bottom-b,width:24,height:b,fill:FLUIDS[r.fluid].colour,stroke:"#506D77","stroke-width":.6,rx:2});
+   add("text",{x:x+26,y:bottom+18,"text-anchor":"middle","font-size":11,fill:"var(--ink)"},"Trial "+(i+1));
+  });
+  add("rect",{x:left,y:238,width:10,height:10,fill:"#B2804A"});
+  add("text",{x:left+14,y:247,"font-size":11,fill:"var(--muted)"},"Object");
+  add("rect",{x:left+98,y:238,width:10,height:10,fill:"#8AC4DF"});
+  add("text",{x:left+112,y:247,"font-size":11,fill:"var(--muted)"},"Liquid");
+ }
  function table(message){
   const body=$("bu-trials");body.replaceChildren();
   if(!records.length){
@@ -99,6 +131,7 @@ function mount(root){
     const td=document.createElement("td");td.textContent=String(v);tr.appendChild(td);
    });body.appendChild(tr);
   }
+  graph();
   if(message)$("bu-status").textContent=message;
  }
  $("bu-mass").addEventListener("input",e=>{mass=Number(e.target.value);reset();});
