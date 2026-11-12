@@ -4,6 +4,38 @@
 **Draft pull request:** #109  
 **Policy:** review before merge. No direct production deployment.
 
+## Continuation — November 12, 2026 (second development session)
+
+### Completed: Science — Mass–Volume Investigation
+- New `science/mass-volume-investigation.js`, appended to the **existing Density lesson** without replacing the prior Density and Buoyancy tools.
+- Students gather real *virtual trials* at 20–120 cm³ for light wood, dense plastic, and aluminium; see every measurement on an independently plotted mass-versus-volume SVG.
+- Lines are drawn from the student's collected observations. The calculated slope of the fitted line through zero estimates density in g/cm³; the display explicitly explains the mathematical and physical assumptions.
+- Checks the scientific prediction that the steepest line corresponds to the densest sample; allows removing or repeating any trial, and records claim, evidence and reasoning.
+- Exports both a local text investigation and a standalone, labelled SVG graph with embedded display styles.
+- Mater unit remains `status: "soon"` in `science/data.js`: this content is prepared, not visible as a released unit.
+
+### Completed: Science — Organ Inspector
+- New `science/organ-inspector.js` enhances the already released Human Systems Explorer with **12 selected structures** across all seven body systems.
+- Numbered, focusable SVG hotspot controls and accessible text-button alternatives reveal each structure's job and its related systems.
+- Students answer cross-system connection questions, see immediate feedback, track correct responses during the session and download a short written report.
+- Preserved original systemic body diagrams, pathways, digestion and oxygen-model interactions by wrapping the existing `cells/systems` lesson tool after its other registrations.
+- Updated the existing `science-oxygen-systems` Computer Class activity to link directly to the Organ Inspector and require organ-level evidence in the CER paragraph; retained the same question IDs and existing draft storage.
+
+### New QA
+- Automated JS model and actual Chrome tests for mass-volume calculations, density slope, 3-series plotted graph, exports and responsive page widths.
+- Automated organ-model and actual Chrome tests for twelve structures, keyboard navigation, knowledge checking, progress, local export and page widths.
+- Extended existing Science GitHub Actions workflow; screenshots retained as build artifacts.
+- All new tests have produced successful Science CI runs. Later updates also trigger routine Computer Class and Mission Control regression checks.
+
+### Next highest-impact priorities
+1. Student-device/teacher visual review of the new graphs, numbered organ hotspots and their instruction length.
+2. Link student-exported investigations into an opt-in reusable Computer Class evidence importer; keep data local and require deliberate student action.
+3. Create a multi-variable, data-based human circulation/gas-exchange lab with explicit model assumptions rather than anatomical decoration.
+4. Build a complete grade 7 multi-step number-sense error-analysis activity using existing fraction/percent manipulatives rather than duplicating them.
+5. Audit all Science lesson-tool wrapper registration ordering and implement a collision test covering future unit modules.
+6. Extend source-based historical inquiry using dated and licensed artefacts from museums.
+7. Classroom pilot and teacher content review before changing the `main` branch.
+
 ## Completed
 
 ### Science — Cells and Systems (currently released)
@@ -49,6 +81,8 @@
 - Inspected actual course materials through the connected Google Drive. The teacher's Science course outline confirms that the Energy and Earth unit sequence is intentional. Do not reorganize or unlock units based solely on a generic curriculum summary.
 
 ## In progress
+
+- Teacher visual review of new Mass–Volume SVG graph and Organ Inspector UI on physical iPad/smartboard.
 
 - Visual review of responsive screenshots and full pull-request review before merging; automatic tests have passed.
 - Student pilot of wording, estimated completion time and numerical challenge level (requires classroom use).
