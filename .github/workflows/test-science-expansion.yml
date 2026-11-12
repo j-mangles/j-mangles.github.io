@@ -23,6 +23,7 @@ on:
       - tools/test_science_next_wave.cjs
       - tools/test_science_expansion.cjs
       - tools/test_science_expansion_browser.cjs
+      - tools/test_science_tool_registration.cjs
       - .github/workflows/test-science-expansion.yml
   pull_request:
     paths:
@@ -46,6 +47,7 @@ on:
       - tools/test_science_graph_measure_osmosis_drift.cjs
       - tools/test_science_next_wave.cjs
       - tools/test_science_expansion.cjs
+      - tools/test_science_tool_registration.cjs
   workflow_dispatch:
 jobs:
   science-check:
@@ -59,6 +61,7 @@ jobs:
       - run: node tools/test_science_next_wave.cjs
       - run: node tools/test_science_graph_measure_osmosis_drift.cjs
       - run: node tools/test_homeostasis.cjs
+      - run: node tools/test_science_tool_registration.cjs
       - run: node tools/test_matter_unit.cjs
       - run: node tools/test_energy_light_unit.cjs
       - run: node tools/test_earth_unit.cjs

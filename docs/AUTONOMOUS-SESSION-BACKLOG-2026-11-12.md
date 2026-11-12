@@ -49,14 +49,15 @@
 - Automated organ-model and actual Chrome tests for twelve structures, keyboard navigation, knowledge checking, progress, local export and page widths.
 - Extended existing Science GitHub Actions workflow; screenshots retained as build artifacts.
 - All new tests have produced successful Science CI runs. Later updates also trigger routine Computer Class and Mission Control regression checks.
+- Added regression coverage for seven shared Science keys across Systems, Circulatory, Transport, Density, Displacement, Viscosity and Water tools. It checks script order, predecessor capture and invocation.
+- Fixed the site-wide browser test to wait for the selected ELA story prompt, preventing stale previous-lesson content from producing a false failure.
 
 ### Next highest-impact priorities
 1. Classroom review of the exported-report hand-off on student devices; confirm the file picker and reflection prompt are clear.
-2. Continue the Science tool registration audit with an automated check across duplicate lesson keys.
-3. Broaden the number-line diagnostic to more percent, fraction and negative-number errors after teacher review.
-4. Extend source-based historical inquiry using dated and licensed artefacts from museums.
-5. Build a reusable ELA plot/paragraph organizer with local revision history.
-6. Classroom pilot and teacher content review before changing the `main` branch.
+2. Broaden number-line feedback only after teacher review confirms the hints match observed student thinking.
+3. Extend source-based historical inquiry using dated and licensed artefacts from museums.
+4. Build a reusable ELA plot/paragraph organizer with local revision history.
+5. Classroom pilot and teacher content review before changing the `main` branch.
 
 ## Completed
 
@@ -84,6 +85,7 @@
 - Added unit tests and real Chrome checks for tabs, pathways and keyboard selection.
 - Added an exercise-and-circulation data lab using the existing one-student heart-rate series from the Science booklet; students inspect phases, calculate the rise and recovery interval, and download observations with the graph's measurement limits stated clearly.
 - Fixed the Homeostasis tool's shared `cells/systems` registration so it composes with an earlier tool instead of overwriting it; added a collision regression case.
+- Added an automated audit covering the registration order and wrapper composition for seven shared Science lesson keys.
 
 ### Math 7 — Fraction Strip Lab feedback
 - Added problem-specific feedback for common denominator mistakes: multiplying denominators, choosing a non-least common multiple, and adding/subtracting denominators.
@@ -121,10 +123,10 @@
 
 ## Next priorities
 
-1. **Full Science interaction audit.** Verify every lesson-tool registration and ensure later scripts cannot overwrite earlier models. Add a test for duplicate/overwritten tool registrations where practical.
+1. **Science registration.** Extend the shared-key audit whenever a new tool collides with an existing lesson registration.
 2. **Microscope evidence improvements.** Offer cell-size estimation feedback when counts are clearly implausible and optional support scaffolds; do not auto-grade open-ended scientific reasoning.
 3. **Human-body systems.** Add a multi-variable, data-based circulation/gas-exchange investigation with explicit model limits.
-4. **Math.** Expand number sense and fraction manipulatives with multi-step reasoning prompts.
+4. **Math.** Use classroom observations to refine the new number-sense feedback before adding more diagnostic cases.
 5. **Social Studies.** Work with genuine dated and licensed historical materials for artifact investigation.
 6. **ELA.** Build a reusable plot/paragraph organizer with local revision history.
 7. **Critical Thinking.** Extend the fair-test builder and add a citation provenance checker.

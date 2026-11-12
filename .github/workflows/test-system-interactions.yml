@@ -7,6 +7,7 @@ on:
       - science/index.html
       - tools/test_system_interactions.cjs
       - tools/test_exercise_response_lab.cjs
+      - tools/test_science_tool_registration.cjs
       - .github/workflows/test-system-interactions.yml
   pull_request:
     paths:
@@ -15,6 +16,7 @@ on:
       - science/index.html
       - tools/test_system_interactions.cjs
       - tools/test_exercise_response_lab.cjs
+      - tools/test_science_tool_registration.cjs
   workflow_dispatch:
 jobs:
   test:
@@ -26,5 +28,6 @@ jobs:
           node-version: '22'
       - run: node tools/test_system_interactions.cjs
       - run: node tools/test_exercise_response_lab.cjs
+      - run: node tools/test_science_tool_registration.cjs
       - run: node tools/test_homeostasis.cjs
       - run: node tools/test_course_map.cjs
