@@ -1,0 +1,49 @@
+name: Test Classroom Mission Control
+on:
+  push:
+    paths:
+      - today/**
+      - index.html
+      - computer-class/data.js
+      - computer-class/activities-2.js
+      - computer-class/activities-3.js
+      - tools/test_mission_control.cjs
+      - tools/test_mission_control_browser.cjs
+      - .github/workflows/test-mission-control.yml
+  pull_request:
+    paths:
+      - today/**
+      - tools/test_mission_control.cjs
+      - tools/test_mission_control_browser.cjs
+  workflow_dispatch:
+jobs:
+  classroom-planner:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate six-day plans, backup and privacy rules
+        run: node tools/test_mission_control.cjs
+      - name: Install Chrome browser harness
+        run: npm install --no-save --no-package-lock playwright-core@1.56.1
+      - name: Start local class site
+        run: |
+          python3 -m http.server 8765 --bind 127.0.0.1 > /tmp/mission-control-site.log 2>&1 &
+          for i in {1..20}; do
+            if curl --fail -s http://127.0.0.1:8765/today/ > /dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/mission-control-site.log
+          exit 1
+      - name: Test planner and student board on mobile, tablet and desktop
+        run: node tools/test_mission_control_browser.cjs
+      - name: Save full-page preview screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mission-control-browser-qa
+          path: browser-artifacts/mission-*.png
+          if-no-files-found: ignore
+          retention-days: 7
