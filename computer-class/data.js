@@ -112,7 +112,9 @@ const activities=[
   {title:"Answer, Evidence, Explain",intro:"A strong paragraph makes a point and proves it with a specific detail.",questions:[
    {id:"el6",type:"text",prompt:"Question: Does Eva show courage? Write one paragraph with Answer, Evidence and Explain.",placeholder:"Eva shows courage because ... When she says ... This detail shows ...",minWords:45},
    {id:"el7",type:"choice",prompt:"Which is the strongest piece of evidence that Eva accepts responsibility?",options:["“The room grew quiet”","“The presentation was due”","“It was me,” she said. “I deleted the slide.”"],correct:2,why:"Eva directly admits the action, supporting the claim about responsibility."},
-   {id:"el8",type:"text",prompt:"Revise one sentence from your paragraph to be more precise. Write the original and improved sentence.",placeholder:"Original: ...\nImproved: ...",minWords:18}
+   {id:"el8",type:"text",prompt:"Revise one sentence from your paragraph to be more precise. Write the original and improved sentence.",placeholder:"Original: ...\nImproved: ...",minWords:18},
+   {id:"el9",type:"lab",prompt:"Use the Plot Tension Mapper to record two interpretations of the story's tension. Include one with a strong turning-point peak.",lab:"plot",minTrials:2},
+   {id:"el10",type:"text",prompt:"Which of your recorded plot profiles best represents Eva's decision, and what event supports your choice?",placeholder:"I chose the profile with... because Eva...",minWords:22}
   ]}
  ]
 },
