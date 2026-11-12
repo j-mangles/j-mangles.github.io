@@ -174,4 +174,4 @@
 - Corrected the Rome lesson link so the Water Network Studio remains an extension instead of displacing the assigned Pompeii investigation.
 - Added responsive, keyboard-visible activity styling and browser-local downloadable work; no student response is uploaded or stored.
 - Kept Greece and Rome behind the current “soon” unit gates. No teacher guides, marking notes, answer keys or tests were copied into the student pages.
-- Greece, Rome and integrated smoke tests pass locally; browser/device QA is still needed.
+- Greece, Rome and integrated smoke tests pass locally. Real Chrome interactions and responsive checks passed in CI at 390 px and desktop width; all 36 PR workflow runs passed.
