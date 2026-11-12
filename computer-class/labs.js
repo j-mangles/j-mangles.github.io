@@ -26,6 +26,14 @@ function calculate(tool,s){
   const supported=alloc.map((x,i)=>Math.min(100,Math.round(x/need[i]*100)));
   return {north,centre,south,needs:need,coverage:supported,fullySupported:supported.filter(x=>x>=100).length};
  }
+ if(tool==="plot"){
+  const peak=s.turning>Math.max(s.beginning,s.ending)+15;
+  return {beginning:s.beginning,turning:s.turning,ending:s.ending,shape:peak?"clear turning-point peak":"flat or unusual tension pattern"};
+ }
+ if(tool==="sources"){
+  const named=s.named?1:0,dated=s.dated?1:0,direct=s.direct?1:0;
+  return {named,dated,direct,checks:named+dated+direct,limits:"This score does not establish whether a claim is true."};
+ }
  throw Error("Unknown Computer Class model "+tool);
 }
 const CONFIG={
@@ -76,6 +84,32 @@ const CONFIG={
   headings:["North","Central","South","North needs","Central needs","South needs"],
   cells:r=>[r.north,r.centre,r.south,r.coverage[0]+"%",r.coverage[1]+"%",r.coverage[2]+"%"],
   summary:r=>"North "+r.north+" / 40 needed · Central "+r.centre+" / 35 · South "+r.south+" / 25. "+r.fullySupported+" of 3 farm areas meet their target."
+ },
+ plot:{
+  title:"Plot Tension Mapper",
+  note:"Compare the tension at the beginning, turning point and ending of a story. Choose an illustrative tension index; this is a reading interpretation, not a measurement.",
+  initial:{beginning:30,turning:90,ending:25},
+  fields:[
+   {key:"beginning",label:"Beginning tension",min:0,max:100,step:10},
+   {key:"turning",label:"Turning-point tension",min:0,max:100,step:10},
+   {key:"ending",label:"Ending tension",min:0,max:100,step:10}
+  ],
+  headings:["Beginning","Turning point","Ending","Shape"],
+  cells:r=>[r.beginning,r.turning,r.ending,r.shape],
+  summary:r=>"Beginning "+r.beginning+" · turning point "+r.turning+" · ending "+r.ending+". This is a "+r.shape+". Does it fit your story evidence?"
+ },
+ sources:{
+  title:"Source Verification Board",
+  note:"Test three source-check criteria. A named source, clear date and direct evidence can make a claim easier to verify. These checks are not a truth percentage.",
+  initial:{named:0,dated:0,direct:0},
+  fields:[
+   {key:"named",label:"Named, accountable source",min:0,max:1,step:1},
+   {key:"dated",label:"Date and context clear",min:0,max:1,step:1},
+   {key:"direct",label:"Direct supporting evidence",min:0,max:1,step:1}
+  ],
+  headings:["Named","Dated","Direct","Checks met"],
+  cells:r=>[r.named?"Yes":"No",r.dated?"Yes":"No",r.direct?"Yes":"No",r.checks+"/3"],
+  summary:r=>r.checks+" of 3 verification checks met. This helps plan further verification but cannot prove that the claim is true."
  }
 };
 function snapshot(tool,s){return calculate(tool,{...s});}
@@ -116,6 +150,8 @@ function mount(root,q,original,onSave){
   if(q.lab==="osmosis")bars=[["Inside",fresh.inside],["Outside",fresh.outside]];
   else if(q.lab==="oxygen")bars=[["Delivered",fresh.delivered],["Demand",fresh.need]];
   else if(q.lab==="recipe")bars=[["Flour",Math.round(fresh.flour/5*100)],["Milk",Math.round(fresh.milk/3*100)]];
+  else if(q.lab==="plot")bars=[["Opening",fresh.beginning],["Turning",fresh.turning],["Ending",fresh.ending]];
+  else if(q.lab==="sources")bars=[["Named",fresh.named*100],["Dated",fresh.dated*100],["Direct",fresh.direct*100]];
   else bars=[["North",fresh.coverage[0]],["Central",fresh.coverage[1]],["South",fresh.coverage[2]]];
   visual.innerHTML=bars.map(([label,value])=>'<div class="cc-lab-bar"><span>'+e(label)+'</span><div class="cc-lab-track">'+
    '<i style="width:'+clamp(value,0,100)+'%"></i></div><b>'+value+'%</b></div>').join("");
