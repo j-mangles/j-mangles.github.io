@@ -8,6 +8,9 @@ on:
       - science/buoyancy-investigation.js
       - science/system-interactions.js
       - science/mass-volume-investigation.js
+      - science/organ-inspector.js
+      - tools/test_organ_inspector.cjs
+      - tools/test_organ_inspector_browser.cjs
       - tools/test_mass_volume_investigation.cjs
       - tools/test_mass_volume_browser.cjs
       - tools/test_body_systems_expansion.cjs
@@ -27,6 +30,9 @@ on:
       - science/buoyancy-investigation.js
       - science/system-interactions.js
       - science/mass-volume-investigation.js
+      - science/organ-inspector.js
+      - tools/test_organ_inspector.cjs
+      - tools/test_organ_inspector_browser.cjs
       - tools/test_mass_volume_investigation.cjs
       - tools/test_mass_volume_browser.cjs
       - tools/test_body_systems_expansion.cjs
@@ -54,6 +60,7 @@ jobs:
           node tools/test_buoyancy_investigation.cjs
           node tools/test_body_systems_expansion.cjs
           node tools/test_mass_volume_investigation.cjs
+          node tools/test_organ_inspector.cjs
       - name: Install browser harness
         run: npm install --no-save --no-package-lock playwright-core@1.56.1
       - name: Serve site locally
@@ -71,6 +78,7 @@ jobs:
           node tools/test_buoyancy_browser.cjs
           node tools/test_body_systems_browser.cjs
           node tools/test_mass_volume_browser.cjs
+          node tools/test_organ_inspector_browser.cjs
       - name: Save responsive Science investigation previews
         if: always()
         uses: actions/upload-artifact@v4
