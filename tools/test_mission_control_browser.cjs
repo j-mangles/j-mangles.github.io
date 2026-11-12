@@ -25,7 +25,12 @@ const overflow=async(page,label)=>{
    assert.equal(await page.locator("#mc-resource-0").inputValue(),"lesson:math-home");
    assert.match(await page.locator(".mc-progressline").innerText(),/1 of 5 blocks assigned/);
    await overflow(page,"planner "+width);
+   await page.locator("#mc-filter-1").selectOption("sci");
+   await page.locator("#mc-search-1").fill("Cell Membrane");
+   assert.match(await page.locator("#mc-filter-count-1").innerText(),/matching resource/);
+   assert.ok(await page.locator("#mc-resource-1 option").count()<=5,"Search narrows the catalog");
    await page.locator("#mc-resource-1").selectOption("assignment:science-membranes");
+   assert.equal(await page.locator("#mc-resource-1").inputValue(),"assignment:science-membranes");
    assert.match(await page.locator("#mc-resource-1 option:checked").innerText(),/Cell Membrane Investigation/);
    await page.locator("#mc-note-1").fill("PRIVATE teacher preparation: print the materials.");
    await page.locator('input[data-field="taught"][data-slot="1"]').check();
@@ -46,6 +51,18 @@ const overflow=async(page,label)=>{
    assert.match(await page.locator(".mc-progressline").innerText(),/2 of 5 blocks assigned/);
    await page.locator('button[data-day="1"]').click();
    assert.equal(await page.locator("#mc-resource-1").inputValue(),"assignment:science-membranes");
+   await page.locator('button[data-day="3"]').click();
+   assert.equal(await page.locator("#mc-resource-1").inputValue(),"");
+   await page.locator("#mc-copy-from").selectOption("1");
+   page.once("dialog",dialog=>dialog.accept());
+   await page.locator("#mc-copy-day").click();
+   assert.equal(await page.locator("#mc-resource-1").inputValue(),"assignment:science-membranes");
+   assert.equal(await page.locator("#mc-note-1").inputValue(),"PRIVATE teacher preparation: print the materials.");
+   assert.equal(await page.locator('input[data-field="taught"][data-slot="1"]').isChecked(),false,
+     "Copied day resets completion but retains preparation notes");
+   await page.locator('button[data-day="1"]').click();
+   assert.equal(await page.locator('input[data-field="taught"][data-slot="1"]').isChecked(),true,
+     "Original day completion remains marked");
    const board=await context.newPage();
    board.on("pageerror",err=>errors.push(err.message));
    await board.goto(boardUrl,{waitUntil:"domcontentloaded"});
@@ -96,6 +113,6 @@ const overflow=async(page,label)=>{
    }
    await context.close();
   }
-  console.log("Mission Control Chrome passed: six-day plans, session reload, private notes, safe student links, focus mode, backup and restore at 390/820/1280px.");
+  console.log("Mission Control Chrome passed: resource search, day copying, six-day plans, session reload, safe links, presentation mode, backup/restore at 390/820/1280px.");
  }finally{await browser.close();}
 })().catch(err=>{console.error(err);process.exitCode=1;});
