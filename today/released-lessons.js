@@ -1,4 +1,4 @@
-/* Generated from currently released subject hubs; do not add soon/next units. */
+/* Generated only from released subject lessons; soon/next units intentionally excluded. */
 (function(g){
 "use strict";
 g.MissionReleasedLessons=[
@@ -505,6 +505,110 @@ g.MissionReleasedLessons=[
   "title": "The Auction",
   "href": "../critical-thinking/#games/g4",
   "description": "Game Theory"
+ },
+ {
+  "id": "released-ss-early-humans-l1",
+  "subject": "ss",
+  "kind": "Course lesson",
+  "title": "How Do We Know What Happened?",
+  "href": "../social-studies/#early-humans-l1",
+  "description": "Early Humans"
+ },
+ {
+  "id": "released-ss-early-humans-l2",
+  "subject": "ss",
+  "kind": "Course lesson",
+  "title": "What Is a Civilization?",
+  "href": "../social-studies/#early-humans-l2",
+  "description": "Early Humans"
+ },
+ {
+  "id": "released-ss-early-humans-l3",
+  "subject": "ss",
+  "kind": "Course lesson",
+  "title": "Could You Survive 12,000 Years Ago?",
+  "href": "../social-studies/#early-humans-l3",
+  "description": "Early Humans"
+ },
+ {
+  "id": "released-ss-mesopotamia-l0",
+  "subject": "ss",
+  "kind": "Course lesson",
+  "title": "Where Are We in Time?",
+  "href": "../social-studies/#mesopotamia-l0",
+  "description": "Mesopotamia"
+ },
+ {
+  "id": "released-ss-mesopotamia-l1",
+  "subject": "ss",
+  "kind": "Course lesson",
+  "title": "Sumer: The First Cities",
+  "href": "../social-studies/#mesopotamia-l1",
+  "description": "Mesopotamia"
+ },
+ {
+  "id": "released-ss-mesopotamia-l2",
+  "subject": "ss",
+  "kind": "Course lesson",
+  "title": "Cuneiform and the First Writing",
+  "href": "../social-studies/#mesopotamia-l2",
+  "description": "Mesopotamia"
+ },
+ {
+  "id": "released-ss-mesopotamia-l3",
+  "subject": "ss",
+  "kind": "Course lesson",
+  "title": "Gods and Priests",
+  "href": "../social-studies/#mesopotamia-l3",
+  "description": "Mesopotamia"
+ },
+ {
+  "id": "released-ss-mesopotamia-l4a",
+  "subject": "ss",
+  "kind": "Course lesson",
+  "title": "Sargon's Empire",
+  "href": "../social-studies/#mesopotamia-l4a",
+  "description": "Mesopotamia"
+ },
+ {
+  "id": "released-ss-mesopotamia-l4b",
+  "subject": "ss",
+  "kind": "Course lesson",
+  "title": "The Code of Hammurabi",
+  "href": "../social-studies/#mesopotamia-l4b",
+  "description": "Mesopotamia"
+ },
+ {
+  "id": "released-ss-mesopotamia-l5",
+  "subject": "ss",
+  "kind": "Course lesson",
+  "title": "Trade, Technology and Everyday Life",
+  "href": "../social-studies/#mesopotamia-l5",
+  "description": "Mesopotamia"
+ },
+ {
+  "id": "released-ss-mesopotamia-l6",
+  "subject": "ss",
+  "kind": "Course lesson",
+  "title": "Rich and Poor in Mesopotamia",
+  "href": "../social-studies/#mesopotamia-l6",
+  "description": "Mesopotamia"
+ },
+ {
+  "id": "released-ss-mesopotamia-l6b",
+  "subject": "ss",
+  "kind": "Course lesson",
+  "title": "Gilgamesh and the Great Flood",
+  "href": "../social-studies/#mesopotamia-l6b",
+  "description": "Mesopotamia"
+ },
+ {
+  "id": "released-ss-mesopotamia-l7",
+  "subject": "ss",
+  "kind": "Course lesson",
+  "title": "Review and Test",
+  "href": "../social-studies/#mesopotamia-l7",
+  "description": "Mesopotamia"
  }
 ];
 })(window);
