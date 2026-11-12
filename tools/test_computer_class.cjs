@@ -49,7 +49,7 @@ for(const activity of data.activities){
   }
  }
 }
-assert.equal(qids.size,137);
+assert.equal(qids.size,141);
 const core=win.ComputerClassLabs;
 assert.equal(core.calculate("osmosis",{cell:"plant",inside:30,outside:60}).effect,"plasmolysed");
 assert.equal(core.calculate("oxygen",{breathing:10,circulation:100,activity:100}).limitedBy,"breathing");
@@ -59,6 +59,10 @@ assert.equal(core.calculate("recipe",{servings:2}).milk,.375);
 const canals=core.calculate("canal",{north:40,centre:35});
 assert.equal(canals.south,25);
 assert.equal(canals.fullySupported,3);
+const plot=core.calculate("plot",{beginning:20,turning:90,ending:30});
+assert.equal(plot.shape,"clear turning-point peak");
+assert.equal(core.calculate("sources",{named:1,dated:1,direct:0}).checks,2);
+assert.equal(core.calculate("sources",{named:"0",dated:"1",direct:"0"}).checks,1);
 vm.runInNewContext(appJs,ctx,{filename:"app.js",timeout:3000});
 const engine=win.ComputerClassEngine;
 assert.ok(engine);
@@ -109,4 +113,4 @@ assert.match(html,/src="data.js/);
 assert.match(html,/src="app.js/);
 for(const name of ["activities-2.js","activities-3.js","labs.js"])assert.ok(html.includes('src="'+name));
 assert.match(fs.readFileSync(path.join(root,"computer-class","style.css"),"utf8"),/@media print/);
-console.log("Computer Class passed: 15 assignments, 137 responses, four models, autosave, reports, links.");
+console.log("Computer Class passed: 15 assignments, 141 responses, six models, autosave, reports, links.");
