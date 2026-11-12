@@ -15,6 +15,11 @@
 .tr-toolbar select,.tr-toolbar button{padding:9px 11px;background:var(--paper);color:var(--ink);border:1px solid var(--rule);border-radius:var(--btn-radius,8px);font:inherit;font-size:.84rem;min-height:39px}
 .tr-toolbar button{cursor:pointer}
 .tr-toolbar #tr-count{font-size:.83rem;font-weight:650;color:var(--muted);margin-right:auto}
+.tr-session-controls{display:flex;flex-wrap:wrap;gap:9px 18px;align-items:center;background:var(--soft);border-bottom:1px solid var(--rule);padding:15px 13px;margin:-2px 0 17px}
+.tr-session-controls label{font-size:.83rem;font-weight:750}
+.tr-session-controls input{max-width:100%;font:inherit;font-size:.81rem}
+.tr-session-controls p{flex:1 1 100%;font-size:.81rem;color:var(--muted);margin:0;line-height:1.5}
+#tr-session-state{font-weight:750}
 .tr-layout{display:grid;grid-template-columns:285px minmax(0,1fr);gap:30px;align-items:start;margin-top:24px}
 .tr-list{display:grid;gap:7px;align-content:start;max-height:80vh;overflow:auto}
 .tr-entry{padding:13px;text-align:left;border:1px solid var(--rule);border-radius:8px;background:var(--paper);color:var(--ink);display:grid;gap:4px;cursor:pointer}
