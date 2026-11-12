@@ -146,6 +146,14 @@ function checkOverflow(actual,where,width){assert.ok(actual.scroll<=actual.viewp
   await page.locator('[data-rating="ma9"]').selectOption("meeting");
   await page.locator('[data-feedback="ma9"]').fill("Clear reasoning. Next: show a complete equation.");
   await page.locator("#tr-overall-note").fill("Strong calculations and attention to units.");
+
+  await page.locator("#tr-files").setInputFiles({
+   name:"math-store-alex-example-resubmission.json",mimeType:"application/json",buffer:Buffer.from(jsonText,"utf8")
+  });
+  assert.match(await page.locator("#tr-file-message").innerText(),/protected from replacement/);
+  assert.equal(await page.locator('[data-rating="ma9"]').inputValue(),"meeting");
+  assert.equal(await page.locator('[data-feedback="ma9"]').inputValue(),"Clear reasoning. Next: show a complete equation.");
+
   const [csvDownload]=await Promise.all([
    page.waitForEvent("download",{timeout:10000}),
    page.locator("#tr-csv").click()
