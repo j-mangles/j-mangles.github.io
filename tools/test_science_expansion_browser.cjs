@@ -12,6 +12,7 @@ const tasks=[
   await page.locator('.dn button[data-stage="3"]').click();
   assert.match(await page.locator(".dn .readout").innerText(),/Small intestine/);
   assert.ok(await page.locator(".hsi").count()===1,"Human systems explorer must remain present");
+  assert.equal(await page.locator(".hsi .oi").count(),1,"Organ Inspector must remain mounted through the systems wrappers");
   assert.ok(await page.locator(".hx-lab").count()===1,"Homeostasis lab must remain present");
  }},
  {hash:"cells/circulatory",selector:".erd",async check(page){

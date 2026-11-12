@@ -50,6 +50,7 @@
 - Extended existing Science GitHub Actions workflow; screenshots retained as build artifacts.
 - All new tests have produced successful Science CI runs. Later updates also trigger routine Computer Class and Mission Control regression checks.
 - Added regression coverage for seven shared Science keys across Systems, Circulatory, Transport, Density, Displacement, Viscosity and Water tools. It checks script order, predecessor capture and invocation.
+- Extended the real-Chrome Systems check to assert the Organ Inspector still mounts after the full wrapper chain.
 - Fixed the site-wide browser test to wait for the selected ELA story prompt, preventing stale previous-lesson content from producing a false failure.
 
 ### Next highest-impact priorities
