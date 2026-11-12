@@ -7,6 +7,9 @@ on:
       - science/virtual-microscope.js
       - science/buoyancy-investigation.js
       - science/system-interactions.js
+      - science/mass-volume-investigation.js
+      - tools/test_mass_volume_investigation.cjs
+      - tools/test_mass_volume_browser.cjs
       - tools/test_body_systems_expansion.cjs
       - tools/test_body_systems_browser.cjs
       - science/buoyancy-investigation.css
@@ -23,6 +26,9 @@ on:
       - science/virtual-microscope.js
       - science/buoyancy-investigation.js
       - science/system-interactions.js
+      - science/mass-volume-investigation.js
+      - tools/test_mass_volume_investigation.cjs
+      - tools/test_mass_volume_browser.cjs
       - tools/test_body_systems_expansion.cjs
       - tools/test_body_systems_browser.cjs
       - science/buoyancy-investigation.css
@@ -47,6 +53,7 @@ jobs:
           node tools/test_virtual_microscope.cjs
           node tools/test_buoyancy_investigation.cjs
           node tools/test_body_systems_expansion.cjs
+          node tools/test_mass_volume_investigation.cjs
       - name: Install browser harness
         run: npm install --no-save --no-package-lock playwright-core@1.56.1
       - name: Serve site locally
@@ -63,11 +70,12 @@ jobs:
           node tools/test_virtual_microscope_browser.cjs
           node tools/test_buoyancy_browser.cjs
           node tools/test_body_systems_browser.cjs
+          node tools/test_mass_volume_browser.cjs
       - name: Save responsive Science investigation previews
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: science-microscope-buoyancy-qa
+          name: science-interactive-investigations-qa
           path: browser-artifacts/science-*.png
           if-no-files-found: ignore
           retention-days: 14
