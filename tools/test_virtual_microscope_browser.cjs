@@ -32,7 +32,7 @@ const {chromium}=require("playwright-core"),BASE=process.env.SITE_TEST_ORIGIN||"
    await lab.locator("#vm-slide").selectOption("cheek");
    await lab.locator("#vm-record").click();
    await lab.locator("#vm-objective").selectOption("10");
-   await lab.locator("#vm-count").fill("20");
+   await lab.locator("#vm-count").fill("1");
    await lab.locator("#vm-record").click();
    assert.match(await lab.locator("#vm-record-status").innerText(),/schematic suggests about/);
    assert.equal(await lab.locator("#vm-rows tr").count(),3);
