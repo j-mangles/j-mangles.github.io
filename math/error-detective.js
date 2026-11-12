@@ -51,9 +51,10 @@ function diagram(q){
   }
  }else{
   const pct=q.type==="money"?80:q.pct;
-  const fraction=Math.min(1,pct/150),width=440*fraction;
+  const scale=Math.max(100,pct),width=440*pct/scale,baseline=65+440*100/scale;
   out+='<rect x="65" y="50" width="440" height="35" fill="#e9eee9" stroke="#789083"/>';
   out+='<rect x="65" y="50" width="'+width+'" height="35" fill="#428472"/>';
+  out+='<path d="M'+baseline+' 45V93" stroke="#244238" stroke-width="2" stroke-dasharray="4 3"/><text x="65" y="130" font-size="12">0%</text><text x="'+baseline+'" y="130" font-size="12" text-anchor="middle">100%</text>';
   out+='<text x="65" y="32" font-size="14">'+(q.type==="money"?"$48 sale price before tax, compared with $60 original":pct+"% of a whole")+'</text>';
   out+='<text x="65" y="113" font-size="13">A visual estimate helps check if the calculation is reasonable.</text>';
  }
@@ -68,7 +69,7 @@ function mount(el){
  '<div class="ed-cols"><div><div class="ed-work"><h4 id="ed-title"></h4><p id="ed-question"></p><ol id="ed-steps"></ol></div>'+
  '<div class="ed-visual" id="ed-diagram"></div></div>'+
  '<div><label>Which line contains the first mathematical error?<select id="ed-step"><option value="">Select a line</option><option value="0">Line 1</option><option value="1">Line 2</option><option value="2">Line 3</option></select></label>'+
- '<label id="ed-answer-label"><input id="ed-value" inputmode="decimal" type="number" step="any" placeholder="Correct numerical value"></label>'+
+ '<label id="ed-answer-label"><span id="ed-question-ask"></span><input id="ed-value" inputmode="decimal" type="number" step="any" placeholder="Correct numerical value"></label>'+
  '<label>Explain the misunderstanding in your own words<textarea id="ed-reason" placeholder="The first error happens when… The correction works because…"></textarea></label>'+
  '<div class="ed-actions"><button type="button" class="primary" id="ed-check">Check my correction</button><button type="button" id="ed-hint">Show a hint</button></div>'+
  '<p id="ed-feedback" class="ed-feedback" role="status"></p>'+
@@ -83,8 +84,7 @@ function mount(el){
   $("#ed-question").textContent=q.question;
   $("#ed-steps").innerHTML=q.steps.map(t=>'<li>'+esc(t)+'</li>').join("");
   $("#ed-diagram").innerHTML=diagram(q);
-  $("#ed-answer-label").firstChild?.remove?.(); // Replace label prompt without nesting additional labels.
-  $("#ed-answer-label").insertAdjacentText("afterbegin",q.ask);
+  $("#ed-question-ask").textContent=q.ask;
   $("#ed-step").value="";$("#ed-value").value="";$("#ed-reason").value=reasons[q.id]||"";
   $("#ed-feedback").textContent=results[q.id]?"This case is recorded as correct. You can still review it.":"";
   $("#ed-progress").textContent=Object.keys(results).length+" of "+CASES.length+" corrections checked; "+Object.values(attempts).reduce((a,b)=>a+b,0)+" total attempts.";
