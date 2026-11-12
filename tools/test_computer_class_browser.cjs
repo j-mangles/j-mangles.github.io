@@ -85,7 +85,7 @@ function checkOverflow(actual,where,width){assert.ok(actual.scroll<=actual.viewp
   });
   await page.locator("#cc-q-ox10 .cc-evidence-loaded").waitFor({state:"visible"});
   await page.locator('textarea[data-id="ox10"]').fill("The report says the lungs exchange gases and the heart pumps blood. They work together because oxygen enters blood in the lungs before the heart moves it around the body.");
-  assert.ok(await page.locator("a[href=\"../science/#cells/circulatory\"]").innerText().then(x=>x.includes("Exercise & Circulation Data Lab")),"Second related Science lesson link");
+  assert.ok(await page.locator("a[href=\"../science/#cells/circulatory\"]").first().innerText().then(x=>x.includes("Exercise & Circulation Data Lab")),"Second related Science lesson link");
   assert.match(await page.locator("#cc-progress-count").innerText(),/1 of 11/);
   await page.reload({waitUntil:"domcontentloaded"});
   assert.equal(await page.locator("#cc-q-ox10 .cc-evidence-loaded pre").textContent(),organReport,"Imported evidence stays in the local draft");
