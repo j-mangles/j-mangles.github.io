@@ -158,7 +158,7 @@ const tasks=[
    assert.equal(await page.locator(".entry a").count(),0,"Future labs must not open from the library");
    await page.locator("#lab-search").fill("");
    await page.locator('[data-unit="cells"]').click();
-   assert.equal(await page.locator(".entry").count(),9,"Cells lab filter");
+   assert.equal(await page.locator(".entry").count(),10,"Cells lab filter");
    await page.locator('[data-unit="all"]').click();
    const libraryOverflow=await page.evaluate(()=>({w:window.innerWidth,s:document.documentElement.scrollWidth}));
    assert.ok(libraryOverflow.s<=libraryOverflow.w+5,"Science Lab Library horizontal overflow");
