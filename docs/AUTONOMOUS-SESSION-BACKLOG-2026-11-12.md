@@ -21,6 +21,14 @@
 - Preserved original systemic body diagrams, pathways, digestion and oxygen-model interactions by wrapping the existing `cells/systems` lesson tool after its other registrations.
 - Updated the existing `science-oxygen-systems` Computer Class activity to link directly to the Organ Inspector and require organ-level evidence in the CER paragraph; retained the same question IDs and existing draft storage.
 
+### Completed: Grade 7 Math — Worked-Solution Error Detective
+- Created `math/error-detective.js` and added it to the existing released Unit 1 **Percent Skill Check and Unit Review** lesson (`fdp/l21`).
+- Nine original worked examples target common misconceptions: percent-to-decimal place value, negative-number ordering, finding a percentage, fraction-to-percent conversion, discount and tax order, percents over 100, mixed-form comparison, finding the whole and mixed-number conversion.
+- Students identify the **first incorrect step**, enter the corrected numerical value and explain the misconception in their own words. Steps and numerical corrections are machine-checked; reasoning is explicitly left to teacher review.
+- Provides visual checks, per-case progress, feedback, revisitable problems and a local text review-record download after at least five solved cases.
+- New JavaScript and real Chrome mobile/desktop workflow with screenshots; **passed** on the feature branch.
+- No account, tracking, student name collection, persistent storage or syllabus release change.
+
 ### New QA
 - Automated JS model and actual Chrome tests for mass-volume calculations, density slope, 3-series plotted graph, exports and responsive page widths.
 - Automated organ-model and actual Chrome tests for twelve structures, keyboard navigation, knowledge checking, progress, local export and page widths.
@@ -31,7 +39,7 @@
 1. Student-device/teacher visual review of the new graphs, numbered organ hotspots and their instruction length.
 2. Link student-exported investigations into an opt-in reusable Computer Class evidence importer; keep data local and require deliberate student action.
 3. Create a multi-variable, data-based human circulation/gas-exchange lab with explicit model assumptions rather than anatomical decoration.
-4. Build a complete grade 7 multi-step number-sense error-analysis activity using existing fraction/percent manipulatives rather than duplicating them.
+4. The Unit 1 Math Error Detective is complete. Next create a problem-specific feedback engine and number-sense diagnostic for future arithmetic units.
 5. Audit all Science lesson-tool wrapper registration ordering and implement a collision test covering future unit modules.
 6. Extend source-based historical inquiry using dated and licensed artefacts from museums.
 7. Classroom pilot and teacher content review before changing the `main` branch.
