@@ -272,7 +272,7 @@ async function importInvestigationReport(file,id){
   if(!content.trim()||content.includes("\u0000"))throw Error("Not plain text");
   answers[id]={...(answers[id]||{}),fileName:file.name.slice(0,120),content};
   saveDraft();
-  const response=document.getElementById("cc-q-"+id+" .cc-response");if(response)response.innerHTML=inputFor(q,0);
+  const response=document.querySelector("#cc-q-"+id+" .cc-response");if(response)response.innerHTML=inputFor(q,0);
   updateProgress();status("Report imported on this device. Add your evidence reflection below it.");
   document.getElementById("cc-input-"+id)?.focus();
  }catch(e){status("Could not read that report. Choose a downloaded plain-text investigation file.");}
@@ -307,7 +307,7 @@ function onAction(action,id){
  if(action==="clear-evidence"){
   const q=getQuestion(id);if(!q||q.type!=="evidence")return;
   answers[id]={...(answers[id]||{}),fileName:"",content:""};saveDraft();
-  const response=document.getElementById("cc-q-"+id+" .cc-response");if(response)response.innerHTML=inputFor(q,0);
+  const response=document.querySelector("#cc-q-"+id+" .cc-response");if(response)response.innerHTML=inputFor(q,0);
   updateProgress();status("Report removed from this assignment on this device.");return;
  }
 }
