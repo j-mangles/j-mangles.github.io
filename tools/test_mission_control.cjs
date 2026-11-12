@@ -4,15 +4,15 @@ const assert=require("node:assert/strict"),fs=require("node:fs"),path=require("n
 const root=path.resolve(__dirname,"..");
 const source=(p)=>fs.readFileSync(path.join(root,p),"utf8");
 const window={};
-for(const name of ["computer-class/data.js","computer-class/activities-2.js","computer-class/activities-3.js","today/resources.js","today/released-lessons.js","today/core.js"]){
+for(const name of ["computer-class/data.js","computer-class/activities-2.js","computer-class/activities-3.js","computer-class/activities-4.js","today/resources.js","today/released-lessons.js","today/core.js"]){
  vm.runInNewContext(source(name),{window,console},{filename:name,timeout:3000});
 }
 const core=window.MissionCore,resource=window.MissionResources,list=core.catalog();
 assert.equal(resource.periods.length,5);
 assert.deepEqual(Array.from(resource.periods,p=>p.number),[1,2,3,4,5]);
-assert.equal(list.length,99,"Released lessons, featured tools and 15 assignments");
+assert.equal(list.length,104,"Released lessons, featured tools and 15 assignments");
 assert.equal(new Set(list.map(x=>x.id)).size,99,"All IDs unique");
-assert.equal(list.filter(x=>x.kind==="Digital assignment").length,15);
+assert.equal(list.filter(x=>x.kind==="Digital assignment").length,20);
 assert.equal(window.MissionReleasedLessons.length,76,"Only released lessons are generated");
 assert.equal(list.some(x=>x.href==="../math/#fracops"),false,"Future fraction unit stays hidden");
 assert.equal(list.filter(x=>x.subject==="math").length,23);
@@ -75,6 +75,7 @@ for(const page of ["today/index.html","today/launch.html"]){
  assert.ok(html.includes('src="released-lessons.js'),page);
  assert.ok(html.includes('src="core.js'),page);
  assert.ok(html.includes('src="../computer-class/activities-3.js'),page);
+ assert.ok(html.includes('src="../computer-class/activities-4.js'),page);
  assert.ok(html.includes('name="viewport"'),page);
 }
 assert.ok(source("index.html").includes('href="today/"'),"Homepage entry point");
