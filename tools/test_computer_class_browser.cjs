@@ -85,6 +85,24 @@ function checkOverflow(actual,where,width){assert.ok(actual.scroll<=actual.viewp
   await canal.locator('[data-field="north"]').fill("60");
   await canal.locator("[data-record]").click();
   assert.equal(await canal.locator("[data-trials] tr").count(),2);
+  await page.goto(BASE+"/computer-class/#ela-slides");
+  const plot=page.locator("#cc-lab-el9");
+  await plot.locator('[data-field="turning"]').fill("30");
+  assert.match(await plot.locator(".cc-lab-result").innerText(),/flat or unusual tension pattern/);
+  await plot.locator("[data-record]").click();
+  await plot.locator('[data-field="turning"]').fill("100");
+  assert.match(await plot.locator(".cc-lab-result").innerText(),/clear turning-point peak/);
+  await plot.locator("[data-record]").click();
+  assert.equal(await plot.locator("[data-trials] tr").count(),2,"ELA tension interpretations");
+  await page.goto(BASE+"/computer-class/#thinking-misinformation");
+  const sourceboard=page.locator("#cc-lab-vc10");
+  await sourceboard.locator("[data-record]").click();
+  for(const id of ["named","dated","direct"])await sourceboard.locator('[data-field="'+id+'"]').selectOption("1");
+  assert.match(await sourceboard.locator(".cc-lab-result").innerText(),/3 of 3/);
+  await sourceboard.locator("[data-record]").click();
+  await sourceboard.locator('[data-field="dated"]').selectOption("0");
+  await sourceboard.locator("[data-record]").click();
+  assert.equal(await sourceboard.locator("[data-trials] tr").count(),3,"Three verification profiles");
   await page.goto(BASE+"/computer-class/#math-store");
   const values={ma1:"18",ma2:"54",ma3:"6.48",ma4:"60.48",ma5:"19.52",ma6:"51"};
   for(const [id,v] of Object.entries(values))await page.locator('input[data-id="'+id+'"]').fill(v);
@@ -168,6 +186,6 @@ function checkOverflow(actual,where,width){assert.ok(actual.scroll<=actual.viewp
   assert.deepEqual(errors,[],"No uncaught JS errors at "+width+"px");
   await page.close();
  }
- console.log("Computer Class Chrome pass: 15 assignments, teacher review, structured export/import, four labs and two screen sizes.");
+ console.log("Computer Class Chrome pass: 15 assignments, teacher review, structured export/import, six labs and two screen sizes.");
  }finally{await browser.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;});
