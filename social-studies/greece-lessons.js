@@ -4,6 +4,7 @@ window.GreeceLessons=[
     "id": "l1",
     "n": "1",
     "title": "Mountains and Sea",
+    "activity": {"href":"greece-found-a-city.html","title":"Open Found a City"},
     "released": true,
     "places": [
       "athens",
@@ -299,6 +300,7 @@ window.GreeceLessons=[
     "id": "l5",
     "n": "5",
     "title": "Athens and the Invention of Democracy",
+    "activity": {"href":"greece-citizen-for-a-day.html","title":"Open Citizen for a Day"},
     "released": true,
     "places": [
       "athens",
@@ -378,6 +380,7 @@ window.GreeceLessons=[
     "id": "l6",
     "n": "6",
     "title": "Athens vs Sparta",
+    "activity": {"href":"greece-draw-your-lot.html","title":"Open Draw Your Lot"},
     "released": true,
     "places": [
       "athens",

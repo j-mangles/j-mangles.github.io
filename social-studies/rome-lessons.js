@@ -160,6 +160,7 @@ window.RomeLessons = [
     "id": "l4",
     "n": "4",
     "title": "The Legions",
+    "activity": {"href":"rome-recruits-handbook.html","title":"Open the Recruit's Handbook"},
     "released": true,
     "big": "Roman military organization helped Rome expand, but its armies also depended on logistics, allies and the loyalty of soldiers.",
     "notes": [
@@ -263,6 +264,7 @@ window.RomeLessons = [
     "id": "l6",
     "n": "6",
     "title": "Rome Swallows the Greek World",
+    "activity": {"href":"rome-borrowed-or-roman.html","title":"Open Borrowed or Roman?"},
     "released": true,
     "big": "Roman conquest and Greek cultural influence produced a blended Greco-Roman world, while conquest deepened inequality at home.",
     "notes": [
@@ -522,6 +524,7 @@ window.RomeLessons = [
     "id": "l11",
     "n": "11",
     "title": "Christianity and the Empire",
+    "activity": {"href":"rome-governors-problem.html","title":"Open The Governor's Problem"},
     "released": true,
     "big": "Christianity began within the Roman Empire, spread through communities and networks, and moved from persecution to imperial support.",
     "notes": [
