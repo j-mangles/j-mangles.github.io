@@ -128,6 +128,7 @@ const body=`
   <path d="M164 151l-16 53m105-53 16 53M177 165l16 37m49-37-16 37M170 301l17 47m70-47-17 47M153 388l8 40m104-40-8 40"/>
  </g>
  <path d="M184 212q29 15 57 0" fill="none" stroke="#a94f4c" stroke-width="2"/>
+ <path d="M180 239q33 18 66 0" fill="none" stroke="#a94f4c" stroke-width="2.6" stroke-dasharray="4 2"/>
 </g>
 
 <!-- nervous system: folded cortex, spinal cord and branching peripheral nerves -->
