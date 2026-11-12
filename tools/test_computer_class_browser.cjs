@@ -107,9 +107,56 @@ function checkOverflow(actual,where,width){assert.ok(actual.scroll<=actual.viewp
   assert.match(contents,/60.48/);
   assert.match(contents,/End of assignment/);
   assert.match(await page.locator("#cc-finish-status").innerText(),/Follow your teacher/);
+
+  // Structured student copy and teacher review, completely local to the browser.
+  const [jsonDownload]=await Promise.all([
+   page.waitForEvent("download",{timeout:10000}),
+   page.locator('[data-action="teacher-copy"]').click()
+  ]);
+  assert.match(jsonDownload.suggestedFilename(),/math-store-alex-example\.json/);
+  const jsonFile=await jsonDownload.path(),jsonText=fs.readFileSync(jsonFile,"utf8"),studentCopy=JSON.parse(jsonText);
+  assert.equal(studentCopy.schema,"eess-computer-class-submission-v1");
+  assert.equal(studentCopy.student_name,"Alex Example");
+  assert.equal(studentCopy.answers.ma4,"60.48");
+  await page.goto(BASE+"/computer-class/teacher.html",{waitUntil:"domcontentloaded"});
+  await page.locator("#tr-files").setInputFiles({
+   name:"math-store-alex-example.json",mimeType:"application/json",buffer:Buffer.from(jsonText,"utf8")
+  });
+  await page.locator(".tr-entry").waitFor({state:"visible",timeout:10000});
+  await page.locator(".tr-entry").click();
+  assert.match(await page.locator(".tr-stats").innerText(),/8 \/ 8 objective answers correct/);
+  await page.locator('[data-rating="ma9"]').selectOption("meeting");
+  await page.locator('[data-feedback="ma9"]').fill("Clear reasoning. Next: show a complete equation.");
+  await page.locator("#tr-overall-note").fill("Strong calculations and attention to units.");
+  const [csvDownload]=await Promise.all([
+   page.waitForEvent("download",{timeout:10000}),
+   page.locator("#tr-csv").click()
+  ]);
+  assert.match(csvDownload.suggestedFilename(),/review-summary\.csv/);
+  const csvText=fs.readFileSync(await csvDownload.path(),"utf8");
+  assert.match(csvText,/Alex Example/);
+  assert.match(csvText,/ma9: meeting/);
+  assert.match(csvText,/Strong calculations/);
+  const [feedbackDownload]=await Promise.all([
+   page.waitForEvent("download",{timeout:10000}),
+   page.locator("#tr-feedback-download").click()
+  ]);
+  assert.match(fs.readFileSync(await feedbackDownload.path(),"utf8"),/Clear reasoning/);
+  await page.reload({waitUntil:"domcontentloaded"});
+  assert.equal((await page.locator("#tr-count").innerText()).trim(),"0 files loaded","Teacher data never stored");
+  await page.goto(BASE+"/computer-class/#math-store");
   page.once("dialog",dialog=>dialog.accept());
   await page.locator('[data-action="clear"]').click();
   assert.equal((await page.locator("#cc-progress-count").innerText()).trim(),"0 of 10 responses complete","Clear answers");
+  // A saved teacher-copy file is also a cross-device resume backup.
+  await page.locator("#cc-import").setInputFiles({
+   name:"math-store-alex-example.json",mimeType:"application/json",buffer:Buffer.from(jsonText,"utf8")
+  });
+  await page.waitForFunction(()=>document.querySelector("#cc-progress-count")?.textContent?.includes("10 of 10"),null,{timeout:10000});
+  assert.equal(await page.locator('input[data-id="ma4"]').inputValue(),"60.48");
+  page.once("dialog",dialog=>dialog.accept());
+  await page.locator('[data-action="clear"]').click();
+
   await page.reload({waitUntil:"domcontentloaded"});
   assert.equal((await page.locator("#cc-progress-count").innerText()).trim(),"0 of 10 responses complete","Clear persisted");
   if(width===390){
@@ -121,6 +168,6 @@ function checkOverflow(actual,where,width){assert.ok(actual.scroll<=actual.viewp
   assert.deepEqual(errors,[],"No uncaught JS errors at "+width+"px");
   await page.close();
  }
- console.log("Computer Class Chrome pass: 15 assignments, four interactive labs, 2 widths, autosave, grading, export and clearing.");
+ console.log("Computer Class Chrome pass: 15 assignments, teacher review, structured export/import, four labs and two screen sizes.");
  }finally{await browser.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;});
