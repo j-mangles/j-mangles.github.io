@@ -40,6 +40,11 @@ function sanitize(data){
  return {activity:a,student:data.student_name.trim(),exportedAt:String(data.exported_at||"").slice(0,35),
   answers:safe,review:{},overall:"",fileName:""};
 }
+function hasTeacherReview(entry){
+ if(!entry)return false;
+ if(typeof entry.overall==="string"&&entry.overall.trim())return true;
+ return Object.values(entry.review||{}).some(x=>x&&typeof x==="object"&&(String(x.level||"").trim()||String(x.note||"").trim()));
+}
 function stats(entry){
  const qs=all(entry.activity),auto=objective(entry.activity);
  const correct=auto.filter(q=>isCorrect(q,entry.answers[q.id])===true).length;
@@ -224,17 +229,22 @@ root.addEventListener("input",event=>{
 });
 document.getElementById("tr-files").addEventListener("change",async event=>{
  const files=[...event.target.files].slice(0,MAX_FILES),message=document.getElementById("tr-file-message");
- let good=0,bad=0;
+ let good=0,bad=0,protectedReviews=0;
  for(const file of files){
   try{
    if(file.size>1024*1024)throw Error("oversize");
    const entry=sanitize(JSON.parse(await file.text()));entry.fileName=file.name;
    const existing=entries.findIndex(x=>x.student.toLocaleLowerCase()===entry.student.toLocaleLowerCase()&&x.activity.id===entry.activity.id);
+   if(existing>=0&&hasTeacherReview(entries[existing])){
+    protectedReviews++;continue;
+   }
    if(existing>=0)entries[existing]=entry;else entries.push(entry);good++;
   }catch(err){bad++;}
  }
  if(good){selected=entries.length-1;setDirty(true);}
- message.textContent=good+" file"+(good===1?"":"s")+" loaded. "+(bad?bad+" unsupported or invalid file(s) skipped. ":"")+
+ message.textContent=good+" file"+(good===1?"":"s")+" loaded. "+
+ (protectedReviews?protectedReviews+" existing reviewed submission(s) protected from replacement. Download your review backup before removing or replacing a graded copy. ":"")+
+ (bad?bad+" unsupported or invalid file(s) skipped. ":"")+
  "No data was uploaded.";
  event.target.value="";updateCount();
 });
@@ -245,6 +255,6 @@ window.addEventListener("beforeunload",event=>{
  if(!dirty||!entries.length)return;
  event.preventDefault();event.returnValue="";
 });
-window.ComputerClassTeacher={sanitize,stats,csvEscape,objective,isCorrect,sanitizeReview,sessionPayload,parseSession,
+window.ComputerClassTeacher={sanitize,stats,csvEscape,objective,isCorrect,sanitizeReview,hasTeacherReview,sessionPayload,parseSession,
  get entries(){return entries.slice();},get hasUnsavedChanges(){return dirty;} };
 })();
