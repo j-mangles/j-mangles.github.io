@@ -7,6 +7,11 @@ on:
       - computer-class/data.js
       - computer-class/activities-2.js
       - computer-class/activities-3.js
+      - math/data.js
+      - science/data.js
+      - ela/data.js
+      - critical-thinking/data.js
+      - tools/test_mission_catalog.cjs
       - tools/test_mission_control.cjs
       - tools/test_mission_control_browser.cjs
       - .github/workflows/test-mission-control.yml
@@ -14,6 +19,7 @@ on:
     paths:
       - today/**
       - tools/test_mission_control.cjs
+      - tools/test_mission_catalog.cjs
       - tools/test_mission_control_browser.cjs
   workflow_dispatch:
 jobs:
@@ -26,6 +32,8 @@ jobs:
           node-version: '22'
       - name: Validate six-day plans, backup and privacy rules
         run: node tools/test_mission_control.cjs
+      - name: Verify released curriculum lesson catalog
+        run: node tools/test_mission_catalog.cjs
       - name: Install Chrome browser harness
         run: npm install --no-save --no-package-lock playwright-core@1.56.1
       - name: Start local class site
