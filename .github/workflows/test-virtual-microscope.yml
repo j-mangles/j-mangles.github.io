@@ -1,10 +1,14 @@
-name: Test Virtual Microscope Investigation
+name: Test Science Microscope and Buoyancy Investigations
 on:
   push:
     branches:
       - feat/science-investigations-2026-11-12
     paths:
       - science/virtual-microscope.js
+      - science/buoyancy-investigation.js
+      - science/buoyancy-investigation.css
+      - tools/test_buoyancy_investigation.cjs
+      - tools/test_buoyancy_browser.cjs
       - science/virtual-microscope.css
       - science/index.html
       - science/labs.html
@@ -14,6 +18,10 @@ on:
   pull_request:
     paths:
       - science/virtual-microscope.js
+      - science/buoyancy-investigation.js
+      - science/buoyancy-investigation.css
+      - tools/test_buoyancy_investigation.cjs
+      - tools/test_buoyancy_browser.cjs
       - science/virtual-microscope.css
       - science/index.html
       - science/labs.html
@@ -28,8 +36,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Test microscope logic and wiring
-        run: node tools/test_virtual_microscope.cjs
+      - name: Test microscope and buoyancy calculations
+        run: |
+          node tools/test_virtual_microscope.cjs
+          node tools/test_buoyancy_investigation.cjs
       - name: Install browser harness
         run: npm install --no-save --no-package-lock playwright-core@1.56.1
       - name: Serve site locally
@@ -41,5 +51,7 @@ jobs:
           done
           cat /tmp/microscope-site.log
           exit 1
-      - name: Test student microscope on mobile and desktop
-        run: node tools/test_virtual_microscope_browser.cjs
+      - name: Test Science investigations on mobile and desktop
+        run: |
+          node tools/test_virtual_microscope_browser.cjs
+          node tools/test_buoyancy_browser.cjs
