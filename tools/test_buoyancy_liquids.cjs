@@ -14,7 +14,7 @@ assert.equal(m(120,100,"syrup").result,"floats");
 assert.equal(m(120,100,"oil").result,"sinks");
 assert.equal(m(80,100,"oil").result,"floats");
 assert.equal(m(100,100,"water").result,"neutral");
-assert.equal(m(120,100,"syrup").submerged,120/133);
+assert.ok(Math.abs(m(120,100,"syrup").submerged-120/133)<1e-10);
 assert.equal(m(120,100,"water").submerged,1);
 assert.equal(m(100,100,"salt").liquidDensity,1.03);
 assert.throws(()=>m(0,100,"water"));
