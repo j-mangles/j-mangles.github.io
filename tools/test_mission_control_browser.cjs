@@ -26,7 +26,7 @@ const overflow=async(page,label)=>{
    assert.match(await page.locator(".mc-progressline").innerText(),/1 of 5 blocks assigned/);
    await overflow(page,"planner "+width);
    await page.locator("#mc-resource-1").selectOption("assignment:science-membranes");
-   assert.match(await page.locator("#mc-info-1").innerText(),/Cell Membrane Investigation/);
+   assert.match(await page.locator("#mc-resource-1 option:checked").innerText(),/Cell Membrane Investigation/);
    await page.locator("#mc-note-1").fill("PRIVATE teacher preparation: print the materials.");
    await page.locator('input[data-field="taught"][data-slot="1"]').check();
    assert.match(await page.locator(".mc-progressline").innerText(),/2 of 5 blocks assigned.*1 marked done/);
