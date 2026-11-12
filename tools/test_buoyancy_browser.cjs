@@ -25,6 +25,8 @@ const BASE=process.env.SITE_TEST_ORIGIN||"http://127.0.0.1:8765";
    await lab.locator("#bl-predict").selectOption("float");
    await lab.locator("#bl-test").click();
    assert.match(await lab.locator("#bl-result").innerText(),/floating|float/i);
+   const blockY=Number(await lab.locator("#bl-diagram rect").nth(2).getAttribute("y"));
+   assert.ok(Math.abs(blockY-130.2)<.5,"70% submerged wood should straddle the waterline correctly: "+blockY);
    await lab.locator("#bl-record").click();
    assert.equal(await lab.locator("#bl-rows tr").count(),1);
    await lab.locator("#bl-liquid").selectOption("oil");
