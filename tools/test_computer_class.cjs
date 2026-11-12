@@ -6,9 +6,10 @@ const dataJs=fs.readFileSync(path.join(root,"computer-class","data.js"),"utf8");
 const appJs=fs.readFileSync(path.join(root,"computer-class","app.js"),"utf8");
 const extension1=fs.readFileSync(path.join(root,"computer-class","activities-2.js"),"utf8");
 const extension2=fs.readFileSync(path.join(root,"computer-class","activities-3.js"),"utf8");
+const extension3=fs.readFileSync(path.join(root,"computer-class","activities-4.js"),"utf8");
 const labJs=fs.readFileSync(path.join(root,"computer-class","labs.js"),"utf8");
 const html=fs.readFileSync(path.join(root,"computer-class","index.html"),"utf8");
-for(const [name,source] of [["data",dataJs],["pack2",extension1],["pack3",extension2],["labs",labJs],["app",appJs]])new vm.Script(source,{filename:name+".js"});
+for(const [name,source] of [["data",dataJs],["pack2",extension1],["pack3",extension2],["pack4",extension3],["labs",labJs],["app",appJs]])new vm.Script(source,{filename:name+".js"});
 const activities=[];const win={addEventListener(k,f){this.handlers[k]=f;},handlers:{},scrollTo(){},confirm(){return true;}};
 const domRoot={innerHTML:"",listeners:{},addEventListener(k,f){this.listeners[k]=f;},contains(){return true;}};
 const doc={body:{dataset:{}},title:"",getElementById(id){return id==="cc-root"?domRoot:null;}};
@@ -18,12 +19,13 @@ const ctx={window:win,document:doc,location:loc,localStorage,console,Number,Set}
 vm.runInNewContext(dataJs,ctx,{filename:"data.js",timeout:3000});
 vm.runInNewContext(extension1,ctx,{filename:"activities-2.js",timeout:3000});
 vm.runInNewContext(extension2,ctx,{filename:"activities-3.js",timeout:3000});
+vm.runInNewContext(extension3,ctx,{filename:"activities-4.js",timeout:3000});
 vm.runInNewContext(labJs,ctx,{filename:"labs.js",timeout:3000});
 const data=win.ComputerClassData;
 assert.equal(data.version,1);
-assert.equal(data.activities.length,15);
+assert.equal(data.activities.length,20);
 assert.deepEqual([...new Set(data.activities.map(a=>a.subject))].sort(),["ct","ela","math","sci","ss"].sort());
-for(const subject of ["ct","ela","math","sci","ss"])assert.equal(data.activities.filter(a=>a.subject===subject).length,3);
+for(const subject of ["ct","ela","math","sci","ss"])assert.equal(data.activities.filter(a=>a.subject===subject).length,4);
 const qids=new Set();
 for(const activity of data.activities){
  assert.ok(activity.sections.length>=2,"At least two parts "+activity.id);
@@ -49,7 +51,7 @@ for(const activity of data.activities){
   }
  }
 }
-assert.equal(qids.size,141);
+assert.equal(qids.size,191);
 const core=win.ComputerClassLabs;
 assert.equal(core.calculate("osmosis",{cell:"plant",inside:30,outside:60}).effect,"plasmolysed");
 assert.equal(core.calculate("oxygen",{breathing:10,circulation:100,activity:100}).limitedBy,"breathing");
@@ -67,7 +69,7 @@ vm.runInNewContext(appJs,ctx,{filename:"app.js",timeout:3000});
 const engine=win.ComputerClassEngine;
 assert.ok(engine);
 assert.match(domRoot.innerHTML,/Computer Class/);
-assert.equal((domRoot.innerHTML.match(/class="cc-entry"/g)||[]).length,15);
+assert.equal((domRoot.innerHTML.match(/class="cc-entry"/g)||[]).length,20);
 const labQ=engine.allQuestions(data.activities[0]).find(q=>q.type==="lab");
 assert.equal(engine.answered(labQ,[]),false);
 const trials=[
@@ -111,6 +113,6 @@ for(const name of ["science","social-studies","math","ela","critical-thinking"])
 assert.ok(fs.readFileSync(path.join(root,"index.html"),"utf8").includes('href="computer-class/"'));
 assert.match(html,/src="data.js/);
 assert.match(html,/src="app.js/);
-for(const name of ["activities-2.js","activities-3.js","labs.js"])assert.ok(html.includes('src="'+name));
+for(const name of ["activities-2.js","activities-3.js","activities-4.js","labs.js"])assert.ok(html.includes('src="'+name));
 assert.match(fs.readFileSync(path.join(root,"computer-class","style.css"),"utf8"),/@media print/);
-console.log("Computer Class passed: 15 assignments, 141 responses, six models, autosave, reports, links.");
+console.log("Computer Class passed: 20 assignments, 191 responses, six models, autosave, reports, links.");
