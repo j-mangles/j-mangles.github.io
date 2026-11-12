@@ -108,6 +108,7 @@ body[data-subject="ela"] .cc-reading p:not(.cc-reading-link){font-family:var(--f
 .cc-side-inner p{font-size:.82rem;color:var(--muted);line-height:1.5}
 .cc-side-divider{border-top:1px solid var(--rule);margin-top:18px}
 .cc-side-lesson{color:var(--accent-ink);font-size:.83rem;font-weight:700}
+.cc-side-lessons{display:grid;gap:8px}
 .cc-sr-only{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
 .cc-print-report{display:none}
 .cc-footer{border-top:1px solid var(--rule);padding:25px;color:var(--muted);font-size:.79rem}

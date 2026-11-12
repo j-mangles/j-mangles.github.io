@@ -52,7 +52,7 @@ for(const activity of data.activities){
   }
  }
 }
-assert.equal(qids.size,193);
+assert.equal(qids.size,194);
 const core=win.ComputerClassLabs;
 assert.equal(core.calculate("osmosis",{cell:"plant",inside:30,outside:60}).effect,"plasmolysed");
 assert.equal(core.calculate("oxygen",{breathing:10,circulation:100,activity:100}).limitedBy,"breathing");
@@ -119,4 +119,4 @@ assert.match(html,/src="data.js/);
 assert.match(html,/src="app.js/);
 for(const name of ["activities-2.js","activities-3.js","activities-4.js","labs.js"])assert.ok(html.includes('src="'+name));
 assert.match(fs.readFileSync(path.join(root,"computer-class","style.css"),"utf8"),/@media print/);
-console.log("Computer Class passed: 20 assignments, 193 responses, evidence imports, six models, autosave, reports, links.");
+console.log("Computer Class passed: 20 assignments, 194 responses, evidence imports, six models, autosave, reports, links.");

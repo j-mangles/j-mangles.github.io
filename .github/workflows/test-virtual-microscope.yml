@@ -7,6 +7,7 @@ on:
       - science/virtual-microscope.js
       - science/buoyancy-investigation.js
       - science/system-interactions.js
+      - science/exercise-response-lab.js
       - science/mass-volume-investigation.js
       - science/organ-inspector.js
       - tools/test_organ_inspector.cjs
@@ -29,6 +30,7 @@ on:
       - science/virtual-microscope.js
       - science/buoyancy-investigation.js
       - science/system-interactions.js
+      - science/exercise-response-lab.js
       - science/mass-volume-investigation.js
       - science/organ-inspector.js
       - tools/test_organ_inspector.cjs

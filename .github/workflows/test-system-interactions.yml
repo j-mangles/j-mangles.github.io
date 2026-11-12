@@ -3,14 +3,18 @@ on:
   push:
     paths:
       - science/system-interactions.js
+      - science/exercise-response-lab.js
       - science/index.html
       - tools/test_system_interactions.cjs
+      - tools/test_exercise_response_lab.cjs
       - .github/workflows/test-system-interactions.yml
   pull_request:
     paths:
       - science/system-interactions.js
+      - science/exercise-response-lab.js
       - science/index.html
       - tools/test_system_interactions.cjs
+      - tools/test_exercise_response_lab.cjs
   workflow_dispatch:
 jobs:
   test:
@@ -21,5 +25,6 @@ jobs:
         with:
           node-version: '22'
       - run: node tools/test_system_interactions.cjs
+      - run: node tools/test_exercise_response_lab.cjs
       - run: node tools/test_homeostasis.cjs
       - run: node tools/test_course_map.cjs

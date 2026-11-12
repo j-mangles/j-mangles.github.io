@@ -11,13 +11,14 @@ const E=(id,prompt,minWords,placeholder,reflectionLabel)=>({id,type:"evidence",p
 store.activities.push(
 {
  id:"science-oxygen-systems",subject:"sci",subjectName:"Science",grade:"Grade 8",title:"Oxygen Mission: Systems Working Together",time:"35–45 min",
- summary:"Run a model of breathing, circulation and muscle demand, then explain how systems cooperate.",
+ summary:"Analyse sample heart-rate data, model oxygen delivery and explain how body systems cooperate.",
  lesson:"../science/#cells/systems",lessonText:"Explore the organs and systems",focus:"Cells & Systems · Respiratory, circulatory and muscular connections",
+ lessonLinks:[{href:"../science/#cells/systems",label:"Explore Human Systems and the Organ Inspector"},{href:"../science/#cells/circulatory",label:"Open the Exercise & Circulation Data Lab"}],
  reading:[
   "When you breathe, the respiratory system moves air into the lungs. Oxygen passes into the blood, and carbon dioxide passes from the blood into the lungs to be exhaled. The circulatory system then transports oxygen to body cells. Cells use oxygen in cellular respiration to release usable energy from nutrients.",
   "In this activity, the digital model expresses supply and demand using illustrative indexes. The smaller of the breathing and circulation capacities limits oxygen delivery. Muscle activity controls demand. These values are NOT medical readings, oxygen saturation values or heart rates.",
-  "A limitation is that real respiratory and circulatory systems are connected and adapt to exercise in more complicated ways. Still, a simple model can help identify relationships and make useful predictions.",
-  "Open the linked Human Systems Explorer and its Organ Inspector. Select the lungs and heart; identify how blood transports oxygen to active muscles. The organ-level questions provide evidence for the explanation you write here."
+  "A limitation is that real respiratory and circulatory systems are connected and adapt to exercise in more complicated ways. The heart-rate graph is sample data from one student; it does not measure oxygen or carbon dioxide directly.",
+  "Use the Human Systems Explorer and Organ Inspector to trace the lungs, heart and working muscles. Then inspect the sample heart-rate graph and use the Oxygen Delivery Model."
  ],
  sections:[
   {title:"Predict the system connection",intro:"Think about why two different systems are necessary.",questions:[
@@ -34,7 +35,8 @@ store.activities.push(
   {title:"Explain and evaluate",intro:"Connect model evidence to real structures without treating the numbers as physiological measurements.",questions:[
    O("ox8","Order the main path of oxygen to a working muscle cell.",["Oxygen is transported in the bloodstream","Oxygen enters the lungs with inhaled air","Oxygen is used by body cells","Oxygen diffuses into blood at the lungs"],[1,3,0,2],"Air enters lungs, oxygen moves into blood, blood transports it, and cells use it."),
    T("ox9","Write a Claim–Evidence–Reasoning paragraph explaining how lungs, heart, blood and working muscle cells cooperate. Include one oxygen-model trial, an organ-inspector detail and a model limitation.",52,"Claim: ... Trial evidence: ... Structure evidence: ... Reasoning: ... Limitation: ..."),
-   E("ox10","Import your Organ Inspector report, then use one structure detail as evidence about how systems work together.",20,"The report identifies... This structure helps...","Which structure and related system from your report support your explanation?")
+   E("ox10","Import your Organ Inspector report, then use one structure detail as evidence about how systems work together.",20,"The report identifies... This structure helps...","Which structure and related system from your report support your explanation?"),
+   E("ox11","Import your Exercise & Circulation Data Lab report. Use an exact heart-rate value and explain how it relates to working muscles. State one thing the graph does not measure.",25,"The sample shows... This connects to working cells because... The graph does not measure...","Which heart-rate data support your explanation, and what limitation should you keep in mind?")
   ]}
  ]
 },

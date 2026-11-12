@@ -85,9 +85,15 @@ function checkOverflow(actual,where,width){assert.ok(actual.scroll<=actual.viewp
   });
   await page.locator("#cc-q-ox10 .cc-evidence-loaded").waitFor({state:"visible"});
   await page.locator('textarea[data-id="ox10"]').fill("The report says the lungs exchange gases and the heart pumps blood. They work together because oxygen enters blood in the lungs before the heart moves it around the body.");
-  assert.match(await page.locator("#cc-progress-count").innerText(),/1 of 10/);
+  assert.ok(await page.locator("a[href=\"../science/#cells/circulatory\"]").innerText().then(x=>x.includes("Exercise & Circulation Data Lab")),"Second related Science lesson link");
+  assert.match(await page.locator("#cc-progress-count").innerText(),/1 of 11/);
   await page.reload({waitUntil:"domcontentloaded"});
   assert.equal(await page.locator("#cc-q-ox10 .cc-evidence-loaded pre").textContent(),organReport,"Imported evidence stays in the local draft");
+  const exerciseReport="Exercise & Circulation Data Lab — Grade 8 Science\nSample data from the Science 8 Systems booklet; one student, not a medical measurement.\nPeak while jogging: 142 bpm at minute 8\nIncrease above resting average: 70 bpm\nWithin 5 bpm of resting average by minute 13 (about 5 minutes after stopping).\nLimitation: heart rate does not measure oxygen or carbon dioxide directly.";
+  await page.locator('input[data-evidence-file="ox11"]').setInputFiles({name:"exercise-circulation-data-report.txt",mimeType:"text/plain",buffer:Buffer.from(exerciseReport,"utf8")});
+  await page.locator("#cc-q-ox11 .cc-evidence-loaded").waitFor({state:"visible"});
+  await page.locator('textarea[data-id="ox11"]').fill("The sample reaches 142 beats per minute while jogging, which is 70 above the resting average. Working muscles need more oxygen, so the heart pumps blood faster. This graph does not measure oxygen levels or carbon dioxide exchange.");
+  assert.match(await page.locator("#cc-progress-count").innerText(),/2 of 11/);
   const [scienceReportDownload]=await Promise.all([
    page.waitForEvent("download",{timeout:10000}),
    page.locator('[data-action="download"]').click()
@@ -104,6 +110,7 @@ function checkOverflow(actual,where,width){assert.ok(actual.scroll<=actual.viewp
   await page.locator(".tr-entry").waitFor({state:"visible",timeout:10000});
   await page.locator(".tr-entry").click();
   assert.match(await page.locator(".tr-answer-text").filter({hasText:"Imported investigation: organ-systems-investigation.txt"}).innerText(),/Selected structures: lungs, heart and diaphragm/);
+  assert.match(await page.locator(".tr-answer-text").filter({hasText:"Imported investigation: exercise-circulation-data-report.txt"}).innerText(),/142 bpm at minute 8/);
   page.once("dialog",dialog=>dialog.accept());
   await page.goto(BASE+"/computer-class/#science-oxygen-systems");
   await page.locator('[data-action="clear-evidence"][data-id="ox10"]').click();
@@ -258,6 +265,6 @@ function checkOverflow(actual,where,width){assert.ok(actual.scroll<=actual.viewp
   assert.deepEqual(errors,[],"No uncaught JS errors at "+width+"px");
   await page.close();
  }
- console.log("Computer Class Chrome pass: 20 assignments, teacher review session backup/restore, structured export/import, six labs and two screen sizes.");
+ console.log("Computer Class Chrome pass: 20 assignments, local Science evidence hand-offs, teacher review backup/restore, six labs and two screen sizes.");
  }finally{await browser.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;});

@@ -108,6 +108,7 @@ function renderQuestion(q,index){
 function showActivity(activity){
  current=activity;name="";checked={};answers=draftCache[activity.id]||readDraft(activity.id);draftCache[activity.id]=answers;
  document.body.dataset.subject=activity.subject;document.title=activity.title+" · Computer Class";
+ const lessonLinks=Array.isArray(activity.lessonLinks)&&activity.lessonLinks.length?activity.lessonLinks:[{href:activity.lesson,label:activity.lessonText}];
  const p=progress(activity,answers),n=allQuestions(activity);
  let idx=0;
  root.innerHTML='<div class="cc-head cc-activity-head"><a class="cc-back" href="#">← All computer-class assignments</a>'+
@@ -118,7 +119,7 @@ function showActivity(activity){
  '<div class="cc-progress" role="progressbar" aria-label="Assignment completion" aria-valuemin="0" aria-valuemax="'+p.total+'" aria-valuenow="'+p.complete+'" id="cc-progress-bar"><span style="width:'+p.percent+'%"></span></div></div></div>'+
  '<div class="cc-work-layout"><div class="cc-main-col"><section class="cc-reading"><h2>Read first</h2>'+
  activity.reading.map((p,i)=>'<p '+(i===0&&activity.subject==="ela"?'class="cc-story-title"':"")+'>'+escape(p)+'</p>').join("")+
- '<p class="cc-reading-link"><a href="'+escape(activity.lesson)+'">↗ '+escape(activity.lessonText)+'</a></p></section>'+
+ '<p class="cc-reading-link">'+lessonLinks.map(link=>'<a href="'+escape(link.href)+'">↗ '+escape(link.label)+'</a>').join(' <span aria-hidden="true">·</span> ')+'</p></section>'+
  activity.sections.map((section,si)=>'<section class="cc-assignment-section" aria-labelledby="cc-section-'+si+'">'+
  '<div class="cc-section-heading"><span class="cc-section-index">Part '+(si+1)+'</span><h2 id="cc-section-'+si+'">'+escape(section.title)+'</h2>'+
  '<p>'+escape(section.intro)+'</p></div>'+section.questions.map(q=>renderQuestion(q,idx++)).join("")+'</section>').join("")+
@@ -140,7 +141,7 @@ function showActivity(activity){
  '<p><b>'+n.length+' responses</b> · '+n.filter(q=>q.type!=="text"&&q.type!=="lab"&&q.type!=="evidence").length+' self-checks</p>'+
  '<div class="cc-side-divider"></div><h3>Before you leave</h3>'+
  '<p>Download your work. A draft on this device is not the same as handing it in.</p>'+
- '<a class="cc-side-lesson" href="'+escape(activity.lesson)+'">Review the related lesson ↗</a></div></aside></div>'+
+ '<div class="cc-side-lessons">'+lessonLinks.map(link=>'<a class="cc-side-lesson" href="'+escape(link.href)+'">'+escape(link.label)+' ↗</a>').join("")+'</div></div></aside></div>'+
  '<div class="cc-print-report" id="cc-print-report"></div>';
  mountLabs();
  updateProgress();

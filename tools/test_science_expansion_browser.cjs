@@ -1,4 +1,4 @@
-/* In-browser smoke tests for fifteen expanded Grade 8 science labs.
+/* In-browser smoke tests for the Science labs and library.
    Start: python3 -m http.server 8765
    Requires playwright-core and locally installed Google Chrome. */
 "use strict";
@@ -13,6 +13,26 @@ const tasks=[
   assert.match(await page.locator(".dn .readout").innerText(),/Small intestine/);
   assert.ok(await page.locator(".hsi").count()===1,"Human systems explorer must remain present");
   assert.ok(await page.locator(".hx-lab").count()===1,"Homeostasis lab must remain present");
+ }},
+ {hash:"cells/circulatory",selector:".erd",async check(page){
+  assert.equal(await page.locator(".erd .point").count(),15,"The interactive graph uses all sample data points");
+  assert.equal(await page.locator(".odi").count(),1,"The existing oxygen index model remains available");
+  await page.locator('.erd button[data-phase="jogging"]').click();
+  assert.match(await page.locator("#erd-phase-summary").innerText(),/142 bpm at minute 8, about 70 bpm/);
+  await page.locator("#erd-minute").selectOption("13");
+  assert.match(await page.locator("#erd-point-readout").innerText(),/76 beats per minute, recovery/);
+  await page.locator("#erd-increase").fill("70");
+  await page.locator('[data-check="increase"]').click();
+  assert.match(await page.locator("#erd-increase-feedback").innerText(),/Correct/);
+  await page.locator("#erd-recovery").fill("5");
+  await page.locator('[data-check="recovery"]').click();
+  assert.match(await page.locator("#erd-recovery-feedback").innerText(),/Correct/);
+  await page.locator("#erd-observe").fill("Heart rate rises during jogging and drops during recovery.");
+  await page.locator("#erd-explain").fill("Blood carries oxygen to working cells. The graph records heart rate but does not measure gas exchange.");
+  const [download]=await Promise.all([page.waitForEvent("download"),page.locator("#erd-download").click()]);
+  const report=fs.readFileSync(await download.path(),"utf8");
+  assert.match(report,/142 bpm at minute 8/);
+  assert.match(report,/does not measure oxygen saturation, carbon dioxide or gas exchange directly/);
  }},
  {hash:"cells/reproduction",selector:".cd",async check(page){
   await page.locator("#cd-cycle").click();
@@ -146,7 +166,7 @@ const tasks=[
  const browser=await chromium.launch({channel:"chrome",headless:true,args:["--disable-dev-shm-usage"]});
  try{
   for(const width of [390,1100]){
-   const page=await browser.newPage({viewport:{width,height:850},deviceScaleFactor:1});
+   const page=await browser.newPage({viewport:{width,height:850},deviceScaleFactor:1,acceptDownloads:true});
    const errors=[];page.on("pageerror",e=>errors.push(e.message));
    await page.goto(origin+"/science/labs.html",{waitUntil:"domcontentloaded",timeout:30000});
    await page.locator(".labs-page").waitFor({state:"visible",timeout:15000});
@@ -170,13 +190,13 @@ const tasks=[
     await t.check(page);
     const overflow=await lab.evaluate(el=>({content:el.scrollWidth,width:el.clientWidth}));
     assert.ok(overflow.content<=overflow.width+5,t.hash+" "+width+" tool overflow: "+JSON.stringify(overflow));
-    if(width===390&&["cells/systems","light/u3t2-refraction","earth/e11-quakes","cells/specialized","light/u3t3-colour","skills/graph","cells/transport","earth/e5-drift"].includes(t.hash)){
+    if(width===390&&["cells/systems","cells/circulatory","light/u3t2-refraction","earth/e11-quakes","cells/specialized","light/u3t3-colour","skills/graph","cells/transport","earth/e5-drift"].includes(t.hash)){
      await page.screenshot({path:path.join(screenshots,"science-"+t.hash.replace("/","-")+"-mobile.png"),fullPage:true,animations:"disabled"});
     }
    }
    assert.deepEqual(errors,[],"Uncaught browser JS errors at "+width+"px");
    await page.close();
   }
-  console.log("Fifteen Science labs and the library passed in real Chrome at 390px and 1100px.");
+  console.log("Science labs and the library passed in real Chrome at 390px and 1100px.");
  } finally {await browser.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;});

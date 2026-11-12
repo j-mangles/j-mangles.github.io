@@ -33,8 +33,16 @@
 - Added a reusable Computer Class response for a student-selected `.txt` investigation report. Students can import the Virtual Microscope or Organ Inspector report, read it in the assignment, write a reflection, and include both in the text or teacher-copy export.
 - Imports are limited to 64 KB, escaped before display, and kept in the existing browser-local draft. Students choose each report themselves; nothing is uploaded or submitted.
 - Added the response to the microscope and Oxygen Mission assignments without changing existing assignment IDs, version, or answer keys.
-- Added data/schema checks and real-Chrome tests for both report types, refresh persistence, assignment export, teacher review and removal. Computer Class now has **193 response prompts**.
-- All 62 non-browser project suites pass. Updated two stale regression expectations to match the existing seven-system explorer and 14 current Science lab links. Local real-Chrome execution is blocked because Chromium cannot start in this container (`socket() failed: Operation not permitted`); the browser suites run in the existing GitHub Actions workflows.
+- Added data/schema checks and real-Chrome tests for report import, refresh persistence, assignment export, teacher review and removal. Computer Class now has **194 response prompts**.
+- All 63 non-browser project suites pass. Updated two stale regression expectations to match the existing seven-system explorer and 14 current Science lab links. Local real-Chrome execution is blocked because Chromium cannot start in this container (`socket() failed: Operation not permitted`); the browser suites run in the existing GitHub Actions workflows.
+
+### Completed: Exercise & Circulation Data Lab
+- Added an interactive graph analysis to the released Circulatory System lesson using the lesson's existing one-student rest–jog–recovery dataset directly from `science/data.js`.
+- Students inspect all 15 minute-by-minute values, choose a phase, identify the peak and increase above the resting average, and calculate how long recovery takes to return within 5 bpm of rest.
+- Explicitly separates the measured heart-rate data from oxygen and carbon-dioxide exchange, which the graph does not measure. Model assumptions and sample size are stated in student-facing text.
+- Exports the dataset, calculations, student observations and explanation as a local text report.
+- Linked the lab and Human Systems Explorer from Oxygen Mission. Added an evidence-import question so students can include the downloaded data report in their local Computer Class draft and teacher review copy.
+- Added source-data unit checks and real-Chrome tests at phone and desktop widths for phase selection, calculation feedback, report export, assignment links and teacher review.
 
 ### New QA
 - Automated JS model and actual Chrome tests for mass-volume calculations, density slope, 3-series plotted graph, exports and responsive page widths.
@@ -44,11 +52,11 @@
 
 ### Next highest-impact priorities
 1. Classroom review of the exported-report hand-off on student devices; confirm the file picker and reflection prompt are clear.
-2. Create a multi-variable, data-based human circulation/gas-exchange lab with explicit model assumptions rather than anatomical decoration.
-3. Audit all Science lesson-tool wrapper registration ordering and implement a collision test covering future unit modules.
-4. Extend Math number-sense diagnostics with problem-specific feedback while preserving existing manipulatives.
-5. Extend source-based historical inquiry using dated and licensed artefacts from museums.
-7. Classroom pilot and teacher content review before changing the `main` branch.
+2. Audit all Science lesson-tool wrapper registration ordering and implement a collision test covering future unit modules.
+3. Extend Math number-sense diagnostics with problem-specific feedback while preserving existing manipulatives.
+4. Extend source-based historical inquiry using dated and licensed artefacts from museums.
+5. Build a reusable ELA plot/paragraph organizer with local revision history.
+6. Classroom pilot and teacher content review before changing the `main` branch.
 
 ## Completed
 
@@ -135,5 +143,5 @@
 - Browser tests run at phone and desktop widths; no unhandled errors or horizontal page overflow.
 - Existing Science modules remain functional and the Matter release gate remains unchanged.
 - Muscle and skeleton can be selected using mouse/touch or keyboard, with correct four-step explanatory pathways.
-- Computer Class displays 20 activities with 193 unique question IDs; the standard teacher-copy and browser-local draft workflows still pass.
+- Computer Class displays 20 activities with 194 unique question IDs; the standard teacher-copy and browser-local draft workflows still pass.
 - All changes stay in a draft pull request until approved.
