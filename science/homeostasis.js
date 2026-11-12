@@ -185,5 +185,12 @@ function render(el){
  };
  paint();
 }
-H.lessonTools=Object.assign(H.lessonTools||{},{"cells/systems":render});
+/* Several Science modules share the cells/systems lesson. Preserve anything
+   already registered so loading order cannot silently remove a tool. */
+H.lessonTools=H.lessonTools||{};
+const previous=H.lessonTools["cells/systems"];
+H.lessonTools["cells/systems"]=function(root){
+ if(previous){const existing=document.createElement("div");root.appendChild(existing);previous(existing);}
+ const section=document.createElement("div");root.appendChild(section);render(section);
+};
 })();

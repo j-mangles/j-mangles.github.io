@@ -52,8 +52,8 @@
 
 ### Next highest-impact priorities
 1. Classroom review of the exported-report hand-off on student devices; confirm the file picker and reflection prompt are clear.
-2. Audit all Science lesson-tool wrapper registration ordering and implement a collision test covering future unit modules.
-3. Extend Math number-sense diagnostics with problem-specific feedback while preserving existing manipulatives.
+2. Continue the Science tool registration audit with an automated check across duplicate lesson keys.
+3. Broaden the number-line diagnostic to more percent, fraction and negative-number errors after teacher review.
 4. Extend source-based historical inquiry using dated and licensed artefacts from museums.
 5. Build a reusable ELA plot/paragraph organizer with local revision history.
 6. Classroom pilot and teacher content review before changing the `main` branch.
@@ -82,9 +82,18 @@
 - Added selectable schematic muscle/bone overlays with keyboard access and two student comprehension questions.
 - Existing nervous, circulatory, digestive, respiratory and integumentary views remain available.
 - Added unit tests and real Chrome checks for tabs, pathways and keyboard selection.
+- Added an exercise-and-circulation data lab using the existing one-student heart-rate series from the Science booklet; students inspect phases, calculate the rise and recovery interval, and download observations with the graph's measurement limits stated clearly.
+- Fixed the Homeostasis tool's shared `cells/systems` registration so it composes with an earlier tool instead of overwriting it; added a collision regression case.
+
+### Math 7 — Fraction Strip Lab feedback
+- Added problem-specific feedback for common denominator mistakes: multiplying denominators, choosing a non-least common multiple, and adding/subtracting denominators.
+- Correct-but-equivalent final fractions are recognized by the diagnostic model; existing strips, manipulatives, and self-check rules remain intact.
+- Added regression cases and refreshed the versioned script reference.
+- Number Line Lab now gives targeted hints for a dropped negative sign, an omitted whole number, an improper fraction treated only as a remainder, and percent-to-decimal shifts; it still leaves the placement decision to the student.
+- Added regression cases for each identified misconception and versioned its script reference.
 
 ### Computer Class — five new independent digital lessons
-- Expanded the shared Computer Class library from **15 to 20 activities** and from **141 to 191 question/response prompts** without changing existing draft storage keys or schema versions.
+- Expanded the shared Computer Class library from **15 to 20 activities** and from **141 to 194 question/response prompts** without changing existing draft storage keys or schema versions.
 - **Science:** Microscope Field Notes — prediction, magnification and field-width calculations, observations, limitations, and CER writing, linked to the released Cell Theory lesson.
 - **Math 7:** Fraction Budget — fractions of a budget, discounts, a practice sales-tax calculation, checking the order of operations and explaining decisions.
 - **Social Studies 8:** Mesopotamian Historical Evidence Desk — invented classroom source cards *clearly labeled as reconstructions*, real historical reasoning, GRAPES and cautious conclusions.
