@@ -8,6 +8,9 @@ const resources=core.catalog(),lookup=core.index(resources);
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const groups=["math","sci","ss","ela","ct"];
 let state=core.defaultPlan(),storageOK=true,lastSaved="",feedback="";
+const pickerFilters={};
+const pickerKey=n=>state.selectedDay+":"+n;
+const currentFilter=n=>pickerFilters[pickerKey(n)]||{subject:"all",query:""};
 try{
  const raw=localStorage.getItem(core.STORE_KEY);
  if(raw){state=core.sanitizePlan(JSON.parse(raw),resources);lastSaved="Previous plan restored from this browser.";}
@@ -27,19 +30,48 @@ function boardUrl(){
  return new URL("launch.html",location.href).href.split("#")[0]+
   core.boardHash(state.selectedDay,state.days[state.selectedDay-1].slots,resources);
 }
-function optionGroups(selected){
- return '<option value="">Select an activity</option>'+groups.map(subject=>
- '<optgroup label="'+esc(config.subjects[subject])+'">'+
- resources.filter(x=>x.subject===subject).map(x=>
- '<option value="'+esc(x.id)+'" '+(selected===x.id?"selected":"")+'>'+
- esc((x.kind==="Digital assignment"?"Assignment · ":"")+x.title)+'</option>').join("")+'</optgroup>').join("");
+function matchingResources(selected,filter){
+ const query=String(filter.query||"").trim().toLocaleLowerCase();
+ return resources.filter(item=>{
+  if(item.id===selected)return true; // Preserve a previously selected activity during search.
+  if(filter.subject!=="all"&&item.subject!==filter.subject)return false;
+  if(!query)return true;
+  return [item.title,item.description,item.kind,config.subjects[item.subject],item.grade||""]
+   .some(value=>String(value||"").toLocaleLowerCase().includes(query));
+ });
 }
+function optionGroups(selected,filter){
+ const available=matchingResources(selected,filter);
+ return '<option value="">Select an activity</option>'+groups.map(subject=>{
+  const options=available.filter(x=>x.subject===subject);
+  if(!options.length)return "";
+  return '<optgroup label="'+esc(config.subjects[subject])+'">'+options.map(x=>
+   '<option value="'+esc(x.id)+'" '+(selected===x.id?"selected":"")+'>'+
+   esc((x.kind==="Digital assignment"?"Assignment · ":"")+x.title)+'</option>').join("")+'</optgroup>';
+ }).join("");
+}
+function renderOptions(n){
+ const filter=currentFilter(n),selected=slotFor(n).resourceId;
+ const select=document.getElementById("mc-resource-"+n),status=document.getElementById("mc-filter-count-"+n);
+ if(select){select.innerHTML=optionGroups(selected,filter);select.value=selected;}
+ if(status){
+  const count=matchingResources(selected,filter).length;
+  status.textContent=count+" matching "+(count===1?"resource":"resources")+
+   (selected&&(filter.subject!=="all"||filter.query)?" (selected lesson retained)":"");
+ }
+}
+
 function blockHTML(n){
- const info=config.periods[n],slot=slotFor(n),selected=lookup.get(slot.resourceId),subject=selected?.subject||"";
+ const info=config.periods[n],slot=slotFor(n),selected=lookup.get(slot.resourceId),subject=selected?.subject||"",filter=currentFilter(n);
  return '<article class="mc-block" data-block="'+n+'"><div class="mc-period">'+
   '<strong>Period '+info.number+'</strong><span>'+esc(info.start+'–'+info.end)+'</span></div>'+
-  '<div class="mc-block-body"><label class="mc-input-label" for="mc-resource-'+n+'">Lesson or assignment</label>'+
-  '<select id="mc-resource-'+n+'" data-field="resource" data-slot="'+n+'">'+optionGroups(slot.resourceId)+'</select>'+
+  '<div class="mc-block-body"><label class="mc-input-label" for="mc-search-'+n+'">Find a lesson or assignment</label>'+
+  '<div class="mc-picker-filters"><select id="mc-filter-'+n+'" aria-label="Filter Period '+(n+1)+' by subject" data-field="subject-filter" data-slot="'+n+'">'+
+  '<option value="all">All subjects</option>'+groups.map(key=>'<option value="'+key+'" '+(filter.subject===key?'selected':'')+'>'+esc(config.subjects[key])+'</option>').join("")+'</select>'+
+  '<input id="mc-search-'+n+'" type="search" data-field="search" data-slot="'+n+'" autocomplete="off" placeholder="Search by lesson, topic or unit…" value="'+esc(filter.query)+'"></div>'+
+  '<p class="mc-picker-count" id="mc-filter-count-'+n+'" role="status">'+matchingResources(slot.resourceId,filter).length+' matching resources</p>'+
+  '<label class="mc-input-label" for="mc-resource-'+n+'">Choose an activity</label>'+
+  '<select id="mc-resource-'+n+'" data-field="resource" data-slot="'+n+'">'+optionGroups(slot.resourceId,filter)+'</select>'+
   '<div class="mc-resource-summary" id="mc-info-'+n+'">'+(selected?
    '<span class="mc-subject-name">'+esc(config.subjects[subject])+' · '+esc(selected.kind)+'</span>'+
    '<p>'+esc(selected.description)+'</p><a href="'+esc(selected.href)+'" target="_blank" rel="noopener noreferrer">Open resource ↗</a>':
@@ -67,7 +99,11 @@ function show(){
   '<div class="mc-work-layout"><div class="mc-main">'+
   '<div class="mc-section-title mc-period-title"><h2>Day '+day+' · Teaching blocks</h2><span>Five periods · Grade 7 Math preset for Period 1</span></div>'+
   '<div id="mc-blocks">'+config.periods.map((_,i)=>blockHTML(i)).join("")+'</div>'+
-  '<div class="mc-day-actions"><button type="button" id="mc-reset">Reset this day</button>'+
+  '<div class="mc-day-actions"><div class="mc-day-copy"><label for="mc-copy-from">Copy plan from</label>'+
+  '<select id="mc-copy-from" aria-label="Day to copy">'+state.days.filter(x=>x.day!==day).map(x=>
+  '<option value="'+x.day+'">Day '+x.day+'</option>').join("")+'</select>'+
+  '<button type="button" id="mc-copy-day">Copy to Day '+day+'</button></div>'+
+  '<button type="button" id="mc-reset">Reset this day</button>'+
   '<a href="../computer-class/">Browse Computer Class assignments ↗</a></div></div>'+
   '<aside class="mc-side"><div class="mc-side-inner"><h2>Student board</h2>'+
   '<p>Project the chosen lessons or send students a link. The board includes the period and activity only—never your preparation notes.</p>'+
@@ -95,6 +131,14 @@ function setAction(s){feedback=s;const el=document.getElementById("mc-action-sta
 root.addEventListener("click",event=>{
  const dayButton=event.target.closest("[data-day]");
  if(dayButton){state.selectedDay=Number(dayButton.dataset.day);save();feedback="";show();return;}
+ if(event.target.id==="mc-copy-day"){
+  const from=Number(document.getElementById("mc-copy-from")?.value),to=state.selectedDay;
+  if(!Number.isInteger(from)||from<1||from>6||from===to)return;
+  if(!window.confirm("Replace Day "+to+" with the lessons and teacher notes from Day "+from+"? Completed checkmarks will be cleared."))return;
+  state.days[to-1].slots=state.days[from-1].slots.map(slot=>({...slot,taught:false}));
+  for(let i=0;i<5;i++)delete pickerFilters[pickerKey(i)];
+  save();feedback="Copied Day "+from+" into Day "+to+". Completion checkmarks have been reset.";show();return;
+ }
  if(event.target.id==="mc-reset"){
   if(!window.confirm("Reset all five periods of Day "+state.selectedDay+"? Download a backup first if you need the previous plan."))return;
   state.days[state.selectedDay-1]=core.defaultPlan().days[state.selectedDay-1];
@@ -130,6 +174,10 @@ root.addEventListener("change",async event=>{
   return;
  }
  const target=event.target,field=target.dataset.field,slotIndex=Number(target.dataset.slot);
+ if(field==="subject-filter"&&slotIndex>=0&&slotIndex<5){
+  const filter=currentFilter(slotIndex);pickerFilters[pickerKey(slotIndex)]={...filter,subject:groups.includes(target.value)?target.value:"all"};
+  renderOptions(slotIndex);return;
+ }
  if(!["resource","taught"].includes(field)||slotIndex<0||slotIndex>4)return;
  const slot=slotFor(slotIndex);
  if(field==="resource"){
@@ -140,6 +188,14 @@ root.addEventListener("change",async event=>{
 });
 root.addEventListener("input",event=>{
  const target=event.target;
+ if(target.dataset.field==="search"){
+  const n=Number(target.dataset.slot);
+  if(n>=0&&n<5){
+   const filter=currentFilter(n);pickerFilters[pickerKey(n)]={...filter,query:String(target.value).slice(0,90)};
+   renderOptions(n);
+  }
+  return;
+ }
  if(target.dataset.field!=="note")return;
  const n=Number(target.dataset.slot);if(n<0||n>4)return;
  slotFor(n).note=String(target.value).slice(0,350);
