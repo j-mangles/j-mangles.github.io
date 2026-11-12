@@ -123,7 +123,12 @@
   .home-computer p{font-size:14px;color:var(--muted);line-height:1.55;margin:0;max-width:60ch}
   .home-computer .home-computer-link{background:var(--school-deep);color:#fff;text-decoration:none;font-size:13px;font-weight:700;text-align:center;padding:13px 15px;border-radius:7px}
   .home-computer .home-computer-link:hover{background:var(--school)}
-  @media(max-width:610px){.home-computer{grid-template-columns:1fr}.home-computer-link{justify-self:start}}
+  .home-workspace-links{display:grid;gap:9px}
+  .home-computer .home-secondary-link{display:block;padding:11px 12px;border:1px solid var(--rule);border-radius:7px;color:var(--ink);text-decoration:none;text-align:center;font-weight:700;font-size:13px}
+  .home-computer .home-secondary-link:hover{border-color:var(--school)}
+  .home-computer{grid-template-columns:minmax(0,1fr) 225px}
+
+  @media(max-width:610px){.home-computer{grid-template-columns:1fr}.home-workspace-links{max-width:320px}}
   .how{max-width:none;margin-top:36px}
   @media (max-width:670px){
     .home-tiles{grid-template-columns:1fr}
@@ -153,9 +158,12 @@
     <article class="home-tile ct"><a href="critical-thinking/"><span class="year">Enrichment · Think Lab</span><span class="name">Critical Thinking</span><span class="detail">Solve mysteries, test evidence, question claims and explore strategy.</span><span class="tile-link">Open Think Lab ↗</span></a></article>
   </section>
   <section class="home-computer" aria-labelledby="home-computer-title">
-    <div><h2 id="home-computer-title">Computer Class Assignments</h2>
-    <p>Complete a full digital lesson in Science, Social Studies, Math, ELA or Critical Thinking. Type your answers, check practice questions and download your finished work.</p></div>
-    <a class="home-computer-link" href="computer-class/">Open Computer Class ↗</a>
+    <div><h2 id="home-computer-title">Daily Lessons & Computer Class</h2>
+    <p>Find a digital assignment in any subject, or organize the six-day teaching cycle and launch today's lessons from one board.</p></div>
+    <div class="home-workspace-links">
+      <a class="home-computer-link" href="today/">Classroom Mission Control ↗</a>
+      <a class="home-secondary-link" href="computer-class/">Computer Class assignments ↗</a>
+    </div>
   </section>
   <section class="home-tools" aria-labelledby="tools-heading">
     <h2 id="tools-heading">Interactive tools</h2>
