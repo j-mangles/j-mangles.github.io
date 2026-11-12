@@ -104,6 +104,7 @@ async function checkNoHorizontalOverflow(page,label){
   await goto(page,"/science/#light/u3t4-photosynthesis","#ep-chain");
   assert.match(await page.locator("article.lesson h2").innerText(),/Photosynthesis/);
   await goto(page,"/science/#light/u3t3-em","article.lesson h2");
+  await page.waitForFunction(()=>document.querySelector("article.lesson h2")?.textContent?.includes("Electromagnetic Waves"),null,{timeout:10000});
   assert.match(await page.locator("article.lesson h2").innerText(),/Electromagnetic Waves/);
   await capture(page,"science-energy-spectrum-study-desktop");
   stage="Science Earth layers";
