@@ -4,8 +4,8 @@
 "use strict";
 const root=document.getElementById("tr-root"),cfg=window.ComputerClassData,lab=window.ComputerClassLabs;
 if(!root||!cfg)return;
-const assignments=new Map(cfg.activities.map(x=>[x.id,x])),entries=[],MAX_FILES=120;
-let selected=-1,activeFilter="all";
+const assignments=new Map(cfg.activities.map(x=>[x.id,x])),entries=[],MAX_FILES=120,SESSION_SCHEMA="eess-computer-class-review-session-v1";
+let selected=-1,activeFilter="all",dirty=false;
 const e=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const all=a=>a.sections.flatMap(s=>s.questions);
 const isCorrect=(q,v)=>{
@@ -59,6 +59,62 @@ function download(name,type,content){
  a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();
  setTimeout(()=>URL.revokeObjectURL(u),1000);
 }
+
+const allowedLevels=new Set(["","meeting","developing","beginning","notyet"]);
+function sanitizeReview(activity,review){
+ const safe={};
+ if(!review||typeof review!=="object"||Array.isArray(review))return safe;
+ for(const q of all(activity)){
+  const r=review[q.id];if(!r||typeof r!=="object"||Array.isArray(r))continue;
+  const level=typeof r.level==="string"&&allowedLevels.has(r.level)?r.level:"";
+  const note=typeof r.note==="string"?r.note.slice(0,1500):"";
+  if(level||note)safe[q.id]={level,note};
+ }
+ return safe;
+}
+function sessionPayload(){
+ return {schema:SESSION_SCHEMA,version:cfg.version,saved_at:new Date().toISOString(),
+  entries:entries.map(x=>({schema:"eess-computer-class-submission-v1",version:cfg.version,
+  activity_id:x.activity.id,student_name:x.student,exported_at:x.exportedAt,
+  answers:x.answers,review:sanitizeReview(x.activity,x.review),
+  overall:String(x.overall||"").slice(0,5000),file_name:String(x.fileName||"").slice(0,200)}))};
+}
+function parseSession(raw){
+ if(raw?.schema!==SESSION_SCHEMA||raw.version!==cfg.version||!Array.isArray(raw.entries)||
+ raw.entries.length>MAX_FILES)throw Error("Unsupported review session.");
+ return raw.entries.map(item=>{
+  const x=sanitize(item);x.review=sanitizeReview(x.activity,item.review);
+  x.overall=typeof item.overall==="string"?item.overall.slice(0,5000):"";
+  x.fileName=typeof item.file_name==="string"?item.file_name.slice(0,200):"";
+  return x;
+ });
+}
+function setDirty(value){
+ dirty=value;
+ const info=document.getElementById("tr-session-state");
+ if(info)info.textContent=dirty?"Your latest review changes are not backed up. Download a session before leaving.":
+  entries.length?"Session backed up. Save again after further changes.":"No review session is loaded.";
+}
+function saveSession(){
+ if(!entries.length){document.getElementById("tr-file-message").textContent="Import student files before saving a review session.";return;}
+ download("computer-class-review-session-"+new Date().toISOString().slice(0,10)+".json",
+  "application/json;charset=utf-8",JSON.stringify(sessionPayload(),null,2));
+ setDirty(false);
+ document.getElementById("tr-file-message").textContent="Review-session backup downloaded. Store it securely in accordance with school privacy requirements.";
+}
+async function restoreSession(file){
+ const message=document.getElementById("tr-file-message");
+ if(!file||file.size>20*1024*1024){message.textContent="Choose a review session JSON under 20 MB.";return;}
+ try{
+  const recovered=parseSession(JSON.parse(await file.text()));
+  if(entries.length&&!window.confirm("Replace the current student files and comments with this review-session backup?"))return;
+  entries.splice(0,entries.length,...recovered);
+  selected=entries.length?0:-1;activeFilter="all";document.getElementById("tr-filter").value="all";
+  setDirty(false);updateCount();
+  message.textContent="Restored "+entries.length+" student reviews and teacher comments. Nothing was uploaded.";
+ }catch(err){message.textContent="Could not restore that file. Choose an exported Computer Class review session JSON.";}
+}
+
 function list(){
  const holder=document.getElementById("tr-list");
  const shown=entries.map((x,i)=>({x,i})).filter(({x})=>activeFilter==="all"||x.activity.subject===activeFilter);
@@ -128,8 +184,8 @@ root.innerHTML='<div class="tr-header"><a href="./" class="tr-back">← Computer
  '<p id="tr-file-message" role="status">Files are read locally, not uploaded. Use a trusted school computer and handle downloaded files under school privacy rules.</p></div>'+
  '<div class="tr-toolbar"><label for="tr-filter">Show subject <select id="tr-filter"><option value="all">All subjects</option>'+
  Object.entries({sci:"Science",ss:"Social Studies",math:"Math 7",ela:"ELA",ct:"Critical Thinking"}).map(([id,name])=>'<option value="'+id+'">'+name+'</option>').join("")+'</select></label>'+
- '<span id="tr-count">0 files loaded</span><button id="tr-csv" type="button">Export review CSV</button>'+
- '<button id="tr-clear" type="button">Clear imported files</button></div>'+
+ '<span id="tr-count">0 files loaded</span><button id="tr-csv" type="button">Export review CSV</button><button id="tr-session-save" type="button">Back up review session (.json)</button>'+
+ '<button id="tr-clear" type="button">Clear imported files</button></div><div class="tr-session-controls"><label for="tr-session-file">Restore a saved review session (.json)</label><input id="tr-session-file" type="file" accept=".json,application/json"><p id="tr-session-state" role="status">No review session is loaded.</p><p>Reviews do not autosave. Download a review-session backup before closing the tab.</p></div>'+
  '<div class="tr-layout"><aside class="tr-list" id="tr-list"><p class="tr-empty">No student files imported.</p></aside>'+
  '<div id="tr-detail" class="tr-detail"></div></div>'+
  '<p class="tr-footer-note">This page is publicly accessible but contains no student data until you choose files. Never use it as a cloud submission portal.</p>';
@@ -138,14 +194,15 @@ root.addEventListener("click",event=>{
  const entry=event.target.closest("[data-entry]");
  if(entry){selected=Number(entry.dataset.entry);updateCount();return;}
  if(event.target.id==="tr-csv"){if(filtered().length)csv();else document.getElementById("tr-file-message").textContent="Import student files before exporting.";return;}
+ if(event.target.id==="tr-session-save"){saveSession();return;}
  if(event.target.id==="tr-clear"){
   if(!entries.length||window.confirm("Clear all imported student files and unsaved review comments from this tab?")){
-   entries.length=0;selected=-1;updateCount();
+   entries.length=0;selected=-1;setDirty(false);updateCount();
   }return;
  }
  if(event.target.id==="tr-remove"){
   if(window.confirm("Remove this student copy and its unsaved feedback from this tab?")){
-   entries.splice(selected,1);selected=-1;updateCount();
+   entries.splice(selected,1);selected=-1;setDirty(true);updateCount();
   }return;
  }
  if(event.target.id==="tr-feedback-download"&&entries[selected]){
@@ -157,13 +214,13 @@ root.addEventListener("change",event=>{
  if(event.target.id==="tr-filter"){activeFilter=event.target.value;list();return;}
  const key=event.target.dataset.rating;if(key&&entries[selected]){
   entries[selected].review[key]=entries[selected].review[key]||{};
-  entries[selected].review[key].level=event.target.value;
+  entries[selected].review[key].level=event.target.value;setDirty(true);
  }
 });
 root.addEventListener("input",event=>{
  const key=event.target.dataset.feedback;
- if(key&&entries[selected]){entries[selected].review[key]=entries[selected].review[key]||{};entries[selected].review[key].note=event.target.value.slice(0,1500);}
- if(event.target.id==="tr-overall-note"&&entries[selected])entries[selected].overall=event.target.value.slice(0,5000);
+ if(key&&entries[selected]){entries[selected].review[key]=entries[selected].review[key]||{};entries[selected].review[key].note=event.target.value.slice(0,1500);setDirty(true);}
+ if(event.target.id==="tr-overall-note"&&entries[selected])entries[selected].overall=event.target.value.slice(0,5000);setDirty(true);
 });
 document.getElementById("tr-files").addEventListener("change",async event=>{
  const files=[...event.target.files].slice(0,MAX_FILES),message=document.getElementById("tr-file-message");
@@ -176,10 +233,18 @@ document.getElementById("tr-files").addEventListener("change",async event=>{
    if(existing>=0)entries[existing]=entry;else entries.push(entry);good++;
   }catch(err){bad++;}
  }
- if(good)selected=entries.length-1;
+ if(good){selected=entries.length-1;setDirty(true);}
  message.textContent=good+" file"+(good===1?"":"s")+" loaded. "+(bad?bad+" unsupported or invalid file(s) skipped. ":"")+
  "No data was uploaded.";
  event.target.value="";updateCount();
 });
-window.ComputerClassTeacher={sanitize,stats,csvEscape,objective,isCorrect,get entries(){return entries.slice();}};
+document.getElementById("tr-session-file").addEventListener("change",async event=>{
+ const file=event.target.files?.[0];if(file)await restoreSession(file);event.target.value="";
+});
+window.addEventListener("beforeunload",event=>{
+ if(!dirty||!entries.length)return;
+ event.preventDefault();event.returnValue="";
+});
+window.ComputerClassTeacher={sanitize,stats,csvEscape,objective,isCorrect,sanitizeReview,sessionPayload,parseSession,
+ get entries(){return entries.slice();},get hasUnsavedChanges(){return dirty;} };
 })();
