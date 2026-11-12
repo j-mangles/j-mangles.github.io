@@ -4,8 +4,11 @@ const assert=require("node:assert/strict"),fs=require("node:fs"),path=require("n
 const root=path.resolve(__dirname,"..");
 const dataJs=fs.readFileSync(path.join(root,"computer-class","data.js"),"utf8");
 const appJs=fs.readFileSync(path.join(root,"computer-class","app.js"),"utf8");
+const extension1=fs.readFileSync(path.join(root,"computer-class","activities-2.js"),"utf8");
+const extension2=fs.readFileSync(path.join(root,"computer-class","activities-3.js"),"utf8");
+const labJs=fs.readFileSync(path.join(root,"computer-class","labs.js"),"utf8");
 const html=fs.readFileSync(path.join(root,"computer-class","index.html"),"utf8");
-new vm.Script(dataJs,{filename:"data.js"});new vm.Script(appJs,{filename:"app.js"});
+for(const [name,source] of [["data",dataJs],["pack2",extension1],["pack3",extension2],["labs",labJs],["app",appJs]])new vm.Script(source,{filename:name+".js"});
 const activities=[];const win={addEventListener(k,f){this.handlers[k]=f;},handlers:{},scrollTo(){},confirm(){return true;}};
 const domRoot={innerHTML:"",listeners:{},addEventListener(k,f){this.listeners[k]=f;},contains(){return true;}};
 const doc={body:{dataset:{}},title:"",getElementById(id){return id==="cc-root"?domRoot:null;}};
@@ -13,10 +16,14 @@ const loc={hash:""};
 const storage=new Map(),localStorage={getItem(k){return storage.get(k)||null;},setItem(k,v){storage.set(k,v);}};
 const ctx={window:win,document:doc,location:loc,localStorage,console,Number,Set};
 vm.runInNewContext(dataJs,ctx,{filename:"data.js",timeout:3000});
+vm.runInNewContext(extension1,ctx,{filename:"activities-2.js",timeout:3000});
+vm.runInNewContext(extension2,ctx,{filename:"activities-3.js",timeout:3000});
+vm.runInNewContext(labJs,ctx,{filename:"labs.js",timeout:3000});
 const data=win.ComputerClassData;
 assert.equal(data.version,1);
-assert.equal(data.activities.length,5);
-assert.deepEqual([...data.activities.map(a=>a.subject)].sort(),["ct","ela","math","sci","ss"].sort());
+assert.equal(data.activities.length,15);
+assert.deepEqual([...new Set(data.activities.map(a=>a.subject))].sort(),["ct","ela","math","sci","ss"].sort());
+for(const subject of ["ct","ela","math","sci","ss"])assert.equal(data.activities.filter(a=>a.subject===subject).length,3);
 const qids=new Set();
 for(const activity of data.activities){
  assert.ok(activity.sections.length>=2,"At least two parts "+activity.id);
@@ -30,6 +37,10 @@ for(const activity of data.activities){
    if(q.type==="choice"){assert.ok(q.correct>=0&&q.correct<q.options.length);}
    else if(q.type==="number"){assert.ok(Number.isFinite(q.answer));}
    else if(q.type==="text"){assert.ok(q.minWords>=8);}
+   else if(q.type==="lab"){
+    assert.ok(win.ComputerClassLabs.config[q.lab],"Supported lab "+q.lab);
+    assert.ok(q.minTrials>=2);
+   }
    else if(q.type==="order"){
     assert.equal(q.correct.length,q.items.length);
     assert.equal(new Set(q.correct).size,q.items.length);
@@ -38,12 +49,30 @@ for(const activity of data.activities){
   }
  }
 }
-assert.equal(qids.size,43);
+assert.equal(qids.size,137);
+const core=win.ComputerClassLabs;
+assert.equal(core.calculate("osmosis",{cell:"plant",inside:30,outside:60}).effect,"plasmolysed");
+assert.equal(core.calculate("oxygen",{breathing:10,circulation:100,activity:100}).limitedBy,"breathing");
+assert.equal(core.calculate("oxygen",{breathing:100,circulation:10,activity:100}).limitedBy,"circulation");
+assert.equal(core.calculate("recipe",{servings:8}).flour,3);
+assert.equal(core.calculate("recipe",{servings:2}).milk,.375);
+const canals=core.calculate("canal",{north:40,centre:35});
+assert.equal(canals.south,25);
+assert.equal(canals.fullySupported,3);
 vm.runInNewContext(appJs,ctx,{filename:"app.js",timeout:3000});
 const engine=win.ComputerClassEngine;
 assert.ok(engine);
 assert.match(domRoot.innerHTML,/Computer Class/);
-assert.equal((domRoot.innerHTML.match(/class="cc-entry"/g)||[]).length,5);
+assert.equal((domRoot.innerHTML.match(/class="cc-entry"/g)||[]).length,15);
+const labQ=engine.allQuestions(data.activities[0]).find(q=>q.type==="lab");
+assert.equal(engine.answered(labQ,[]),false);
+const trials=[
+ core.calculate("osmosis",{cell:"plant",inside:30,outside:60}),
+ core.calculate("osmosis",{cell:"animal",inside:60,outside:30}),
+ core.calculate("osmosis",{cell:"plant",inside:50,outside:50})
+];
+assert.equal(engine.answered(labQ,trials),true);
+assert.equal(engine.answered(labQ,[trials[0],trials[0],trials[0]]),false);
 const math=data.activities.find(a=>a.subject==="math");
 const mathQuestions=engine.allQuestions(math);
 const price=mathQuestions.find(q=>q.id==="ma4");
@@ -78,5 +107,6 @@ for(const name of ["science","social-studies","math","ela","critical-thinking"])
 assert.ok(fs.readFileSync(path.join(root,"index.html"),"utf8").includes('href="computer-class/"'));
 assert.match(html,/src="data.js/);
 assert.match(html,/src="app.js/);
+for(const name of ["activities-2.js","activities-3.js","labs.js"])assert.ok(html.includes('src="'+name));
 assert.match(fs.readFileSync(path.join(root,"computer-class","style.css"),"utf8"),/@media print/);
-console.log("Computer Class passed: 5 subjects, 43 responses, objective grading, autosave, reload, export, links.");
+console.log("Computer Class passed: 15 assignments, 137 responses, four models, autosave, reports, links.");
