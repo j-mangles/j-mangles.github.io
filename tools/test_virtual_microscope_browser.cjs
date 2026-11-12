@@ -13,6 +13,8 @@ const {chromium}=require("playwright-core"),BASE=process.env.SITE_TEST_ORIGIN||"
    await lab.waitFor({state:"visible",timeout:15000});
    assert.match(await lab.locator("h3").innerText(),/Virtual Microscope/i);
    assert.match(await lab.locator("#vm-field").innerText(),/4500/);
+   assert.match(await lab.locator("#vm-scale").innerText(),/Estimate how many cells fit/);
+   assert.doesNotMatch(await lab.locator("#vm-scale").innerText(),/cells across ·/,"Do not show the model's estimated answer before measurement");
    await lab.locator("#vm-predict").selectOption("fewer");
    await lab.locator("#vm-check").click();
    assert.match(await lab.locator("#vm-feedback").innerText(),/Correct/);
@@ -24,7 +26,7 @@ const {chromium}=require("playwright-core"),BASE=process.env.SITE_TEST_ORIGIN||"
    assert.match(await lab.locator("#vm-record-status").innerText(),/Focus/);
    await lab.locator("#vm-focus").fill("100");
    await lab.locator("#vm-record").click();
-   assert.match(await lab.locator("#vm-record-status").innerText(),/recorded trial/i);
+   assert.match(await lab.locator("#vm-record-status").innerText(),/within a rough range of the schematic estimate/i);
    await lab.locator("#vm-record").click();
    assert.match(await lab.locator("#vm-record-status").innerText(),/Already recorded/);
    await lab.locator("#vm-slide").selectOption("cheek");
@@ -32,6 +34,7 @@ const {chromium}=require("playwright-core"),BASE=process.env.SITE_TEST_ORIGIN||"
    await lab.locator("#vm-objective").selectOption("10");
    await lab.locator("#vm-count").fill("20");
    await lab.locator("#vm-record").click();
+   assert.match(await lab.locator("#vm-record-status").innerText(),/schematic suggests about/);
    assert.equal(await lab.locator("#vm-rows tr").count(),3);
    await lab.locator("#vm-export").click();
    assert.match(await lab.locator("#vm-export-status").innerText(),/six words/);

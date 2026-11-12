@@ -69,6 +69,7 @@
 - Students predict how field of view changes, make estimates, record unique trial combinations and compute approximate cell widths.
 - Claim–Evidence–Reasoning writing areas and a downloadable text report.
 - Added the lab to the released **Interactive Science Labs** directory.
+- Removed the schematic cell-count answer from the pre-measurement display. After recording, a count far from the illustration prompts a scale-bar and partial-cell recheck without rejecting the student's observation.
 - No account, name, or automatic submission; no new student data transmitted.
 
 ### Science — Matter, Density and Fluids (prepared, unreleased)
@@ -125,7 +126,7 @@
 ## Next priorities
 
 1. **Science registration.** Extend the shared-key audit whenever a new tool collides with an existing lesson registration.
-2. **Microscope evidence improvements.** Offer cell-size estimation feedback when counts are clearly implausible and optional support scaffolds; do not auto-grade open-ended scientific reasoning.
+2. **Microscope evidence improvements.** Use classroom review to tune the new non-grading estimate comparison and any optional support scaffolds; do not auto-grade open-ended scientific reasoning.
 3. **Human-body systems.** Add a multi-variable, data-based circulation/gas-exchange investigation with explicit model limits.
 4. **Math.** Use classroom observations to refine the new number-sense feedback before adding more diagnostic cases.
 5. **Social Studies.** Work with genuine dated and licensed historical materials for artifact investigation.

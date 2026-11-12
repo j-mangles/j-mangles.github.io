@@ -10,7 +10,11 @@ const specimens={
 const core={specimens,objectives:[4,10,40],ocular:10,
  fieldUm:n=>18000/n,total:n=>n*10,
  estimate:(field,count)=>count>0?field/count:NaN,
- countAcross:(name,n)=>18000/n/specimens[name].size
+ countAcross:(name,n)=>18000/n/specimens[name].size,
+ countFeedback:(name,n,count)=>{
+  const expected=18000/n/specimens[name].size;
+  return {expected:Math.round(expected*10)/10,outside:count<expected/2||count>expected*2};
+ }
 };
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const rnd=x=>Math.round(x*10)/10;
@@ -70,7 +74,7 @@ function mount(el){
    '<line x1="50" y1="348" x2="'+rnd(50+366*bar/field)+'" y2="348" stroke="#153b29" stroke-width="4"/>'+
    '<text x="50" y="369" font-size="12" fill="#153b29">'+bar+' µm</text></g>';
   $("#vm-picture").setAttribute("aria-label",specimens[name].label+" at "+core.total(obj)+" times total magnification. Model field "+field+" micrometres.");
-  $("#vm-scale").textContent="Approx. "+rnd(core.countAcross(name,obj))+" cells across · "+bar+" µm scale bar";
+  $("#vm-scale").textContent="Scale bar: "+bar+" µm. Estimate how many cells fit across the field before recording.";
   $("#vm-total").textContent=core.total(obj)+"×";$("#vm-field").textContent=field+" µm";
   $("#vm-focus-status").textContent=focus>=95?"Sharp":focus>=85?"Nearly sharp":"Blurred";
   $("#vm-specimen-note").textContent=specimens[name].note;
@@ -98,7 +102,11 @@ function mount(el){
   if(focus<85){$("#vm-record-status").textContent="Focus to at least 85 before recording.";return;}
   if(records.some(x=>x.specimen===name&&x.objective===obj)){$("#vm-record-status").textContent="Already recorded. Choose another specimen or objective.";return;}
   records.push({specimen:name,objective:obj,field,count,size:core.estimate(field,count)});
-  drawTable();$("#vm-record-status").textContent="Recorded trial "+records.length+".";
+  const check=core.countFeedback(name,obj,count);
+  drawTable();
+  $("#vm-record-status").textContent=check.outside?
+   "Recorded trial "+records.length+". The schematic suggests about "+check.expected+" cells across. Check the scale bar and partial cells; remove this trial if you want to revise your count.":
+   "Recorded trial "+records.length+". Your count is within a rough range of the schematic estimate (about "+check.expected+" across). Real cells vary.";
  });
  $("#vm-rows").addEventListener("click",e=>{const b=e.target.closest("[data-remove]");if(b){records.splice(Number(b.dataset.remove),1);drawTable();}});
  $("#vm-export").addEventListener("click",()=>{
