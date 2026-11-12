@@ -9,13 +9,17 @@ const SYSTEMS={
  circulatory:{name:"Circulatory",organs:"Heart and blood vessels",job:"Pumps blood to carry oxygen and nutrients to cells and take wastes away.",link:"The respiratory system supplies oxygen; the digestive system supplies absorbed nutrients.",path:[["Heart","Heart muscle pumps blood."],["Arteries","Carry blood away from the heart."],["Capillaries","Exchange materials with body cells."],["Veins","Carry blood back toward the heart."]]},
  digestive:{name:"Digestive",organs:"Stomach and intestines",job:"Breaks food into nutrients that the body can absorb.",link:"Blood transports nutrients absorbed by the small intestine.",path:[["Mouth","Food enters and begins to break down."],["Stomach","Acid and muscular movement break food down."],["Small intestine","Most nutrient absorption happens here."],["Transport","Nutrients can be carried to cells in the blood."]]},
  nervous:{name:"Nervous",organs:"Brain, spinal cord and nerves",job:"Sends electrical signals between the brain and the rest of the body.",link:"The brain and nerves coordinate responses involving other systems.",path:[["Brain","Processes information and directs responses."],["Spinal cord","Part of the central nervous system."],["Other nerves","Carry signals to and from the body."],["Response","The body responds to incoming information."]]},
+ muscular:{name:"Muscular",organs:"Skeletal muscles, tendons and other muscle tissues",job:"Skeletal muscles contract to pull on bones and move joints. Muscle tissue also helps move blood and food through the body.",link:"The nervous system signals muscles to contract; the skeletal system provides support, and the circulatory system brings oxygen and nutrients.",path:[["Brain and nerves","Motor signals travel through nerves to skeletal muscles."],["Muscle contraction","Muscle fibres shorten and generate a pulling force."],["Tendon and bone","A tendon transmits the muscle force to a bone."],["Movement","Bones move around a joint, often with an opposing muscle relaxing."]]},
+ skeletal:{name:"Skeletal",organs:"Bones, joints, cartilage and ligaments",job:"Bones provide support and protection, and joints allow movement. Bone marrow also produces blood cells.",link:"Muscles pull on bones at joints; the nervous system coordinates actions, while blood supplies living bone tissues.",path:[["Bones","Rigid bones provide a framework and protect important organs."],["Joint","Two or more bones meet at a joint, which can permit movement."],["Muscle and tendon","A contracting skeletal muscle pulls on a bone through a tendon."],["Coordinated motion","The joint moves as muscles are activated and other muscles relax."]]},
  integumentary:{name:"Integumentary",organs:"Skin, hair and nails",job:"Protects the body and helps regulate body temperature.",link:"Works with nervous and circulatory systems in homeostasis.",path:[["Skin","Creates a protective barrier."],["Conditions","Skin can detect conditions around the body."],["Temperature","The body can adjust heat loss through the skin."],["Homeostasis","Systems work together to maintain stable conditions."]]}
 };
 const QUIZ=[
  {q:"Where are most digested nutrients absorbed?",a:["Stomach","Small intestine","Large intestine"],c:1,why:"Most nutrient absorption takes place in the small intestine."},
  {q:"How does oxygen reach body cells after entering the lungs?",a:["In blood","In the stomach","Through skin"],c:0,why:"The respiratory and circulatory systems work together."},
  {q:"Which two organs form the central nervous system?",a:["Brain and spinal cord","Heart and lungs","Stomach and liver"],c:0,why:"The brain and spinal cord form the central nervous system."},
- {q:"Which vessels allow exchange with cells?",a:["Arteries","Capillaries","Veins"],c:1,why:"Capillaries exchange gases, nutrients and wastes with cells."}
+ {q:"Which vessels allow exchange with cells?",a:["Arteries","Capillaries","Veins"],c:1,why:"Capillaries exchange gases, nutrients and wastes with cells."},
+ {q:"How do skeletal muscles move the bones of a joint?",a:["They push bones away using nerves","They contract and pull through tendons","They pump blood directly into joints"],c:1,why:"Skeletal muscles generate a pulling force, transmitted by tendons to bones."},
+ {q:"Which system includes bones, joints and protective structures such as the rib cage?",a:["Skeletal","Digestive","Nervous"],c:0,why:"The skeletal system supports the body and protects organs."}
 ];
 const STYLE=[
  ".hsi,.odi{color:var(--ink);min-width:0;line-height:1.5}",
@@ -55,9 +59,17 @@ const STYLE=[
 ].join("\n");
 const body=[
  '<svg viewBox="0 0 430 530" role="img" aria-labelledby="body-title body-desc">',
- '<title id="body-title">Choose organs to explore body systems</title><desc id="body-desc">A simplified body silhouette with selectable skin, brain, lungs, heart, stomach and intestines.</desc>',
+ '<title id="body-title">Choose organs to explore body systems</title><desc id="body-desc">A simplified body silhouette with selectable skin, brain, lungs, heart, stomach, intestines, muscles and bones.</desc>',
  '<g class="organ" data-organ="integumentary" role="button" tabindex="0" aria-label="Skin, integumentary system">',
  '<ellipse class="body part" cx="215" cy="64" rx="53" ry="53"/><path class="body part" d="M164 137 Q132 141 112 178 L75 288 Q66 309 81 321 Q98 328 110 302 L146 229 L151 320 L162 443 L155 513 L200 513 L210 377 L222 377 L235 513 L279 513 L269 440 L281 319 L289 229 L323 302 Q338 327 353 320 Q369 309 355 284 L317 177 Q301 141 266 137 Z"/>',
+ '</g>',
+ '<g class="organ" data-organ="skeletal" role="button" tabindex="0" aria-label="Bones and joints, skeletal system">',
+ '<rect class="part" x="112" y="192" width="15" height="75" rx="7" transform="rotate(20 119 230)"/><circle class="part" cx="105" cy="277" r="12"/>',
+ '<rect class="part" x="183" y="423" width="15" height="78" rx="7" transform="rotate(5 190 460)"/><rect class="part" x="243" y="423" width="15" height="78" rx="7" transform="rotate(-5 250 460)"/>',
+ '</g>',
+ '<g class="organ" data-organ="muscular" role="button" tabindex="0" aria-label="Skeletal muscles, muscular system">',
+ '<path class="part" d="M148 169 Q132 179 132 213 L145 241 Q161 206 167 176 Z"/><path class="part" d="M281 170 Q299 179 302 215 L288 241 Q274 201 265 177 Z"/>',
+ '<path class="part" d="M166 365 Q158 391 170 431 L193 431 L203 365 Z"/><path class="part" d="M227 365 L237 431 L260 431 Q272 396 260 365 Z"/>',
  '</g>',
  '<g class="organ" data-organ="nervous" role="button" tabindex="0" aria-label="Brain and nerves, nervous system">',
  '<path class="part" d="M187 53 Q181 27 209 28 Q236 19 247 40 Q262 59 246 82 Q218 96 193 79 Z"/>',
@@ -175,4 +187,5 @@ function extend(key,render,first){
 }
 extend("cells/systems",renderSystems,true);
 extend("cells/circulatory",renderOxygen,false);
+H.systemExplorerData={systems:SYSTEMS,quiz:QUIZ};
 })();
