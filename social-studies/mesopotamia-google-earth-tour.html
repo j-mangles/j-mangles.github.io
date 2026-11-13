@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#fbf8f0">
+<title>Flying Over Mesopotamia · Mr. Mangles' Class</title>
+<link rel="stylesheet" href="history-activity.css">
+<style>
+.route{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:.45rem;margin:1rem 0}
+.route a{display:block;text-align:center;padding:.7rem .35rem;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--accent);font-weight:750;text-decoration:none}
+.route a:hover{background:var(--soft)}
+.stophead{display:flex;justify-content:space-between;gap:1rem;align-items:flex-start}
+.stopno{font-size:.78rem;color:var(--accent);font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.search{display:inline-flex;align-items:center;min-height:42px;padding:.5rem .85rem;border:1px solid var(--accent);border-radius:9px;color:#075c57;font-weight:750;text-decoration:none}
+.search:hover{background:var(--soft)}
+.callout{border-left:4px solid #d98b32;background:#fff6e8;padding:.75rem 1rem;border-radius:8px;margin:.8rem 0}
+canvas{display:block;width:100%;height:260px;background-color:#fff;background-image:radial-gradient(#d8d4c9 1px,transparent 1px);background-size:18px 18px;border:1px solid #9aa5a8;border-radius:10px;touch-action:none}
+.sketch-actions{display:flex;flex-wrap:wrap;gap:.5rem;margin:.55rem 0}
+.pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:.15rem .55rem;margin:.12rem;background:#fff;font-size:.88rem}
+.completion{font-weight:700;color:var(--accent)}
+@media(max-width:700px){.route{grid-template-columns:repeat(3,minmax(0,1fr))}.stophead{display:block}.search{margin:.3rem 0}}
+@media print{body{background:#fff}.route,.search,.actions,.sketch-actions,footer .no-print{display:none!important}header,.panel{break-inside:avoid;border-color:#aaa;box-shadow:none}textarea{min-height:55px}.panel{margin:.5rem 0}canvas{height:190px}}
+</style>
+</head>
+<body>
+<main>
+<header>
+<p class="tag">Grade 8 Social Studies · Mesopotamia · Evidence Tour</p>
+<h1>Flying Over Mesopotamia</h1>
+<p>Follow the Tigris and Euphrates from their mountain sources to the Persian Gulf. At six stops, collect evidence about rivers, cities, trade, power and the traces people leave behind.</p>
+<p class="muted">Google Earth shows the present-day landscape. Keep present observations separate from claims about ancient life; use the lesson notes and other evidence to connect them. Your written responses stay in this browser tab until you download them.</p>
+<nav class="route" aria-label="Tour stops">
+<a href="#stop1">01 · Rivers</a><a href="#stop2">02 · Uruk</a><a href="#stop3">03 · Ur</a><a href="#stop4">04 · Baghdad</a><a href="#stop5">05 · Babylon</a><a href="#stop6">06 · Gulf</a>
+</nav>
+<section class="source"><b>Before you start</b><ol>
+<li>Open <a href="https://earth.google.com/web/" target="_blank" rel="noopener">Google Earth Web</a> in a new tab.</li>
+<li>Search the place named at each stop. Zoom in, look around, and use the ruler tool where asked.</li>
+<li>Record what you can actually observe. If a feature is unclear, write that down instead of guessing.</li>
+</ol><p class="small">If Google Earth is unavailable, use the <a href="index.html#mesopotamia">Mesopotamia Atlas</a> for place locations and complete the reasoning prompts from class notes. The Atlas is a schematic historical map, not satellite imagery.</p></section>
+</header>
+
+<section class="panel" id="stop1">
+<div class="stophead"><div><span class="stopno">Stop 1 · The land between the rivers</span><h2>Trace the Tigris and Euphrates</h2></div><a class="search" href="https://earth.google.com/web/search/Iraq/" target="_blank" rel="noopener">Open Iraq in Google Earth ↗</a></div>
+<p>Zoom out until both rivers are visible from their headwaters to the Gulf. Then follow them upstream and downstream.</p>
+<div class="callout"><b>Evidence check:</b> These rivers cross modern national borders. Name the country and landscape you can see; do not infer ancient borders from today's map.</div>
+<label for="s1origin">1. In which modern country do the rivers begin, and what kind of landscape do you see around their sources?</label><textarea id="s1origin" data-answer></textarea>
+<label for="s1color">2. Compare land beside the rivers with land farther away. What colours or patterns do you observe, and what might the contrast suggest?</label><textarea id="s1color" data-answer></textarea>
+<label for="s1canals">3. Zoom into fields south of Baghdad. What straight lines carry water away from a river? Why would Sumerian farmers also need canals?</label><textarea id="s1canals" data-answer></textarea>
+<h3>Sketch the region from your observation</h3>
+<p class="hint">Use the blank space to sketch both rivers, the Persian Gulf, the green corridor and a north arrow. This is your own observation sketch, not a supplied map.</p>
+<canvas id="sketch" width="1200" height="520" aria-label="Blank drawing canvas for a Mesopotamia map sketch"></canvas>
+<div class="sketch-actions"><button class="secondary" type="button" id="undo-sketch">Undo last stroke</button><button class="secondary" type="button" id="clear-sketch">Clear sketch</button><button class="secondary" type="button" id="download-sketch">Download sketch PNG</button><span id="sketch-status" class="hint" role="status" aria-live="polite"></span></div>
+<label for="s1labels">Add labels or explain one pattern you noticed.</label><textarea id="s1labels" data-answer></textarea>
+</section>
+
+<section class="panel" id="stop2">
+<div class="stophead"><div><span class="stopno">Stop 2 · Uruk</span><h2>A city beside a river that moved</h2></div><a class="search" href="https://earth.google.com/web/search/Uruk%2C%20Iraq/" target="_blank" rel="noopener">Open Uruk in Google Earth ↗</a></div>
+<p>Uruk grew beside the Euphrates and became one of the largest cities of its time. The river's channel has shifted over thousands of years.</p>
+<label for="s2distance">4. Use the ruler to measure from Uruk's archaeological site to the Euphrates as it flows today. Record the distance and where you measured.</label><textarea id="s2distance" data-answer></textarea>
+<label for="s2change">5. How could a city that once stood beside a river now appear far from it? Give two possible explanations; choose the one best supported by your observations.</label><textarea id="s2change" data-answer></textarea>
+<label for="s2writing">6. Look at the scale of the ruins and surrounding area. Why might a large city need writing? Connect your answer to what you learned about cuneiform.</label><textarea id="s2writing" data-answer></textarea>
+</section>
+
+<section class="panel" id="stop3">
+<div class="stophead"><div><span class="stopno">Stop 3 · Ur</span><h2>A temple built to stand out</h2></div><a class="search" href="https://earth.google.com/web/search/Ziggurat%20of%20Ur%2C%20Iraq/" target="_blank" rel="noopener">Open the Ziggurat of Ur ↗</a></div>
+<p>Tilt and orbit the ziggurat. It was built around 2100 BCE, after Enheduanna's lifetime, and parts of its front wall and staircase were rebuilt in the 1980s.</p>
+<label for="s3describe">7. Describe the ziggurat's shape, visible materials and size compared with the land around it.</label><textarea id="s3describe" data-answer></textarea>
+<label for="s3message">8. The surrounding landscape is very flat. How could a huge stepped temple communicate power or belief? Who might have received that message?</label><textarea id="s3message" data-answer></textarea>
+<label for="s3restoration">9. Does modern rebuilding make the ziggurat useless as evidence about the ancient city? Explain what it can still show and what you would verify with another source.</label><textarea id="s3restoration" data-answer></textarea>
+</section>
+
+<section class="panel" id="stop4">
+<div class="stophead"><div><span class="stopno">Stop 4 · Baghdad</span><h2>Where Sargon's capital may have been</h2></div><a class="search" href="https://earth.google.com/web/search/Baghdad%2C%20Iraq/" target="_blank" rel="noopener">Open Baghdad in Google Earth ↗</a></div>
+<p>Akkad, Sargon's capital, has not been located. Archaeologists place the search area near where the Tigris and Euphrates draw closer, north of the southern Sumerian cities.</p>
+<label for="s4gap">10. Use the ruler to measure the gap between the two rivers near Baghdad. Record your endpoints and distance.</label><textarea id="s4gap" data-answer></textarea>
+<label for="s4capital">11. What might make this location useful for a ruler trying to govern territory north and south? Use something you can see on the map.</label><textarea id="s4capital" data-answer></textarea>
+<label for="s4empire">12. Zoom out until Ur, Uruk and Baghdad are visible together. What challenge do these distances create for one ruler trying to hold an empire together?</label><textarea id="s4empire" data-answer></textarea>
+</section>
+
+<section class="panel" id="stop5">
+<div class="stophead"><div><span class="stopno">Stop 5 · Babylon</span><h2>A city shaped by its river</h2></div><a class="search" href="https://earth.google.com/web/search/Babylon%2C%20Iraq/" target="_blank" rel="noopener">Open Babylon in Google Earth ↗</a></div>
+<p>Hammurabi ruled from Babylon roughly five centuries after Sargon. The site includes ancient remains alongside modern reconstruction.</p>
+<label for="s5river">13. What waterway is Babylon beside? How could that location support farming, travel or trade?</label><textarea id="s5river" data-answer></textarea>
+<label for="s5law">14. Hammurabi governed many cities across a large region. How might a written set of laws help a ruler communicate authority across that distance?</label><textarea id="s5law" data-answer></textarea>
+<label for="s5evidence">15. Identify one feature in the view that is ancient and one that may be modern or rebuilt. What extra source would help you tell the difference?</label><textarea id="s5evidence" data-answer></textarea>
+</section>
+
+<section class="panel" id="stop6">
+<div class="stophead"><div><span class="stopno">Stop 6 · Al-Qurnah</span><h2>Follow the rivers to the Gulf</h2></div><a class="search" href="https://earth.google.com/web/search/Al-Qurnah%2C%20Iraq/" target="_blank" rel="noopener">Open Al-Qurnah in Google Earth ↗</a></div>
+<p>Follow the Tigris and Euphrates downstream and trace the water toward the Persian Gulf.</p>
+<label for="s6meet">16. What happens to the Tigris and Euphrates near Al-Qurnah? What do you notice as the combined waterway reaches the sea?</label><textarea id="s6meet" data-answer></textarea>
+<label for="s6trade">17. Mesopotamia had fertile land but limited supplies of some materials. Name resources that people likely needed to trade for, and explain what geographic evidence supports your idea.</label><textarea id="s6trade" data-answer></textarea>
+</section>
+
+<section class="panel" id="synthesis">
+<p class="stopno">Put the evidence together</p><h2>How did the rivers shape life in Mesopotamia?</h2>
+<p>Make a clear claim, then use evidence from at least three stops. Explain how the evidence supports your claim; distinguish what you observed today from what you infer about the past.</p>
+<label for="claim">18. My claim</label><textarea id="claim" data-answer></textarea>
+<label for="evidence">Evidence from three or more stops</label><textarea id="evidence" data-answer></textarea>
+<label for="reasoning">How the evidence supports the claim</label><textarea id="reasoning" data-answer></textarea>
+<label for="limits">One limitation of using present-day imagery to explain ancient life</label><textarea id="limits" data-answer></textarea>
+<div class="source"><b>Optional extension · Ishtar Gate</b><p>Search “Ishtar Gate Berlin.” Part of Babylon's monumental gate is now in a museum in Germany. Who built, moved and now cares for it? Where do you think it belongs, and what evidence or perspective would help you answer fairly?</p><textarea id="extension" data-answer aria-label="Optional Ishtar Gate extension response"></textarea></div>
+<p class="completion" id="progress" role="status" aria-live="polite">0 response boxes filled</p>
+<div class="actions"><button type="button" id="download">Download written responses</button><button type="button" class="secondary" id="print">Print this tour</button><button type="button" class="secondary" id="clear">Clear responses</button></div>
+<p class="status" id="status" role="status" aria-live="polite">Your draft is saved only in this browser tab. Download your responses before closing the page. The site does not upload student work.</p>
+</section>
+<footer><a href="index.html#mesopotamia">← Back to the Mesopotamia Atlas</a><span class="no-print"> · <a href="../computer-class/">Computer Class</a></span></footer>
+</main>
+<script>
+(function(){
+"use strict";
+var fields=Array.prototype.slice.call(document.querySelectorAll("[data-answer]"));
+var status=document.getElementById("status"),progress=document.getElementById("progress");
+var storeKey="mesopotamia-flying-tour-draft-v1";
+function updateProgress(){var n=fields.filter(function(f){return f.value.trim().length>0;}).length;progress.textContent=n+" of "+fields.length+" response boxes filled";}
+function save(){try{var data={};fields.forEach(function(f){data[f.id]=f.value;});sessionStorage.setItem(storeKey,JSON.stringify(data));}catch(e){}updateProgress();}
+try{var old=JSON.parse(sessionStorage.getItem(storeKey)||"{}");fields.forEach(function(f){if(typeof old[f.id]==="string")f.value=old[f.id];});}catch(e){}
+fields.forEach(function(f){f.addEventListener("input",save);});
+updateProgress();
+function responseText(){var out=["Grade 8 Social Studies · Mesopotamia · Flying Over Mesopotamia","Google Earth evidence tour","", "Student name: __________________________  Date: ______________",""];fields.forEach(function(f){var label=f.labels&&f.labels[0]?f.labels[0].textContent.trim():f.getAttribute("aria-label")||f.id;out.push(label,"",f.value.trim()||"[No response]","","—".repeat(40));});out.push("","Note: The sketch is downloaded separately as a PNG. Written responses stayed in this browser until the student chose to download them.");return out.join("\n");}
+document.getElementById("download").addEventListener("click",function(){var blob=new Blob([responseText()],{type:"text/plain;charset=utf-8"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="mesopotamia-google-earth-tour.txt";document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(url);},1000);status.textContent="Written responses downloaded. Download the sketch PNG separately if you want to hand it in.";});
+document.getElementById("print").addEventListener("click",function(){window.print();});
+document.getElementById("clear").addEventListener("click",function(){fields.forEach(function(f){f.value="";});try{sessionStorage.removeItem(storeKey);}catch(e){}save();status.textContent="Responses cleared from this tab.";});
+
+var canvas=document.getElementById("sketch"),ctx=canvas.getContext("2d"),drawing=false,strokes=[],current=null;
+ctx.lineCap="round";ctx.lineJoin="round";ctx.lineWidth=5;ctx.strokeStyle="#176c66";
+function point(e){var r=canvas.getBoundingClientRect();return {x:(e.clientX-r.left)*canvas.width/r.width,y:(e.clientY-r.top)*canvas.height/r.height};}
+function redraw(){ctx.clearRect(0,0,canvas.width,canvas.height);ctx.fillStyle="rgba(255,255,255,.2)";ctx.fillRect(0,0,canvas.width,canvas.height);strokes.forEach(function(line){if(line.length<2)return;ctx.beginPath();ctx.moveTo(line[0].x,line[0].y);for(var i=1;i<line.length;i++)ctx.lineTo(line[i].x,line[i].y);ctx.stroke();});}
+canvas.addEventListener("pointerdown",function(e){drawing=true;current=[point(e)];strokes.push(current);canvas.setPointerCapture(e.pointerId);ctx.beginPath();ctx.moveTo(current[0].x,current[0].y);});
+canvas.addEventListener("pointermove",function(e){if(!drawing)return;var p=point(e);current.push(p);ctx.lineTo(p.x,p.y);ctx.stroke();});
+function stop(){drawing=false;current=null;}
+canvas.addEventListener("pointerup",stop);canvas.addEventListener("pointercancel",stop);
+document.getElementById("undo-sketch").addEventListener("click",function(){strokes.pop();redraw();document.getElementById("sketch-status").textContent="Last stroke removed.";});
+document.getElementById("clear-sketch").addEventListener("click",function(){strokes=[];redraw();document.getElementById("sketch-status").textContent="Sketch cleared.";});
+document.getElementById("download-sketch").addEventListener("click",function(){canvas.toBlob(function(blob){if(!blob)return;var url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="mesopotamia-river-sketch.png";a.click();setTimeout(function(){URL.revokeObjectURL(url);},1000);document.getElementById("sketch-status").textContent="Sketch PNG downloaded.";});});
+redraw();
+})();
+</script>
+</body>
+</html>
