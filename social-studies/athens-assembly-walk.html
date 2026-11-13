@@ -162,7 +162,7 @@ document.getElementById("download").onclick=()=>{
  const response=document.getElementById("response").value.trim()||"No written response";
  const report=["AT THE ASSEMBLY · ATHENS FIELD WALK","Grade 8 Social Studies · Ancient Greece · Lesson 5","", "Historical claim:",claim,"","Evidence collected:",...sites.map(s=>(seen.has(s.id)?"[x] ":"[ ] ")+s.name+(seen.has(s.id)?": "+s.text:"")),"","My explanation:",response,"","Source note: This interactive map is an original classroom reconstruction. The evidence cards summarize the connected Greece unit materials. The scene and game guide are not ancient eyewitness sources.",""].join("\n");
  const blob=new Blob([report],{type:"text/plain;charset=utf-8"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="athens-field-walk-report.txt";a.click();URL.revokeObjectURL(url);
- document.getElementById("feedback").textContent="Field report downloaded. Submit it using your teacher's classroom instructions.";
+ document.getElementById("feedback").textContent="Field report downloaded. Submit it using your teacher's classroom instructions.";document.getElementById("download").focus();
 };
 document.getElementById("mission").addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.id!=="begin"){e.preventDefault();start();}});
 document.getElementById("final").addEventListener("keydown",e=>{if(e.key==="Escape"){document.getElementById("final").hidden=true;document.getElementById("conclude").focus();}});

@@ -39,6 +39,7 @@ fs.mkdirSync(artifacts,{recursive:true});
   await desktop.locator("#download").click();
   const download=await downloadPromise;
   assert.equal(download.suggestedFilename(),"athens-field-walk-report.txt");
+  assert.equal(await desktop.evaluate(()=>document.activeElement.id),"download","Download action should return focus to the dialog");
   await desktop.keyboard.press("Escape");
   assert.equal(await desktop.locator("#final").isHidden(),true);
   assert.deepEqual(errors,[],"Desktop game should not raise browser errors");
