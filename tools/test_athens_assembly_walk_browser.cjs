@@ -33,10 +33,6 @@ fs.mkdirSync(artifacts,{recursive:true});
   await desktop.screenshot({path:path.join(artifacts,"athens-field-walk-desktop.png"),fullPage:true,animations:"disabled"});
 
   await desktop.locator("#conclude").click();
-  await desktop.locator("#response").focus();
-  await desktop.keyboard.press("Escape");
-  assert.equal(await desktop.locator("#final").isHidden(),true,"Escape should close the focused conclusion dialog");
-  await desktop.locator("#conclude").click();
   await desktop.locator("#claim").selectOption({label:"Athens used direct democracy, but political participation was limited to a smaller citizen group."});
   await desktop.locator("#response").fill("The Assembly met at the Pnyx, and some public roles were chosen by lot. Only eligible male citizens could participate, so many residents were excluded.");
   const downloadPromise=desktop.waitForEvent("download");

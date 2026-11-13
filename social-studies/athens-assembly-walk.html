@@ -61,7 +61,7 @@ canvas{display:block;width:100%;height:auto;aspect-ratio:960/560;background:#c6d
 </section>
 </main>
 <div id="mission" role="dialog" aria-modal="true" aria-labelledby="mission-title">
-<div class="sheet"><div class="eyebrow">Athenian civic life · 5th century BCE</div><h2 id="mission-title">A question of voice</h2><p>You are visiting Athens during its democratic period. The Assembly, public offices and civic spaces shaped political life—but not every resident could take part.</p><p>Explore the Pnyx, Agora and Council House. Collect all three clues, then use them to write a short evidence-based judgment.</p><button id="begin" class="btn">Begin the walk</button><p class="fine">Keyboard: arrows or WASD to move · E to inspect · Esc opens the conclusion after all three clues.</p></div>
+<div class="sheet"><div class="eyebrow">Athenian civic life · 5th century BCE</div><h2 id="mission-title">A question of voice</h2><p>You are visiting Athens during its democratic period. The Assembly, public offices and civic spaces shaped political life—but not every resident could take part.</p><p>Explore the Pnyx, Agora and Council House. Collect all three clues, then use them to write a short evidence-based judgment.</p><button id="begin" class="btn">Begin the walk</button><p class="fine">Keyboard: arrows or WASD to move · E to inspect · Complete all three stops to unlock the conclusion.</p></div>
 </div>
 <div id="final" hidden role="dialog" aria-modal="true" aria-labelledby="final-title">
 <div class="final-card"><div class="eyebrow">Your conclusion</div><h2 id="final-title">How democratic was Athens?</h2><p>Use at least two clues from your notebook. Make a judgment and explain who could participate and who was excluded.</p>
@@ -165,13 +165,11 @@ document.getElementById("download").onclick=()=>{
  document.getElementById("feedback").textContent="Field report downloaded. Submit it using your teacher's classroom instructions.";document.getElementById("download").focus();
 };
 document.getElementById("mission").addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.id!=="begin"){e.preventDefault();start();}});
-document.getElementById("final").addEventListener("keydown",e=>{if(e.key==="Escape"){document.getElementById("final").hidden=true;document.getElementById("conclude").focus();}});
-document.addEventListener("keydown",e=>{const mission=document.getElementById("mission"),final=document.getElementById("final");if(!mission.hidden)return;if(!final.hidden){if(e.key==="Escape"){final.hidden=true;document.getElementById("conclude").focus();}return;}const k=e.key.length===1?e.key.toLowerCase():e.key;if(["ArrowUp","ArrowDown","ArrowLeft","ArrowRight"," ","w","a","s","d","e","E"].includes(e.key)||["w","a","s","d","e"].includes(k))e.preventDefault();if(k==="e"||k==="E"){const s=nearest();if(s)inspect(s);else showToast("Walk toward a numbered place.");return;}if(k==="Escape"){if(seen.size===3)document.getElementById("final").hidden=false;return;}held.add(k);});
+document.addEventListener("keydown",e=>{const mission=document.getElementById("mission"),final=document.getElementById("final");if(!mission.hidden)return;if(!final.hidden)return;const k=e.key.length===1?e.key.toLowerCase():e.key;if(["ArrowUp","ArrowDown","ArrowLeft","ArrowRight"," ","w","a","s","d","e","E"].includes(e.key)||["w","a","s","d","e"].includes(k))e.preventDefault();if(k==="e"||k==="E"){const s=nearest();if(s)inspect(s);else showToast("Walk toward a numbered place.");return;}held.add(k);});
 document.addEventListener("keyup",e=>held.delete(e.key.length===1?e.key.toLowerCase():e.key));
 window.addEventListener("blur",()=>held.clear());
 document.querySelectorAll("[data-move]").forEach(b=>{const key={up:"ArrowUp",down:"ArrowDown",left:"ArrowLeft",right:"ArrowRight"}[b.dataset.move];const on=e=>{e.preventDefault();held.add(key);};const off=e=>{e.preventDefault();held.delete(key);};b.addEventListener("pointerdown",on);b.addEventListener("pointerup",off);b.addEventListener("pointercancel",off);b.addEventListener("pointerleave",off);b.addEventListener("click",e=>{if(e.detail===0){held.add(key);setTimeout(()=>held.delete(key),160);}});});
 canvas.addEventListener("click",e=>{const r=canvas.getBoundingClientRect(),x=(e.clientX-r.left)/r.width*W,y=(e.clientY-r.top)/r.height*H;const s=sites.find(z=>Math.hypot(x-z.x,y-(z.y-18))<38);if(s){player.x=s.x;player.y=s.y+5;draw();inspect(s);}else if(active){player.x=x;player.y=Math.max(250,Math.min(H-25,y));draw();}});
-document.getElementById("claim").addEventListener("keydown",e=>{if(e.key==="Escape"){document.getElementById("final").hidden=true;}});
 window.addEventListener("resize",resize);resize();sync();
 })();
 </script>
