@@ -192,3 +192,12 @@
 - Expanded the teacher-facing video audit with short, lesson-matched NASA, UCAR, USGS and PBS selections for energy budget, EM spectrum, greenhouse effect, plate motion, glaciers, rivers and erosion. It retains the age/complexity and perspective cautions and leaves a blank where no strong match was found.
 - No tests were started by hand in this continuation. GitHub Actions has automatically queued the existing PR workflows after commits; review their final results before merge.
 - Draft PR only. No change to `main`, no release, and no production deployment.
+
+
+## November 13, 2026 — Drive source reconciliation
+
+- Inventoried the five Energy & Light and four Earth Science student slide decks and mapped each deck to the existing site lesson ranges.
+- Mapped the identified Energy & Light student assignments/labs to lessons. Found one explicit coverage gap: the Light Sources textbook assignment teaches luminous/non-luminous objects and light-source mechanisms; the existing site sequence does not explicitly teach that classification. Keep it textbook-dependent pending a teacher decision.
+- Confirmed the checked Earth Science booklet folder contains the student booklet and teacher answer key; no separate student assignment documents were found there. This is limited to that folder inventory.
+- Updated the Drive audit with named source mappings and limits. Both units remain unreleased (“soon”); teacher keys, quizzes and tests remain off-site.
+- PR #109 automatic workflows at head aea1b971520f00ac947d152118ee4acce49db516 completed successfully: 34/34 runs. This is the last validated head; documentation edits trigger fresh automatic checks.
