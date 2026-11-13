@@ -99,3 +99,15 @@ The descriptions, content structure, runtimes where shown, and contextual caveat
 - [Crash Course/OER Project: Check Yourself with Lateral Reading (13:51)](https://www.oerproject.com/OER-Materials/OER-Media/Videos/Climate/Unit-1/Crash-Course-Navigating-Digital-Information) and [Stanford Graduate School of Education, Civic Online Reasoning](https://ed.stanford.edu/node/21844)
 
 **Audit limitation:** online descriptions and available transcripts/chapters were used to verify instructional fit and factual framing. The teacher should preview the actual video playback on the classroom network before assigning it; account walls, ads, playback controls, captions or platform availability may differ.
+
+
+## Official source-page recheck — November 13, 2026
+
+A fresh source-page check confirms these three high-fit science recommendations are live and their instructional metadata matches the audit. This verifies the official landing pages and accessibility/context details, not playback on the classroom network:
+
+- **NASA, Earth's Energy Balance — Energy In and Energy Out:** NASA supplies an English VTT subtitle file and discussion/writing prompts; the resource lists Grades 3–12 and links a companion Global Energy Budget lesson for Grades 6–8. A strong option for Lesson 4, but keep students focused on the site's incoming/reflected/absorbed/outgoing energy model.
+- **NASA, Introduction to the Electromagnetic Spectrum:** official page confirms about five minutes and an **Advanced (9–12+)** level. Retain the explicit teacher-preview / selected-segment caveat for Grade 8.
+- **UCAR, Why Greenhouse Gases Make the Planet Warmer:** UCAR's teaching box confirms a roughly seven-minute explanation by atmospheric science professor Scott Denning and labels the teaching box for middle/high school. It also offers shorter alternative animations; the recommended clip should be followed by a check that students distinguish the natural greenhouse effect from enhanced warming.
+- **PBS Science Trek, The Web Show: Rivers:** PBS confirms 7:33 runtime, closed captions and TV-G rating; the segment features two university river researchers. It is a sensible optional supplement for the River & Watershed sequence, not a replacement for students' own model evidence.
+
+The written audit already records these caveats. No video has been embedded into the student site; the teacher-facing shortlist remains a set of candidates to preview before classroom use.
