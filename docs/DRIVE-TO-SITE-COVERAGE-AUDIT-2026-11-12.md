@@ -11,7 +11,7 @@
 | **Grade 8 Science** | Course folders for Science Skills, Cells & Systems, Energy & Light, Earth Science and Particle Theory of Matter. Cells includes booklets/answer keys, decks, a unit test, labs and projects. | The Science hub contains five unit entries: Science Skills (released), Cells & Systems (current/released), Matter/Density/Fluids (soon), Solar Energy & Light (soon; 14 lesson records), and Earth Science (soon; 16 lesson records). The later sequences are present in the course data and tied to their student booklets; they are not yet released to students. | **Catalogued, partly unreleased.** Energy & Light and Earth Science have lesson sequences but are marked “soon.” Verify each lesson against the Drive booklet and slides, then align release timing with the teacher's course outline. |
 | **Grade 7 Math** | Course information and units 1–13, with folders organized by lesson. Unit 1 contains lessons 1–22; Probability is Unit 2, with later units through Geometric Constructions. | The site has 13 unit entries. The current fractions/decimals/percents sequence has manipulatives and feedback tools; Probability is listed next. Some unit labels differ slightly from Drive labels, and the per-lesson source match has not been completed. | **Unit catalog present; lesson transfer unverified.** Do a lesson-ID crosswalk before claiming all 13 units are transferred. |
 | **Grade 8 ELA** | Course folders for Answering Well, Grammar, Short Stories, Media & Film, Novel Study, Essays & Research and year-long Writing. The Short Stories folder contains multiple story/film folders and plot-structure materials. | The website has corresponding Answering Well, Grammar and Language, Short Stories, Media and Film, Novel Study, and Essays and Research units. It includes story analysis, the plot evidence board, the writing workshop and media-framing resources. | **Unit catalog present; individual source match unverified.** Verify every intended story, film and assignment against the Drive subfolders; do not assume the library titles alone are complete. |
-| **Grade 8 Social Studies** | Seven Drive units: First Humans, First Civilizations, Egypt, Greece, Rome, Middle Ages, and Shaping the Modern World. The unit folders include lesson materials, student tasks and unit review/test items. | Full student-facing lesson arrays exist for Egypt (13), Greece (13), Rome (13) and the Middle Ages (13). The site also has standalone First Civilizations investigations, including Sargon and Hammurabi activities, plus Egypt source labs and many Greece/Rome investigations. There is not yet a matching 13-lesson student catalog for First Humans or First Civilizations, and no lesson array for Shaping the Modern World. | **Partial.** Greece and Rome sequences were compared to their unit overviews and student investigations, but that is not the same as transferring every Drive file. First Humans, the full Mesopotamia sequence and the Modern World unit remain clear coverage gaps. |
+| **Grade 8 Social Studies** | Seven Drive units: First Humans, First Civilizations, Egypt, Greece, Rome, Middle Ages, and Shaping the Modern World. The unit folders include lesson materials, student tasks and unit review/test items. | The Mesopotamia/First Civilizations unit already has 10 released lesson records in the atlas (L0, L1–L4A/B, L5, L6, L6B and L7). Egypt, Greece, Rome and the Middle Ages each have 13-lesson arrays. The site also has standalone First Humans investigations, Egypt source labs and many Greece/Rome investigations. First Humans still lacks a full lesson sequence, as does Shaping the Modern World. | **Partial.** Greece and Rome sequences were compared to their unit overviews and student investigations, but that is not the same as transferring every Drive file. First Humans and the Modern World unit remain clear coverage gaps. The Mesopotamia catalog exists; its Drive lesson materials had not yet been reconciled file by file during the first pass. |
 | **Critical Thinking / Computer Skills** | Lesson folders 1–11, a Game Theory folder and extra activities. | The site has a Think Lab and Game Theory catalog, an evidence inspector, payoff-matrix activities and digital Computer Class assignments. | **Unit catalog present; activity-by-activity match unverified.** The Computer Class activities supplement instruction and do not replace the eleven-lesson Drive sequence. |
 
 ## Confirmed source integration
@@ -84,6 +84,7 @@ Teacher guides, answer keys, quizzes/unit tests, student work, and private admin
 - Drive course/unit folder trees for all five subjects; lesson folder inventory was sampled for current and next units.
 - Website unit catalogs and Social Studies lesson-array filenames on the draft branch. Science catalog entries and their lesson-record counts were checked directly in `science/data.js`.
 - Drive Greece/Rome unit overview inventories, the Systems Working Together handout, and the existing PR backlog.
+- First Civilizations/Mesopotamia Drive lesson folders 1–7: student-facing slide decks and tasks, plus the separate Flying Over Mesopotamia Google Earth student tour; teacher guides, unit tests and answer keys were not copied.
 
 This audit deliberately avoids a percentage-complete estimate: folder and catalog counts are not reliable evidence that every teaching file has been transferred or reviewed.
 
@@ -136,7 +137,7 @@ This mapping is exact at the **unit label / student-catalog level** on the curre
 | Drive unit | Website lesson catalog or activity | Status |
 |---|---|---|
 | Unit 1 — First Humans | No matching unit-wide lesson array identified | Gap. There is a student webquest and a handful of activities, but that is not the full Drive sequence. |
-| Unit 2 — First Civilizations | Sargon and Hammurabi source activities; no matching unit-wide lesson array identified | Partial. The Drive sequence needs a lesson-by-lesson map. |
+| Unit 2 — First Civilizations | Mesopotamia: 10 released lesson records in the atlas (L0, L1–L4A/B, L5, L6, L6B, L7), plus linked Sargon/Hammurabi investigations | Present; the first file-by-file source reconciliation is recorded below. A separate six-stop Google Earth tour is now linked from the unit. |
 | Unit 3 — Ancient Egypt | Egypt student lesson array | 13 lesson objects present; match each against its Drive lesson folder before claiming complete. |
 | Unit 4 — Ancient Greece | Greece student lesson array | 13 lesson objects present and sequence compared with the unit overview; student activity pages are linked from lessons. |
 | Unit 5 — Ancient Rome | Rome student lesson array | 13 lesson objects present and sequence compared with the unit overview; student activity pages are linked from lessons. |
@@ -179,3 +180,29 @@ The Drive Energy & Light assignment folder also contains teacher keys and assess
 | Student task files | Earth Science student booklet only in the checked unit booklet folder, alongside its teacher answer key | No separate student assignment documents were found in that targeted folder inventory. The booklet itself contains the mapped exercises. This does not prove none are stored elsewhere in Drive. |
 
 **Updated conclusion:** Energy & Light and Earth Science have lesson catalogs, matching student booklets and identified topic slide decks. Most named student tasks are represented by corresponding site lessons or activities, with the Light Sources textbook assignment the clearest specific content gap found in this pass. Both units remain marked “soon.” Slide-by-slide claim accuracy, teacher emphasis, and release readiness still need classroom review. No Drive file, private URL, student data, answer key, quiz or test has been copied into the public site.
+
+
+## Social Studies source reconciliation — First Civilizations / Mesopotamia — November 13, 2026
+
+The atlas already contains **10 released lesson records**, so this is a source-matching correction, not a new unit build. The corresponding student-facing Drive lessons and assignments were checked by title and task purpose:
+
+| Drive lesson / student source | Existing site lesson | Match |
+|---|---|---|
+| L0 — Where Are We in Time? slides and notes | Where Are We in Time? | Same BCE/CE sequence and timeline idea. |
+| L1 — Sumer: The First Cities; Real or Legend? student file | Sumer: The First Cities | The site keeps the evidence-sort task on Gilgamesh, Uruk and Eridu. |
+| L2 — Cuneiform and the First Writing; Write It in Wedges | Cuneiform and the First Writing | The site task follows the progression from tokens to proto-cuneiform and asks students to make a complaint tablet. |
+| L3 — Gods and Priests; Enheduanna student evidence task | Gods and Priests | The site lesson asks students to weigh evidence about Enheduanna's authorship. |
+| L4A — Sargon's Empire notes/assignment | Sargon's Empire | The site compares the birth legend with the King List. |
+| L4B — Code of Hammurabi notes/assignment and You Be the Judge | The Code of Hammurabi | The site preserves law-evidence analysis and the verdict-prediction task. Teacher trackers and answer keys stay private. |
+| L5 — Trade, Technology and Everyday Life; A Day in Sumer | Trade, Technology and Everyday Life | The site task sorts trade goods and asks for an evidence-based account of daily life. |
+| L6 — Rich and Poor; Social Pyramid Investigation | Rich and Poor in Mesopotamia | The site uses the social-pyramid case-file task. |
+| L6B — Gilgamesh and the Great Flood; Flood Files | Gilgamesh and the Great Flood | The site compares flood-story sources and considers limits as historical evidence. |
+| L7 — Timeline & Legacy Trail; Review Game | Review and Test | The student timeline/review is represented. The unit test and keys remain teacher-only and are not copied to the site. |
+
+### Separate Drive assignment: Flying Over Mesopotamia
+
+The Drive tour is a distinct Google Earth investigation, not another lesson record. It asks students to observe the river system and irrigation, measure distances, compare present river channels with ancient settlement locations, inspect Ur's ziggurat and rebuilding, consider where Akkad may have stood, and connect geography to Babylon, trade and empire.
+
+Added **Flying Over Mesopotamia** as a linked activity in the Mesopotamia unit. It guides students through six map stops, includes a blank local sketch pad with PNG download, gives a text download of written responses, and preserves the key evidence habit: present-day satellite imagery is not direct evidence of ancient conditions. The atlas map is offered only as a fallback for place locations; it is not presented as equivalent to Google Earth's imagery or measuring tools. Responses stay in the current browser tab until downloaded.
+
+**Assessment:** the current Mesopotamia lesson sequence and checked student assignments are represented on the site. The Google Earth tour is now adapted into a digital activity; teacher review and a classroom-network check of Google Earth playback remain. No student response, Drive answer key, teacher guide or test is published.
