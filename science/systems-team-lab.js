@@ -48,7 +48,7 @@ const CSS=[
 "@media(max-width:700px){.stl .taskgrid{grid-template-columns:1fr}.stl .selection{position:static}.stl .steps{grid-template-columns:1fr}.stl .step{min-height:unset;padding:12px 12px 12px 42px}.stl .step:not(:last-child):after{content:\"↓\";top:auto;right:50%;bottom:-16px}.stl .route{padding:10px}}",
 "@media(max-width:430px){.stl .sysgrid{grid-template-columns:1fr}.stl .casebar button{flex:1 1 145px}}",
 "@media(prefers-reduced-motion:reduce){.stl .sys{transition:none}}"
-].join("\\n");
+].join("\n");
 function mount(el){
  let active=0,chosen=new Set(),revealed=false;
  el.innerHTML='<section class="stl"><style>'+CSS+'</style>'+
@@ -81,7 +81,7 @@ function mount(el){
   else if(b.id==="stl-clear"){chosen.clear();revealed=false;q("#stl-connection").value="";q("#stl-evidence").value="";q("#stl-status").textContent="";q("#stl-report-status").textContent="Your response is cleared from this page.";draw();}
   else if(b.id==="stl-download"){
    const c=CASES[active],names=Array.from(chosen).map(k=>SYSTEMS[k].name);
-   const output=["Systems in Motion — Grade 8 Science",c.title,c.text,"Systems I considered:",names.length?names.join(", "):"None selected","My systems connection:",q("#stl-connection").value.trim(),"Evidence from the situation:",q("#stl-evidence").value.trim(),"Model pathway revealed: "+(revealed?"Yes":"No"),"Important: Student reasoning is not machine-scored. The pathway is a simplified model and does not show every body-system relationship.","No information was uploaded."].join("\\n\\n");
+   const output=["Systems in Motion — Grade 8 Science",c.title,c.text,"Systems I considered:",names.length?names.join(", "):"None selected","My systems connection:",q("#stl-connection").value.trim(),"Evidence from the situation:",q("#stl-evidence").value.trim(),"Model pathway revealed: "+(revealed?"Yes":"No"),"Important: Student reasoning is not machine-scored. The pathway is a simplified model and does not show every body-system relationship.","No information was uploaded."].join("\n\n");
    const url=URL.createObjectURL(new Blob([output],{type:"text/plain;charset=utf-8"})),a=document.createElement("a");a.href=url;a.download="systems-in-motion-response.txt";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);q("#stl-report-status").textContent="Response downloaded to this device. Nothing was uploaded.";
   }
  });
