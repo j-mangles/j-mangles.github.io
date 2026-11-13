@@ -8,7 +8,7 @@
 
 | Course | What Drive currently contains | What the website branch has | Assessment |
 |---|---|---|---|
-| **Grade 8 Science** | Course folders for Science Skills, Cells & Systems, Energy & Light, Earth Science and Particle Theory of Matter. Cells includes booklets/answer keys, decks, a unit test, labs and projects. | The Science hub contains five unit entries: Science Skills (released), Cells & Systems (current/released), Matter/Density/Fluids (soon), Solar Energy & Light (soon; 14 lesson records), and Earth Science (soon; 16 lesson records). The later sequences are present in the course data and tied to their student booklets; they are not yet released to students. | **Partial.** Energy & Light and Earth Science still need lesson-level catalog/content mapping. Keep the order aligned with the teacher's actual course outline, not a generic pacing sequence. |
+| **Grade 8 Science** | Course folders for Science Skills, Cells & Systems, Energy & Light, Earth Science and Particle Theory of Matter. Cells includes booklets/answer keys, decks, a unit test, labs and projects. | The Science hub contains five unit entries: Science Skills (released), Cells & Systems (current/released), Matter/Density/Fluids (soon), Solar Energy & Light (soon; 14 lesson records), and Earth Science (soon; 16 lesson records). The later sequences are present in the course data and tied to their student booklets; they are not yet released to students. | **Catalogued, partly unreleased.** Energy & Light and Earth Science have lesson sequences but are marked “soon.” Verify each lesson against the Drive booklet and slides, then align release timing with the teacher's course outline. |
 | **Grade 7 Math** | Course information and units 1–13, with folders organized by lesson. Unit 1 contains lessons 1–22; Probability is Unit 2, with later units through Geometric Constructions. | The site has 13 unit entries. The current fractions/decimals/percents sequence has manipulatives and feedback tools; Probability is listed next. Some unit labels differ slightly from Drive labels, and the per-lesson source match has not been completed. | **Unit catalog present; lesson transfer unverified.** Do a lesson-ID crosswalk before claiming all 13 units are transferred. |
 | **Grade 8 ELA** | Course folders for Answering Well, Grammar, Short Stories, Media & Film, Novel Study, Essays & Research and year-long Writing. The Short Stories folder contains multiple story/film folders and plot-structure materials. | The website has corresponding Answering Well, Grammar and Language, Short Stories, Media and Film, Novel Study, and Essays and Research units. It includes story analysis, the plot evidence board, the writing workshop and media-framing resources. | **Unit catalog present; individual source match unverified.** Verify every intended story, film and assignment against the Drive subfolders; do not assume the library titles alone are complete. |
 | **Grade 8 Social Studies** | Seven Drive units: First Humans, First Civilizations, Egypt, Greece, Rome, Middle Ages, and Shaping the Modern World. The unit folders include lesson materials, student tasks and unit review/test items. | Full student-facing lesson arrays exist for Egypt (13), Greece (13), Rome (13) and the Middle Ages (13). The site also has standalone First Civilizations investigations, including Sargon and Hammurabi activities, plus Egypt source labs and many Greece/Rome investigations. There is not yet a matching 13-lesson student catalog for First Humans or First Civilizations, and no lesson array for Shaping the Modern World. | **Partial.** Greece and Rome sequences were compared to their unit overviews and student investigations, but that is not the same as transferring every Drive file. First Humans, the full Mesopotamia sequence and the Modern World unit remain clear coverage gaps. |
@@ -28,7 +28,7 @@ Teacher guides, answer keys, quizzes/unit tests, student work, and private admin
 
 1. Build a per-unit, per-lesson crosswalk with columns for Drive slide/deck, guided notes, student assignment, teacher guide/key, site lesson, and interactive activity.
 2. Mark each row **matched**, **adapted**, **not built**, **not applicable**, or **teacher-only**. Do not count hidden or unlinked scripts as transferred lessons.
-3. Start with the largest student-facing gaps: Science Energy & Light and Earth Science; Social Studies First Humans, First Civilizations and Shaping the Modern World; then verify all Mathematics and ELA lesson files against their catalogs.
+3. Start with the largest student-facing gaps: Social Studies First Humans, First Civilizations and Shaping the Modern World; verify the Solar Energy/Light and Earth Science lesson records against Drive, lesson by lesson, and align their release timing; then verify Mathematics and ELA source files against their catalogs.
 4. Review the actual public-facing lesson text against source materials before release. Keep teacher keys, tests and any student information off the public site.
 5. After the crosswalk, update each subject backlog and request a classroom review of the draft branch. PR #109 is still a draft; nothing here changes `main` or production.
 
@@ -36,14 +36,14 @@ Teacher guides, answer keys, quizzes/unit tests, student work, and private admin
 
 - Google Drive filing rules and current course outline.
 - Drive course/unit folder trees for all five subjects; lesson folder inventory was sampled for current and next units.
-- Website unit catalogs and Social Studies lesson-array filenames on the draft branch.
+- Website unit catalogs and Social Studies lesson-array filenames on the draft branch. Science catalog entries and their lesson-record counts were checked directly in `science/data.js`.
 - Drive Greece/Rome unit overview inventories, the Systems Working Together handout, and the existing PR backlog.
 
 This audit deliberately avoids a percentage-complete estimate: folder and catalog counts are not reliable evidence that every teaching file has been transferred or reviewed.
 
 ## Unit-by-unit catalog map
 
-This mapping is exact at the **unit label / student-catalog level**. It does not claim every lesson slide or worksheet has been mirrored. “Present” means an appropriate catalog or lesson sequence exists; a separate per-lesson comparison is still required unless stated otherwise.
+This mapping is exact at the **unit label / student-catalog level** on the current draft branch. It does not claim every lesson slide or worksheet has been mirrored. “Present” means an appropriate catalog or lesson sequence exists; a separate per-lesson comparison is still required unless stated otherwise. The Science hub contains five unit entries; Solar Energy and Light and Earth Science remain marked “soon.”
 
 ### Science
 
@@ -51,8 +51,8 @@ This mapping is exact at the **unit label / student-catalog level**. It does not
 |---|---|---|
 | 0. Science Skills | Science Skills | Present; lesson content and the Fair Test Studio are in the site. |
 | 1. Cells & Systems | Cells and Systems | Present and released. Current PR adds the source-based Systems in Motion task to Lesson 9. |
-| 2. Energy & Light | No matching lesson catalog yet | Gap. Some supporting lab scripts exist, but unlinked files do not count as transferred lessons. |
-| 3. Earth Science | No matching lesson catalog yet | Gap. Some explorer/lab scripts exist, but a complete student lesson sequence is not in the current catalog. |
+| 2. Energy & Light | Solar Energy and Light, 14 lesson records (site unit ID `light`; status `soon`) | Built but unreleased. Reconcile each lesson with the Drive booklet and slides, then confirm when to expose it. |
+| 3. Earth Science | Earth Science: Earth's Interior and Tectonics, 16 lesson records (site unit ID `earth`; status `soon`) | Built but unreleased. The sequence references the Drive student booklet and matching slides; complete per-lesson verification before release. |
 | 4. Particle Theory of Matter | Matter, Density and Fluids | Prepared, but the site keeps this unit behind its “soon” release state. |
 
 ### Math
