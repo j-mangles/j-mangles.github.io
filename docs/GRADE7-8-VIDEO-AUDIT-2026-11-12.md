@@ -1,8 +1,8 @@
 # Grade 7/8 Classroom Video Audit — November 12, 2026
 
-**Purpose:** identify a small, high-quality set of videos that can genuinely teach or deepen the current classroom lessons. This is a curation pass, not a “one link per lesson” exercise.
+**Purpose:** identify a small, high-quality set of videos that can genuinely teach or deepen the current classroom lessons. This is a curation pass, not a “one link per lesson” exercise. **Expanded November 13, 2026** to include the Solar Energy/Light and Earth Science sequences.
 
-**Scope for this pass:** active Cells and Systems, the next Matter/Density unit, Grade 7 Fractions/Decimals/Percents and Probability, current Short Stories, the Think Lab's online source-evaluation work, and the 13-lesson Ancient Greece and 13-lesson Ancient Rome sequences being prepared on this branch.
+**Scope:** active Cells and Systems; upcoming Matter/Density; Grade 7 Fractions/Decimals/Percents and Probability; Short Stories; Think Lab source evaluation; the 13-lesson Ancient Greece and Rome sequences; and the 14-lesson Solar Energy/Light and 16-lesson Earth Science sequences currently marked “soon.” The two unreleased units are included for planning only.
 
 **Review standard:** credible educator/institution and inspectable lesson description or transcript; clear match to a lesson objective; sensible Grade 7/8 use; short enough to excerpt where possible; explicit notes for complexity, simplification, violence, or missing perspectives. “Recommended” means worth a teacher preview and lesson use; it does not mean every video is ready to show without context.
 
