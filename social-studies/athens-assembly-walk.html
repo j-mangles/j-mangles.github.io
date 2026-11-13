@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#173c43">
+<title>At the Assembly · Ancient Athens Field Walk</title>
+<meta name="description" content="Explore a stylized map of Athens and use evidence to judge who had a voice in Athenian democracy.">
+<style>
+:root{color-scheme:light;--paper:#f8f5ec;--ink:#1f3033;--muted:#5e6b69;--line:#d8d0c1;--teal:#205c5e;--teal2:#dce9e2;--terra:#b65f48;--gold:#d8aa56;--panel:#fffdf8;--dark:#173c43}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--paper);color:var(--ink);font:15px/1.5 system-ui,-apple-system,Segoe UI,sans-serif}button,textarea,select{font:inherit}button{cursor:pointer}button:focus-visible,a:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid #d88f31;outline-offset:3px}a{color:var(--teal)}
+header{display:flex;align-items:center;gap:18px;padding:12px clamp(16px,3vw,36px);border-bottom:1px solid var(--line);background:var(--panel)}.back{font-size:13px;text-decoration:none;font-weight:700;white-space:nowrap}.brand{display:grid;line-height:1.2}.brand small,.eyebrow{font:700 10px/1.4 ui-monospace,monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--terra)}.brand b{font:600 22px/1.2 Georgia,serif}.spacer{flex:1}
+main{max-width:1380px;margin:0 auto;padding:clamp(14px,2vw,28px)}.intro{display:flex;align-items:end;gap:24px;justify-content:space-between;margin:0 0 16px}.intro h1{font:600 clamp(30px,4vw,48px)/1.02 Georgia,serif;letter-spacing:-.025em;margin:5px 0}.intro p{max-width:60ch;margin:0;color:var(--muted)}.question{border-left:3px solid var(--gold);padding:7px 12px;max-width:310px;font:600 17px/1.35 Georgia,serif}
+.layout{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(290px,.85fr);gap:14px;align-items:stretch}.map-panel,.journal{border:1px solid var(--line);border-radius:14px;background:var(--panel);overflow:hidden;box-shadow:0 8px 24px #2936380b}.map-head{display:flex;align-items:center;gap:12px;padding:11px 14px;border-bottom:1px solid var(--line);font-size:12px;color:var(--muted)}.map-head strong{color:var(--ink);font:600 17px Georgia,serif}.map-head .spacer{flex:1}.badge{border:1px solid var(--line);border-radius:30px;padding:4px 9px;font-size:11px;font-weight:700;background:#fff}
+canvas{display:block;width:100%;height:auto;aspect-ratio:960/560;background:#c6d9d8;touch-action:none}.map-controls{display:flex;align-items:center;gap:9px;flex-wrap:wrap;padding:10px 13px;border-top:1px solid var(--line);background:#fbfaf5}.map-controls .hint{font-size:12px;color:var(--muted);flex:1;min-width:230px}.dpad{display:none;grid-template-columns:repeat(3,36px);grid-template-rows:repeat(2,34px);gap:3px}.dpad button{min-width:36px;min-height:34px;border:1px solid var(--line);background:white;border-radius:6px}
+.journal{padding:17px;display:flex;flex-direction:column;gap:13px}.journal h2{font:600 25px/1.1 Georgia,serif;margin:0}.objective{background:#f4efe2;border:1px solid #e1d6be;padding:11px 12px;border-radius:9px}.objective b{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#805a22;margin-bottom:3px}.objective p{margin:0}.clue-list{display:grid;gap:8px}.clue{border:1px solid var(--line);border-radius:9px;padding:10px;background:#fff}.clue.unfound{color:#777}.clue h3{font:600 16px Georgia,serif;margin:0 0 4px}.clue p{font-size:13px;color:var(--muted);margin:0}.clue small{display:block;margin-top:6px;color:var(--teal);font-weight:700}.progress{height:7px;background:#e9e4d8;border-radius:8px;overflow:hidden}.progress span{display:block;height:100%;width:0;background:var(--teal);transition:width .3s}
+.actions{display:flex;gap:8px;flex-wrap:wrap}.btn{border:1px solid var(--teal);border-radius:7px;background:var(--teal);color:white;min-height:40px;padding:8px 12px;font-weight:700}.btn.secondary{background:white;color:var(--teal)}.btn:disabled{opacity:.45;cursor:not-allowed}
+.location-list{display:flex;gap:6px;flex-wrap:wrap}.location-list button{border:1px solid var(--line);border-radius:7px;background:#fff;padding:6px 9px;color:var(--teal);font-size:12px;font-weight:700}.location-list button[aria-pressed="true"]{background:var(--teal2);border-color:var(--teal)}
+#status{min-height:1.5em;color:var(--teal);font-size:13px;font-weight:700}
+#mission{position:fixed;inset:0;display:grid;place-items:center;padding:18px;background:#122a2bd9;z-index:5}#mission[hidden]{display:none}.sheet{width:min(560px,100%);background:var(--paper);border-radius:16px;padding:clamp(22px,4vw,38px);box-shadow:0 24px 80px #0006}.sheet h2{font:600 clamp(32px,6vw,52px)/1 Georgia,serif;margin:8px 0 13px}.sheet p{color:#536164}.sheet .eyebrow{color:var(--terra)}
+#final{position:fixed;inset:0;display:grid;place-items:center;padding:18px;background:#122a2bd9;z-index:6}#final[hidden]{display:none}.final-card{width:min(650px,100%);max-height:92dvh;overflow:auto;background:var(--paper);border-radius:16px;padding:clamp(20px,4vw,34px);box-shadow:0 24px 80px #0006}.final-card h2{font:600 34px/1.05 Georgia,serif;margin:6px 0 9px}.final-card label{display:block;font-weight:700;margin:13px 0 5px}.final-card select,.final-card textarea{width:100%;border:1px solid #9ca9a3;border-radius:8px;padding:10px;background:white;color:var(--ink)}.final-card textarea{min-height:116px;resize:vertical}.fine{font-size:12px;color:var(--muted)}
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:8;background:#173c43;color:white;border-radius:8px;padding:9px 14px;box-shadow:0 7px 24px #0003;max-width:min(90vw,600px);text-align:center}
+@media(max-width:860px){.layout{grid-template-columns:1fr}.intro{align-items:start;flex-direction:column;gap:10px}.question{max-width:none}.journal{display:grid;grid-template-columns:1fr 1fr;align-items:start}.journal h2,.objective,.progress,.actions,#status{grid-column:1/-1}.clue-list{grid-column:1/-1;grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:560px){.dpad [data-move=up]{grid-column:2;grid-row:1}.dpad [data-move=left]{grid-column:1;grid-row:2}.dpad [data-move=down]{grid-column:2;grid-row:2}.dpad [data-move=right]{grid-column:3;grid-row:2}.atlas-compare-link{white-space:normal;text-align:center}header{gap:10px}.brand b{font-size:18px}.intro{margin-bottom:12px}.journal{display:flex}.clue-list{grid-template-columns:1fr}.map-controls .hint{min-width:100%}.dpad{display:grid}.map-head{padding:9px 11px}.question{font-size:15px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header>
+<a class="back" href="index.html#greece-l5">← Back to Greece · Lesson 5</a>
+<div class="brand"><small>Grade 8 · Ancient Greece</small><b>Field Walk · Athens</b></div>
+<div class="spacer"></div><span class="badge">10–15 min</span>
+</header>
+<main>
+<section class="intro">
+<div><div class="eyebrow">Explore · collect evidence · make a claim</div><h1>At the Assembly</h1><p>Walk through a stylized reconstruction of central Athens. Inspect three civic clues, then decide how inclusive Athenian democracy was.</p></div>
+<div class="question">Who had a voice in Athenian democracy?</div>
+</section>
+<section class="layout" aria-label="Athens investigation game">
+<div class="map-panel">
+<div class="map-head"><strong>Central Athens</strong><span>Classical period · simplified study map</span><span class="spacer"></span><span id="near-label" class="badge">Explore the map</span></div>
+<canvas id="world" width="960" height="560" tabindex="0" aria-label="Illustrated map of ancient Athens. Use arrow keys or WASD to move. Visit the Pnyx, Agora, and Council House to inspect evidence."></canvas>
+<div class="map-controls">
+<div class="hint">Move with <b>W A S D</b> or arrow keys. Press <b>E</b> to inspect a nearby place. You can also select a place below.</div>
+<div class="dpad" aria-label="Touch movement controls"><button data-move="up" aria-label="Move up">↑</button><button data-move="left" aria-label="Move left">←</button><button data-move="down" aria-label="Move down">↓</button><button data-move="right" aria-label="Move right">→</button></div>
+<button class="btn secondary" id="interact">Inspect nearby</button>
+</div>
+</div>
+<aside class="journal" aria-labelledby="journal-title">
+<div><div class="eyebrow">Field notebook</div><h2 id="journal-title">Your evidence</h2></div>
+<div class="objective"><b>Investigation question</b><p>How democratic was Athens, and who was excluded from political participation?</p></div>
+<div><div class="map-head" style="border:0;padding:0 0 7px"><strong style="font-size:15px">Progress</strong><span id="count" class="spacer" style="text-align:right">0 of 3 clues</span></div><div class="progress" role="progressbar" aria-label="Evidence collected" aria-valuemin="0" aria-valuemax="3" aria-valuenow="0"><span id="progress"></span></div></div>
+<div class="location-list" aria-label="Accessible location selection">
+<button type="button" data-site="pnyx" aria-pressed="false">Pnyx</button><button type="button" data-site="agora" aria-pressed="false">Agora</button><button type="button" data-site="court" aria-pressed="false">Council House</button>
+</div>
+<div class="clue-list" id="clues" aria-live="polite"></div>
+<p id="status" role="status">Find the marked places on the map to begin.</p>
+<div class="actions"><button class="btn" id="conclude" disabled>Make your historical claim</button><button class="btn secondary" id="restart">Restart walk</button></div>
+<p class="fine">The map and guide are original classroom reconstructions. Historical statements are study notes based on the Greece unit; the scene is not an ancient eyewitness source. Student writing stays in this browser until downloaded.</p>
+</aside>
+</section>
+</main>
+<div id="mission" role="dialog" aria-modal="true" aria-labelledby="mission-title">
+<div class="sheet"><div class="eyebrow">Athenian civic life · 5th century BCE</div><h2 id="mission-title">A question of voice</h2><p>You are visiting Athens during its democratic period. The Assembly, public offices and civic spaces shaped political life—but not every resident could take part.</p><p>Explore the Pnyx, Agora and Council House. Collect all three clues, then use them to write a short evidence-based judgment.</p><button id="begin" class="btn">Begin the walk</button><p class="fine">Keyboard: arrows or WASD to move · E to inspect · Complete all three stops to unlock the conclusion.</p></div>
+</div>
+<div id="final" hidden role="dialog" aria-modal="true" aria-labelledby="final-title">
+<div class="final-card"><div class="eyebrow">Your conclusion</div><h2 id="final-title">How democratic was Athens?</h2><p>Use at least two clues from your notebook. Make a judgment and explain who could participate and who was excluded.</p>
+<label for="claim">Choose the strongest summary</label><select id="claim"><option value="">Choose one…</option><option value="Athens used direct democracy, but political participation was limited to a smaller citizen group.">Athens used direct democracy, but political participation was limited to a smaller citizen group.</option><option value="Everyone living in Athens had an equal political voice.">Everyone living in Athens had an equal political voice.</option><option value="Athens had no democratic features at all.">Athens had no democratic features at all.</option></select>
+<label for="response">Support your judgment with evidence</label><textarea id="response" placeholder="Use two clues. Explain one strength and one limit of Athenian democracy."></textarea>
+<p id="feedback" role="status" class="fine"></p>
+<div class="actions"><button class="btn" id="download">Download field report</button><button class="btn secondary" id="close-final">Back to the map</button></div>
+<p class="fine">This file is created only when you choose to download it. No account or online submission is used.</p></div>
+</div>
+<div id="toast" hidden role="status"></div>
+<script>
+(function(){
+"use strict";
+const canvas=document.getElementById("world"),ctx=canvas.getContext("2d");
+const W=960,H=560,player={x:480,y:485,r:13},speed=190,held=new Set(),seen=new Set();
+const sites=[
+{id:"pnyx",name:"Pnyx · Assembly Hill",x:185,y:188,color:"#b65f48",title:"The Assembly met here",text:"Male citizens could meet at the Pnyx to debate and vote on public decisions. This is evidence of direct participation by eligible citizens.",limit:"It does not mean every Athenian resident could vote. Women, enslaved people and resident foreigners (metics) lacked citizen voting rights.",tag:"Place · political participation"},
+{id:"agora",name:"Agora · Civic Marketplace",x:500,y:294,color:"#d8aa56",title:"A public place with many roles",text:"The Agora was a commercial and civic gathering place. Trade and public life brought people into shared spaces.",limit:"Being present in a public place did not give everyone an equal role in political decisions. Ask whose work and voices the surviving record shows.",tag:"Place · public life"},
+{id:"court",name:"Council House (Bouleuterion) · Selection by Lot",x:768,y:205,color:"#457c72",title:"Some offices used lotteries",text:"The Council of 500 helped prepare public decisions. Its members were selected by lot from eligible citizens. Athens also used lots for many public offices.",limit:"Eligibility still mattered: lot selection did not give women, enslaved people or resident foreigners a citizen vote.",tag:"Practice · selection"}
+];
+let active=false,toastTimer=0,modalFocus=null;
+function rounded(x,y,w,h,r,fill,stroke){ctx.beginPath();ctx.roundRect(x,y,w,h,r);ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=2;ctx.stroke();}}
+function draw(){
+ const sx=canvas.width/W,sy=canvas.height/H;
+ ctx.setTransform(sx,0,0,sy,0,0);
+ ctx.clearRect(0,0,W,H);
+ const sky=ctx.createLinearGradient(0,0,0,H);sky.addColorStop(0,"#c8dedd");sky.addColorStop(.5,"#d9e2d3");sky.addColorStop(1,"#e9dfc7");ctx.fillStyle=sky;ctx.fillRect(0,0,W,H);
+ // Hills and distant olive groves
+ ctx.fillStyle="#90a99a";ctx.beginPath();ctx.moveTo(0,260);ctx.quadraticCurveTo(130,100,260,210);ctx.quadraticCurveTo(370,315,500,205);ctx.quadraticCurveTo(650,90,790,210);ctx.quadraticCurveTo(870,270,960,160);ctx.lineTo(960,380);ctx.lineTo(0,380);ctx.closePath();ctx.fill();
+ ctx.fillStyle="#718f7c";ctx.beginPath();ctx.moveTo(0,338);ctx.quadraticCurveTo(170,245,315,333);ctx.quadraticCurveTo(475,412,625,300);ctx.quadraticCurveTo(770,240,960,324);ctx.lineTo(960,455);ctx.lineTo(0,455);ctx.closePath();ctx.fill();
+ // Street plane
+ ctx.fillStyle="#e5d6b7";ctx.fillRect(0,360,W,200);
+ ctx.strokeStyle="#c9b58f";ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(0,425);ctx.quadraticCurveTo(460,385,960,430);ctx.moveTo(340,365);ctx.lineTo(430,560);ctx.moveTo(695,360);ctx.lineTo(625,560);ctx.stroke();
+ // Acropolis in the distance
+ ctx.fillStyle="#718677";ctx.beginPath();ctx.moveTo(365,210);ctx.lineTo(395,130);ctx.lineTo(550,130);ctx.lineTo(582,210);ctx.closePath();ctx.fill();
+ ctx.fillStyle="#c6b88d";ctx.fillRect(400,145,146,62);
+ for(let i=0;i<7;i++){ctx.fillStyle="#efe3c6";ctx.fillRect(407+i*19,151,9,48);ctx.fillStyle="#b59f76";ctx.fillRect(404+i*19,148,15,5);ctx.fillRect(404+i*19,198,15,5);}
+ ctx.fillStyle="#e7dab9";ctx.fillRect(397,140,153,7);
+ // Pnyx hill and speaker platform
+ ctx.fillStyle="#b59c70";ctx.beginPath();ctx.ellipse(185,220,126,70,0,Math.PI,Math.PI*2);ctx.lineTo(311,220);ctx.ellipse(185,220,126,70,0,0,Math.PI);ctx.fill();
+ ctx.fillStyle="#d7c49a";ctx.beginPath();ctx.moveTo(126,217);ctx.lineTo(244,217);ctx.lineTo(220,234);ctx.lineTo(149,234);ctx.closePath();ctx.fill();
+ ctx.fillStyle="#9a8868";ctx.fillRect(151,234,68,10);
+ // Stoa and Agora market
+ rounded(353,260,302,77,6,"#c8b88f","#8b8069");
+ ctx.fillStyle="#eee2c7";ctx.fillRect(365,267,279,11);
+ for(let i=0;i<9;i++){ctx.fillStyle="#f2e8d4";ctx.fillRect(374+i*31,281,12,49);ctx.fillStyle="#a18e6d";ctx.fillRect(371+i*31,278,18,6);}
+ // Market awnings and pottery stalls
+ const stalls=[[382,348,"#b65f48"],[454,354,"#d8aa56"],[549,348,"#497f78"],[626,354,"#9d784f"]];
+ stalls.forEach(s=>{ctx.fillStyle="#8d6d4d";ctx.fillRect(s[0],s[1]+16,54,31);ctx.fillStyle=s[2];ctx.beginPath();ctx.moveTo(s[0]-5,s[1]+16);ctx.lineTo(s[0]+7,s[1]);ctx.lineTo(s[0]+48,s[1]);ctx.lineTo(s[0]+60,s[1]+16);ctx.closePath();ctx.fill();});
+ // Council building
+ rounded(714,139,116,72,4,"#c7b78e","#877e68");ctx.fillStyle="#efe4cc";ctx.beginPath();ctx.moveTo(704,140);ctx.lineTo(772,107);ctx.lineTo(840,140);ctx.closePath();ctx.fill();for(let i=0;i<5;i++){ctx.fillStyle="#f1e6cf";ctx.fillRect(724+i*20,151,11,49);}
+ // pottery / amphorae
+ for(const [x,y,c] of [[293,355,"#a9513c"],[318,364,"#d19c53"],[669,352,"#a9513c"],[685,365,"#cd9e58"]]){ctx.fillStyle=c;ctx.beginPath();ctx.moveTo(x-8,y-13);ctx.lineTo(x+8,y-13);ctx.lineTo(x+12,y+8);ctx.quadraticCurveTo(x,y+17,x-12,y+8);ctx.closePath();ctx.fill();ctx.fillStyle="#f0dfbd";ctx.fillRect(x-4,y-17,8,5);}
+ // olive trees
+ for(const [x,y] of [[85,330],[864,343],[94,450],[879,447],[270,278]]){ctx.fillStyle="#725e3e";ctx.fillRect(x-3,y,6,21);ctx.fillStyle="#587c59";ctx.beginPath();ctx.arc(x,y-4,18,0,Math.PI*2);ctx.fill();ctx.fillStyle="#83a36c";ctx.beginPath();ctx.arc(x-9,y-9,8,0,Math.PI*2);ctx.fill();}
+ // plaza lines and stone pavers
+ ctx.strokeStyle="#cbb98e";ctx.lineWidth=1;for(let y=390;y<555;y+=27){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(960,y);ctx.stroke();}for(let x=30;x<960;x+=90){ctx.beginPath();ctx.moveTo(x,370);ctx.lineTo(x+22,560);ctx.stroke();}
+ // clue markers
+ sites.forEach((s,i)=>{const found=seen.has(s.id);const pulse=active?Math.sin(Date.now()/250+i)*2:0;ctx.beginPath();ctx.arc(s.x,s.y-18,15+pulse,0,Math.PI*2);ctx.fillStyle=found?"#205c5e":"#fff9e9";ctx.fill();ctx.lineWidth=3;ctx.strokeStyle=found?"#fff9e9":s.color;ctx.stroke();ctx.fillStyle=found?"#fff":"#253a3d";ctx.font="700 14px system-ui";ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(found?"✓":String(i+1),s.x,s.y-18);ctx.textBaseline="alphabetic";ctx.fillStyle="#253a3d";ctx.font="700 12px system-ui";ctx.fillText(s.name.split(" · ")[0],s.x,s.y+14);});
+ // player shadow and cloak
+ ctx.fillStyle="#0002";ctx.beginPath();ctx.ellipse(player.x,player.y+10,14,6,0,0,Math.PI*2);ctx.fill();
+ ctx.fillStyle="#264f56";ctx.beginPath();ctx.arc(player.x,player.y,12,0,Math.PI*2);ctx.fill();ctx.fillStyle="#d8aa56";ctx.beginPath();ctx.arc(player.x,player.y-3,6,0,Math.PI*2);ctx.fill();ctx.fillStyle="#f3ead8";ctx.beginPath();ctx.arc(player.x,player.y-11,6,0,Math.PI*2);ctx.fill();ctx.fillStyle="#6a4534";ctx.fillRect(player.x-6,player.y-15,12,3);
+ ctx.setTransform(1,0,0,1,0,0);
+ const near=nearest();document.getElementById("near-label").textContent=near?(seen.has(near.id)?"Evidence recorded":"Nearby · press E"):"Explore the map";
+}
+function nearest(){let best=null,bd=74;for(const s of sites){const d=Math.hypot(player.x-s.x,player.y-(s.y+5));if(d<bd){best=s;bd=d;}}return best;}
+function resize(){const dpr=Math.min(2,window.devicePixelRatio||1);const rect=canvas.getBoundingClientRect();canvas.width=Math.max(1,Math.round(rect.width*dpr));canvas.height=Math.round(canvas.width*H/W);draw();}
+function showToast(s){const el=document.getElementById("toast");el.textContent=s;el.hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.hidden=true,2300);}
+function sync(){
+ const n=seen.size,bar=document.getElementById("progress"),pr=document.querySelector(".progress");
+ bar.style.width=(n/3*100)+"%";pr.setAttribute("aria-valuenow",String(n));document.getElementById("count").textContent=n+" of 3 clues";
+ document.getElementById("conclude").disabled=n<3;
+ document.getElementById("clues").innerHTML=sites.map(s=>seen.has(s.id)?'<article class="clue"><h3>'+escapeHtml(s.title)+'</h3><p>'+escapeHtml(s.text)+'</p><small>'+escapeHtml(s.tag)+'</small></article>':'<article class="clue unfound"><h3>Clue not yet found</h3><p>Visit '+escapeHtml(s.name)+'.</p></article>').join("");
+ document.querySelectorAll("[data-site]").forEach(b=>b.setAttribute("aria-pressed",String(seen.has(b.dataset.site))));
+}
+function escapeHtml(v){return String(v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function inspect(site){
+ if(!site)return;
+ if(seen.has(site.id)){showToast("You have already recorded this clue. Keep exploring.");return;}
+ seen.add(site.id);sync();draw();
+ document.getElementById("status").textContent="Clue recorded: "+site.name+". Read its limitation before drawing a conclusion.";
+ document.getElementById("near-label").textContent="Evidence recorded";
+ showToast(site.title+" — clue added to your notebook.");
+}
+function selectSite(id){const s=sites.find(x=>x.id===id);if(!s)return;player.x=s.x;player.y=s.y+5;draw();inspect(s);}
+function frame(now){if(!active)return;const dt=Math.min(.04,(now-(frame.last||now))/1000);frame.last=now;let dx=0,dy=0;if(held.has("ArrowLeft")||held.has("a"))dx--;if(held.has("ArrowRight")||held.has("d"))dx++;if(held.has("ArrowUp")||held.has("w"))dy--;if(held.has("ArrowDown")||held.has("s"))dy++;if(dx||dy){const m=Math.hypot(dx,dy)||1;player.x=Math.max(25,Math.min(W-25,player.x+dx/m*speed*dt));player.y=Math.max(250,Math.min(H-28,player.y+dy/m*speed*dt));}draw();requestAnimationFrame(frame);}
+function start(){document.getElementById("mission").hidden=true;active=true;requestAnimationFrame(frame);canvas.focus();}
+document.getElementById("begin").onclick=start;
+document.getElementById("interact").onclick=()=>{const s=nearest();if(s)inspect(s);else showToast("Move closer to a marked place, or choose it from the notebook buttons.");};
+document.querySelectorAll("[data-site]").forEach(b=>b.onclick=()=>selectSite(b.dataset.site));
+document.getElementById("conclude").onclick=()=>{document.getElementById("final").hidden=false;document.getElementById("claim").focus();};
+document.getElementById("close-final").onclick=()=>{document.getElementById("final").hidden=true;document.getElementById("conclude").focus();};
+document.getElementById("restart").onclick=()=>{seen.clear();player.x=480;player.y=485;document.getElementById("status").textContent="Find the marked places on the map to begin.";document.getElementById("claim").value="";document.getElementById("response").value="";document.getElementById("final").hidden=true;sync();draw();showToast("Walk reset. Your notebook is clear.");};
+document.getElementById("claim").onchange=()=>{const good=document.getElementById("claim").value.startsWith("Athens used direct democracy");document.getElementById("feedback").textContent=good?"Strong summary. Now explain the evidence and limits in your own words.":"Check your notebook: which statement matches the participation rules you found?";document.getElementById("feedback").style.color=good?"#205c5e":"#9a4a32";};
+document.getElementById("response").oninput=()=>{const n=document.getElementById("response").value.trim().split(/\s+/).filter(Boolean).length;document.getElementById("feedback").textContent=n<15?"Add a little more detail and name at least two clues.":"Good start. Check that you explain both participation and exclusion.";};
+document.getElementById("download").onclick=()=>{
+ const claim=document.getElementById("claim").value||"Not selected";
+ const response=document.getElementById("response").value.trim()||"No written response";
+ const report=["AT THE ASSEMBLY · ATHENS FIELD WALK","Grade 8 Social Studies · Ancient Greece · Lesson 5","", "Historical claim:",claim,"","Evidence collected:",...sites.map(s=>(seen.has(s.id)?"[x] ":"[ ] ")+s.name+(seen.has(s.id)?": "+s.text:"")),"","My explanation:",response,"","Source note: This interactive map is an original classroom reconstruction. The evidence cards summarize the connected Greece unit materials. The scene and game guide are not ancient eyewitness sources.",""].join("\n");
+ const blob=new Blob([report],{type:"text/plain;charset=utf-8"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="athens-field-walk-report.txt";a.click();URL.revokeObjectURL(url);
+ document.getElementById("feedback").textContent="Field report downloaded. Submit it using your teacher's classroom instructions.";document.getElementById("download").focus();
+};
+document.getElementById("mission").addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.id!=="begin"){e.preventDefault();start();}});
+document.addEventListener("keydown",e=>{const mission=document.getElementById("mission"),final=document.getElementById("final");if(!mission.hidden)return;if(!final.hidden)return;const k=e.key.length===1?e.key.toLowerCase():e.key;if(["ArrowUp","ArrowDown","ArrowLeft","ArrowRight"," ","w","a","s","d","e","E"].includes(e.key)||["w","a","s","d","e"].includes(k))e.preventDefault();if(k==="e"||k==="E"){const s=nearest();if(s)inspect(s);else showToast("Walk toward a numbered place.");return;}held.add(k);});
+document.addEventListener("keyup",e=>held.delete(e.key.length===1?e.key.toLowerCase():e.key));
+window.addEventListener("blur",()=>held.clear());
+document.querySelectorAll("[data-move]").forEach(b=>{const key={up:"ArrowUp",down:"ArrowDown",left:"ArrowLeft",right:"ArrowRight"}[b.dataset.move];const on=e=>{e.preventDefault();held.add(key);};const off=e=>{e.preventDefault();held.delete(key);};b.addEventListener("pointerdown",on);b.addEventListener("pointerup",off);b.addEventListener("pointercancel",off);b.addEventListener("pointerleave",off);b.addEventListener("click",e=>{if(e.detail===0){held.add(key);setTimeout(()=>held.delete(key),160);}});});
+canvas.addEventListener("click",e=>{const r=canvas.getBoundingClientRect(),x=(e.clientX-r.left)/r.width*W,y=(e.clientY-r.top)/r.height*H;const s=sites.find(z=>Math.hypot(x-z.x,y-(z.y-18))<38);if(s){player.x=s.x;player.y=s.y+5;draw();inspect(s);}else if(active){player.x=x;player.y=Math.max(250,Math.min(H-25,y));draw();}});
+window.addEventListener("resize",resize);resize();sync();
+})();
+</script>
+</body>
+</html>
