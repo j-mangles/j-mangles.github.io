@@ -41,7 +41,7 @@ jobs:
           done
           cat /tmp/computer-class-server.log
           exit 1
-      - name: Test fifteen assignments and teacher review on mobile and desktop
+      - name: Test all assignments, Science evidence imports, and teacher review on mobile and desktop
         run: node tools/test_computer_class_browser.cjs
       - name: Save browser screenshots
         if: always()

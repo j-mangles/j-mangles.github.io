@@ -1,0 +1,91 @@
+name: Test Science Interactive Investigations
+on:
+  push:
+    branches:
+      - feat/science-investigations-2026-11-12
+    paths:
+      - science/virtual-microscope.js
+      - science/buoyancy-investigation.js
+      - science/system-interactions.js
+      - science/exercise-response-lab.js
+      - science/mass-volume-investigation.js
+      - science/organ-inspector.js
+      - tools/test_organ_inspector.cjs
+      - tools/test_organ_inspector_browser.cjs
+      - tools/test_mass_volume_investigation.cjs
+      - tools/test_mass_volume_browser.cjs
+      - tools/test_body_systems_expansion.cjs
+      - tools/test_body_systems_browser.cjs
+      - science/buoyancy-investigation.css
+      - tools/test_buoyancy_investigation.cjs
+      - tools/test_buoyancy_browser.cjs
+      - science/virtual-microscope.css
+      - science/index.html
+      - science/labs.html
+      - tools/test_virtual_microscope.cjs
+      - tools/test_virtual_microscope_browser.cjs
+      - .github/workflows/test-virtual-microscope.yml
+  pull_request:
+    paths:
+      - science/virtual-microscope.js
+      - science/buoyancy-investigation.js
+      - science/system-interactions.js
+      - science/exercise-response-lab.js
+      - science/mass-volume-investigation.js
+      - science/organ-inspector.js
+      - tools/test_organ_inspector.cjs
+      - tools/test_organ_inspector_browser.cjs
+      - tools/test_mass_volume_investigation.cjs
+      - tools/test_mass_volume_browser.cjs
+      - tools/test_body_systems_expansion.cjs
+      - tools/test_body_systems_browser.cjs
+      - science/buoyancy-investigation.css
+      - tools/test_buoyancy_investigation.cjs
+      - tools/test_buoyancy_browser.cjs
+      - science/virtual-microscope.css
+      - science/index.html
+      - science/labs.html
+      - tools/test_virtual_microscope.cjs
+      - tools/test_virtual_microscope_browser.cjs
+  workflow_dispatch:
+jobs:
+  microscope:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Test microscope and buoyancy calculations
+        run: |
+          node tools/test_virtual_microscope.cjs
+          node tools/test_buoyancy_investigation.cjs
+          node tools/test_body_systems_expansion.cjs
+          node tools/test_mass_volume_investigation.cjs
+          node tools/test_organ_inspector.cjs
+      - name: Install browser harness
+        run: npm install --no-save --no-package-lock playwright-core@1.56.1
+      - name: Serve site locally
+        run: |
+          python3 -m http.server 8765 --bind 127.0.0.1 > /tmp/microscope-site.log 2>&1 &
+          for i in {1..20}; do
+            if curl -fsS http://127.0.0.1:8765/science/ > /dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/microscope-site.log
+          exit 1
+      - name: Test Science investigations on mobile and desktop
+        run: |
+          node tools/test_virtual_microscope_browser.cjs
+          node tools/test_buoyancy_browser.cjs
+          node tools/test_body_systems_browser.cjs
+          node tools/test_mass_volume_browser.cjs
+          node tools/test_organ_inspector_browser.cjs
+      - name: Save responsive Science investigation previews
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: science-interactive-investigations-qa
+          path: browser-artifacts/science-*.png
+          if-no-files-found: ignore
+          retention-days: 14

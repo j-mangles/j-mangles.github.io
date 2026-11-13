@@ -6,24 +6,27 @@ const BASE=process.env.SITE_TEST_ORIGIN||"http://127.0.0.1:8765";
 const shots=path.resolve(__dirname,"../browser-artifacts");
 fs.mkdirSync(shots,{recursive:true});
 const routes=[
-"science-membranes","science-organelle-rescue","science-oxygen-systems",
-"social-mesopotamia","social-hammurabi-justice","social-trade-network",
-"math-store","math-fraction-kitchen","math-decimal-detective",
-"ela-slides","ela-second-draft","ela-the-choice",
-"thinking-case","thinking-misinformation","thinking-fair-test"
+"science-membranes","science-organelle-rescue","science-oxygen-systems","science-microscope-evidence",
+"social-mesopotamia","social-hammurabi-justice","social-trade-network","social-historical-source",
+"math-store","math-fraction-kitchen","math-decimal-detective","math-fraction-budget",
+"ela-slides","ela-second-draft","ela-the-choice","ela-revision-workshop",
+"thinking-case","thinking-misinformation","thinking-fair-test","thinking-ai-fact-check"
 ];
 function checkOverflow(actual,where,width){assert.ok(actual.scroll<=actual.viewport+4,where+" width="+width+" overflow: "+JSON.stringify(actual));}
 (async()=>{
- const browser=await chromium.launch({channel:"chrome",headless:true,args:["--disable-dev-shm-usage"]});
+ const launchOptions={headless:true,args:["--disable-dev-shm-usage"]};
+ if(process.env.CHROME_PATH)launchOptions.executablePath=process.env.CHROME_PATH;
+ else launchOptions.channel="chrome";
+ const browser=await chromium.launch(launchOptions);
  try{
  for(const width of [390,1200]){
   const page=await browser.newPage({viewport:{width,height:844},acceptDownloads:true,deviceScaleFactor:1});
   const errors=[];page.on("pageerror",e=>errors.push(e.message));
   await page.goto(BASE+"/",{waitUntil:"domcontentloaded",timeout:30000});
-  await page.locator(".home-computer-link").waitFor({state:"visible"});
-  assert.equal(await page.locator(".home-computer-link").getAttribute("href"),"computer-class/");
+  await page.locator('a[href="computer-class/"]').waitFor({state:"visible"});
+  assert.equal(await page.locator('a[href="computer-class/"]').getAttribute("href"),"computer-class/");
   await page.goto(BASE+"/computer-class/",{waitUntil:"domcontentloaded"});
-  assert.equal(await page.locator(".cc-entry").count(),15,"All 15 assignments listed");
+  assert.equal(await page.locator(".cc-entry").count(),20,"All 20 assignments listed");
   assert.ok(await page.locator(".cc-policy").innerText().then(x=>x.includes("Nothing is submitted")));
   checkOverflow(await page.evaluate(()=>({scroll:document.documentElement.scrollWidth,viewport:window.innerWidth})),"directory",width);
   for(const id of routes){
@@ -76,6 +79,55 @@ function checkOverflow(actual,where,width){assert.ok(actual.scroll<=actual.viewp
   await oxygen.locator('[data-field="breathing"]').fill("10");
   assert.match(await oxygen.locator(".cc-lab-result").innerText(),/Limiting supply: breathing/);
   await oxygen.locator("[data-record]").click();
+  const organReport="Human Systems · Organ Inspector\nSelected structures: lungs, heart and diaphragm.\nThe lungs exchange gases; the heart pumps blood.";
+  await page.locator('input[data-evidence-file="ox10"]').setInputFiles({
+   name:"organ-systems-investigation.txt",mimeType:"text/plain",buffer:Buffer.from(organReport,"utf8")
+  });
+  await page.locator("#cc-q-ox10 .cc-evidence-loaded").waitFor({state:"visible"});
+  await page.locator('textarea[data-id="ox10"]').fill("The report says the lungs exchange gases and the heart pumps blood. They work together because oxygen enters blood in the lungs before the heart moves it around the body.");
+  assert.ok(await page.locator("a[href=\"../science/#cells/circulatory\"]").first().innerText().then(x=>x.includes("Exercise & Circulation Data Lab")),"Second related Science lesson link");
+  assert.match(await page.locator("#cc-progress-count").innerText(),/1 of 11/);
+  await page.reload({waitUntil:"domcontentloaded"});
+  assert.equal(await page.locator("#cc-q-ox10 .cc-evidence-loaded pre").textContent(),organReport,"Imported evidence stays in the local draft");
+  const exerciseReport="Exercise & Circulation Data Lab — Grade 8 Science\nSample data from the Science 8 Systems booklet; one student, not a medical measurement.\nPeak while jogging: 142 bpm at minute 8\nIncrease above resting average: 70 bpm\nWithin 5 bpm of resting average by minute 13 (about 5 minutes after stopping).\nLimitation: heart rate does not measure oxygen or carbon dioxide directly.";
+  await page.locator('input[data-evidence-file="ox11"]').setInputFiles({name:"exercise-circulation-data-report.txt",mimeType:"text/plain",buffer:Buffer.from(exerciseReport,"utf8")});
+  await page.locator("#cc-q-ox11 .cc-evidence-loaded").waitFor({state:"visible"});
+  await page.locator('textarea[data-id="ox11"]').fill("The sample reaches 142 beats per minute while jogging, which is 70 above the resting average. Working muscles need more oxygen, so the heart pumps blood faster. This graph does not measure oxygen levels or carbon dioxide exchange.");
+  assert.match(await page.locator("#cc-progress-count").innerText(),/2 of 11/);
+  const [scienceReportDownload]=await Promise.all([
+   page.waitForEvent("download",{timeout:10000}),
+   page.locator('[data-action="download"]').click()
+  ]);
+  assert.match(fs.readFileSync(await scienceReportDownload.path(),"utf8"),/Selected structures: lungs, heart and diaphragm/);
+  await page.locator("#cc-student-name").fill("Sam Example");
+  const [teacherCopyDownload]=await Promise.all([
+   page.waitForEvent("download",{timeout:10000}),
+   page.locator('[data-action="teacher-copy"]').click()
+  ]);
+  const evidenceTeacherCopy=fs.readFileSync(await teacherCopyDownload.path(),"utf8");
+  await page.goto(BASE+"/computer-class/teacher.html",{waitUntil:"domcontentloaded"});
+  await page.locator("#tr-files").setInputFiles({name:"oxygen-mission.json",mimeType:"application/json",buffer:Buffer.from(evidenceTeacherCopy,"utf8")});
+  await page.locator(".tr-entry").waitFor({state:"visible",timeout:10000});
+  await page.locator(".tr-entry").click();
+  assert.match(await page.locator(".tr-answer-text").filter({hasText:"Imported investigation: organ-systems-investigation.txt"}).innerText(),/Selected structures: lungs, heart and diaphragm/);
+  assert.match(await page.locator(".tr-answer-text").filter({hasText:"Imported investigation: exercise-circulation-data-report.txt"}).innerText(),/142 bpm at minute 8/);
+  page.once("dialog",dialog=>dialog.accept());
+  await page.goto(BASE+"/computer-class/#science-oxygen-systems");
+  await page.locator('[data-action="clear-evidence"][data-id="ox10"]').click();
+  assert.equal(await page.locator("#cc-q-ox10 .cc-evidence-empty").innerText(),"No report selected yet.");
+  page.once("dialog",dialog=>dialog.accept());
+  await page.locator('[data-action="clear"]').click();
+  await page.locator("#cc-import").setInputFiles({name:"oxygen-mission.json",mimeType:"application/json",buffer:Buffer.from(evidenceTeacherCopy,"utf8")});
+  await page.locator("#cc-q-ox10 .cc-evidence-loaded").waitFor({state:"visible",timeout:10000});
+  assert.match(await page.locator("#cc-q-ox10 .cc-evidence-loaded pre").textContent(),/Selected structures: lungs, heart and diaphragm/);
+  await page.goto(BASE+"/computer-class/#science-microscope-evidence");
+  const microscopeReport="Virtual Microscope Investigation\nTrial 1: Onion epidermis, 400× total, estimated cell width 82 µm.\nThis is a schematic model.";
+  await page.locator('input[data-evidence-file="mi11"]').setInputFiles({
+   name:"virtual-microscope-investigation.txt",mimeType:"text/plain",buffer:Buffer.from(microscopeReport,"utf8")
+  });
+  await page.locator("#cc-q-mi11 .cc-evidence-loaded").waitFor({state:"visible"});
+  await page.locator('textarea[data-id="mi11"]').fill("One trial estimates a cell width of 82 micrometres at 400 times magnification. This is an estimate because the microscope image is schematic.");
+  assert.match(await page.locator("#cc-progress-count").innerText(),/1 of 11/);
   await page.goto(BASE+"/computer-class/#social-trade-network");
   const canal=page.locator("#cc-lab-tr4");
   await canal.locator('[data-field="north"]').fill("40");
@@ -213,6 +265,6 @@ function checkOverflow(actual,where,width){assert.ok(actual.scroll<=actual.viewp
   assert.deepEqual(errors,[],"No uncaught JS errors at "+width+"px");
   await page.close();
  }
- console.log("Computer Class Chrome pass: 15 assignments, teacher review session backup/restore, structured export/import, six labs and two screen sizes.");
+ console.log("Computer Class Chrome pass: 20 assignments, local Science evidence hand-offs, teacher review backup/restore, six labs and two screen sizes.");
  }finally{await browser.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;});

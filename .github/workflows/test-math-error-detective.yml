@@ -1,0 +1,49 @@
+name: Test Grade 7 Math Error Detective
+on:
+  push:
+    branches:
+      - feat/science-investigations-2026-11-12
+    paths:
+      - math/error-detective.js
+      - math/index.html
+      - tools/test_math_error_detective.cjs
+      - tools/test_math_error_detective_browser.cjs
+      - .github/workflows/test-math-error-detective.yml
+  pull_request:
+    paths:
+      - math/error-detective.js
+      - math/index.html
+      - tools/test_math_error_detective.cjs
+      - tools/test_math_error_detective_browser.cjs
+  workflow_dispatch:
+jobs:
+  review-lab:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check nine correctworked-solution cases
+        run: node tools/test_math_error_detective.cjs
+      - name: Install browser QA
+        run: npm install --no-save --no-package-lock playwright-core@1.56.1
+      - name: Start local site
+        run: |
+          python3 -m http.server 8765 --bind 127.0.0.1 > /tmp/math-review-site.log 2>&1 &
+          for i in {1..20}; do
+            if curl -fsS http://127.0.0.1:8765/math/ > /dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/math-review-site.log
+          exit 1
+      - name: Test Grade 7 review in Chrome at mobile and desktop widths
+        run: node tools/test_math_error_detective_browser.cjs
+      - name: Preserve Math review screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: math-error-detective-qa
+          path: browser-artifacts/math-error-detective-*.png
+          if-no-files-found: ignore
+          retention-days: 14

@@ -29,6 +29,7 @@ function words(s){return String(s||"").trim().split(/\s+/).filter(Boolean).lengt
 function answered(q,value){
  if(q.type==="text")return words(value)>=(q.minWords||1);
  if(q.type==="lab")return Array.isArray(value)&&new Set(value.map(x=>JSON.stringify(x))).size>=(q.minTrials||1);
+ if(q.type==="evidence")return Boolean(value&&typeof value.content==="string"&&value.content.trim()&&words(value.reflection)>=(q.minWords||1));
  if(q.type==="choice")return /^[0-9]+$/.test(String(value??""))&&Number(value)<q.options.length;
  if(q.type==="number")return String(value??"").trim()!==""&&Number.isFinite(Number(value));
  if(q.type==="order")return Array.isArray(value)&&value.length===q.items.length&&value.every(x=>/^[0-9]+$/.test(String(x??"")))&&new Set(value.map(String)).size===q.items.length;
@@ -42,7 +43,7 @@ function grade(q,value){
  return null;
 }
 function progress(activity,state){
- const qs=allQuestions(activity),complete=qs.filter(q=>answered(q,state[q.id])).length,checkables=qs.filter(q=>q.type!=="text"&&q.type!=="lab");
+ const qs=allQuestions(activity),complete=qs.filter(q=>answered(q,state[q.id])).length,checkables=qs.filter(q=>q.type!=="text"&&q.type!=="lab"&&q.type!=="evidence");
  return {complete,total:qs.length,percent:Math.round(100*complete/qs.length),checkables:checkables.length,
   accurate:checkables.filter(q=>grade(q,state[q.id])===true).length};
 }
@@ -68,6 +69,14 @@ function showDirectory(){
 function inputFor(q,i){
  const id="cc-input-"+q.id,v=answers[q.id];
  if(q.type==="lab")return '<div class="cc-lab-mount" id="cc-lab-'+q.id+'">Loading investigation…</div>';
+ if(q.type==="evidence")return '<div class="cc-evidence-import"><label class="cc-evidence-file-label" for="'+id+'-file">Choose a Science investigation report (.txt)</label>'+
+  '<input id="'+id+'-file" type="file" accept=".txt,text/plain" data-evidence-file="'+q.id+'">'+
+  '<p class="cc-evidence-note">The report is read on this device and added to your assignment copy. It is not uploaded.</p>'+
+  (v?.content?'<div class="cc-evidence-loaded"><p><strong>Imported:</strong> '+escape(v.fileName||"investigation.txt")+' <button type="button" class="cc-evidence-remove" data-action="clear-evidence" data-id="'+q.id+'">Remove report</button></p>'+
+   '<details><summary>View imported report</summary><pre>'+escape(v.content)+'</pre></details></div>':'<p class="cc-evidence-empty">No report selected yet.</p>')+
+  '<label class="cc-evidence-reflection-label" for="'+id+'">'+escape(q.reflectionLabel||"What evidence from the report supports your explanation?")+'</label>'+
+  '<textarea id="'+id+'" data-id="'+q.id+'" rows="4" placeholder="'+escape(q.placeholder||"Use a specific result from your report...")+'">'+escape(v?.reflection||"")+'</textarea>'+
+  '<p class="cc-word-count" id="cc-words-'+q.id+'">'+words(v?.reflection)+' / '+(q.minWords||1)+' words minimum to mark complete</p></div>';
  if(q.type==="text"){
   return '<textarea id="'+id+'" data-id="'+q.id+'" rows="5" placeholder="'+escape(q.placeholder||"Write your response...")+'">'+escape(v||"")+'</textarea>'+
    '<p class="cc-word-count" id="cc-words-'+q.id+'">'+words(v)+' / '+(q.minWords||1)+' words minimum to mark complete</p>';
@@ -91,14 +100,15 @@ function renderQuestion(q,index){
  '<div class="cc-question-heading"><span class="cc-question-no">'+String(index+1).padStart(2,"0")+'</span>'+
  '<h3>'+escape(q.prompt)+'</h3><span class="cc-q-status" id="cc-state-'+q.id+'"></span></div>'+
  '<div class="cc-response">'+inputFor(q,index)+'</div>'+
- (q.type!=="text"&&q.type!=="lab"?'<div class="cc-q-actions"><button type="button" class="cc-check" data-action="check" data-id="'+q.id+'">Check answer</button>'+
+ (q.type!=="text"&&q.type!=="lab"&&q.type!=="evidence"?'<div class="cc-q-actions"><button type="button" class="cc-check" data-action="check" data-id="'+q.id+'">Check answer</button>'+
  '<p id="cc-feedback-'+q.id+'" class="cc-feedback" aria-live="polite"></p></div>':
- '<p class="cc-writing-tip">'+(q.type==="lab"?"Record different trials to complete this investigation.":"This response is reviewed by your teacher, not automatically graded.")+'</p>')+
+ (q.type==="lab"?'<p class="cc-writing-tip">Record different trials to complete this investigation.</p>':q.type==="evidence"?'<p class="cc-writing-tip">Import a report and explain what its evidence shows. This response is reviewed by your teacher.</p>':'<p class="cc-writing-tip">This response is reviewed by your teacher, not automatically graded.</p>'))+
  '</article>';
 }
 function showActivity(activity){
  current=activity;name="";checked={};answers=draftCache[activity.id]||readDraft(activity.id);draftCache[activity.id]=answers;
  document.body.dataset.subject=activity.subject;document.title=activity.title+" · Computer Class";
+ const lessonLinks=Array.isArray(activity.lessonLinks)&&activity.lessonLinks.length?activity.lessonLinks:[{href:activity.lesson,label:activity.lessonText}];
  const p=progress(activity,answers),n=allQuestions(activity);
  let idx=0;
  root.innerHTML='<div class="cc-head cc-activity-head"><a class="cc-back" href="#">← All computer-class assignments</a>'+
@@ -109,7 +119,7 @@ function showActivity(activity){
  '<div class="cc-progress" role="progressbar" aria-label="Assignment completion" aria-valuemin="0" aria-valuemax="'+p.total+'" aria-valuenow="'+p.complete+'" id="cc-progress-bar"><span style="width:'+p.percent+'%"></span></div></div></div>'+
  '<div class="cc-work-layout"><div class="cc-main-col"><section class="cc-reading"><h2>Read first</h2>'+
  activity.reading.map((p,i)=>'<p '+(i===0&&activity.subject==="ela"?'class="cc-story-title"':"")+'>'+escape(p)+'</p>').join("")+
- '<p class="cc-reading-link"><a href="'+escape(activity.lesson)+'">↗ '+escape(activity.lessonText)+'</a></p></section>'+
+ '<p class="cc-reading-link">'+lessonLinks.map(link=>'<a href="'+escape(link.href)+'">↗ '+escape(link.label)+'</a>').join(' <span aria-hidden="true">·</span> ')+'</p></section>'+
  activity.sections.map((section,si)=>'<section class="cc-assignment-section" aria-labelledby="cc-section-'+si+'">'+
  '<div class="cc-section-heading"><span class="cc-section-index">Part '+(si+1)+'</span><h2 id="cc-section-'+si+'">'+escape(section.title)+'</h2>'+
  '<p>'+escape(section.intro)+'</p></div>'+section.questions.map(q=>renderQuestion(q,idx++)).join("")+'</section>').join("")+
@@ -128,10 +138,10 @@ function showActivity(activity){
  '<button data-action="clear" type="button" class="cc-clear">Clear my answers on this device</button></section></div>'+
  '<aside class="cc-sidebar"><div class="cc-side-inner"><h2>Assignment guide</h2>'+
  '<p class="cc-side-focus">'+escape(activity.focus)+'</p><ol>'+activity.sections.map((s,i)=>'<li><a href="#cc-section-'+i+'" data-scroll="'+i+'">'+escape(s.title)+'</a></li>').join("")+'</ol>'+
- '<p><b>'+n.length+' responses</b> · '+n.filter(q=>q.type!=="text"&&q.type!=="lab").length+' self-checks</p>'+
+ '<p><b>'+n.length+' responses</b> · '+n.filter(q=>q.type!=="text"&&q.type!=="lab"&&q.type!=="evidence").length+' self-checks</p>'+
  '<div class="cc-side-divider"></div><h3>Before you leave</h3>'+
  '<p>Download your work. A draft on this device is not the same as handing it in.</p>'+
- '<a class="cc-side-lesson" href="'+escape(activity.lesson)+'">Review the related lesson ↗</a></div></aside></div>'+
+ '<div class="cc-side-lessons">'+lessonLinks.map(link=>'<a class="cc-side-lesson" href="'+escape(link.href)+'">'+escape(link.label)+' ↗</a>').join("")+'</div></div></aside></div>'+
  '<div class="cc-print-report" id="cc-print-report"></div>';
  mountLabs();
  updateProgress();
@@ -159,8 +169,9 @@ function updateProgress(){
   const done=answered(q,answers[q.id]);
   if(status)status.textContent=done?"Complete":"To do";
   if(wrap)wrap.classList.toggle("cc-complete",done);
-  if(q.type==="text"){const word=document.getElementById("cc-words-"+q.id);
-   if(word)word.textContent=words(answers[q.id])+" / "+(q.minWords||1)+" words minimum to mark complete";}
+  if(q.type==="text"||q.type==="evidence"){const word=document.getElementById("cc-words-"+q.id);
+   const response=q.type==="evidence"?answers[q.id]?.reflection:answers[q.id];
+   if(word)word.textContent=words(response)+" / "+(q.minWords||1)+" words minimum to mark complete";}
  }
 }
 function getQuestion(id){return current&&allQuestions(current).find(q=>q.id===id);}
@@ -171,7 +182,8 @@ function updateField(target){
  if(q.type==="order"){
   const position=Number(target.dataset.position),next=Array.isArray(answers[id])?answers[id].slice():Array(q.items.length).fill("");
   next[position]=target.value;answers[id]=next;
- }else answers[id]=target.value;
+ }else if(q.type==="evidence")answers[id]={...(answers[id]||{}),reflection:target.value};
+ else answers[id]=target.value;
  delete checked[id];
  const fb=document.getElementById("cc-feedback-"+id);
  if(fb){fb.textContent="";fb.className="cc-feedback";}
@@ -194,6 +206,7 @@ function getName(){return (document.getElementById("cc-student-name")?.value||na
 function printableAnswer(q,value){
  if(q.type==="choice")return q.options[Number(value)]||"(no answer)";
  if(q.type==="lab")return Array.isArray(value)&&value.length?value.map((trial,i)=>"Trial "+(i+1)+": "+window.ComputerClassLabs.trialSummary(q.lab,trial)).join("\n"):"(no trials recorded)";
+ if(q.type==="evidence")return value?.content?"Imported investigation: "+(value.fileName||"investigation.txt")+"\n\n"+value.content+"\n\nEvidence reflection:\n"+(value.reflection||"(not answered)"):"(no investigation report imported)\n\nEvidence reflection:\n"+(value?.reflection||"(not answered)");
  if(q.type==="order")return Array.isArray(value)?value.map((id,i)=>(i+1)+". "+(q.items[Number(id)]||"(not answered)")).join("\n"):"(not answered)";
  return String(value??"").trim()||"(not answered)";
 }
@@ -238,7 +251,11 @@ async function importTeacherCopy(file){
   if(payload?.schema!=="eess-computer-class-submission-v1"||payload.version!==config.version||payload.activity_id!==current.id||
    !payload.answers||typeof payload.answers!=="object"||Array.isArray(payload.answers))throw Error("Mismatched or unsupported assignment file.");
   const safe={};for(const q of allQuestions(current)){
-   if(Object.prototype.hasOwnProperty.call(payload.answers,q.id))safe[q.id]=payload.answers[q.id];
+   if(!Object.prototype.hasOwnProperty.call(payload.answers,q.id))continue;
+   const value=payload.answers[q.id];
+   if(q.type==="evidence"){
+    if(value&&typeof value.content==="string"&&value.content.length<=65536)safe[q.id]={fileName:String(value.fileName||"investigation.txt").slice(0,120),content:value.content,reflection:String(value.reflection||"").slice(0,4000)};
+   }else safe[q.id]=value;
   }
   if(Object.keys(answers).length&&!window.confirm("Replace the current draft with answers from this file?"))return;
   const oldActivity=current;answers=safe;draftCache[oldActivity.id]=safe;saveDraft();showActivity(oldActivity);
@@ -246,6 +263,20 @@ async function importTeacherCopy(file){
   if(nameField&&filename){nameField.value=filename;name=filename;}
   status("Answers restored from the selected file. Remember to download your updated work before leaving.");
  }catch(err){status("Could not import this file. Check that it is a saved copy of this exact assignment.");}
+}
+async function importInvestigationReport(file,id){
+ const q=getQuestion(id);if(!q||q.type!=="evidence")return;
+ if(file.size>65536){status("That report is larger than 64 KB. Choose the plain-text investigation download.");return;}
+ if(!/\.txt$/i.test(file.name)){status("Choose a plain-text .txt investigation report.");return;}
+ try{
+  const content=(await file.text()).replace(/^\uFEFF/,"");
+  if(!content.trim()||content.includes("\u0000"))throw Error("Not plain text");
+  answers[id]={...(answers[id]||{}),fileName:file.name.slice(0,120),content};
+  saveDraft();
+  const response=document.querySelector("#cc-q-"+id+" .cc-response");if(response)response.innerHTML=inputFor(q,0);
+  updateProgress();status("Report imported on this device. Add your evidence reflection below it.");
+  document.getElementById("cc-input-"+id)?.focus();
+ }catch(e){status("Could not read that report. Choose a downloaded plain-text investigation file.");}
 }
 function status(text){const el=document.getElementById("cc-finish-status");if(el)el.textContent=text;}
 function buildPrintReport(){
@@ -274,6 +305,12 @@ function onAction(action,id){
   if(!window.confirm("Clear all saved responses for this assignment on this device? This cannot be undone. Download a copy first if you want to keep it."))return;
   answers={};draftCache[current.id]=answers;checked={};saveDraft();showActivity(current);status("Answers cleared. This device no longer has the previous draft.");
  }
+ if(action==="clear-evidence"){
+  const q=getQuestion(id);if(!q||q.type!=="evidence")return;
+  answers[id]={...(answers[id]||{}),fileName:"",content:""};saveDraft();
+  const response=document.querySelector("#cc-q-"+id+" .cc-response");if(response)response.innerHTML=inputFor(q,0);
+  updateProgress();status("Report removed from this assignment on this device.");return;
+ }
 }
 root.addEventListener("input",event=>{
  if(event.target.id==="cc-student-name"){name=event.target.value;return;}
@@ -281,6 +318,7 @@ root.addEventListener("input",event=>{
 });
 root.addEventListener("change",event=>{
  if(event.target.id==="cc-import"){const file=event.target.files?.[0];if(file)importTeacherCopy(file);return;}
+ if(event.target.dataset?.evidenceFile){const file=event.target.files?.[0];if(file)importInvestigationReport(file,event.target.dataset.evidenceFile);return;}
  if(event.target.dataset?.id)updateField(event.target);
 });
 root.addEventListener("click",event=>{

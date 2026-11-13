@@ -13,7 +13,6 @@ body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 system-ui,
 main{max-width:900px;margin:auto;padding:22px 16px 54px}
 a{color:var(--accent);font-weight:700}
 header{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding-bottom:15px;border-bottom:1px solid var(--line)}
-.kicker{margin:0;color:var(--muted);font-size:.78rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
 h1,h2,h3{font-family:Georgia,"Times New Roman",serif;line-height:1.18}
 h1{font-size:clamp(2rem,6vw,3.2rem);margin:5px 0}
 h2{font-size:1.7rem;margin:0 0 8px}
@@ -25,7 +24,7 @@ p{margin:8px 0}
 .tab{white-space:nowrap;border:1px solid var(--line);border-radius:999px;padding:9px 13px;background:var(--card);font-weight:700}
 .tab[aria-pressed=true]{background:var(--ink);color:var(--card);border-color:var(--ink)}
 :focus-visible{outline:3px solid var(--focus);outline-offset:3px}
-.panel{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:clamp(17px,4vw,28px);box-shadow:0 8px 30px #0000000a}
+section.panel{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:24px;box-shadow:0 8px 30px #0000000a}
 .panel+.panel{margin-top:16px}
 .note{color:var(--muted);font-size:.92rem}
 .timeline{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin:18px 0}
@@ -44,7 +43,7 @@ p{margin:8px 0}
 .btn{border:0;border-radius:8px;background:var(--ink);color:var(--card);font-weight:750;padding:11px 15px;min-height:46px}
 .btn.secondary{background:transparent;color:var(--ink);border:1px solid var(--line)}
 .btn:hover{opacity:.88}
-.feedback{margin-top:12px;border-left:4px solid var(--accent);background:var(--accent-soft);padding:13px 15px;border-radius:7px}
+.feedback{margin-top:12px;background:var(--accent-soft);padding:13px 15px;border-radius:7px}
 .feedback strong{display:block;margin-bottom:3px}
 .badge{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:3px 9px;font-size:.8rem;color:var(--muted)}
 .nav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:12px}
@@ -57,13 +56,13 @@ textarea{display:block;width:100%;min-height:88px;resize:vertical;border:1px sol
 hr{border:0;border-top:1px solid var(--line);margin:22px 0}
 .final{margin-top:16px}
 [hidden]{display:none!important}
-@media(max-width:650px){.timeline{grid-template-columns:repeat(2,minmax(0,1fr))}.timeline .phasebtn:last-child{grid-column:span 2}.sourcegrid{grid-template-columns:1fr}}
+@media(max-width:650px){section.panel{padding:16px}.timeline{grid-template-columns:repeat(2,minmax(0,1fr))}.timeline .phasebtn:last-child{grid-column:span 2}.sourcegrid{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 </style>
 </head>
 <body>
 <main>
-<header><div><p class="kicker">Unit 2 · Ancient Egypt · Lesson 9</p><h1>Egypt and Nubia</h1></div><a href="index.html">Back to the Egypt atlas</a></header>
+<header><div><h1>Egypt and Nubia</h1><p class="note">Unit 2 · Lesson 9</p></div><a href="index.html">Back to the Egypt atlas</a></header>
 <p class="lede">Were Egypt and Nubia rivals, trading partners, or both? Track how power shifted across five phases, then weigh a Roman-era written account against a message preserved in an object. Make a choice before revealing the evidence each source can support.</p>
 <nav class="tabs" aria-label="Investigation sections">
 <button class="tab" type="button" aria-pressed="true" data-tab="timeline">1 · Track the relationship</button>
@@ -71,14 +70,14 @@ hr{border:0;border-top:1px solid var(--line);margin:22px 0}
 <button class="tab" type="button" aria-pressed="false" data-tab="verdict">3 · Make a claim</button>
 </nav>
 <section class="panel" id="timeline-panel">
-<p class="kicker">Evidence station 1</p><h2>Who had the upper hand?</h2>
+<h2>Who had the upper hand?</h2>
 <p class="note">Choose the best-supported answer for each phase. Some relationships do not fit a simple winner-versus-loser story. Your work stays in this tab; nothing is submitted or saved online.</p>
 <div class="timeline" id="phase-list" aria-label="Five phases in chronological order"></div>
 <div class="phase" id="phase-card"></div>
 <div class="nav"><button class="btn secondary" id="phase-prev" type="button">← Previous phase</button><span class="note" id="phase-count"></span><button class="btn" id="phase-next" type="button">Next phase →</button></div>
 </section>
 <section class="panel" id="sources-panel" hidden>
-<p class="kicker">Evidence station 2</p><h2>Two sources, two limits</h2>
+<h2>Two sources, two limits</h2>
 <p>One source is a Roman-era writer describing a Kushite queen. The other is an object found at the Kushite capital. Consider what each source can show and what it leaves out.</p>
 <div class="sourcegrid">
 <article class="source"><p class="label">Source A · Strabo</p><p>A Greek geographer writing around 20 CE, while living in the Roman Empire. He describes the queen of Kush who fought Rome and comments on her appearance.</p></article>
@@ -87,9 +86,20 @@ hr{border:0;border-top:1px solid var(--line);margin:22px 0}
 <div id="source-questions"></div>
 <div class="actions"><button class="btn" id="check-sources" type="button">Check my source reading</button><span class="note" id="source-score" aria-live="polite"></span></div>
 <div id="source-feedback" aria-live="polite"></div>
+<hr>
+<h3>Two royal voices</h3>
+<p>The Lesson 9 source task compares how Egyptian and Kushite kings described power. Both accounts were created by rulers, so ask what each king wanted people to believe.</p>
+<div class="sourcegrid">
+<article class="source"><p class="label">Source C · Senusret III’s boundary stone, about 1860 BCE</p><p>The Egyptian pharaoh’s inscription describes Nubians as weak in battle and says they attack when Egypt withdraws. It was set up at an Egyptian fort in Nubia.</p></article>
+<article class="source"><p class="label">Source D · Piye’s Victory Stela, about 727 BCE</p><p>The Kushite king presents himself as chosen by Amun to restore order in Egypt. After defeating a ruler at Hermopolis, Piye says the starving horses in the royal stables upset him.</p></article>
+</div>
+<div class="phase"><label for="royal-makers">1. Who made each source, and what was each king trying to show?</label><textarea id="royal-makers" data-royal-work></textarea></div>
+<div class="phase"><label for="royal-portrayal">2. How does the Egyptian source describe Nubians? How does Piye present himself as better than the ruler he defeated?</label><textarea id="royal-portrayal" data-royal-work></textarea></div>
+<div class="phase"><label for="royal-common">3. What do the two sources have in common, even though they come from opposite sides?</label><textarea id="royal-common" data-royal-work></textarea></div>
+<div class="phase"><label for="royal-balance">4. Why do historians need sources from both Egypt and Kush?</label><textarea id="royal-balance" data-royal-work></textarea></div>
 </section>
 <section class="panel" id="verdict-panel" hidden>
-<p class="kicker">Evidence station 3</p><h2>Was Kush “just copying Egypt”?</h2>
+<h2>Was Kush “just copying Egypt”?</h2>
 <p>Sort each fact by how you think it relates to the claim. For some facts, more than one reading is defensible. Choose a position, then open both evidence notes and explain which reading you find stronger.</p>
 <div id="claim-cards"></div>
 <hr>
@@ -100,7 +110,7 @@ hr{border:0;border-top:1px solid var(--line);margin:22px 0}
 <div class="actions"><button class="btn" id="show-model" type="button">I’ve tried — show a possible evidence path</button><button class="btn secondary" id="clear-work" type="button">Clear this tab’s work</button></div>
 <div class="feedback" id="model" hidden><strong>One evidence path to consider</strong><span>Egypt and Nubia were both rivals and trading partners. The record shows power moving in both directions: Kerma was a powerful neighbour; Egypt later ruled Nubia; Kushite rulers then governed Egypt; and Meroë remained an independent centre. Trade and cultural exchange continued across many of these changes. Egyptian and Roman sources survive more often than accounts from Nubians themselves, so our view is incomplete.</span></div>
 </section>
-<p class="note final">Based on the student task “Rivals or Partners?” in the Egypt and Nubia lesson. A source can provide useful evidence while still reflecting the maker’s point of view.</p>
+<p class="note final">Based on the Egypt and Nubia student tasks “Two Sides of the Nile” and “Rivals or Partners?” A source can provide useful evidence while still reflecting the maker’s point of view. Responses stay in this page and are not submitted or saved online.</p>
 </main>
 <script>
 (function(){
@@ -164,7 +174,7 @@ function switchTab(id){
 document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>switchTab(b.dataset.tab)));
 $("check-sources").addEventListener("click",checkSources);
 $("show-model").addEventListener("click",()=>{$("model").hidden=false});
-$("clear-work").addEventListener("click",()=>{phaseAnswers.fill(null);phaseChecked.fill(false);sourceAnswers.fill(null);sourceChecked=false;ideaAnswers.fill(null);ideaShown.fill(false);phaseIndex=0;$("source-score").textContent="";$("claim").value="";$("model").hidden=true;switchTab("timeline");renderPhases()});
+$("clear-work").addEventListener("click",()=>{phaseAnswers.fill(null);phaseChecked.fill(false);sourceAnswers.fill(null);sourceChecked=false;ideaAnswers.fill(null);ideaShown.fill(false);phaseIndex=0;$("source-score").textContent="";$("claim").value="";document.querySelectorAll("[data-royal-work]").forEach(x=>x.value="");$("model").hidden=true;switchTab("timeline");renderPhases()});
 renderPhases();
 })();
 </script>

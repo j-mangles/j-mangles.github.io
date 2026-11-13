@@ -39,6 +39,29 @@ const solve=p=>{
  const numerator=p.op==="+"?a+b:a-b;
  return {d,a,b,n:numerator,sign:p.op,positive:numerator>0};
 };
+const diagnose=(p,given,answer)=>{
+ const v=solve(p),parsed=typeof answer==="string"?fracInput(answer):answer;
+ const denominator=Number(given);
+ let denominatorMessage;
+ if(denominator===v.d)denominatorMessage="The least common denominator is correct.";
+ else if(Number.isSafeInteger(denominator)&&denominator===p.a[1]*p.b[1]&&denominator!==v.d)
+  denominatorMessage="You multiplied the denominators. Find their least common multiple: the smallest number divisible by both.";
+ else if(Number.isSafeInteger(denominator)&&denominator>0&&denominator%v.d===0)
+  denominatorMessage="This is a common denominator, but it is not the least one. Use the smallest common multiple, "+v.d+".";
+ else denominatorMessage="The denominator must be divisible by both "+p.a[1]+" and "+p.b[1]+". Their least common multiple is "+v.d+".";
+ let answerMessage;
+ if(parsed&&parsed.n*v.d===v.n*parsed.d)answerMessage="The final value is correct; check the least common denominator above.";
+ else if(!parsed)answerMessage="Enter a fraction or mixed number, then compare its value with the strip model.";
+ else{
+  const rawN=p.op==="+"?p.a[0]+p.b[0]:p.a[0]-p.b[0],rawD=p.op==="+"?p.a[1]+p.b[1]:p.a[1]-p.b[1];
+  const rawDenominatorMistake=rawD>0&&parsed.n*rawD===rawN*parsed.d;
+  const unscaledNumeratorMistake=parsed.d===v.d&&parsed.n===rawN;
+  if(rawDenominatorMistake)answerMessage="It looks like you combined the denominators too. Rename both fractions with equal-size pieces, then add or subtract only the numerators.";
+  else if(unscaledNumeratorMistake)answerMessage="The numerator operation is right, but the original numerators need to be scaled to the common denominator first.";
+  else answerMessage="Use the equivalent-piece counts shown in the diagram, then count the pieces combined or left over.";
+ }
+ return {denominator:denominatorMessage,answer:answerMessage,correct:Number.isSafeInteger(denominator)&&denominator===v.d&&!!parsed&&parsed.n*v.d===v.n*parsed.d};
+};
 function fractionStripSVG(p,stage){
  const v=solve(p),d=stage===0?0:v.d;
  const aIn=stage===0?p.a[0]:v.a,bIn=stage===0?p.b[0]:v.b;
@@ -143,8 +166,8 @@ function render(el){
     if(!credited.has(current)){credited.add(current);solved++;}
     feedback="Correct! "+p.label+" = "+format(v.n,v.d)+". Explain how the diagram proves it.";
   }else{
-    feedback=(dOk?"Common denominator correct. ":"Check the least common denominator. ")+
-      (answerOk?"Final answer correct. ":"Check how many equal pieces remain or are combined.");
+    const guidance=diagnose(p,$("#fl-denominator").value.trim(),$("#fl-answer").value);
+    feedback=guidance.denominator+" "+guidance.answer;
   }
   draw();
  };
@@ -168,5 +191,5 @@ function render(el){
 }
 H.tools=H.tools||{};
 H.tools.fracops=render;
-window.FractionStripCore={gcd,lcm,format,fracInput,solve,scenarios,fractionStripSVG};
+window.FractionStripCore={gcd,lcm,format,fracInput,solve,diagnose,scenarios,fractionStripSVG};
 })();

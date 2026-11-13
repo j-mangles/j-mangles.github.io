@@ -2,7 +2,7 @@
 "use strict";
 const assert=require("node:assert/strict"),fs=require("node:fs"),path=require("node:path"),vm=require("node:vm");
 const root=path.resolve(__dirname,".."),src=name=>fs.readFileSync(path.join(root,"computer-class",name),"utf8");
-const files=["data.js","activities-2.js","activities-3.js","labs.js","teacher.js"];
+const files=["data.js","activities-2.js","activities-3.js","activities-4.js","labs.js","teacher.js"];
 const elements=new Map(),events={};
 const box=()=>({innerHTML:"",textContent:"",value:"",listeners:{},addEventListener(k,f){this.listeners[k]=f;},setAttribute(){}});
 const page=box();page.addEventListener=(k,f)=>events[k]=f;
@@ -16,7 +16,7 @@ for(const file of files)vm.runInNewContext(src(file),ctx,{filename:file,timeout:
 const t=w.ComputerClassTeacher;
 assert.ok(t);
 const data=w.ComputerClassData;
-assert.equal(data.activities.length,15);
+assert.equal(data.activities.length,20);
 const payload={schema:"eess-computer-class-submission-v1",version:1,activity_id:"math-store",
  student_name:"Alex Example",exported_at:"2026-11-11T19:00:00Z",answers:{
  ma1:"18",ma2:"54",ma3:"6.48",ma4:"60.48",ma5:"19.52",ma6:"51",ma7:"1",ma8:"0",
@@ -32,6 +32,15 @@ assert.equal(s.written,2);
 assert.equal(t.hasTeacherReview(e),false);
 assert.equal(t.hasTeacherReview({...e,review:{ma9:{level:"meeting"}}}),true);
 assert.equal(t.hasTeacherReview({...e,overall:"Strength and next step"}),true);
+const microscope=t.sanitize({schema:"eess-computer-class-submission-v1",version:1,activity_id:"science-microscope-evidence",
+ student_name:"Sam Student",exported_at:"2026-11-12T12:00:00Z",answers:{
+  mi11:{fileName:"virtual-microscope-investigation.txt",content:"Trial 1: onion cells, 400×, estimated width 82 µm.",reflection:"The first trial estimates a cell width of 82 micrometres, which supports my explanation because it records a specific measurement at higher magnification in this model."}
+ }});
+assert.equal(microscope.answers.mi11.fileName,"virtual-microscope-investigation.txt");
+assert.match(microscope.answers.mi11.content,/estimated width 82 µm/);
+assert.equal(t.stats(microscope).writtenDone,1);
+assert.equal(t.stats(microscope).written,4);
+assert.equal(t.sanitize({...payload,answers:{...payload.answers,unknown:{bad:true}}}).answers.unknown,undefined);
 
 assert.throws(()=>t.sanitize({...payload,student_name:""}));
 assert.throws(()=>t.sanitize({...payload,schema:"incorrect"}));
@@ -66,4 +75,4 @@ assert.ok(w.events.beforeunload,"Unsaved change navigation listener registered")
 assert.match(fs.readFileSync(path.join(root,"computer-class","teacher.html"),"utf8"),/teacher.js/);
 assert.match(fs.readFileSync(path.join(root,"computer-class","teacher.css"),"utf8"),/tr-student-head/);
 assert.ok(!src("teacher.js").includes("fetch("),"No network calls");
-console.log("Teacher review passed: 15 assignments, safe import, scoring, CSV security, validated review backup/restore.");
+console.log("Teacher review passed: 20 assignments, local Science evidence review, safe import, scoring, CSV security, validated backup/restore.");

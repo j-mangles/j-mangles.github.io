@@ -19,10 +19,13 @@ on:
       - science/measurement-challenge.js
       - science/osmosis-cell-response.js
       - science/continental-drift-evidence.js
+      - science/fair-test-studio.js
       - tools/test_science_graph_measure_osmosis_drift.cjs
       - tools/test_science_next_wave.cjs
       - tools/test_science_expansion.cjs
       - tools/test_science_expansion_browser.cjs
+      - tools/test_science_tool_registration.cjs
+      - tools/test_fair_test_plan.cjs
       - .github/workflows/test-science-expansion.yml
   pull_request:
     paths:
@@ -43,9 +46,12 @@ on:
       - science/measurement-challenge.js
       - science/osmosis-cell-response.js
       - science/continental-drift-evidence.js
+      - science/fair-test-studio.js
       - tools/test_science_graph_measure_osmosis_drift.cjs
       - tools/test_science_next_wave.cjs
       - tools/test_science_expansion.cjs
+      - tools/test_science_tool_registration.cjs
+      - tools/test_fair_test_plan.cjs
   workflow_dispatch:
 jobs:
   science-check:
@@ -59,6 +65,8 @@ jobs:
       - run: node tools/test_science_next_wave.cjs
       - run: node tools/test_science_graph_measure_osmosis_drift.cjs
       - run: node tools/test_homeostasis.cjs
+      - run: node tools/test_science_tool_registration.cjs
+      - run: node tools/test_fair_test_plan.cjs
       - run: node tools/test_matter_unit.cjs
       - run: node tools/test_energy_light_unit.cjs
       - run: node tools/test_earth_unit.cjs
@@ -73,13 +81,13 @@ jobs:
           done
           cat /tmp/science-site.log
           exit 1
-      - name: Test fifteen labs in Chrome at desktop and phone sizes
+      - name: Test the current Science labs in Chrome at desktop and phone sizes
         run: node tools/test_science_expansion_browser.cjs
       - name: Save Science visual check screenshots
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: science-fifteen-labs-mobile
+          name: science-current-labs-mobile
           path: browser-artifacts/science-*-mobile.png
           if-no-files-found: ignore
           retention-days: 7

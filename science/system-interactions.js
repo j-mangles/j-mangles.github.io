@@ -9,13 +9,17 @@ const SYSTEMS={
  circulatory:{name:"Circulatory",organs:"Heart and blood vessels",job:"Pumps blood to carry oxygen and nutrients to cells and take wastes away.",link:"The respiratory system supplies oxygen; the digestive system supplies absorbed nutrients.",path:[["Heart","Heart muscle pumps blood."],["Arteries","Carry blood away from the heart."],["Capillaries","Exchange materials with body cells."],["Veins","Carry blood back toward the heart."]]},
  digestive:{name:"Digestive",organs:"Stomach and intestines",job:"Breaks food into nutrients that the body can absorb.",link:"Blood transports nutrients absorbed by the small intestine.",path:[["Mouth","Food enters and begins to break down."],["Stomach","Acid and muscular movement break food down."],["Small intestine","Most nutrient absorption happens here."],["Transport","Nutrients can be carried to cells in the blood."]]},
  nervous:{name:"Nervous",organs:"Brain, spinal cord and nerves",job:"Sends electrical signals between the brain and the rest of the body.",link:"The brain and nerves coordinate responses involving other systems.",path:[["Brain","Processes information and directs responses."],["Spinal cord","Part of the central nervous system."],["Other nerves","Carry signals to and from the body."],["Response","The body responds to incoming information."]]},
+ muscular:{name:"Muscular",organs:"Skeletal muscles, tendons and other muscle tissues",job:"Skeletal muscles contract to pull on bones and move joints. Muscle tissue also helps move blood and food through the body.",link:"The nervous system signals muscles to contract; the skeletal system provides support, and the circulatory system brings oxygen and nutrients.",path:[["Brain and nerves","Motor signals travel through nerves to skeletal muscles."],["Muscle contraction","Muscle fibres shorten and generate a pulling force."],["Tendon and bone","A tendon transmits the muscle force to a bone."],["Movement","Bones move around a joint, often with an opposing muscle relaxing."]]},
+ skeletal:{name:"Skeletal",organs:"Bones, joints, cartilage and ligaments",job:"Bones provide support and protection, and joints allow movement. Bone marrow also produces blood cells.",link:"Muscles pull on bones at joints; the nervous system coordinates actions, while blood supplies living bone tissues.",path:[["Bones","Rigid bones provide a framework and protect important organs."],["Joint","Two or more bones meet at a joint, which can permit movement."],["Muscle and tendon","A contracting skeletal muscle pulls on a bone through a tendon."],["Coordinated motion","The joint moves as muscles are activated and other muscles relax."]]},
  integumentary:{name:"Integumentary",organs:"Skin, hair and nails",job:"Protects the body and helps regulate body temperature.",link:"Works with nervous and circulatory systems in homeostasis.",path:[["Skin","Creates a protective barrier."],["Conditions","Skin can detect conditions around the body."],["Temperature","The body can adjust heat loss through the skin."],["Homeostasis","Systems work together to maintain stable conditions."]]}
 };
 const QUIZ=[
  {q:"Where are most digested nutrients absorbed?",a:["Stomach","Small intestine","Large intestine"],c:1,why:"Most nutrient absorption takes place in the small intestine."},
  {q:"How does oxygen reach body cells after entering the lungs?",a:["In blood","In the stomach","Through skin"],c:0,why:"The respiratory and circulatory systems work together."},
  {q:"Which two organs form the central nervous system?",a:["Brain and spinal cord","Heart and lungs","Stomach and liver"],c:0,why:"The brain and spinal cord form the central nervous system."},
- {q:"Which vessels allow exchange with cells?",a:["Arteries","Capillaries","Veins"],c:1,why:"Capillaries exchange gases, nutrients and wastes with cells."}
+ {q:"Which vessels allow exchange with cells?",a:["Arteries","Capillaries","Veins"],c:1,why:"Capillaries exchange gases, nutrients and wastes with cells."},
+ {q:"How do skeletal muscles move the bones of a joint?",a:["They push bones away using nerves","They contract and pull through tendons","They pump blood directly into joints"],c:1,why:"Skeletal muscles generate a pulling force, transmitted by tendons to bones."},
+ {q:"Which system includes bones, joints and protective structures such as the rib cage?",a:["Skeletal","Digestive","Nervous"],c:0,why:"The skeletal system supports the body and protects organs."}
 ];
 const STYLE=[
  ".hsi,.odi{color:var(--ink);min-width:0;line-height:1.5}",
@@ -27,6 +31,18 @@ const STYLE=[
  ".hsi .diagram,.odi .diagram{background:var(--soft);border:1px solid var(--rule);border-radius:var(--radius,12px);padding:10px;min-width:0}",
  ".hsi svg,.odi svg{display:block;width:100%;height:auto}.hsi svg{max-height:430px}",
  ".hsi .body{fill:color-mix(in srgb,var(--paper) 75%,var(--soft));stroke:var(--muted);stroke-width:2;stroke-opacity:.5}",
+ ".hsi .layout{grid-template-columns:minmax(0,400px) minmax(0,1fr)}",
+ ".hsi svg{max-height:none}",
+ ".hsi .organ{opacity:.66;transition:opacity .22s ease;cursor:pointer;outline:none}",
+ ".hsi .organ.active,.hsi .organ:hover,.hsi .organ:focus-visible{opacity:1}",
+ ".hsi .sys-integumentary .part{fill:#f3d9ca;stroke:#c28f7c}",
+ ".hsi .sys-skeletal .part{fill:#e8ddc8;stroke:#9d876b}",
+ ".hsi .sys-muscular .part{fill:#d9867d;stroke:#a94f4c}",
+ ".hsi .sys-nervous .part{fill:#d5b6dc;stroke:#895b9b}",
+ ".hsi .sys-respiratory .part{fill:#d9edf4;stroke:#408eb7}",
+ ".hsi .sys-circulatory .part{fill:#f3d0d2;stroke:#a84755}",
+ ".hsi .sys-digestive .part{fill:#edc4a3;stroke:#b67853}",
+ ".hsi .organ:focus-visible .part{stroke:#172b3c;stroke-width:3}",
  ".hsi .organ{cursor:pointer;outline:none}.hsi .organ .part{fill:color-mix(in srgb,var(--accent) 27%,var(--paper));stroke:var(--accent);stroke-width:2;transition:fill .2s,stroke-width .2s}",
  ".hsi .organ.active .part,.hsi .organ:hover .part{fill:color-mix(in srgb,var(--accent) 65%,var(--paper));stroke-width:3}.hsi .organ:focus-visible .part{stroke:var(--ink);stroke-width:4}",
  ".hsi button,.odi button{cursor:pointer;border:1px solid var(--rule);background:var(--paper);color:var(--ink);border-radius:var(--btn-radius,8px);padding:9px 11px;font:inherit;min-height:38px}",
@@ -53,27 +69,141 @@ const STYLE=[
  "@media(max-width:450px){.odi .bars{grid-template-columns:1fr}}",
  "@media(prefers-reduced-motion:reduce){.hsi .organ .part,.odi .fill{transition:none}}"
 ].join("\n");
-const body=[
- '<svg viewBox="0 0 430 530" role="img" aria-labelledby="body-title body-desc">',
- '<title id="body-title">Choose organs to explore body systems</title><desc id="body-desc">A simplified body silhouette with selectable skin, brain, lungs, heart, stomach and intestines.</desc>',
- '<g class="organ" data-organ="integumentary" role="button" tabindex="0" aria-label="Skin, integumentary system">',
- '<ellipse class="body part" cx="215" cy="64" rx="53" ry="53"/><path class="body part" d="M164 137 Q132 141 112 178 L75 288 Q66 309 81 321 Q98 328 110 302 L146 229 L151 320 L162 443 L155 513 L200 513 L210 377 L222 377 L235 513 L279 513 L269 440 L281 319 L289 229 L323 302 Q338 327 353 320 Q369 309 355 284 L317 177 Q301 141 266 137 Z"/>',
- '</g>',
- '<g class="organ" data-organ="nervous" role="button" tabindex="0" aria-label="Brain and nerves, nervous system">',
- '<path class="part" d="M187 53 Q181 27 209 28 Q236 19 247 40 Q262 59 246 82 Q218 96 193 79 Z"/>',
- '<path d="M215 87 L215 320 M215 162 L189 188 M215 194 L245 216 M215 256 L191 282" fill="none" stroke="var(--accent)" stroke-width="4" stroke-dasharray="8 4"/></g>',
- '<g class="organ" data-organ="respiratory" role="button" tabindex="0" aria-label="Lungs, respiratory system">',
- '<path class="part" d="M202 168 Q163 142 153 195 Q143 232 166 258 Q187 269 202 250 Z"/><path class="part" d="M230 168 Q269 142 280 195 Q289 232 265 258 Q245 269 230 250 Z"/>',
- '<path d="M215 129 L215 171 L201 185 M215 171 L230 185" fill="none" stroke="var(--ink)" stroke-width="4"/></g>',
- '<g class="organ" data-organ="circulatory" role="button" tabindex="0" aria-label="Heart, circulatory system">',
- '<path class="part" d="M213 212 Q197 194 185 213 Q169 230 213 275 Q262 230 241 211 Q228 198 213 212 Z"/>',
- '</g>',
- '<g class="organ" data-organ="digestive" role="button" tabindex="0" aria-label="Stomach and intestines, digestive system">',
- '<path class="part" d="M226 284 Q264 267 273 303 Q280 326 249 332 Q225 330 226 284 Z"/>',
- '<rect class="part" x="174" y="340" width="87" height="83" rx="22"/>',
- '<path d="M195 355 Q243 346 244 370 Q245 392 193 384 Q187 397 205 401 Q248 416 243 405" fill="none" stroke="var(--ink)" stroke-width="4" opacity=".55"/></g>',
- '<text x="215" y="525" text-anchor="middle" font-size="12" fill="var(--muted)">Schematic — not to scale</text></svg>'
-].join("");
+const body=`
+<svg viewBox="0 0 430 530" role="img" aria-labelledby="body-title body-desc">
+<title id="body-title">Interactive human systems anatomy atlas</title>
+<desc id="body-desc">A detailed schematic showing the brain and nerves, airway and lungs, heart and blood vessels, digestive organs, muscles, bones, and a magnified skin cross-section. Select a system with the buttons to highlight it. Not to scale.</desc>
+<defs>
+ <pattern id="hsi-fibres" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(25)"><path d="M0 1H8M0 5H8" stroke="#a94743" stroke-width="1" opacity=".42"/></pattern>
+ <pattern id="hsi-bone" width="6" height="6" patternUnits="userSpaceOnUse"><circle cx="1.5" cy="1.5" r=".7" fill="#9d876b" opacity=".45"/><circle cx="4.5" cy="4.5" r=".7" fill="#9d876b" opacity=".45"/></pattern>
+</defs>
+<rect x="5" y="5" width="420" height="520" rx="18" fill="#f8fafc" stroke="#d9e1e9"/>
+<text x="20" y="28" fill="#526175" font-size="11" font-weight="700" letter-spacing="1.3">HUMAN SYSTEMS · ANATOMY ATLAS</text>
+
+<!-- body silhouette and integumentary cross-section -->
+<g class="organ sys-integumentary" data-organ="integumentary" role="button" tabindex="0" aria-label="Skin, hair and nails, integumentary system">
+ <path class="part" d="M191 91 Q169 98 158 117 L132 156 Q123 172 116 196 L93 251 Q88 263 98 270 L109 268 L137 222 L143 277 L147 351 L139 440 Q139 451 153 453 L168 452 L184 358 L201 358 L211 452 L227 452 L244 358 L260 452 L276 453 Q290 451 288 440 L277 351 L284 277 L290 222 L318 268 L329 270 Q339 263 334 251 L311 196 Q304 172 295 156 L269 117 Q257 98 235 91 Z" fill="#f3d9ca" stroke="#c28f7c" stroke-width="2.3"/>
+ <ellipse class="part" cx="213" cy="59" rx="34" ry="39" fill="#f3d9ca" stroke="#c28f7c" stroke-width="2.3"/>
+ <path d="M184 59q8-7 16 0m26 0q8-7 16 0M201 78q12 8 24 0" fill="none" stroke="#9e6f63" stroke-width="1.8" stroke-linecap="round"/>
+ <path d="M179 45q5-21 22-24m-8 33q5-17 17-18m21-12q14 3 20 19m-10 7q-2-12-12-16" fill="none" stroke="#7d5c50" stroke-width="1.5"/>
+ <path d="M141 166q-14 32-18 56m178-56q14 32 18 56M153 289q7 36 8 57m104-57q-7 36-8 57" fill="none" stroke="#d6a695" stroke-width="1.1" opacity=".8"/>
+</g>
+
+<!-- skeleton: ribs, spine, pelvis and long bones -->
+<g class="organ sys-skeletal" data-organ="skeletal" role="button" tabindex="0" aria-label="Bones and joints, skeletal system">
+ <g fill="none" stroke="#d5c7aa" stroke-width="6" stroke-linecap="round">
+  <path d="M189 120Q168 111 157 124M237 120q21-9 32 4"/>
+  <path d="M211 130v119M215 136v111"/>
+  <path d="M211 139q-33-14-45 3t-1 18q17-7 46 1M219 139q33-14 45 3t1 18q-17-7-46 1"/>
+  <path d="M210 161q-34-12-46 4t0 17q19-5 46 2M220 161q34-12 46 4t0 17q-19-5-46 2"/>
+  <path d="M210 183q-32-10-43 5t2 16q18-4 41 3M220 183q32-10 43 5t-2 16q-18-4-41 3"/>
+  <path d="M210 205q-27-7-37 7t5 14q13-2 32 4M220 205q27-7 37 7t-5 14q-13-2-32 4"/>
+  <path d="M194 244q19-9 39 0l12 22-25 22-28-10-12-16z"/>
+  <path d="M194 253l-24 36m70-36 23 36M187 272l-20 73m63-73 21 73"/>
+  <path d="M171 293l-7 71m88-71 7 71M163 365l-9 72m103-72 9 72"/>
+  <path d="M159 143l-28 52m138-52 28 52M132 196l-19 52m183-52 19 52"/>
+  <path d="M115 248l-10 15m210-15 10 15"/>
+ </g>
+ <g fill="url(#hsi-bone)" stroke="#a89273" stroke-width="1.2" opacity=".9">
+  <path d="M194 246q19-9 39 0l12 22-25 22-28-10-12-16z"/>
+  <path d="M163 365l-8 73m17-74-7 73M245 365l7 73m17-74 7 73"/>
+ </g>
+ <g fill="#d5c7aa" stroke="#a89273" stroke-width="1.4">
+  <circle cx="131" cy="196" r="5"/><circle cx="294" cy="196" r="5"/><circle cx="164" cy="365" r="5"/><circle cx="254" cy="365" r="5"/>
+ </g>
+</g>
+
+<!-- muscular system: paired shoulder, arm, chest, abdominal and leg muscles -->
+<g class="organ sys-muscular" data-organ="muscular" role="button" tabindex="0" aria-label="Skeletal muscles and diaphragm, muscular system">
+ <g fill="#d9867d" stroke="#a94f4c" stroke-width="1.5">
+  <path class="part" d="M181 119q-22 2-27 23l18 22 21-14-3-22zM245 119q22 2 27 23l-18 22-21-14 3-22z"/>
+  <path class="part" d="M169 142q-13-5-21 10l-19 48 10 17q14-23 23-35l16-20zM257 142q13-5 21 10l19 48-10 17q-14-23-23-35l-16-20z"/>
+  <path class="part" d="M184 154q-20-6-27 12l17 47 35-9 4-37zM242 154q20-6 27 12l-17 47-35-9-4-37z"/>
+  <path class="part" d="M184 215q29-11 57 0l-5 30q-23 10-47 0z"/>
+  <path class="part" d="M183 252q-18 8-22 27l20 17 24-16-2-24zM243 252q18 8 22 27l-20 17-24-16 2-24z"/>
+  <path class="part" d="M169 292q-12 8-11 24l23 46 20-6-5-39-11-24zM257 292q12 8 11 24l-23 46-20-6 5-39 11-24z"/>
+  <path class="part" d="M161 368q-18 4-19 24l9 48 23 3 9-44-4-28zM265 368q18 4 19 24l-9 48-23 3-9-44 4-28z"/>
+ </g>
+ <g fill="none" stroke="url(#hsi-fibres)" stroke-width="8" opacity=".9">
+  <path d="M164 151l-16 53m105-53 16 53M177 165l16 37m49-37-16 37M170 301l17 47m70-47-17 47M153 388l8 40m104-40-8 40"/>
+ </g>
+ <path d="M184 212q29 15 57 0" fill="none" stroke="#a94f4c" stroke-width="2"/>
+ <path d="M180 239q33 18 66 0" fill="none" stroke="#a94f4c" stroke-width="2.6" stroke-dasharray="4 2"/>
+</g>
+
+<!-- nervous system: folded cortex, spinal cord and branching peripheral nerves -->
+<g class="organ sys-nervous" data-organ="nervous" role="button" tabindex="0" aria-label="Brain, spinal cord and peripheral nerves, nervous system">
+ <path class="part" d="M192 47q-10-16 4-23 7-10 18-3 10-8 18 0 13-2 15 11 11 4 7 17 7 12-5 19-2 13-16 12-8 9-19 1-9 7-16 0-12 4-16-8-14-1-9-14-8-7-1-12z" fill="#d5b6dc" stroke="#895b9b" stroke-width="2"/>
+ <path d="M198 34q9-7 12 4t-7 10m21-20q-6 8 3 12t-4 11m15-13q-8 3-4 11t-5 9m-41-1q10-5 13 3t-2 10m26-7q-7-5-12 1t4 10m20-4q-9-5-13 2" fill="none" stroke="#956ba5" stroke-width="2" stroke-linecap="round"/>
+ <path d="M213 94v148m0-102q-17 5-28 23t-16 40m44-56q20 4 30 22t17 40M213 176q-18 5-29 19m29-2q19 5 30 20M213 218q-18 6-28 22m28-6q17 6 25 22M213 241v80m0-47q-13 9-20 22m20-9q15 8 21 20" fill="none" stroke="#8b59a0" stroke-width="2.6" stroke-linecap="round"/>
+ <g fill="#8b59a0"><circle cx="169" cy="197" r="3"/><circle cx="260" cy="197" r="3"/><circle cx="184" cy="194" r="3"/><circle cx="244" cy="213" r="3"/><circle cx="185" cy="240" r="3"/><circle cx="235" cy="256" r="3"/></g>
+</g>
+
+<!-- respiratory system: airway, branching bronchi, lung lobes and alveoli detail -->
+<g class="organ sys-respiratory" data-organ="respiratory" role="button" tabindex="0" aria-label="Trachea, bronchi and lungs, respiratory system">
+ <path d="M213 119v46m-5-44h10m-10 7h10m-10 7h10m-10 7h10m-10 7h10" fill="none" stroke="#408eb7" stroke-width="3" stroke-linecap="round"/>
+ <path class="part" d="M209 163q-17-13-31-3-17 7-22 31-8 31 4 52 12 17 31 5 12-9 18-24zM217 163q17-13 31-3 17 7 22 31 8 31-4 52-12 17-31 5-12-9-18-24z" fill="#d9edf4" stroke="#408eb7" stroke-width="2"/>
+ <path d="M213 163l-16 13m16-13 16 13m-16-2-21 14m21-14 21 14m-43 0-13 13m13-13-1 25m50-25 13 13m-13-13 1 25m-49-25-9 17m59-17 9 17" fill="none" stroke="#438fb5" stroke-width="2.3" stroke-linecap="round"/>
+ <path d="M164 194q13-7 26 1m-31 11q14-8 29 0m-24 13q14-7 27 1m49-25q-13-7-26 1m31 11q-14-8-29 0m24 13q-14-7-27 1" fill="none" stroke="#78b2c9" stroke-width="1.5"/>
+ <g fill="#fff" stroke="#408eb7" stroke-width="1.4"><circle cx="162" cy="232" r="4"/><circle cx="170" cy="236" r="4"/><circle cx="178" cy="232" r="4"/><circle cx="248" cy="232" r="4"/><circle cx="256" cy="236" r="4"/><circle cx="264" cy="232" r="4"/></g>
+ <path d="M166 235l-8 12m11-10v14m7-14 5 12m67-14 8 12m-11-10v14m-7-14-5 12" stroke="#408eb7" stroke-width="1.2"/>
+</g>
+
+<!-- circulatory system: heart with four chambers and systemic/pulmonary vessels -->
+<g class="organ sys-circulatory" data-organ="circulatory" role="button" tabindex="0" aria-label="Four-chambered heart and blood vessels, circulatory system">
+ <path d="M212 195q-12-19-22-8-12 12 2 27l21 22 20-22q15-16 2-27-11-10-23 8z" fill="#f3d0d2" stroke="#a84755" stroke-width="2"/>
+ <path d="M212 197v31m3-31v31m-25-13h22m4 0h20" fill="none" stroke="#a84755" stroke-width="1.6"/>
+ <path d="M212 195q-12-19-22-8-12 12 2 27m23-19q12-19 22-8 12 12-2 27" fill="none" stroke="#a84755" stroke-width="1.2"/>
+ <path d="M205 198q-9 6-2 12m17-12q9 6 2 12" fill="none" stroke="#c7787e" stroke-width="1.4"/>
+ <path d="M203 195v-20q0-7 6-7v27m7 0v-26q0-7 6-7v32" fill="none" stroke="#b44c58" stroke-width="4" stroke-linecap="round"/>
+ <path d="M201 191q-10-14-15-28m31 30q16-18 27-21" fill="none" stroke="#427aab" stroke-width="3.3" stroke-linecap="round"/>
+ <path d="M200 211q-21 9-35 20l-5 22m54-17v45m7-45q23 8 39 22l8 20" fill="none" stroke="#bd5965" stroke-width="2.6" stroke-linecap="round"/>
+ <path d="M163 231q-9-7-17-13m17 13-3 20m101-20q9-7 17-13m-17 13 3 20" fill="none" stroke="#648fb5" stroke-width="2"/>
+ <g fill="#fff" stroke="#b55260" stroke-width="1"><circle cx="162" cy="254" r="2.5"/><circle cx="268" cy="254" r="2.5"/><circle cx="214" cy="280" r="2.5"/></g>
+</g>
+
+<!-- digestive system: liver, stomach, pancreas and detailed bowel -->
+<g class="organ sys-digestive" data-organ="digestive" role="button" tabindex="0" aria-label="Digestive tract, liver, stomach and intestines, digestive system">
+ <path d="M213 132v101" fill="none" stroke="#ad7054" stroke-width="3"/>
+ <path d="M210 230q-23-20-43-12-16 7-12 22 7 18 30 17 20 0 29-15z" fill="#a95f55" stroke="#76453f" stroke-width="1.8"/>
+ <path d="M199 249q-6 4-10 13l-5 4" fill="none" stroke="#62825b" stroke-width="2"/>
+ <path class="part" d="M216 237q24-12 39 2 14 14 2 27-10 10-31 6-11-4-10-15z" fill="#edc4a3" stroke="#b67853" stroke-width="2"/>
+ <path d="M228 246q12-9 21 1t-2 15q-9 5-14-2m-16 18q15-8 32-3" fill="none" stroke="#bd8665" stroke-width="1.5"/>
+ <path d="M226 275q-10 7-16 3t-13 2" fill="none" stroke="#d39a65" stroke-width="3"/>
+ <path d="M184 276q-9 6-7 17v28q0 11 10 11h46q10 0 10-11v-28q0-11-9-17" fill="none" stroke="#b77b54" stroke-width="7" stroke-linejoin="round"/>
+ <path d="M188 281q-5 3-5 11v28q0 5 5 5h43q5 0 5-5v-28q0-8-5-11" fill="none" stroke="#e5b99a" stroke-width="3"/>
+ <path d="M190 287q32-8 41 2t-40 7q-6 9 38 8t2 9q-34-7-41 2t39 7" fill="none" stroke="#d38c69" stroke-width="2.2" stroke-linecap="round"/>
+ <path d="M213 331v12q0 12-10 12" fill="none" stroke="#b77b54" stroke-width="3"/>
+</g>
+
+<!-- skin inset: epidermis, dermis, hair follicle, sweat gland, capillaries -->
+<g aria-label="Magnified skin cross-section">
+ <path d="M289 292Q322 300 330 325" fill="none" stroke="#aa887b" stroke-width="1.2" stroke-dasharray="3 3"/>
+ <rect x="300" y="324" width="111" height="115" rx="9" fill="#fff" stroke="#c9d4df"/>
+ <text x="309" y="338" fill="#526175" font-size="8.5" font-weight="700">SKIN · MAGNIFIED</text>
+ <path d="M308 345h95v15q-15-5-28 0t-24 0q-19-5-43 0z" fill="#eabca8" stroke="#bd8b77" stroke-width="1"/>
+ <path d="M308 360q19-5 38 0t39 0q10-3 18 0v48h-95z" fill="#f3d7c9" stroke="#d2a28f" stroke-width="1"/>
+ <path d="M308 408h95v20h-95z" fill="#f5e6ce" stroke="#d2c09d" stroke-width="1"/>
+ <text x="312" y="357" fill="#684c45" font-size="7">epidermis</text><text x="312" y="377" fill="#684c45" font-size="7">dermis</text><text x="312" y="423" fill="#684c45" font-size="7">fat layer</text>
+ <path d="M347 345q-1 22-8 39t-1 22q7 7 12 1t-2-9q-5-2-3-8l6-23q2-10 1-22" fill="none" stroke="#73574d" stroke-width="2.1"/>
+ <path d="M347 382q-14 1-15 11m15-11q13 3 14 12" fill="none" stroke="#a87562" stroke-width="1.3"/>
+ <path d="M378 350q5 6 0 11t1 11q5 6 0 12t1 11" fill="none" stroke="#488cb0" stroke-width="1.7"/>
+ <path d="M379 373q-7-3-9 2m9 7q7-4 10 1" fill="none" stroke="#bc6370" stroke-width="1.4"/>
+ <circle cx="379" cy="348" r="2" fill="#488cb0"/>
+ <text x="306" y="451" fill="#64748b" font-size="7.5">barrier · sensation · temperature</text>
+</g>
+
+<!-- labels and orientation cues -->
+<g fill="#526175" font-size="8.5" font-weight="650">
+ <text x="19" y="95">BRAIN</text><path d="M47 92h112l33-25" fill="none" stroke="#a9b5c2" stroke-width="1"/>
+ <text x="19" y="176">LUNGS</text><path d="M49 173h96l24 18" fill="none" stroke="#a9b5c2" stroke-width="1"/>
+ <text x="19" y="240">HEART</text><path d="M48 237h108l43-23" fill="none" stroke="#a9b5c2" stroke-width="1"/>
+ <text x="19" y="326">DIGESTIVE TRACT</text><path d="M97 323h71l18-9" fill="none" stroke="#a9b5c2" stroke-width="1"/>
+ <text x="19" y="492">SKELETON + MUSCLES</text><path d="M117 489h26l20-54" fill="none" stroke="#a9b5c2" stroke-width="1"/>
+</g>
+<path d="M20 509h390" stroke="#d9e1e9"/>
+<text x="20" y="520" fill="#64748b" font-size="8.5">Interactive schematic · structures simplified · not to scale</text>
+</svg>`;
 function renderSystems(el){
  let chosen="respiratory",step=0,q=0,selected=null;
  el.innerHTML='<section class="hsi"><style>'+STYLE+'</style><h2>Human Systems Explorer</h2>'+
@@ -175,4 +305,5 @@ function extend(key,render,first){
 }
 extend("cells/systems",renderSystems,true);
 extend("cells/circulatory",renderOxygen,false);
+H.systemExplorerData={systems:SYSTEMS,quiz:QUIZ};
 })();
