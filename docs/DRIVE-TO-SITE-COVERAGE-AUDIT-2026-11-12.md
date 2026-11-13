@@ -20,6 +20,52 @@
 - Egypt and Middle Ages have student-facing lesson arrays and related interactive work on the site. Their full Drive lesson folders have not yet been reconciled one by one.
 - The Drive handout **Systems Working Together** has now been used as the source for the new **Systems in Motion** activity in Science Lesson 9. It keeps the four class situations, asks students to choose systems and explain a dependency, then reveals a simplified pathway model. Student writing is not auto-scored or uploaded.
 
+## Science source crosswalk: Solar Energy/Light and Earth Science
+
+I compared the lesson records in `science/data.js` with the two student booklets returned from Drive. Every site lesson below has a corresponding section or activity in the appropriate booklet. This verifies **topic-level student-booklet alignment**. It does not verify the precise slide-by-slide match, every supplemental worksheet, or whether each site explanation reproduces the teacher's intended emphasis. Both site units remain marked `soon`.
+
+### Solar Energy and Light — 14 site lessons
+
+| Site lesson | Corresponding Drive student-booklet material |
+|---|---|
+| 1. Energy: What Can Make Things Change? | Unit 3, Topic 1: Fundamentals of Energy; conservation, energy forms and the Sun |
+| 2. Potential and Kinetic Energy | Topic 1: Potential vs. Kinetic Energy |
+| 3. Energy Resources and Trade-Offs | Topic 1: renewable and non-renewable resources and trade-offs |
+| 4. Earth's Energy Budget | Topic 1: Heat transfer and Earth's incoming/reflected/absorbed/outgoing energy |
+| 5. How Light Travels and Interacts | Topic 2: Basic Properties of Light; transmission, reflection and absorption |
+| 6. Reflection, Albedo and Surface Heating | Topic 2: Reflection; albedo; Sunlight Meets Earth and unequal surface heating |
+| 7. Refraction: Why Things Look Bent | Topic 2: Refraction; water/glass and the atlatl spear-fishing video questions |
+| 8. Prisms, White Light and Colour | Topic 3: Newton's prism experiments and perception of colour |
+| 9. Electromagnetic Waves and Sun Safety | Topic 3: electromagnetic spectrum, wavelength/frequency/energy, uses and UV safety |
+| 10. Photosynthesis: Capturing Solar Energy | Topic 4: sunlight, photosynthesis and stored chemical energy |
+| 11. Food Chains and Energy Pyramids | Topic 4: producers/consumers, food chains and the food pyramid |
+| 12. The Natural Greenhouse Effect | Topic 5: Earth's atmosphere and how the natural greenhouse effect works |
+| 13. Human-Accelerated Warming and Feedback | Topic 5: enhanced greenhouse effect, energy balance and feedback |
+| 14. Energy & Light: Review and Investigation | Unit review and the combined claim/evidence/model work across Topics 1–5 |
+
+### Earth Science: Earth's Interior and Tectonics — 16 site lessons
+
+| Site lesson | Corresponding Drive student-booklet material |
+|---|---|
+| 1. Earth's Four Connected Systems | Unit 4, Topic 1: Earth's four spheres and volcanic effects across spheres |
+| 2. Geological Time and Dating | Topic 1: Earth's age, formation, relative dating and radiometric half-life |
+| 3. Layers of the Earth | Topic 1: crust, mantle, outer core, inner core and lithosphere |
+| 4. Earth's Internal Heat | Topic 1: sources of internal heat and outward heat flow |
+| 5. Continental Drift and Evidence | Topic 2: Wegener's hypothesis and fossil, rock, climate and continental-fit evidence |
+| 6. Seafloor Spreading | Topic 2: seafloor evidence and the mechanism that explains continental motion |
+| 7. Plate Tectonics and Convection | Topic 2: plates, crust types, mantle convection and plate movement |
+| 8. Plate Boundaries | Topic 2: convergent, divergent and transform boundaries |
+| 9. Mountain Building and Faults | Topic 3: mountain formation, subduction and faulting |
+| 10. Volcanoes and the Ring of Fire | Topic 3: subduction, divergent boundaries, hot spots and the Pacific Ring of Fire |
+| 11. Earthquakes, Tsunamis and Evidence | Topic 3: earthquakes, tsunami sequence, and oral-history/scientific evidence |
+| 12. Geysers and Hot Springs | Topic 3: heated groundwater, hot springs and geysers |
+| 13. Weathering, Erosion, Deposition and Rivers | Topic 4: weathering, sediment transport/deposition, precipitation and rivers |
+| 14. Watersheds and Red River Flooding | Topic 4: Lake Winnipeg watershed, spring flooding and the Red River Floodway |
+| 15. Glaciers and the Ice-Age Landscape of Manitoba | Topic 4: glaciers, Lake Agassiz and how Manitoba was shaped by ice |
+| 16. Earth Science Unit Review and Evidence Challenge | Unit review and claim/evidence explanations across Topics 1–4 |
+
+**Audit result:** these are not missing lesson catalogs. Their sequence and topic coverage are present in the draft site and correspond to the student-booklet structure. The outstanding work is to compare each record against the matching slide deck and assigned student task, check the scientific wording and diagrams, and decide when the teacher wants each unit released. The site status is still `soon`; this audit does not change it.
+
 ## Materials intentionally kept off the student site
 
 Teacher guides, answer keys, quizzes/unit tests, student work, and private administrative files are not public website content. The site should use their curricular substance to guide instruction, but those documents should not be copied into student-facing pages.
