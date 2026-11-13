@@ -111,3 +111,16 @@ A fresh source-page check confirms these three high-fit science recommendations 
 - **PBS Science Trek, The Web Show: Rivers:** PBS confirms 7:33 runtime, closed captions and TV-G rating; the segment features two university river researchers. It is a sensible optional supplement for the River & Watershed sequence, not a replacement for students' own model evidence.
 
 The written audit already records these caveats. No video has been embedded into the student site; the teacher-facing shortlist remains a set of candidates to preview before classroom use.
+
+
+## ELA short-film shortlist — November 13, 2026
+
+This is a separate film-text shortlist for Grade 7/8 story structure and media analysis. Each selection has a clear teachable purpose; none is a filler clip. All three are NFB productions with age guidance or explicit educational notes on the NFB page.
+
+| Film | Best instructional use | Review notes |
+|---|---|---|
+| [The Sweater](https://www.nfb.ca/film/sweater/) — Sheldon Cohen; 10:21; NFB catalog rating G | Strongest all-around narrative choice: first-person narration, setting, social conflict, character response, climax and theme/identity. Pair with the original short story or ask students to compare how narration and animation convey the boy's embarrassment. | NFB recommends it for ages 10–18 and ELA, identity and animation study. Its official page flags alcohol consumption; preview that moment and contextualize mid-century rural Quebec/hockey culture. The NFB collection page lists watch-on-NFB availability; confirm the classroom device can play it. |
+| [The Apprentice](https://www.nfb.ca/film/apprentice/) — Richard Condie; 9 min; NFB catalog rating G | Best for plot inference and fable structure: students infer character goals, cause/effect, turning point and lesson from a wordless story, then write a prose version. | NFB recommends ages 12–17 and supplies the fable/adaptation prompt. Its NFB page shows rental/purchase options in some contexts; verify access/licensing before planning a full-class screening. |
+| [The Visit](https://www.nfb.ca/film/vistas_the_visit/) — Lisa Jackson | Best for media craft rather than a standard plot-diagram worksheet: mood, humour, tone, sound, and visual transitions. NFB’s lesson notes point to repeated object shapes that link scenes. | NFB recommends ages 10–17 and identifies the story as a Cree family's experience. Introduce it with appropriate cultural context and keep the filmmaker's perspective central; do not treat it as a generic “alien story.” Confirm runtime and school playback before scheduling. |
+
+**Shortlist decision:** Start with The Sweater if you want a complete, accessible story-analysis lesson, or The Apprentice if you want students to practise inference without dialogue. The Visit is a more specialized film-language lesson. NFB pages provide educational guidance, but some individual titles may have different stream/rental conditions; confirm the exact classroom playback path before assigning. These supplement, not replace, the already used Alike, The Present and Hair Love.
