@@ -10,7 +10,7 @@ const L=(x1,y1,x2,y2,c="var(--muted)",o={})=>`<line x1="${x1}" y1="${y1}" x2="${
 const svg=(w,h,label,body)=>`<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(label)}"><defs><marker id="eg-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--muted)"/></marker></defs>${body}</svg>`;
 const SAND="color-mix(in srgb, var(--accent) 22%, var(--panel))", SILT="color-mix(in srgb, var(--farm) 55%, var(--panel))", NILE="var(--river)";
 const EG="var(--river)", NU="var(--accent)", BAD="color-mix(in srgb, var(--bad) 30%, var(--panel))";
-const yearLabel=y=>y<0?`${-y} BCE`:`${y} CE`;
+const yearLabel=y=>y<0?`${-y} BCE`:y===0?"BCE | CE":`${y} CE`;   // there is no year 0
 
 function flood(){
   const W=720,H=250,x0=60,x1=690,mw=(x1-x0)/12,M=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
@@ -115,10 +115,10 @@ function social(){
   const W=720,H=290;let b=T(20,22,"Egypt's social pyramid",{w:600,size:13});
   const tiers=[["Pharaoh","god-king, owner of the land in theory"],["Vizier, nobles, high priests","ran the government and temples"],["Scribes and officials","kept records, collected taxes"],["Craftspeople and artisans","builders, painters, potters, weavers"],["Farmers","the great majority of Egyptians"],["Servants and enslaved people","household workers, war captives"]];
   const top=40,h=36,cx=225,base=360;
-  tiers.forEach(([n,d],i)=>{const y=top+i*h,wt=base*(i)/6+40,wb=base*(i+1)/6+40;
+  tiers.forEach(([n,d],i)=>{const y=top+i*h,last=i===5,wt=last?150:base*(i)/5+40,wb=last?150:base*(i+1)/5+40;
     b+=`<path d="M${cx-wt/2},${y} L${cx+wt/2},${y} L${cx+wb/2},${y+h-2} L${cx-wb/2},${y+h-2} Z" fill="color-mix(in srgb, var(--accent) ${70-i*9}%, var(--panel))"/>`;
     b+=L(cx+wb/2+6,y+h/2,412,y+h/2,"var(--rule)",{sw:1})+T(420,y+h/2-2,n,{w:700,size:12})+T(420,y+h/2+13,d,{size:11,fill:"var(--muted)"});});
-  b+=T(20,282,"Wider = more people. Farmers' harvests fed everyone above them.",{size:11,fill:"var(--muted)"});
+  b+=T(20,282,"Wider = more people. Farmers were by far the largest group, and their harvests fed everyone above them.",{size:11,fill:"var(--muted)"});
   return {svg:svg(W,H,"Egyptian social pyramid from pharaoh to servants",b),cap:"Most people stayed in the class they were born into. Scribe school and the army were rare ways up."};
 }
 

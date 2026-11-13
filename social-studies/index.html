@@ -287,6 +287,7 @@ figcaption{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.35}
 <script src="../assets/review.js?v=20261101d"></script>
 <script src="egypt-diagrams.js"></script>
 <script src="egypt-interactives.js"></script>
+<script src="egypt-3d.js"></script>
 <script src="egypt-lessons.js"></script>
 <script src="greece-lessons.js?v=20261102c"></script>
 <script src="greece-atlas.js"></script>
@@ -1283,16 +1284,16 @@ function diagramsFor(l){
 }
 function bceDiagram(){
   const W=720,H=190,x0=40,x1=680,a=-4000,b=2026,X=y=>x0+(y-a)/(b-a)*(x1-x0);
-  const ev=[[-3300,"First writing","3300 BCE",-1],[-2560,"Great Pyramid","2560 BCE",1],[-2334,"Sargon's empire","2334 BCE",-1],[-1750,"Hammurabi's laws","1750 BCE",1],[-30,"Cleopatra dies","30 BCE",-1],[2026,"Today","2026 CE",1]];
+  const ev=[[-3300,"First writing","3300 BCE",1],[-2560,"Great Pyramid","2560 BCE",-1,"end"],[-2334,"Sargon's empire","2334 BCE",-1,"start"],[-1750,"Hammurabi's laws","1750 BCE",1],[-30,"Cleopatra dies","30 BCE",-1],[2026,"Today","2026 CE",1]];
   let g=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Timeline from 4000 BCE to today">`;
   g+=`<line x1="${x0}" y1="95" x2="${x1}" y2="95" stroke="var(--ink)" stroke-width="2"/>`;
   [-4000,-3000,-2000,-1000,1,1000,2000].forEach(y=>{const x=X(y);g+=`<line x1="${x}" y1="89" x2="${x}" y2="101" stroke="var(--muted)"/><text x="${x}" y="${y===1?118:116}" text-anchor="middle" font-size="11" fill="var(--muted)" font-family="Inter, sans-serif">${y<0?(-y)+" BCE":y===1?"1 CE":y+" CE"}</text>`;});
   const z=X(0);
   g+=`<line x1="${z}" y1="60" x2="${z}" y2="130" stroke="var(--accent)" stroke-dasharray="4 3"/><text x="${z}" y="146" text-anchor="middle" font-size="11.5" fill="var(--accent)" font-weight="600" font-family="Inter, sans-serif">No year 0</text>`;
   g+=`<text x="${(x0+z)/2}" y="176" text-anchor="middle" font-size="12" fill="var(--muted)" font-family="Inter, sans-serif">BCE: bigger number = longer ago</text><text x="${(z+x1)/2}" y="176" text-anchor="middle" font-size="12" fill="var(--muted)" font-family="Inter, sans-serif">CE: counting up to today</text>`;
-  ev.forEach(([y,t,d,side])=>{const x=X(y),ty=side<0?36:62;
+  ev.forEach(([y,t,d,side,an])=>{const x=X(y),ty=side<0?36:62,tx=an==="end"?x+5:an==="start"?x-5:x;an=an||"middle";
     g+=`<line x1="${x}" y1="${side<0?44:70}" x2="${x}" y2="95" stroke="var(--river)"/><circle cx="${x}" cy="95" r="4.5" fill="var(--river)"/>`;
-    g+=`<text x="${x}" y="${ty-12}" text-anchor="middle" font-size="12" font-weight="600" fill="var(--ink)" font-family="Inter, sans-serif">${t}</text><text x="${x}" y="${ty+2}" text-anchor="middle" font-size="11" fill="var(--muted)" font-family="Inter, sans-serif">${d}</text>`;});
+    g+=`<text x="${tx}" y="${ty-12}" text-anchor="${an}" font-size="12" font-weight="600" fill="var(--ink)" font-family="Inter, sans-serif">${t}</text><text x="${tx}" y="${ty+2}" text-anchor="${an}" font-size="11" fill="var(--muted)" font-family="Inter, sans-serif">${d}</text>`;});
   return g+"</svg>";
 }
 
