@@ -180,6 +180,15 @@
 
 - Added `docs/DRIVE-TO-SITE-COVERAGE-AUDIT-2026-11-12.md`, a read-only inventory comparison of the five Drive course trees against the current website catalogs and unit modules.
 - Confirmed that Drive is not synchronized with the static website. The audit distinguishes catalog presence from actual lesson-file matching and does not invent a percentage-complete estimate.
-- Confirmed direct gaps: Science Energy & Light and Earth Science still need lesson-level catalog mapping; Social Studies First Humans, the full First Civilizations sequence and Shaping the Modern World do not yet have matching student lesson arrays. Math, ELA and Critical Thinking have unit catalogs but remain to be checked lesson-by-lesson.
+- Corrected the Science status: Solar Energy & Light (14 lessons) and Earth Science (16 lessons) are already present in `science/data.js`, both marked `soon`. Their topic-level coverage has now been mapped to the Drive student booklets; per-slide and per-task comparisons remain. Social Studies First Humans, First Civilizations and Shaping the Modern World remain unit-level gaps. Math, ELA and Critical Thinking need lesson-by-lesson crosswalks.
 - Teacher guides, tests, answer keys and private student material remain excluded from the public student site. The audit is first-pass and requires a full per-lesson crosswalk before claiming complete Drive transfer.
 - No changes to `main` or production. The branch remains a draft for teacher review.
+
+
+## Overnight continuation — November 13, 2026
+
+- Expanded the Lesson 9 Systems in Motion lab with colour-coded SVG pathway maps, labelled system links, and a parallel-branch diagram for the test-stress response; kept the explanatory steps and local-only student response workflow. On narrow screens, the diagram gives way to the vertical text pathway.
+- Extended the Drive audit with a 30-row topic crosswalk for all 14 Solar Energy/Light and 16 Earth Science lesson records against their student booklets. The site sequences are present and topic-aligned, but both units remain marked `soon`; teacher slide/task matching and release timing still need review.
+- Expanded the teacher-facing video audit with short, lesson-matched NASA, UCAR, USGS and PBS selections for energy budget, EM spectrum, greenhouse effect, plate motion, glaciers, rivers and erosion. It retains the age/complexity and perspective cautions and leaves a blank where no strong match was found.
+- No tests were started by hand in this continuation. GitHub Actions has automatically queued the existing PR workflows after commits; review their final results before merge.
+- Draft PR only. No change to `main`, no release, and no production deployment.
