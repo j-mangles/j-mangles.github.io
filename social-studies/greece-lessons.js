@@ -369,11 +369,11 @@ window.GreeceLessons=[
         "why": "The shared handwriting prompts investigation; it does not establish one certain motive."
       }
     ],
-    "activities": [
-      {
-        "href": "greek-inquiry-lab.html#ostracism",
-        "title": "Open the Mystery in the Well Investigation"
-      },
+    "activity": {
+      "href": "greek-inquiry-lab.html#ostracism",
+      "title": "Open the Mystery in the Well Investigation"
+    },
+    "additionalActivities": [
       {
         "href": "athens-assembly-walk.html",
         "title": "Play At the Assembly: Athens Field Walk"

@@ -1207,7 +1207,8 @@ function renderSheet(){
   const {u,l,answers}=sheetCtx;
   const exitWasOpen=!!document.getElementById("ss-exit-ticket")?.open;
   const lessonLabel="Lesson";
-  const activities=l.activities || (l.activity ? [l.activity] : (u.id==="mesopotamia" && ["l1","l5"].includes(l.id) ? [{href:"river-valley-lab.html?civilization=mesopotamia",title:"Try the River Valley Decision Lab"}] : []));
+  const activities=[...(l.activity?[l.activity]:[]),...(l.additionalActivities||[])];
+  if(!activities.length && u.id==="mesopotamia" && ["l1","l5"].includes(l.id)) activities.push({href:"river-valley-lab.html?civilization=mesopotamia",title:"Try the River Valley Decision Lab"});
   const rel=u.lessons.filter(x=>x.released); const i=rel.indexOf(l);
   const prev=rel[i-1], next=rel[i+1];
   const places=l.places.map(id=>placeById(u,id)).filter(Boolean);
