@@ -207,3 +207,10 @@
 
 - Rechecked official NASA, UCAR and PBS pages for four high-fit Solar Energy/Light and Earth Science candidates. Confirmed NASA energy-balance subtitles/prompts, the advanced 9–12+ label on NASA's EM-spectrum video, UCAR's middle/high-school teaching context, and PBS Rivers' 7:33 duration, captions and TV-G rating.
 - Updated the teacher video audit with source-page metadata and retained the requirement to preview playback on the school network. The video shortlist remains teacher-facing; nothing was embedded into the student site.
+
+
+## November 13, 2026 — ELA short-film audit
+
+- Added a separately screened NFB shortlist for Grade 7/8 story/media lessons: The Sweater, The Apprentice and The Visit, each mapped to a specific literacy objective and accompanied by age/content/access caveats.
+- The Sweater is the strongest full plot-structure fit; The Apprentice is the strongest wordless inference/fable fit; The Visit is a specialized film-craft choice. Playback and licensing conditions remain a teacher check before class.
+- This extends the high-quality video audit without adding filler links or embedding video into the student site.
