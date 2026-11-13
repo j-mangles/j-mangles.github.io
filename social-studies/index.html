@@ -287,6 +287,7 @@ figcaption{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.35}
 <script src="../assets/review.js?v=20261101d"></script>
 <script src="egypt-diagrams.js"></script>
 <script src="egypt-interactives.js"></script>
+<script src="../assets/model3d.js"></script>
 <script src="egypt-3d.js"></script>
 <script src="egypt-lessons.js"></script>
 <script src="greece-lessons.js?v=20261102c"></script>
@@ -1108,7 +1109,7 @@ function renderPanel(){
   }
   const p=S.sel&&placeById(u,S.sel);
   if(p){
-    const used=(u.lessons||[]).filter(l=>l.released&&l.places.includes(p.id));
+    const used=(u.lessons||[]).filter(l=>l.released&&(l.places||[]).includes(p.id));
     P.innerHTML=`<button class="back" id="back">&larr; All ${esc(u.name)} places</button>
       <div class="eyebrow">${KIND[p.kind]}</div><h2>${esc(p.name)}</h2>
       <div class="meta">${p.date?`<span>${esc(p.date)}</span>`:""}${p.where?`<span>${esc(p.where)}</span>`:""}</div>
@@ -1211,7 +1212,7 @@ function renderSheet(){
   const activity=l.activity || (u.id==="mesopotamia" && ["l1","l5"].includes(l.id) ? {href:"river-valley-lab.html?civilization=mesopotamia",title:"Try the River Valley Decision Lab"} : null);
   const rel=u.lessons.filter(x=>x.released); const i=rel.indexOf(l);
   const prev=rel[i-1], next=rel[i+1];
-  const places=l.places.map(id=>placeById(u,id)).filter(Boolean);
+  const places=(l.places||[]).map(id=>placeById(u,id)).filter(Boolean);
   const qs=l.check.map((q,qi)=>{
     const a=answers[qi];
     return `<div class="q"><div class="qt">${qi+1}. ${esc(q.q)}</div><div class="opts">${q.a.map((o,oi)=>{

@@ -6,7 +6,7 @@ const H=window.HUB;if(!H)return;
 function relativeDensity(temperature,phase){
  if(!Number.isFinite(temperature)||temperature<0||temperature>30||!["liquid","ice"].includes(phase))throw Error("Invalid lake model input");
  if(phase==="ice")return 0.92;
- return Math.round((1-0.000015*(temperature-4)*(temperature-4))*10000)/10000;
+ return Math.round((1-0.000007*(temperature-4)*(temperature-4))*10000)/10000;   // close to measured fresh water: 0.9982 at 20°C, 0.9997 at 10°C
 }
 const e=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const css=[

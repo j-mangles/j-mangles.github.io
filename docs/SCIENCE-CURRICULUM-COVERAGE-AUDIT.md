@@ -1,5 +1,9 @@
 # Grade 8 Science — Initial Curriculum Coverage Audit
 
+> **Correction, 2026-11-13.** This audit measured the site against the older 2000 framework (clusters Cells and Systems, Optics, Fluids, Water Systems; outcome codes like 8-3-08). The course is planned on Manitoba's current Framework for Learning for Grade 8 Science, which covers density, solar energy, Earth's internal structure and homeostasis (outcome codes like SCI.8.E.1): https://www.edu.gov.mb.ca/k12/framework/english/science/science_gr8.html
+>
+> Under the current framework the Matter, Density and Fluids unit lines up with SCI.8.E.1 to E.6 lesson for lesson. Buoyancy calculations, hydraulic and pneumatic devices, mirrors and lenses, and the Water Systems cluster are **not** gaps to build toward. Do not add lessons for them on the strength of the tables below. The remaining small gaps in the Matter unit against the current outcomes are pressure units (Pa, kPa), water's melting and boiling points stated outright, and humidity and precipitation (SCI.8.E.6, SCI.8.C.2).
+
 _Reviewed 2026-11-11. Internal teacher/engineering audit, not student-facing material._
 
 ## Scope and method
