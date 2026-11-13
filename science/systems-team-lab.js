@@ -51,7 +51,8 @@ const CSS=[
 ].join("\n");
 function renderRoute(route){
  const branch=!!route.branch,points=branch?[{x:150,y:117},{x:680,y:67},{x:680,y:167}]:[{x:150,y:117},{x:450,y:117},{x:750,y:117}];
- const links=branch?[[0,1],[0,2]]:[[0,1],[1,2]];\n const marker='stl-arrow-'+route.title.toLowerCase().replace(/[^a-z0-9]+/g,'-');
+ const links=branch?[[0,1],[0,2]]:[[0,1],[1,2]];
+ const marker='stl-arrow-'+route.title.toLowerCase().replace(/[^a-z0-9]+/g,'-');
  const conn=links.map((edge,i)=>{
   const a=points[edge[0]],b=points[edge[1]],startX=a.x+90,endX=b.x-90;
   const label=route.edgeLabels&&route.edgeLabels[i]||"connected response";
