@@ -1,0 +1,202 @@
+/* Societies of the Past: museum-gallery design. Loaded after the page's own stylesheet.
+   Every unit is a room built from that civilization's materials. A room sets six colours and a border band;
+   everything else on the page is derived from those, so adding a unit means adding one block below.
+   Type: Cormorant Garamond for titles, Newsreader for reading, Space Grotesk for labels and controls. */
+
+/* ---------- rooms ---------- */
+:root[data-room],.sheet[data-room]{                                   /* World: the atlas hall. Charcoal, brass, chart paper. */
+  --room:#1D2226; --room-ink:#F1EADB; --gilt:#D2A94E; --paper:#EFE9DC; --paper-ink:#1E1B16; --label:#7A5A14;
+  --ocean:#1F3A4D; --land:#D8CBA6; --coast:#8E8363; --grat:#2D4A5E; --river:#1F6E8C; --mark:#A8401F;
+  --band:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='12'%3E%3Crect width='28' height='12' fill='%23D2A94E'/%3E%3Cpath d='M28 1H56M28 11H56' stroke='%23D2A94E' stroke-width='2'/%3E%3C/svg%3E");
+}
+:root[data-room="early-humans"],.sheet[data-room="early-humans"]{                    /* cave wall: soot, ochre, hide */
+  --room:#2A211B; --room-ink:#EEDFC6; --gilt:#DB9340; --paper:#EDE1CC; --paper-ink:#231A12; --label:#8A4B14;
+  --ocean:#2C4350; --land:#D6BB91; --coast:#8F7650; --grat:#3B5564; --river:#256C86; --mark:#9C3A16;
+  --band:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='12'%3E%3Cpath d='M0 10L6 2L12 10L18 2L24 10' fill='none' stroke='%23DB9340' stroke-width='2.2'/%3E%3C/svg%3E");
+}
+:root[data-room="mesopotamia"],.sheet[data-room="mesopotamia"]{                     /* fired brick, straw, river clay */
+  --room:#56291A; --room-ink:#F4E4CC; --gilt:#E8B25E; --paper:#EBDABF; --paper-ink:#26170F; --label:#84421A;
+  --ocean:#224653; --land:#D9B88F; --coast:#93714C; --grat:#315A68; --river:#1D6B88; --mark:#8E2F17;
+  --band:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='12'%3E%3Cpath d='M0 12V8H4V4H8V0H16V4H20V8H24V12Z' fill='%23E8B25E'/%3E%3C/svg%3E");
+}
+:root[data-room="egypt"],.sheet[data-room="egypt"]{                           /* lapis, gold leaf, papyrus */
+  --room:#101B33; --room-ink:#F1E6C8; --gilt:#E0B14F; --paper:#EADBB2; --paper-ink:#22180C; --label:#7A4E12;
+  --ocean:#1B3260; --land:#DDC892; --coast:#96824E; --grat:#2A4578; --river:#1B7A88; --mark:#A63D1F;
+  --band:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='54' height='12'%3E%3Crect width='14' height='12' fill='%23E0B14F'/%3E%3Crect x='18' width='14' height='12' fill='%232F7F8A'/%3E%3Crect x='36' width='14' height='12' fill='%23B4552D'/%3E%3C/svg%3E");
+}
+:root[data-room="greece"],.sheet[data-room="greece"]{                          /* black-figure pottery: black glaze, orange clay */
+  --room:#151413; --room-ink:#F1E3CF; --gilt:#E08344; --paper:#F0E5D3; --paper-ink:#1B1612; --label:#9A4A16;
+  --ocean:#173B4E; --land:#E2CBA8; --coast:#9A8259; --grat:#274F64; --river:#1F6E8C; --mark:#B4491C;
+  --band:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='12'%3E%3Cpath d='M0 11H4V1H20V11H24M8 11V5H16V8H12' fill='none' stroke='%23E08344' stroke-width='2'/%3E%3C/svg%3E");
+}
+:root[data-room="rome"],.sheet[data-room="rome"]{                            /* imperial red, marble, bronze */
+  --room:#641313; --room-ink:#F5EFE4; --gilt:#E9C46A; --paper:#EEE9DF; --paper-ink:#1F1A17; --label:#8A1F1A;
+  --ocean:#1F3B54; --land:#DDD2BC; --coast:#948A72; --grat:#2E506C; --river:#1F6E8C; --mark:#8A1F1A;
+  --band:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='12'%3E%3Cpath d='M0 1H16' stroke='%23E9C46A' stroke-width='2'/%3E%3Crect x='3' y='4' width='10' height='8' fill='%23E9C46A'/%3E%3C/svg%3E");
+}
+:root[data-room="middle-ages"],.sheet[data-room="middle-ages"]{                     /* illuminated manuscript: ultramarine, gold, vellum, rubric red */
+  --room:#1C2F63; --room-ink:#F6ECCB; --gilt:#E5BC52; --paper:#EEE3C6; --paper-ink:#201910; --label:#9C231B;
+  --ocean:#1D3557; --land:#DACCA4; --coast:#938560; --grat:#2D4A72; --river:#1F6E8C; --mark:#9C231B;
+  --band:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='12'%3E%3Cpath d='M12 1L18 6L12 11L6 6Z' fill='%23E5BC52'/%3E%3Ccircle cx='0' cy='6' r='2.2' fill='%23D0483C'/%3E%3Ccircle cx='24' cy='6' r='2.2' fill='%23D0483C'/%3E%3C/svg%3E");
+}
+
+/* ---------- what the rest of the page reads (derived from the room) ---------- */
+:root[data-room],.sheet[data-room]{
+  --sheet:color-mix(in srgb,var(--paper) 38%,#fff);
+  --bg:var(--paper); --panel:var(--paper); --ink:var(--paper-ink);
+  --muted:color-mix(in srgb,var(--paper-ink) 64%,var(--paper));
+  --rule:color-mix(in srgb,var(--paper-ink) 24%,var(--paper));
+  --accent:var(--label); --route:var(--mark); --farm:#5E7F33; --good:#256B43; --bad:#A3301F;
+  --halo:var(--land); --halo-sea:var(--ocean);
+  --f-display:"Cormorant Garamond","EB Garamond",Georgia,serif;
+  --f-read:"Newsreader",Cambria,Georgia,serif;
+  --f-label:"Space Grotesk",system-ui,sans-serif; --f-ui:"Space Grotesk",system-ui,sans-serif;
+  --radius:0px; --btn-radius:0px;
+  color:var(--ink);
+}
+/* dark mode: the reading surfaces go dark and take a little of the room's colour; the map and frame stay as they are */
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"])[data-room],:root:not([data-theme="light"]) .sheet[data-room]{
+    --paper:color-mix(in srgb,var(--room) 34%,#141312); --paper-ink:#EFE7D8; --label:var(--gilt);
+    --sheet:color-mix(in srgb,var(--room) 22%,#1A1917); --good:#6CC08F; --bad:#EF7B6C; --farm:#9DBB63; color-scheme:dark}
+}
+:root[data-theme="dark"][data-room],:root[data-theme="dark"] .sheet[data-room]{
+  --paper:color-mix(in srgb,var(--room) 34%,#141312); --paper-ink:#EFE7D8; --label:var(--gilt);
+  --sheet:color-mix(in srgb,var(--room) 22%,#1A1917); --good:#6CC08F; --bad:#EF7B6C; --farm:#9DBB63; color-scheme:dark}
+
+body{font-family:var(--f-ui)}
+button{border-radius:0}
+
+/* ---------- frame: header, tabs, controls ---------- */
+.top{background:var(--band) left bottom/auto 12px repeat-x,var(--room);color:var(--room-ink);border-bottom:0;padding-block:14px 26px}
+.brand small{font-family:var(--f-label);font-size:11.5px;font-weight:500;letter-spacing:.12em;color:color-mix(in srgb,var(--room-ink) 72%,var(--room))}
+.brand h1{font-family:var(--f-display);font-weight:700;font-size:26px;letter-spacing:.045em;text-transform:uppercase;color:var(--room-ink);margin-top:3px}
+.tab{font-family:var(--f-label);font-size:12.5px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;color:color-mix(in srgb,var(--room-ink) 72%,var(--room));padding:8px 10px 6px}
+.tab b{color:inherit}
+.tab:hover{color:var(--room-ink)}
+.tab[aria-current="true"]{color:var(--gilt);border-bottom-color:var(--gilt)}
+.tab[aria-current="true"] b{color:var(--gilt)}
+.tab .soonlab{font-family:var(--f-label);letter-spacing:.1em}
+.top button:focus-visible{outline-color:var(--gilt)}
+.top .atlas-compare-link{border-color:var(--gilt);color:var(--gilt)}
+.controls{margin-left:auto}
+.seg{border-color:color-mix(in srgb,var(--room-ink) 45%,var(--room));border-radius:0}
+.seg button{font-size:13px;letter-spacing:.04em;color:color-mix(in srgb,var(--room-ink) 80%,var(--room))}
+.seg button+button{border-left-color:color-mix(in srgb,var(--room-ink) 45%,var(--room))}
+.seg button[aria-pressed="true"]{background:var(--gilt);color:var(--room);font-weight:700}
+.tog{border-color:color-mix(in srgb,var(--room-ink) 45%,var(--room));border-radius:0;color:color-mix(in srgb,var(--room-ink) 80%,var(--room));letter-spacing:.04em}
+.tog[aria-pressed="true"]{color:var(--gilt);border-color:var(--gilt)}
+
+/* ---------- map: deep sea, land in the room's material ---------- */
+.mapwrap{background:color-mix(in srgb,var(--room) 78%,#000);--ink:#1E1810;--muted:#5F5443;--panel:var(--land);--accent:var(--mark)}
+.l-water{fill:color-mix(in srgb,var(--room-ink) 78%,var(--ocean))}
+.l-cont{opacity:.9}
+.l-city,.anchor text.anm,.anchor text.num,.fb-true text{font-family:var(--f-ui)}
+.legend,.note,.zoombtns{background:var(--room);color:var(--room-ink);border-color:color-mix(in srgb,var(--room-ink) 35%,var(--room));border-radius:0}
+.legend{color:color-mix(in srgb,var(--room-ink) 85%,var(--room));font-size:12.5px;--ink:var(--room-ink);--muted:var(--room-ink);--panel:var(--room);--river:#8FC7D6;--accent:var(--gilt)}
+.zoombtns button{color:var(--room-ink)}
+.zoombtns button+button{border-top-color:color-mix(in srgb,var(--room-ink) 35%,var(--room))}
+.banner{background:var(--room);color:var(--room-ink);border:0;border-left:6px solid var(--gilt);border-radius:0;--ink:var(--room-ink);--muted:color-mix(in srgb,var(--room-ink) 75%,var(--room));--good:#7FD3A0;--bad:#F29385}
+.banner .q{font-family:var(--f-label);font-weight:500;color:var(--gilt)}
+.banner .btn{background:var(--gilt);color:var(--room)}
+.banner .btn.ghost{background:none;color:var(--room-ink);border-color:var(--room-ink)}
+
+/* ---------- timeline: a dark rail under the map ---------- */
+.timeline{background:var(--band) left top/auto 8px repeat-x,var(--room);border-top:0;padding-block:20px 14px;color:var(--room-ink)}
+.tl-head{font-family:var(--f-label);font-weight:500;letter-spacing:.12em;color:var(--gilt)}
+.tl::before{background:color-mix(in srgb,var(--room-ink) 40%,var(--room))}
+.stop{color:var(--room-ink)}
+.stop .d{font-family:var(--f-label);color:color-mix(in srgb,var(--room-ink) 72%,var(--room));font-weight:500}
+.stop .dot{background:var(--room);border-color:var(--room-ink);border-radius:0;transform:rotate(45deg)}
+.stop .t{font-family:var(--f-read);font-size:14.5px}
+.stop.on .dot{background:var(--gilt);border-color:var(--gilt)}
+.timeline .fine{color:color-mix(in srgb,var(--room-ink) 72%,var(--room)) !important}
+
+/* ---------- reading panel ---------- */
+.panel{border-left:0;padding-top:26px}
+.eyebrow,.panel h3,.sheet-card h3,.tag{font-family:var(--f-label);font-weight:500;letter-spacing:.12em;color:var(--label)}
+.eyebrow{font-size:12px}
+.eyebrow .now,.tag{color:var(--mark)}
+.panel h2{font-family:var(--f-display);font-weight:700;font-size:46px;line-height:1;letter-spacing:.02em;text-transform:uppercase;margin:8px 0 6px}
+.span{font-family:var(--f-label);font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--label)}
+.panel p{font-family:var(--f-read);font-size:18px;line-height:1.42}
+.panel h3,.sheet-card h3{font-size:12px;border-bottom:2px solid var(--ink);padding-bottom:5px}
+.plist button,.lessons button,.units button{border-bottom-color:color-mix(in srgb,var(--ink) 26%,transparent)}
+.plist .nm,.lessons .nm,.units .nm{font-family:var(--f-display);font-weight:700;font-size:20px;line-height:1.15}
+.plist .dt,.lessons .st,.units .sub{font-family:var(--f-label);font-size:12.5px}
+.units .n{background:var(--room);color:var(--gilt);border-radius:0;width:28px;height:28px;font-family:var(--f-display);font-size:19px}
+.units .soon .n{border:1px solid var(--muted);color:var(--muted)}
+.lessons .ln{font-family:var(--f-display);font-size:18px;border:0;background:var(--room);color:var(--gilt);border-radius:0;padding:2px 0}
+.lessons .locked .ln{background:none;color:var(--muted);outline:1px solid var(--muted);outline-offset:-1px}
+.ptabs{border-bottom:2px solid var(--ink);gap:22px}
+.ptabs button{font-family:var(--f-label);font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:500;margin-bottom:-2px;border-bottom-width:4px}
+.ptabs button[aria-selected="true"]{border-bottom-color:var(--label);color:var(--ink);font-weight:700}
+.back{font-family:var(--f-label);font-size:12.5px;letter-spacing:.08em;text-transform:uppercase}
+.meta,.fine{font-family:var(--f-read)}
+.score{font-family:var(--f-display);font-weight:700}
+.acts a b{font-family:var(--f-display);font-size:19px}
+.acts a span{font-family:var(--f-read)}
+.callout{border-left:4px solid var(--label)}
+/* dark plaques on the paper: the "missed a class" note and the unit review button */
+.missed,.reviewbtn{background:var(--room);color:var(--room-ink);border:0;border-left:6px solid var(--gilt);border-radius:0;padding:14px 16px;font-family:var(--f-read);font-size:16px}
+.missed b{font-family:var(--f-display);font-size:22px;line-height:1.1;margin-bottom:4px}
+.missed .btn,.missed .btn.ghost{background:var(--gilt);color:var(--room);border:0;margin-top:10px}
+.reviewbtn b{font-family:var(--f-display);font-weight:700}
+.reviewbtn span:last-child{color:color-mix(in srgb,var(--room-ink) 78%,var(--room));font-family:var(--f-read)}
+
+/* ---------- buttons, chips, quiz options ---------- */
+.btn{background:var(--room);color:var(--room-ink);border-radius:0;font-family:var(--f-label);font-size:13px;letter-spacing:.06em;text-transform:uppercase;padding:9px 15px}
+.btn.ghost{background:none;color:var(--ink);border:1px solid var(--ink)}
+.btn.ghost[aria-pressed="true"]{background:var(--ink);color:var(--sheet)}
+.chip,.opt{border-radius:0;border-color:color-mix(in srgb,var(--ink) 40%,transparent);font-family:var(--f-read)}
+.opt{font-size:16.5px}
+.atlas-compare-link{border-radius:0;border-color:var(--ink);color:var(--ink);font-family:var(--f-label);letter-spacing:.06em;text-transform:uppercase;font-size:12px}
+
+/* ---------- lesson sheet: a light page on the room's wall ---------- */
+.sheet{background:color-mix(in srgb,var(--room) 86%,transparent)}
+.sheet-card{background:var(--band) left top/auto 12px repeat-x,linear-gradient(var(--room),var(--room)) left top/100% 12px no-repeat,var(--sheet);border:0;border-radius:0;box-shadow:0 20px 60px rgba(0,0,0,.45);padding-top:44px;--panel:var(--sheet)}
+.sheet-card h2{font-family:var(--f-display);font-weight:700;font-size:46px;line-height:1.02;margin-top:8px}
+.sheet-card p,.sheet-card li,.sheet-card dd,.q .why,figcaption{font-family:var(--f-read)}
+.sheet-card p,.sheet-card li{font-size:18px;line-height:1.45}
+.big{font-family:var(--f-display);font-style:italic;font-weight:600;font-size:26px;line-height:1.28}
+.sheet-close{top:24px;border-radius:0;border-color:var(--ink)}
+dl.terms dt{font-family:var(--f-display);font-weight:700;font-size:20px;line-height:1.2}
+dl.terms dd{font-size:17px}
+.q .qt{font-family:var(--f-read);font-weight:600;font-size:18px}
+.hero img,.gal img,.placeimg img{border-radius:0;border-color:var(--ink)}
+.diagram.ix{border-radius:0;border-color:color-mix(in srgb,var(--ink) 35%,transparent)}
+.ix-3d .btn{font-size:12.5px;padding:8px 12px}
+
+@media (max-width:860px){
+  .brand h1{font-size:21px}
+  .panel h2{font-size:36px}
+  .sheet-card h2{font-size:32px}
+  .top{padding-block:12px 24px}
+}
+
+/* shared review cards (assets/review.js) inside the gallery */
+.rv-quick{border-radius:0;background:none;border:1px solid color-mix(in srgb,var(--ink) 45%,transparent)}
+.rv-h,.rv-side,.rv-qn{font-family:var(--f-label)}
+.rv-q,.rv-lede,.rv-big{font-family:var(--f-read)}
+.rv-prog{border-radius:0}
+
+/* ---------- projector and large screens: bigger type, wider reading column ---------- */
+@media (min-width:1600px){
+  .main{grid-template-columns:minmax(0,1fr) 470px}
+  .brand h1{font-size:32px}
+  .tab{font-size:14.5px}
+  .seg button,.tog{font-size:15px}
+  .panel h2{font-size:56px}
+  .panel p{font-size:21px}
+  .plist .nm,.lessons .nm,.units .nm{font-size:24px}
+  .plist .dt,.lessons .st,.units .sub{font-size:14.5px}
+  .eyebrow,.panel h3,.sheet-card h3,.span{font-size:14px}
+  .stop{width:185px}.stop .t{font-size:17px}.stop .d{font-size:14px}
+  .sheet-card{width:min(1080px,100%);padding:56px 48px 44px}
+  .sheet-card h2{font-size:60px}
+  .sheet-card p,.sheet-card li{font-size:22.5px;max-width:62ch}
+  .big{font-size:32px}
+  dl.terms dt{font-size:25px}dl.terms dd{font-size:21.5px}
+  .q .qt{font-size:22px}.opt{font-size:20px;padding:10px 15px}
+  .btn{font-size:15px}
+}

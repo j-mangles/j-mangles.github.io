@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-room="world">
 <head>
 <title>Societies of the Past Atlas · Mr. Mangles' Class</title>
 <meta charset="utf-8">
@@ -245,6 +245,7 @@ figcaption{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.35}
 .brand h1,.banner .target,.score{font-weight:600}
 .units .n{border-radius:2px}
 </style>
+<link rel="stylesheet" href="gallery.css?v=20261113a">
 
 </head>
 <body>
@@ -1051,6 +1052,7 @@ function select(unitId,placeId){
   const p=placeById(unitById(unitId),placeId); if(p) setTimeout(()=>panTo(p.ll),moved?800:0);
 }
 function renderTabs(){
+  document.documentElement.dataset.room=S.view;   // each unit is a room: gallery.css sets its colours and border band
   const tabs=[{id:"world",label:"World",n:""}].concat(UNITS.map(u=>({id:u.id,label:u.name,n:u.n,soon:u.status==="soon"})));
   $("#tabs").innerHTML=tabs.map(t=>`<button class="tab${t.soon?" soon":""}" data-id="${t.id}" aria-current="${S.view===t.id}">${t.n?`<b>${t.n}</b>`:""}${esc(t.label)}</button>`).join("");
   $("#tabs").querySelectorAll(".tab").forEach(b=>b.onclick=()=>setView(b.dataset.id));
@@ -1162,6 +1164,7 @@ function openLesson(unitId,lessonId){
   const l=u.lessons.find(x=>x.id===lessonId); if(!l||!l.released) return;
   if(window.UnitReview)UnitReview.remember("ss",unitId,lessonId);
   sheetCtx={u,l,answers:{},exitDraft:{}};
+  $("#sheet").dataset.room=unitId;   // a lesson keeps its own unit's room, wherever it was opened from
   if($("#sheet").hidden) lastFocus=document.activeElement;
   renderSheet();
   $("#sheet").hidden=false;
