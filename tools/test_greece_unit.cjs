@@ -38,7 +38,7 @@ const html=read("social-studies/index.html");
 const scripts=[...html.matchAll(/<script src="([^"]+)"/g)].map(m=>m[1].split("?")[0]);
 assert.ok(scripts.indexOf("greece-lessons.js")>scripts.indexOf("egypt-lessons.js"));
 assert.ok(html.indexOf('src="greece-atlas.js"')<html.indexOf('<script src="https://cdnjs.cloudflare'));
-assert.match(html,/l\\.additionalActivities/);
+assert.ok(html.includes("l.additionalActivities"),"Renderer supports additional lesson activities");
 assert.match(html,/id:"greece", n:"3", name:"Ancient Greece", status:"soon"/);
 assert.match(html,/places:window\.GreeceAtlas\.places, timeline:window\.GreeceAtlas\.timeline, lessons:window\.GreeceLessons/);
 assert.ok(/src="greek-inquiry\.js(?:\?[^"]*)?"/.test(read("social-studies/greek-inquiry-lab.html")));
