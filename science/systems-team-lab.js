@@ -15,20 +15,20 @@ const SYSTEMS={
 };
 const CASES=[
  {id:"sprint",title:"Sprint to catch the bus",text:"You notice your bus about to leave and sprint to catch it.",systems:["nervous","muscular","skeletal","respiratory","circulatory","digestive"],routes:[
-  {title:"Control and movement",ids:["nervous","muscular","skeletal"],steps:["The brain notices the bus and sends motor signals.","Skeletal muscles contract and pull on bones through tendons.","Bones move at joints, producing the sprint."]},
-  {title:"Oxygen delivery",ids:["respiratory","circulatory","muscular"],steps:["Breathing brings air to the lungs; oxygen enters nearby blood.","The heart pumps blood; vessels carry oxygen toward working muscles.","Muscle cells use oxygen and nutrients to release usable energy."]}
+  {title:"Control and movement",ids:["nervous","muscular","skeletal"],edgeLabels:["motor signal","muscles pull bones"],steps:["The brain notices the bus and sends motor signals.","Skeletal muscles contract and pull on bones through tendons.","Bones move at joints, producing the sprint."]},
+  {title:"Oxygen delivery",ids:["respiratory","circulatory","muscular"],edgeLabels:["oxygen enters blood","blood delivers oxygen"],steps:["Breathing brings air to the lungs; oxygen enters nearby blood.","The heart pumps blood; vessels carry oxygen toward working muscles.","Muscle cells use oxygen and nutrients to release usable energy."]}
  ],extra:"Food eaten earlier has already been digested; absorbed nutrients can be carried in blood. Digestion does not suddenly start because you run."},
  {id:"lunch",title:"Eat lunch and walk back",text:"You eat a sandwich, drink water, then walk back to class.",systems:["digestive","nervous","muscular","skeletal","respiratory","circulatory"],routes:[
-  {title:"Food to cells",ids:["digestive","circulatory","muscular"],steps:["Food is broken down; most nutrient absorption occurs in the small intestine.","Blood transports many absorbed nutrients to tissues.","Muscle cells use nutrients along with oxygen to release usable energy."]},
-  {title:"Walking",ids:["nervous","muscular","skeletal"],steps:["The nervous system coordinates the planned movement.","Muscles contract and relax; tendons transfer pulling force.","Bones move around joints to produce steps."]}
+  {title:"Food to cells",ids:["digestive","circulatory","muscular"],edgeLabels:["nutrients enter blood","blood carries nutrients"],steps:["Food is broken down; most nutrient absorption occurs in the small intestine.","Blood transports many absorbed nutrients to tissues.","Muscle cells use nutrients along with oxygen to release usable energy."]},
+  {title:"Walking",ids:["nervous","muscular","skeletal"],edgeLabels:["coordinates movement","tendons transfer force"],steps:["The nervous system coordinates the planned movement.","Muscles contract and relax; tendons transfer pulling force.","Bones move around joints to produce steps."]}
  ],extra:"Water is absorbed along the digestive tract and is transported through the body. The pathway shown is simplified; digestion and transport involve many more structures."},
  {id:"cold",title:"Shiver on a cold morning",text:"You walk to school in cold air and start to shiver.",systems:["nervous","muscular","skeletal","respiratory","circulatory","digestive","integumentary"],routes:[
-  {title:"Sense and respond",ids:["integumentary","nervous","muscular"],steps:["Temperature receptors in the skin detect the cold.","Nervous-system signals coordinate a response.","Repeated muscle contractions cause shivering and release heat."]},
-  {title:"Support the response",ids:["respiratory","circulatory","muscular"],steps:["Breathing supplies oxygen to the blood.","The heart and vessels transport oxygen and nutrients.","Muscles use these materials while contracting."]}
+  {title:"Sense and respond",ids:["integumentary","nervous","muscular"],edgeLabels:["sensory information","signal triggers shivering"],steps:["Temperature receptors in the skin detect the cold.","Nervous-system signals coordinate a response.","Repeated muscle contractions cause shivering and release heat."]},
+  {title:"Support the response",ids:["respiratory","circulatory","muscular"],edgeLabels:["oxygen enters blood","blood carries oxygen"],steps:["Breathing supplies oxygen to the blood.","The heart and vessels transport oxygen and nutrients.","Muscles use these materials while contracting."]}
  ],extra:"Skin is part of the integumentary system, which is an extra connection beyond the handout's six named systems. The model leaves out many temperature-control responses."},
  {id:"test",title:"Feel nervous before a test",text:"While waiting for a test, your heart pounds and you breathe quickly.",systems:["nervous","respiratory","circulatory","muscular","skeletal"],routes:[
-  {title:"A coordinated body response",ids:["nervous","respiratory","circulatory"],steps:["The brain interprets the situation and coordinates an automatic response.","Breathing rate may increase, changing air movement through the lungs.","The heart may beat faster, moving blood around the body."]},
-  {title:"Muscle tension",ids:["nervous","muscular","skeletal"],steps:["Nervous signals can increase muscle readiness or tension.","Skeletal muscles create force by contracting.","Muscles pull on bones through tendons; they do not push bones."]}
+  {title:"A coordinated body response",ids:["nervous","respiratory","circulatory"],branch:true,edgeLabels:["may increase breathing","may raise heart rate"],steps:["The brain interprets the situation and coordinates an automatic response.","Breathing rate may increase, changing air movement through the lungs.","The heart may beat faster, moving blood around the body."]},
+  {title:"Muscle tension",ids:["nervous","muscular","skeletal"],edgeLabels:["signals muscle activity","muscles pull on bones"],steps:["Nervous signals can increase muscle readiness or tension.","Skeletal muscles create force by contracting.","Muscles pull on bones through tendons; they do not push bones."]}
  ],extra:"The digestive system is not needed to explain the immediate signs described here. Real stress responses are more complex than this Grade 8 model."}
 ];
 const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -43,12 +43,28 @@ const CSS=[
 ".stl .selection{padding:14px;border:1px solid var(--rule);border-radius:11px;background:var(--soft);position:sticky;top:10px}.stl .selection .count{font-weight:750;font-variant-numeric:tabular-nums}.stl .selection textarea{width:100%;min-height:78px;margin:6px 0 10px;padding:9px;border:1px solid var(--rule);border-radius:8px;background:var(--paper);color:var(--ink);font:inherit;resize:vertical}.stl .selection .primary{background:var(--ink);color:var(--paper);font-weight:700}.stl .status{min-height:28px;font-weight:650}",
 ".stl .model[hidden]{display:none}.stl .model{margin-top:20px;padding-top:17px;border-top:1px solid var(--rule)}.stl .route{margin:14px 0;padding:13px;border:1px solid var(--rule);border-radius:12px;background:var(--soft)}.stl .route h4{margin:0 0 11px;font-size:.96rem}",
 ".stl .steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;counter-reset:stage}.stl .step{position:relative;padding:12px 12px 12px 39px;min-height:82px;border:1px solid var(--rule);border-radius:9px;background:var(--paper);font-size:.87rem}.stl .step:before{counter-increment:stage;content:counter(stage);position:absolute;left:10px;top:11px;width:22px;height:22px;display:grid;place-items:center;border-radius:50%;background:var(--step-color,var(--accent));color:white;font-size:.75rem;font-weight:800}.stl .step:not(:last-child):after{content:\"→\";position:absolute;right:-12px;top:29px;z-index:2;background:var(--soft);padding:0 3px;color:var(--muted);font-weight:800}",
-".stl .step b{display:block;margin-bottom:3px}.stl .extra{margin-top:12px;padding:10px 12px;border-radius:8px;background:color-mix(in srgb,var(--accent) 9%,var(--paper));font-size:.88rem}.stl .limit{margin-top:9px;color:var(--muted);font-size:.82rem}",
+"\n.stl .flow{margin:12px 0;padding:10px 8px;background:var(--soft);border:1px solid var(--rule);border-radius:12px;overflow:hidden}.stl .flow svg{display:block;width:100%;height:auto;min-height:185px}.stl .flow-note{margin:0 0 4px;font-size:.76rem;color:var(--muted);text-align:center}.stl .node{fill:var(--paper);stroke-width:2.5}.stl .node-label{font:700 14px system-ui,sans-serif;fill:var(--ink)}.stl .node-num{font:800 13px system-ui,sans-serif;fill:#fff;text-anchor:middle}.stl .edge-line{fill:none;stroke:#7d8994;stroke-width:2.5;marker-end:url(#stl-arrow)}.stl .edge-label{font:650 11px system-ui,sans-serif;fill:var(--ink);text-anchor:middle}.stl .edge-tag{fill:var(--paper);stroke:var(--rule);stroke-width:1}.stl .steps{margin-top:10px}.stl .sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}\n.stl .step b{display:block;margin-bottom:3px}.stl .extra{margin-top:12px;padding:10px 12px;border-radius:8px;background:color-mix(in srgb,var(--accent) 9%,var(--paper));font-size:.88rem}.stl .limit{margin-top:9px;color:var(--muted);font-size:.82rem}",
 ".stl .actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.stl .actions button{flex:1 1 155px}.stl .report-status{min-height:22px;color:var(--muted);font-size:.84rem}",
-"@media(max-width:700px){.stl .taskgrid{grid-template-columns:1fr}.stl .selection{position:static}.stl .steps{grid-template-columns:1fr}.stl .step{min-height:unset;padding:12px 12px 12px 42px}.stl .step:not(:last-child):after{content:\"↓\";top:auto;right:50%;bottom:-16px}.stl .route{padding:10px}}",
+"@media(max-width:700px){.stl .flow{display:none}.stl .taskgrid{grid-template-columns:1fr}.stl .selection{position:static}.stl .steps{grid-template-columns:1fr}.stl .step{min-height:unset;padding:12px 12px 12px 42px}.stl .step:not(:last-child):after{content:\"↓\";top:auto;right:50%;bottom:-16px}.stl .route{padding:10px}}",
 "@media(max-width:430px){.stl .sysgrid{grid-template-columns:1fr}.stl .casebar button{flex:1 1 145px}}",
 "@media(prefers-reduced-motion:reduce){.stl .sys{transition:none}}"
 ].join("\n");
+function renderRoute(route){
+ const branch=!!route.branch,points=branch?[{x:150,y:117},{x:680,y:67},{x:680,y:167}]:[{x:150,y:117},{x:450,y:117},{x:750,y:117}];
+ const links=branch?[[0,1],[0,2]]:[[0,1],[1,2]];
+ const conn=links.map((edge,i)=>{
+  const a=points[edge[0]],b=points[edge[1]],startX=a.x+96,endX=b.x-96;
+  const label=route.edgeLabels&&route.edgeLabels[i]||"connected response";
+  const cx=(startX+endX)/2,cy=(a.y+b.y)/2;
+  const path=branch?"M"+startX+","+a.y+" C"+(cx-22)+","+a.y+" "+(cx+22)+","+b.y+" "+endX+","+b.y:"M"+startX+","+a.y+" C"+(cx-35)+","+a.y+" "+(cx+35)+","+b.y+" "+endX+","+b.y;
+  return '<path class="edge-line" d="'+path+'"/><rect class="edge-tag" x="'+(cx-69)+'" y="'+(cy-13)+'" width="138" height="26" rx="13"/><text class="edge-label" x="'+cx+'" y="'+(cy+4)+'">'+esc(label)+'</text>';
+ }).join("");
+ const nodes=points.map((p,i)=>{
+  const sys=SYSTEMS[route.ids[i]];
+  return '<g><rect class="node" x="'+(p.x-96)+'" y="'+(p.y-34)+'" width="192" height="68" rx="16" style="stroke:'+sys.color+'"/><circle cx="'+(p.x-67)+'" cy="'+p.y+'" r="18" fill="'+sys.color+'"/><text class="node-num" x="'+(p.x-67)+'" y="'+(p.y+5)+'">'+(i+1)+'</text><text class="node-label" x="'+(p.x-38)+'" y="'+(p.y+5)+'">'+esc(sys.name)+' system</text></g>';
+ }).join("");
+ return '<div class="flow"><p class="flow-note">SYSTEMS PATHWAY · Arrows show the relationship explained below</p><svg viewBox="0 0 900 235" aria-hidden="true" focusable="false"><defs><marker id="stl-arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#7d8994"/></marker></defs>'+conn+nodes+'</svg></div>';
+}
 function mount(el){
  let active=0,chosen=new Set(),revealed=false;
  el.innerHTML='<section class="stl"><style>'+CSS+'</style>'+
@@ -71,7 +87,7 @@ function mount(el){
   q("#stl-reveal").textContent=revealed?"Pathway revealed":"Reveal a model pathway";
   q("#stl-model").hidden=!revealed;
   q("#stl-extra").textContent=c.extra;
-  q("#stl-routes").innerHTML=c.routes.map(route=>'<div class="route"><h4>'+esc(route.title)+'</h4><div class="steps">'+route.steps.map((step,i)=>'<div class="step" style="--step-color:'+SYSTEMS[route.ids[i]].color+'"><b>'+esc(SYSTEMS[route.ids[i]].name)+'</b>'+esc(step)+'</div>').join("")+'</div></div>').join("");
+  q("#stl-routes").innerHTML=c.routes.map(route=>'<div class="route"><h4>'+esc(route.title)+'</h4>'+renderRoute(route)+'<div class="steps">'+route.steps.map((step,i)=>'<div class="step" style="--step-color:'+SYSTEMS[route.ids[i]].color+'"><b>'+esc(SYSTEMS[route.ids[i]].name)+'</b>'+esc(step)+'</div>').join("")+'</div></div>').join("");
  }
  el.addEventListener("click",e=>{
   const b=e.target.closest("button");if(!b||!el.contains(b))return;
