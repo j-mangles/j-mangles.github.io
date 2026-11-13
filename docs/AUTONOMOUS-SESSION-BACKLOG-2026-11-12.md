@@ -222,3 +222,12 @@
 - Added `social-studies/mesopotamia-google-earth-tour.html`, adapting the separate Drive “Flying Over Mesopotamia” Google Earth task into six guided stops, structured evidence prompts, a blank map sketch pad with PNG download, and a written-response text download. Draft responses are held in the current browser tab; there is no upload.
 - Linked the activity from the Mesopotamia unit. It relies on Google Earth for current imagery and ruler measurements; the atlas is labeled as a location fallback, not an equivalent substitute.
 - Teacher review and classroom-network playback check remain. The First Humans and Shaping the Modern World units are still the largest Social Studies catalog gaps.
+
+
+## Egypt source audit — Lessons 7–9 (November 13, 2026)
+
+- Verified the primary and alternate student assignment files for Egypt Lessons 7–9 in Drive; similarly named L7–L9 files are distinct tasks, not duplicates.
+- L7's site lab mirrors the nine-card “Test the Claim” task and its three claims. The separate “The Place of Truth” sheet adds an absence-register reading and a social-evidence classification that are only partly represented online; the strike sequence overlaps both tasks. Keep the two worksheets distinct.
+- L8's Trade Desk models choosing two expeditions, classifying Punt clues and reading the Uluburun cargo. The source worksheets also ask students to judge an innovation, explain deben/barter and the Hyksos' impact, and assess six historical medical treatments; these are not all represented in the current interactive and remain an alignment gap.
+- L9's lesson-linked activity previously focused on the separate “Rivals or Partners?” task (relationship phases, Strabo/Augustus and the “Kush just copied Egypt” claim). Added the missing comparison from “Two Sides of the Nile”: student-facing summaries of Senusret III's boundary inscription and Piye's Victory Stela, with the four source-analysis prompts from the worksheet. Responses stay local and clear with the existing reset control.
+- No teacher guides, marking notes, modern medical verdicts or answer keys were added to student pages. Egypt's release state is unchanged.
