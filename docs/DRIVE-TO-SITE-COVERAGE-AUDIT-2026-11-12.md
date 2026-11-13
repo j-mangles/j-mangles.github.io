@@ -74,7 +74,7 @@ Teacher guides, answer keys, quizzes/unit tests, student work, and private admin
 
 1. Build a per-unit, per-lesson crosswalk with columns for Drive slide/deck, guided notes, student assignment, teacher guide/key, site lesson, and interactive activity.
 2. Mark each row **matched**, **adapted**, **not built**, **not applicable**, or **teacher-only**. Do not count hidden or unlinked scripts as transferred lessons.
-3. Start with the largest student-facing gaps: Social Studies First Humans, First Civilizations and Shaping the Modern World; verify the Solar Energy/Light and Earth Science lesson records against Drive, lesson by lesson, and align their release timing; then verify Mathematics and ELA source files against their catalogs.
+3. Start with the largest student-facing gaps: Social Studies First Humans, First Civilizations and Shaping the Modern World; for Solar Energy/Light and Earth Science, verify the corresponding Drive slide decks and assigned tasks against the now-complete booklet crosswalk, review the science and diagrams, and align release timing; then verify Mathematics and ELA source files against their catalogs.
 4. Review the actual public-facing lesson text against source materials before release. Keep teacher keys, tests and any student information off the public site.
 5. After the crosswalk, update each subject backlog and request a classroom review of the draft branch. PR #109 is still a draft; nothing here changes `main` or production.
 
