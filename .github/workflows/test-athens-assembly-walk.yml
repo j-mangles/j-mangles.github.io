@@ -1,0 +1,52 @@
+name: Test Athens Assembly Field Walk
+on:
+  pull_request:
+    paths:
+      - 'social-studies/athens-assembly-walk.html'
+      - 'social-studies/greece-*'
+      - 'social-studies/index.html'
+      - 'tools/test_greece_unit.cjs'
+      - 'tools/test_athens_assembly_walk_browser.cjs'
+      - '.github/workflows/test-greece-unit.yml'
+      - '.github/workflows/test-athens-assembly-walk.yml'
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  athens-walk:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Check Greece content and lesson wiring
+        run: |
+          node --check social-studies/greece-lessons.js
+          node --check social-studies/greece-atlas.js
+          node tools/test_greece_unit.cjs
+      - name: Install pinned browser QA dependency
+        run: |
+          npm install --no-save --no-package-lock playwright-core@1.56.1
+          google-chrome --version
+      - name: Start local classroom site
+        run: |
+          python3 -m http.server 8765 --bind 127.0.0.1 > /tmp/athens-walk-site.log 2>&1 &
+          for i in {1..20}; do
+            if curl --fail -s http://127.0.0.1:8765/social-studies/athens-assembly-walk.html > /dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/athens-walk-site.log
+          exit 1
+      - name: Test keyboard, touch, evidence and report at desktop and mobile sizes
+        run: node tools/test_athens_assembly_walk_browser.cjs
+      - name: Save Athens field-walk screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: athens-assembly-field-walk-qa
+          path: browser-artifacts/athens-field-walk-*.png
+          if-no-files-found: ignore
+          retention-days: 14
