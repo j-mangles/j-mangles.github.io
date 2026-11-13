@@ -33,6 +33,10 @@ fs.mkdirSync(artifacts,{recursive:true});
   await desktop.screenshot({path:path.join(artifacts,"athens-field-walk-desktop.png"),fullPage:true,animations:"disabled"});
 
   await desktop.locator("#conclude").click();
+  await desktop.locator("#claim").focus();
+  await desktop.keyboard.press("Escape");
+  assert.equal(await desktop.locator("#final").isHidden(),true,"Escape should close the focused conclusion dialog");
+  await desktop.locator("#conclude").click();
   await desktop.locator("#claim").selectOption({label:"Athens used direct democracy, but political participation was limited to a smaller citizen group."});
   await desktop.locator("#response").fill("The Assembly met at the Pnyx, and some public roles were chosen by lot. Only eligible male citizens could participate, so many residents were excluded.");
   const downloadPromise=desktop.waitForEvent("download");
@@ -40,8 +44,8 @@ fs.mkdirSync(artifacts,{recursive:true});
   const download=await downloadPromise;
   assert.equal(download.suggestedFilename(),"athens-field-walk-report.txt");
   assert.equal(await desktop.evaluate(()=>document.activeElement.id),"download","Download action should return focus to the dialog");
-  await desktop.keyboard.press("Escape");
-  assert.equal(await desktop.locator("#final").isHidden(),true);
+  await desktop.locator("#close-final").click();
+  assert.equal(await desktop.locator("#final").isHidden(),true,"Conclusion close button should close the dialog");
   assert.deepEqual(errors,[],"Desktop game should not raise browser errors");
 
   const mobile=await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:1,isMobile:true,hasTouch:true});
