@@ -214,3 +214,11 @@
 - Added a separately screened NFB shortlist for Grade 7/8 story/media lessons: The Sweater, The Apprentice and The Visit, each mapped to a specific literacy objective and accompanied by age/content/access caveats.
 - The Sweater is the strongest full plot-structure fit; The Apprentice is the strongest wordless inference/fable fit; The Visit is a specialized film-craft choice. Playback and licensing conditions remain a teacher check before class.
 - This extends the high-quality video audit without adding filler links or embedding video into the student site.
+
+
+## November 13, 2026 — Mesopotamia Google Earth tour
+
+- Corrected the Drive coverage audit: the Mesopotamia/First Civilizations catalog was already present as 10 released lesson records and aligns with the checked Drive student lesson materials and assignments. The earlier audit had incorrectly described it as a unit-level gap.
+- Added `social-studies/mesopotamia-google-earth-tour.html`, adapting the separate Drive “Flying Over Mesopotamia” Google Earth task into six guided stops, structured evidence prompts, a blank map sketch pad with PNG download, and a written-response text download. Draft responses are held in the current browser tab; there is no upload.
+- Linked the activity from the Mesopotamia unit. It relies on Google Earth for current imagery and ruler measurements; the atlas is labeled as a location fallback, not an equivalent substitute.
+- Teacher review and classroom-network playback check remain. The First Humans and Shaping the Modern World units are still the largest Social Studies catalog gaps.
