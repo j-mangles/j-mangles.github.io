@@ -149,3 +149,33 @@ This mapping is exact at the **unit label / student-catalog level** on the curre
 |---|---|---|
 | Critical Thinking Lessons 1–11 | Think Lab | Unit catalog exists; lesson-level source match remains outstanding. |
 | Game Theory and extra activities | Game Theory plus payoff-matrix and Computer Class activities | Partial supplements exist; verify which Drive lessons they serve and what remains classroom-only. |
+
+
+## Follow-up source reconciliation — November 13, 2026
+
+The prior booklet crosswalk is now supplemented by a first-pass inventory of the matching student slide decks and student-facing task files. This closes the catalog/source-identification step for these two science units; it does not certify that every slide or task has been reproduced exactly on the website.
+
+### Solar Energy and Light — Drive slide decks and named student tasks
+
+| Drive topic / source | Site match | Status and limits |
+|---|---|---|
+| Topic 1 — Energy deck (Sci8_U3_T1_Energy.pptx); booklet pp. 2–6 | Lessons 1–4: energy forms and conservation, potential/kinetic energy, resources, Earth's energy budget | Topic sequence matched. Student Energy Pre-Assignment maps to energy-form classification; Storyboard Project maps to energy transformations in Lessons 1–2. |
+| Topic 2 — Light deck (Sci8_U3_T2_Light.pptx); booklet pp. 7–10 | Lessons 5–7: light properties, reflection/albedo and heating, refraction | Core deck sequence matched. Heating Earth's Surface Lab maps to Lesson 6; Light Lab maps to Lesson 7. **Gap:** Sci8_U3_T2_LightSourcesTextbookAssignment.docx explicitly asks about luminous/non-luminous objects and source mechanisms (incandescence, phosphorescence, electric discharge, fluorescence, chemiluminescence/bioluminescence). The site lesson does not explicitly teach or assign that classification sequence; the deck only notes non-luminous objects in its reflection section. Treat this as a textbook-dependent task until the teacher decides whether to add a lesson supplement. |
+| Topic 3 — Colour and EM Spectrum deck (Sci8_U3_T3_ColourEMSpectrum.pptx); booklet pp. 11–14 | Lessons 8–9: prisms, colour and electromagnetic waves | EM Radiation Reading maps to Lesson 9; the site sequence includes spectrum, wavelength/frequency/energy, uses and UV safety. |
+| Topic 4 — Photosynthesis/Food Chains deck (Sci8_U3_T4_PhotosynthesisFoodChains.pptx); booklet pp. 15–16 | Lessons 10–11: photosynthesis, food chains and energy pyramids | Practice-question file maps to these lessons; Energy Pathway Studio is a site extension. |
+| Topic 5 — Greenhouse Effect deck (Sci8_U3_T5_GreenhouseEffect.pptx); booklet pp. 17–18 | Lessons 12–13: natural greenhouse effect, enhanced warming and feedback | Practice-question file maps to the topic; the site's causal model is an extension. |
+| Unit review / integration | Lesson 14 | Site review/investigation integrates Topics 1–5. |
+
+The Drive Energy & Light assignment folder also contains teacher keys and assessment materials. Keys, quizzes and tests remain teacher-only and were not copied into the site or this audit.
+
+### Earth Science — Drive slide decks and student tasks
+
+| Drive topic / source | Site match | Status and limits |
+|---|---|---|
+| Topic 1 — Earth's Structure deck (Sci8_U4_T1_EarthsStructure.pptx) | Lessons 1–4: spheres/geologic time, dating, layers and internal heat | Deck topics align with booklet exercises and lesson notes. |
+| Topic 2 — Plate Tectonics deck (Sci8_U4_T2_PlateTectonics.pptx) | Lessons 5–8: drift evidence, seafloor spreading, convection and plate boundaries | The site's plate-motion models and boundary explorer extend the sequence. |
+| Topic 3 — Tectonic Activity deck (Sci8_U4_T3_TectonicActivity.pptx) | Lessons 9–12: mountains/faults, volcanoes, earthquakes/tsunamis, geysers/hot springs | Topics align with the booklet; interactive maps/models are supplemental explanations. |
+| Topic 4 — Water Shapes the Land deck (Sci8_U4_T4_WaterShapesTheLand.pptx) | Lessons 13–16: weathering/rivers, watersheds/flooding, glaciers/Manitoba, review | River & Watershed Lab supports Lessons 13–14; lesson activities connect glaciation to Manitoba's landscape. |
+| Student task files | Earth Science student booklet only in the checked unit booklet folder, alongside its teacher answer key | No separate student assignment documents were found in that targeted folder inventory. The booklet itself contains the mapped exercises. This does not prove none are stored elsewhere in Drive. |
+
+**Updated conclusion:** Energy & Light and Earth Science have lesson catalogs, matching student booklets and identified topic slide decks. Most named student tasks are represented by corresponding site lessons or activities, with the Light Sources textbook assignment the clearest specific content gap found in this pass. Both units remain marked “soon.” Slide-by-slide claim accuracy, teacher emphasis, and release readiness still need classroom review. No Drive file, private URL, student data, answer key, quiz or test has been copied into the public site.
