@@ -201,3 +201,9 @@
 - Confirmed the checked Earth Science booklet folder contains the student booklet and teacher answer key; no separate student assignment documents were found there. This is limited to that folder inventory.
 - Updated the Drive audit with named source mappings and limits. Both units remain unreleased (“soon”); teacher keys, quizzes and tests remain off-site.
 - PR #109 automatic workflows at head aea1b971520f00ac947d152118ee4acce49db516 completed successfully: 34/34 runs. This is the last validated head; documentation edits trigger fresh automatic checks.
+
+
+## November 13, 2026 — video source-page recheck
+
+- Rechecked official NASA, UCAR and PBS pages for four high-fit Solar Energy/Light and Earth Science candidates. Confirmed NASA energy-balance subtitles/prompts, the advanced 9–12+ label on NASA's EM-spectrum video, UCAR's middle/high-school teaching context, and PBS Rivers' 7:33 duration, captions and TV-G rating.
+- Updated the teacher video audit with source-page metadata and retained the requirement to preview playback on the school network. The video shortlist remains teacher-facing; nothing was embedded into the student site.
