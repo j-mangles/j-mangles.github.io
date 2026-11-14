@@ -13,6 +13,11 @@ const tasks=[
   assert.match(await page.locator(".dn .readout").innerText(),/Small intestine/);
   assert.ok(await page.locator(".hsi").count()===1,"Human systems explorer must remain present");
   assert.ok(await page.locator(".hx-lab").count()===1,"Homeostasis lab must remain present");
+  await page.locator('.hsi .tabs button[data-system="digestive"]').click();
+  await page.locator('.hsi .structures button[data-structure="small-intestine"]').click();
+  assert.match(await page.locator(".hsi .detail").innerText(),/Most nutrient absorption/);
+  await page.locator(".hsi .connection-toggle").click();
+  assert.ok(await page.locator("#body-connections").evaluate(el=>el.classList.contains("hidden")),"System pathway toggle hides the overlays");
  }},
  {hash:"cells/reproduction",selector:".cd",async check(page){
   await page.locator("#cd-cycle").click();

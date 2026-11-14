@@ -9,15 +9,20 @@ const O=(id,prompt,items,correct,why)=>({id,type:"order",prompt,items,correct,wh
 const L=(id,prompt,lab,minTrials=3)=>({id,type:"lab",prompt,lab,minTrials});
 store.activities.push(
 {
- id:"science-oxygen-systems",subject:"sci",subjectName:"Science",grade:"Grade 8",title:"Oxygen Mission: Systems Working Together",time:"35–45 min",
- summary:"Run a model of breathing, circulation and muscle demand, then explain how systems cooperate.",
- lesson:"../science/#cells/circulatory",lessonText:"Open the circulatory lesson",focus:"Cells & Systems · Respiratory and circulatory connections",
+ id:"science-oxygen-systems",subject:"sci",subjectName:"Science",grade:"Grade 8",title:"Oxygen Mission: Systems Working Together",time:"40–50 min",
+ summary:"Explore the body-system map, test an oxygen-delivery model and explain how organs and systems cooperate.",
+ lesson:"../science/#cells/systems",lessonText:"Open the Human Systems Explorer",focus:"Cells & Systems · Body systems and respiratory–circulatory connections",
  reading:[
   "When you breathe, the respiratory system moves air into the lungs. Oxygen passes into the blood, and carbon dioxide passes from the blood into the lungs to be exhaled. The circulatory system then transports oxygen to body cells. Cells use oxygen in cellular respiration to release usable energy from nutrients.",
   "In this activity, the digital model expresses supply and demand using illustrative indexes. The smaller of the breathing and circulation capacities limits oxygen delivery. Muscle activity controls demand. These values are NOT medical readings, oxygen saturation values or heart rates.",
   "A limitation is that real respiratory and circulatory systems are connected and adapt to exercise in more complicated ways. Still, a simple model can help identify relationships and make useful predictions."
  ],
  sections:[
+  {title:"Explore the body map",intro:"Open the Human Systems Explorer. Select the systems and organ labels as you answer.",questions:[
+   C("om1","Which structure belongs to the integumentary system?",["Heart","Skin","Lungs"],1,"Skin is the body's protective outer layer and is part of the integumentary system."),
+   O("om2","Order the path of air into the lungs.",["Bronchi","Lungs","Trachea","Air enters the airway"],[3,2,0,1],"Air enters the airway, travels down the trachea, branches through the bronchi and reaches the lungs."),
+   T("om3","Select the small intestine in the map. Explain how its work connects the digestive and circulatory systems.",30,"The small intestine... The circulatory system...")
+  ]},
   {title:"Predict the system connection",intro:"Think about why two different systems are necessary.",questions:[
    C("ox1","Which system moves oxygen from the lungs to body cells?",["Digestive system","Circulatory system","Integumentary system"],1,"Blood vessels and the heart move oxygen through the circulatory system."),
    C("ox2","Where does oxygen enter the blood?",["In the lungs","In the stomach","In bones"],0,"Gas exchange in the lungs allows oxygen into blood."),

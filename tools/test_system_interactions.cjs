@@ -6,7 +6,7 @@ const src=fs.readFileSync(path.join(root,"science","system-interactions.js"),"ut
 const systems=["respiratory","circulatory","digestive","nervous","integumentary"];
 function element(){
  const selectors=new Map(),listeners={},children=[];
- function control(){return {textContent:"",innerHTML:"",value:"",style:{},disabled:false,classList:{toggle(){}},addEventListener(){},setAttribute(){}};}
+ function control(){const classes=new Set();return {textContent:"",innerHTML:"",value:"",style:{},disabled:false,classList:{toggle(k,on){if(on===false)classes.delete(k);else classes.add(k);},contains(k){return classes.has(k);}},addEventListener(){},setAttribute(){}};}
  return {innerHTML:"",children,listeners,appendChild(child){children.push(child);},contains(){return true;},addEventListener(k,fn){listeners[k]=fn;},
  querySelector(k){if(!selectors.has(k))selectors.set(k,control());return selectors.get(k);},
  querySelectorAll(k){return k==="[data-organ]"?systems.map(organ=>({dataset:{organ},classList:{toggle(){}}})):[];}};
@@ -32,12 +32,31 @@ H.lessonTools["cells/systems"](human);
 assert.equal(human.children.length,2);
 assert.match(human.children[1].innerHTML,/Existing homeostasis lab/);
 const explorer=human.children[0];
+const quizBtn=(dataset,css)=>({dataset,classList:{contains:k=>css===k},setAttribute(){}});
 assert.match(explorer.innerHTML,/Human Systems Explorer/);
+assert.match(explorer.innerHTML,/Respiratory system/);
+assert.match(explorer.innerHTML,/Circulatory system and blood pathway/);
+assert.match(explorer.innerHTML,/Digestive system/);
+assert.match(explorer.innerHTML,/Human body systems overview \(updated 2024\)/i);
+assert.equal((explorer.innerHTML.match(/Watch on YouTube/g)||[]).length,4);
+assert.match(explorer.innerHTML,/rel="noopener noreferrer"/);
 assert.match(explorer.querySelector(".tabs").innerHTML,/Nervous/);
 explorer.systemsExplorer.select("digestive");
 assert.equal(explorer.systemsExplorer.current,"digestive");
 assert.match(explorer.querySelector(".steps").innerHTML,/Small intestine/);
-const quizBtn=(dataset,css)=>({dataset,classList:{contains:k=>css===k}});
+assert.match(explorer.innerHTML,/data-structure="blood"/);
+assert.match(explorer.innerHTML,/Oxygen-rich blood/);
+explorer.systemsExplorer.select("digestive","small-intestine");
+assert.equal(explorer.systemsExplorer.structure,"small-intestine");
+assert.match(explorer.querySelector(".detail").innerHTML,/Most nutrient absorption/);
+assert.match(explorer.querySelector(".structures").innerHTML,/Small intestine/);
+const mapButton=quizBtn({organ:"nervous",structure:"neuron"},"");
+explorer.listeners.click({target:{closest:()=>mapButton}});
+assert.equal(explorer.systemsExplorer.current,"nervous");
+assert.equal(explorer.systemsExplorer.structure,"neuron");
+const pathToggle=quizBtn({},"connection-toggle"),connectionLayer=explorer.querySelector("#body-connections");
+explorer.listeners.click({target:{closest:()=>pathToggle}});
+assert.equal(connectionLayer.classList.contains("hidden"),true);
 explorer.listeners.click({target:{closest:()=>quizBtn({answer:"1"},"")}});
 assert.match(explorer.querySelector(".feedback").textContent,/Correct/);
 explorer.listeners.click({target:{closest:()=>quizBtn({},"next")}});
