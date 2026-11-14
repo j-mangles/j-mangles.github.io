@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Math 7 homepage: the transit map</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&amp;family=Barlow+Condensed:wght@600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F2F3EF}
+a{color:#15202B}a:hover{color:#D9482B}
+@keyframes ring{0%{r:16;opacity:.9}100%{r:34;opacity:0}}
+</style>
+</helmet>
+<div style="min-height: 1180px; background: #F2F3EF; color: #15202B; font-family: 'Barlow', system-ui, sans-serif;">
+  <header style="display: flex; flex-wrap: wrap; align-items: center; gap: 24px; padding: 18px 48px; background: #15202B; color: #F2F3EF;">
+    <a href="#" style="font-weight: 700; font-size: 17px; color: #F2F3EF; text-decoration: none;">Mr. Mangles' Class</a>
+    <nav aria-label="Subjects" style="display: flex; flex-wrap: wrap; gap: 4px; margin-left: auto; font-size: 15px; font-weight: 500;">
+      <a href="#" style="color: #B8C2CC; text-decoration: none; padding: 6px 10px;">Social Studies</a>
+      <a href="#" style="color: #B8C2CC; text-decoration: none; padding: 6px 10px;">Science</a>
+      <a href="#" style="color: #B8C2CC; text-decoration: none; padding: 6px 10px;">ELA</a>
+      <a href="#" aria-current="page" style="color: #15202B; background: #F2F3EF; text-decoration: none; padding: 6px 10px; font-weight: 700;">Math 7</a>
+      <a href="#" style="color: #B8C2CC; text-decoration: none; padding: 6px 10px;">Critical Thinking</a>
+    </nav>
+  </header>
+
+  <div style="max-width: 1280px; margin: 0 auto; padding: 44px 48px 0; display: flex; flex-wrap: wrap; gap: 40px; align-items: flex-end; justify-content: space-between;">
+    <div style="flex: 999 1 560px; min-width: 0;">
+      <p style="margin: 0; font-size: 14px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: #5A6874;">Grade 7 Mathematics · 2026–27</p>
+      <h1 style="margin: 10px 0 12px; font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 84px; line-height: .9; letter-spacing: -.01em; text-transform: uppercase;">The Math 7 Line</h1>
+      <p style="margin: 0; font-size: 20px; line-height: 1.45; color: #3A4652; max-width: 46ch;">Thirteen stops, four lines. Where two lines meet, you use a skill from one unit in another. Click any station for its lessons.</p>
+    </div>
+    <div style="flex: 1 1 320px; display: flex; flex-direction: column; gap: 8px; font-size: 15px; font-weight: 600;">
+      <div style="display: flex; align-items: center; gap: 10px;"><span style="width: 36px; height: 8px; background: #D9482B;"></span>Number</div>
+      <div style="display: flex; align-items: center; gap: 10px;"><span style="width: 36px; height: 8px; background: #1F6FB2;"></span>Patterns and Relations</div>
+      <div style="display: flex; align-items: center; gap: 10px;"><span style="width: 36px; height: 8px; background: #22914E;"></span>Shape and Space</div>
+      <div style="display: flex; align-items: center; gap: 10px;"><span style="width: 36px; height: 8px; background: #7046B8;"></span>Statistics and Probability</div>
+    </div>
+  </div>
+
+  <div style="max-width: 1280px; margin: 26px auto 0; padding: 0 48px;">
+    <div style="overflow-x: auto; background: #FFFFFF; border: 1px solid #D5D9DC;">
+      <svg viewBox="0 0 1200 520" role="img" aria-label="Transit map of the 13 Math 7 units on four lines. Fractions, Decimals and Percents is the current station." style="display: block; width: 100%; min-width: 820px; height: auto;">
+        <g fill="none" stroke-width="12" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M140 120 H1060" stroke="#D9482B"/>
+          <path d="M140 120 V210 L190 260 H1060" stroke="#7046B8"/>
+          <path d="M300 400 H1060" stroke="#1F6FB2"/>
+          <path d="M520 400 L590 330 H690 L760 260 L830 330 H1060" stroke="#22914E"/>
+        </g>
+        <g font-family="Barlow, sans-serif" fill="#15202B">
+          <circle cx="140" cy="120" r="30" fill="#D9482B" opacity=".25" style="animation: ring 1.8s ease-out infinite"/>
+          <rect x="122" y="102" width="36" height="36" rx="18" fill="#15202B"/><circle cx="140" cy="120" r="10" fill="#FFFFFF"/>
+          <text x="140" y="70" text-anchor="middle" font-size="19" font-weight="700">Fractions, Decimals</text><text x="140" y="90" text-anchor="middle" font-size="19" font-weight="700">and Percents</text>
+          <g transform="translate(176 156)"><rect width="104" height="26" fill="#D9482B"/><text x="52" y="18" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">YOU ARE HERE</text></g>
+          <circle cx="380" cy="120" r="12" fill="#fff" stroke="#D9482B" stroke-width="5"/><text x="380" y="88" text-anchor="middle" font-size="18" font-weight="600">Divisibility</text><text x="380" y="70" text-anchor="middle" font-size="13" fill="#5A6874">Unit 3 · Nov 17</text>
+          <circle cx="560" cy="120" r="12" fill="#fff" stroke="#D9482B" stroke-width="5"/><text x="560" y="88" text-anchor="middle" font-size="18" font-weight="600">Fraction Operations</text><text x="560" y="70" text-anchor="middle" font-size="13" fill="#5A6874">Unit 4 · late Nov</text>
+          <circle cx="740" cy="120" r="12" fill="#fff" stroke="#D9482B" stroke-width="5"/><text x="740" y="88" text-anchor="middle" font-size="18" font-weight="600">Integer Operations</text><text x="740" y="70" text-anchor="middle" font-size="13" fill="#5A6874">Unit 5</text>
+          <circle cx="1060" cy="120" r="12" fill="#fff" stroke="#D9482B" stroke-width="5"/><text x="1060" y="88" text-anchor="middle" font-size="18" font-weight="600">Decimal Operations</text><text x="1060" y="70" text-anchor="middle" font-size="13" fill="#5A6874">Unit 10</text>
+          <circle cx="300" cy="260" r="12" fill="#fff" stroke="#7046B8" stroke-width="5"/><text x="300" y="300" text-anchor="middle" font-size="18" font-weight="600">Probability</text><text x="300" y="318" text-anchor="middle" font-size="13" fill="#5A6874">Unit 2 · next stop · Nov 9–16</text>
+          <rect x="736" y="242" width="48" height="36" rx="18" fill="#fff" stroke="#15202B" stroke-width="5"/><text x="760" y="226" text-anchor="middle" font-size="18" font-weight="600">Area and Circle Graphs</text><text x="760" y="208" text-anchor="middle" font-size="13" fill="#5A6874">Unit 9 · change here</text>
+          <circle cx="1060" cy="260" r="12" fill="#fff" stroke="#7046B8" stroke-width="5"/><text x="1060" y="226" text-anchor="middle" font-size="18" font-weight="600">Two-Event Probability</text><text x="1060" y="208" text-anchor="middle" font-size="13" fill="#5A6874">Unit 11</text>
+          <circle cx="300" cy="400" r="12" fill="#fff" stroke="#1F6FB2" stroke-width="5"/><text x="300" y="440" text-anchor="middle" font-size="18" font-weight="600">Patterns and Equations</text><text x="300" y="458" text-anchor="middle" font-size="13" fill="#5A6874">Unit 6</text>
+          <rect x="496" y="382" width="48" height="36" rx="18" fill="#fff" stroke="#15202B" stroke-width="5"/><text x="520" y="452" text-anchor="middle" font-size="18" font-weight="600">Linear Equations and</text><text x="520" y="472" text-anchor="middle" font-size="18" font-weight="600">the Coordinate Plane</text><text x="520" y="490" text-anchor="middle" font-size="13" fill="#5A6874">Unit 7 · change here</text>
+          <circle cx="1060" cy="400" r="12" fill="#fff" stroke="#1F6FB2" stroke-width="5"/><text x="1060" y="440" text-anchor="middle" font-size="18" font-weight="600">Patterns Revisited</text><text x="1060" y="458" text-anchor="middle" font-size="13" fill="#5A6874">Unit 12</text>
+          <circle cx="640" cy="330" r="12" fill="#fff" stroke="#22914E" stroke-width="5"/><text x="640" y="368" text-anchor="middle" font-size="18" font-weight="600">Circles</text><text x="640" y="386" text-anchor="middle" font-size="13" fill="#5A6874">Unit 8</text>
+          <circle cx="1060" cy="330" r="12" fill="#fff" stroke="#22914E" stroke-width="5"/><text x="1000" y="352" text-anchor="end" font-size="18" font-weight="600">Geometric Constructions</text><text x="1000" y="370" text-anchor="end" font-size="13" fill="#5A6874">Unit 13 · end of the line</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+
+  <div style="max-width: 1280px; margin: 0 auto; padding: 32px 48px 64px; display: flex; flex-wrap: wrap; gap: 24px;">
+    <section style="flex: 999 1 560px; min-width: 0; background: #15202B; color: #F2F3EF; padding: 28px 30px; border-left: 12px solid #D9482B;">
+      <p style="margin: 0; font-size: 13px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #F49A84;">Current station · Unit 1 · Number line</p>
+      <h2 style="margin: 8px 0 8px; font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 46px; line-height: 1; text-transform: uppercase;">Fractions, Decimals and Percents</h2>
+      <p style="margin: 0 0 18px; font-size: 18px; line-height: 1.45; color: #C9D2DA; max-width: 52ch;">One amount can be written three ways. Switch between them, find a percent of a number, and work backwards from a percent.</p>
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; font-size: 15px;">
+        <a href="#" style="display: block; padding: 12px 14px; background: #22303D; color: #F2F3EF; text-decoration: none;"><b style="display: block; font-family: 'Barlow Condensed'; font-size: 22px;">1</b>Same Value, Different Clothes</a>
+        <a href="#" style="display: block; padding: 12px 14px; background: #22303D; color: #F2F3EF; text-decoration: none;"><b style="display: block; font-family: 'Barlow Condensed'; font-size: 22px;">5</b>Percent of a Number</a>
+        <a href="#" style="display: block; padding: 12px 14px; background: #22303D; color: #F2F3EF; text-decoration: none;"><b style="display: block; font-family: 'Barlow Condensed'; font-size: 22px;">9–10</b>Discounts, Tax and Money</a>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px;">
+        <a href="#" style="padding: 12px 18px; background: #F2F3EF; color: #15202B; text-decoration: none; font-weight: 700;">All 19 lessons</a>
+        <a href="#" style="padding: 12px 18px; border: 2px solid #F2F3EF; color: #F2F3EF; text-decoration: none; font-weight: 700;">Unit review</a>
+      </div>
+    </section>
+    <section style="flex: 1 1 320px; background: #FFFFFF; border: 1px solid #D5D9DC; padding: 26px 26px;">
+      <p style="margin: 0 0 14px; font-size: 13px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #5A6874;">Next stops</p>
+      <ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0;">
+        <li style="display: flex; gap: 14px; align-items: baseline; padding: 12px 0; border-bottom: 1px solid #E3E6E8;"><span style="width: 14px; height: 14px; border: 4px solid #7046B8; border-radius: 50%; flex: none;"></span><span style="flex: 1;"><b style="font-size: 18px;">Probability</b><br><span style="font-size: 15px; color: #5A6874;">Nov 9–16 · 6 lessons</span></span></li>
+        <li style="display: flex; gap: 14px; align-items: baseline; padding: 12px 0; border-bottom: 1px solid #E3E6E8;"><span style="width: 14px; height: 14px; border: 4px solid #D9482B; border-radius: 50%; flex: none;"></span><span style="flex: 1;"><b style="font-size: 18px;">Divisibility</b><br><span style="font-size: 15px; color: #5A6874;">Nov 17–19 · 4 lessons</span></span></li>
+        <li style="display: flex; gap: 14px; align-items: baseline; padding: 12px 0;"><span style="width: 14px; height: 14px; border: 4px solid #D9482B; border-radius: 50%; flex: none;"></span><span style="flex: 1;"><b style="font-size: 18px;">Fraction Operations</b><br><span style="font-size: 15px; color: #5A6874;">Late November · 5 lessons</span></span></li>
+      </ol>
+    </section>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1180}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>
