@@ -41,10 +41,14 @@
       window.scrollTo(0,0);
       return;
     }
+    // a subject can give its hub a homepage of its own (Science: the zoom); with no hash, show it
+    document.body.dataset.view = (!h && H.home) ? "home" : "page";
+    if(!h && H.home){ document.body.dataset.unit=""; renderTabs(""); H.home($("#main"),{go,units}); window.scrollTo(0,0); return; }
     const [uid, lid] = h.split("/");
     const u = unit(uid) || unit(defaultUnit());
     const l = u && lid && (u.lessons||[]).find(x=>x.id===lid);
     renderTabs(u.id);
+    document.body.dataset.unit = u.id;   // lets a subject colour each unit's pages
     if(lid==="review" && (u.lessons||[]).length){ renderReview(u); window.scrollTo(0,0); }
     else if(l){ answers={}; renderLesson(u,l); window.scrollTo(0,0); }
     else renderUnit(u);

@@ -1,0 +1,114 @@
+/* Grade 8 Science: "from the Sun to a single particle". Loaded after assets/site.css.
+   The homepage (zoom.js) is a dark journey down through four scales. Unit and lesson pages are light lab sheets
+   under the same dark bar, with a ruler band (the scale ruler from the homepage) and each unit's own colour.
+   Type: Space Grotesk for titles and labels, Newsreader for reading. Square edges throughout. */
+
+body[data-subject="sci"]{
+  --space:#0B1020; --space-2:#141B33; --star:#E8ECF5;
+  --u:#2F7FB8; --u-ink:#1E5F8E;                         /* unit colour: set per unit below */
+  --navy:var(--space); --ink:#121A2B; --muted:#55606F; --rule:#D3D8DE; --paper:#FBFBF8; --bg:#F1F2EE; --soft:#E8EBE6;
+  --accent:var(--u-ink); --accent-ink:var(--u-ink); --accent-soft:color-mix(in srgb,var(--u) 13%,#fff); --on-accent:#fff;
+  --btn:var(--space); --on-btn:#fff;
+  --f-title:"Space Grotesk",system-ui,sans-serif; --title-w:700; --title-ls:-.01em; --title-tt:none; --title-scale:1;
+  --f-body:"Newsreader",Cambria,Georgia,serif; --f-label:"Space Grotesk",system-ui,sans-serif; --label-ls:.1em; --label-w:600;
+  --radius:0px; --btn-radius:0px;
+  --ruler:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='12'%3E%3Cpath d='M0.5 0V12M8.5 0V5M16.5 0V5M24.5 0V5M32.5 0V5M20.5 0V8' stroke='%23E8ECF5' stroke-width='1'/%3E%3C/svg%3E");
+  color-scheme:light;
+}
+body[data-subject="sci"][data-unit="skills"]{--u:#7A7F8C;--u-ink:#4A505C}
+body[data-subject="sci"][data-unit="cells"]{--u:#4FA36B;--u-ink:#2B6B40}
+body[data-subject="sci"][data-unit="matter"]{--u:#5BA8E0;--u-ink:#1F5F92}
+body[data-subject="sci"][data-unit="light"]{--u:#F2A93B;--u-ink:#9A5A06}
+body[data-subject="sci"][data-unit="earth"]{--u:#D9622B;--u-ink:#9A3B12}
+
+/* ---------- frame ---------- */
+body[data-subject="sci"] .topbar{background:var(--ruler) left bottom/auto 12px repeat-x,var(--space);border:0;padding-bottom:12px}
+body[data-subject="sci"] .topbar .home,body[data-subject="sci"] .topbar a{color:var(--star);font-family:var(--f-label)}
+body[data-subject="sci"] .topbar .subnav a[aria-current="page"]{color:var(--space);background:var(--star)}
+body[data-subject="sci"] .head{padding-block:30px 0}
+body[data-subject="sci"] h1{font-size:clamp(38px,6vw,64px);letter-spacing:-.025em}
+body[data-subject="sci"] .lede{font-size:19px}
+body[data-subject="sci"] .units button{font-family:var(--f-label);font-size:14.5px;color:var(--muted)}
+body[data-subject="sci"] .units button[aria-selected="true"]{background:var(--space);color:var(--star);border-bottom-color:var(--u)}
+body[data-subject="sci"] .course-shortcuts a{font-family:var(--f-label);border-color:var(--ink);background:none}
+body[data-subject="sci"] :is(.status,.span .status){border-radius:0;font-family:var(--f-label)}
+body[data-subject="sci"] .reviewcard{background:var(--space);color:var(--star);border-left:6px solid var(--u)}
+body[data-subject="sci"] .reviewcard :is(b,span){color:inherit}
+body[data-subject="sci"] ol.lessons .n{font-family:var(--f-label);color:var(--u-ink);font-weight:700}
+body[data-subject="sci"] :is(h2,h3){color:var(--ink)}
+body[data-subject="sci"] h3{font-family:var(--f-label);border-bottom:2px solid var(--ink)}
+body[data-subject="sci"] .btn{font-family:var(--f-label);letter-spacing:.03em}
+body[data-subject="sci"] .btn.ghost{border:1px solid var(--ink)}
+body[data-subject="sci"] :is(.card,.tool,.ltool,details,.reviewcard,.course-shortcuts a,input,select,textarea,.diagram){border-radius:0}
+body[data-subject="sci"] footer.site{background:var(--space);color:color-mix(in srgb,var(--star) 70%,var(--space));font-family:var(--f-label)}
+
+/* ---------- homepage: the zoom ---------- */
+body[data-subject="sci"][data-view="home"]{background:var(--space)}
+body[data-subject="sci"][data-view="home"] .head h1,body[data-subject="sci"][data-view="home"] .head .lede,body[data-subject="sci"][data-view="home"] .course-shortcuts{display:none}
+body[data-subject="sci"][data-view="home"] .head{padding-block:4px 0}
+body[data-subject="sci"][data-view="home"] .units{border-color:#29304A}
+body[data-subject="sci"][data-view="home"] .units button{color:#AEB6CC}
+body[data-subject="sci"][data-view="home"] footer.site{border-top:1px solid #29304A}
+.sz{max-width:1180px;margin:0 auto;padding:0 max(18px,env(safe-area-inset-left,0px)) 60px;color:var(--star)}
+.sz-hero{padding:56px 0 36px;max-width:760px}
+.sz-kick,.sz-unit,.sz-ruler,.sz-into,.sz-meta,.sz-open,.sz-note,.sz-btn{font-family:"Space Grotesk",system-ui,sans-serif}
+.sz-kick{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:#AEB6CC;margin:0}
+.sz h1{font-family:"Space Grotesk",system-ui,sans-serif;font-weight:700;font-size:clamp(44px,8vw,92px);line-height:.95;letter-spacing:-.035em;color:#fff;margin:14px 0 18px}
+.sz-lede{font-family:"Newsreader",Georgia,serif;font-size:clamp(19px,2.2vw,23px);line-height:1.4;color:#D5DAE6;margin:0 0 26px;max-width:40ch}
+.sz-btn{display:inline-block;margin:0 8px 10px 0;padding:12px 18px;background:#F2A93B;color:#0B1020;font-weight:700;font-size:15px;text-decoration:none;letter-spacing:.02em}
+.sz-btn.sz-ghost{background:none;color:var(--star);border:1px solid #4A5370;font-weight:500}
+.sz-btn:hover{filter:brightness(1.08)}.sz-btn.sz-ghost:hover{border-color:var(--star)}
+.sz-levels{list-style:none;margin:0;padding:0}
+.sz-level{display:grid;grid-template-columns:150px minmax(0,1fr);gap:0 26px;position:relative}
+/* the scale ruler down the left: one long line, a tick and a size at each level */
+.sz-level::before{content:"";position:absolute;left:14px;top:0;bottom:0;border-left:2px solid #29304A}
+.sz-ruler{position:relative;padding:22px 0 0 34px;color:#AEB6CC;font-size:13px;line-height:1.35}
+.sz-ruler::before{content:"";position:absolute;left:6px;top:30px;width:18px;border-top:2px solid var(--tint)}
+.sz-ruler b{display:block;font-size:26px;color:#fff;letter-spacing:-.02em;font-weight:700}
+.sz-ruler span{display:block;color:#fff;font-weight:500}.sz-ruler i{font-style:normal}
+.sz-card{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);background:var(--space-2);border:1px solid #29304A;border-top:4px solid var(--tint);color:inherit;text-decoration:none;margin:14px 0 0;transition:border-color .2s}
+.sz-card:hover,.sz-card:focus-visible{border-color:var(--tint)}
+.sz-card:focus-visible{outline:3px solid var(--tint);outline-offset:3px}
+.sz-card svg{display:block;width:100%;height:auto;background:#0B1020}
+.sz-text{padding:26px 26px 24px;display:flex;flex-direction:column;gap:8px}
+.sz-unit{margin:0;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--tint);font-weight:600}
+.sz-stat{color:#AEB6CC;margin-left:8px}
+.sz-pin{color:var(--tint);animation:sz-pulse 1.6s ease-in-out infinite}
+@keyframes sz-pulse{50%{opacity:.25}}
+body[data-subject="sci"] .sz-text h2{font-family:"Space Grotesk",system-ui,sans-serif;font-size:clamp(26px,3vw,36px);line-height:1.02;letter-spacing:-.02em;color:#fff;margin:0}
+.sz-q{font-family:"Newsreader",Georgia,serif;font-size:19px;line-height:1.38;color:#D5DAE6;margin:2px 0 0}
+.sz-meta{color:#AEB6CC;font-size:14px;margin:auto 0 0}
+.sz-open{font-weight:700;color:var(--tint);font-size:15px}
+.sz-level.s-now .sz-card{border-color:var(--tint);box-shadow:0 0 0 1px var(--tint)}
+.sz-level.s-now .sz-stat{color:#fff;font-weight:700}
+.sz-level.s-done .sz-card svg{filter:saturate(.75)}
+.sz-into{grid-column:2;margin:0;padding:16px 0 4px;color:#7E87A2;font-size:13px;letter-spacing:.06em;text-transform:uppercase}
+.sz-into::before{content:"↓ ";color:#AEB6CC}
+.sz-cap{font-family:"Space Grotesk",system-ui,sans-serif;font-size:15px;fill:#AEB6CC}
+.sz-lab text{font-family:"Space Grotesk",system-ui,sans-serif;font-size:17px;font-weight:600;fill:#fff;paint-order:stroke;stroke:#0B1020;stroke-width:4px}
+.sz-lab path{stroke:#fff;stroke-width:1.2;fill:none}
+.sz-skills{display:grid;grid-template-columns:auto 1fr auto;gap:4px 22px;align-items:center;margin:34px 0 0 176px;padding:20px 24px;border:1px dashed #4A5370;color:var(--star);text-decoration:none}
+.sz-skills .sz-unit{grid-column:1/-1;color:#AEB6CC}
+.sz-skills b{font-family:"Space Grotesk",system-ui,sans-serif;font-size:24px;color:#fff}
+.sz-skills span:not(.sz-unit):not(.sz-open){font-family:"Newsreader",Georgia,serif;font-size:17px;color:#D5DAE6}
+.sz-skills .sz-open{color:#fff}
+.sz-skills:hover{border-color:var(--star)}
+.sz-note{color:#7E87A2;font-size:13.5px;margin:22px 0 0 176px}
+@media (max-width:900px){
+  .sz-level{grid-template-columns:1fr}
+  .sz-level::before{display:none}
+  .sz-ruler{padding:26px 0 0 0;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+  .sz-ruler::before{display:none}
+  .sz-ruler b{font-size:20px;display:inline}
+  .sz-ruler span{display:inline}
+  .sz-card{grid-template-columns:1fr}
+  .sz-into{grid-column:1}
+  .sz-skills,.sz-note{margin-left:0}
+  .sz-skills{grid-template-columns:1fr}
+}
+@media (min-width:1600px){.sz{max-width:1440px}.sz-q{font-size:22px}body[data-subject="sci"] .sz-text h2{font-size:42px}}
+@media (prefers-reduced-motion:reduce){.sz-pin{animation:none}}
+
+/* unit and lesson pages: the unit's colour runs under the bar, and its name takes the colour */
+body[data-subject="sci"][data-view="page"] #main{border-top:6px solid var(--u)}
+body[data-subject="sci"][data-view="page"] .grid>div>h2,body[data-subject="sci"][data-view="page"] .lesson-title{color:var(--u-ink)}
