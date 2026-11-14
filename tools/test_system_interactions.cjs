@@ -79,6 +79,7 @@ assert.equal(lab.oxygenStudio.values.breathing,60);
 lab.querySelector("#od-clear").onclick();
 assert.equal(lab.oxygenStudio.trials.length,0);
 const index=fs.readFileSync(path.join(root,"science","index.html"),"utf8");
+assert.match(index,/system-interactions\.js\?v=20261114b/,"The updated explorer script uses a fresh browser cache key");
 const atScript=name=>index.indexOf('src="'+name);
 assert.ok(atScript("system-interactions.js")>atScript("homeostasis.js"));
 assert.ok(atScript("system-interactions.js")>atScript("models.js"));
