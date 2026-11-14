@@ -3,6 +3,7 @@
 const assert=require("node:assert/strict"),fs=require("node:fs"),path=require("node:path"),vm=require("node:vm");
 const root=path.resolve(__dirname,"..");
 const src=fs.readFileSync(path.join(root,"science","system-interactions.js"),"utf8");
+assert.match(src,/@media\(max-width:520px\).*?video-grid\{grid-template-columns:1fr\}/s,"Video cards stack at phone widths");
 const systems=["respiratory","circulatory","digestive","nervous","integumentary"];
 function element(){
  const selectors=new Map(),listeners={},children=[];

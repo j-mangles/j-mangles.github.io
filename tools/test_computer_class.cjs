@@ -49,9 +49,13 @@ for(const activity of data.activities){
   }
  }
 }
-assert.equal(qids.size,144);
+assert.equal(qids.size,148);
 const systemsActivity=data.activities.find(a=>a.id==="science-oxygen-systems");
 assert.ok(systemsActivity.sections.some(s=>s.title==="Explore the body map"),"Systems assignment uses the interactive body map");
+const exerciseSection=systemsActivity.sections.find(s=>s.title==="Trace an exercise response");
+assert.ok(exerciseSection,"Systems assignment includes an exercise-response investigation");
+assert.ok(exerciseSection.questions.some(q=>q.id==="ex3"&&q.prompt.includes("most nutrient absorption")),"Exercise task distinguishes digestion from instant fuel delivery");
+assert.ok(exerciseSection.questions.some(q=>q.id==="ex4"&&q.prompt.includes("integumentary system")),"Exercise task connects skin with temperature regulation");
 assert.match(systemsActivity.lesson,/cells\/systems/);
 const core=win.ComputerClassLabs;
 assert.equal(core.calculate("osmosis",{cell:"plant",inside:30,outside:60}).effect,"plasmolysed");
@@ -116,4 +120,4 @@ assert.match(html,/src="data.js/);
 assert.match(html,/src="app.js/);
 for(const name of ["activities-2.js","activities-3.js","labs.js"])assert.ok(html.includes('src="'+name));
 assert.match(fs.readFileSync(path.join(root,"computer-class","style.css"),"utf8"),/@media print/);
-console.log("Computer Class passed: 15 assignments, 144 responses, six models, autosave, reports, links.");
+console.log("Computer Class passed: 15 assignments, 148 responses, six models, autosave, reports, links.");

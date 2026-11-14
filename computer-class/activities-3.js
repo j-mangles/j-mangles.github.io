@@ -9,13 +9,14 @@ const O=(id,prompt,items,correct,why)=>({id,type:"order",prompt,items,correct,wh
 const L=(id,prompt,lab,minTrials=3)=>({id,type:"lab",prompt,lab,minTrials});
 store.activities.push(
 {
- id:"science-oxygen-systems",subject:"sci",subjectName:"Science",grade:"Grade 8",title:"Oxygen Mission: Systems Working Together",time:"40–50 min",
- summary:"Explore the body-system map, test an oxygen-delivery model and explain how organs and systems cooperate.",
- lesson:"../science/#cells/systems",lessonText:"Open the Human Systems Explorer",focus:"Cells & Systems · Body systems and respiratory–circulatory connections",
+ id:"science-oxygen-systems",subject:"sci",subjectName:"Science",grade:"Grade 8",title:"Oxygen Mission: Systems Working Together",time:"50–60 min",
+ summary:"Investigate how the nervous, digestive, respiratory, circulatory and integumentary systems support a body during exercise. Use the map and oxygen model to explain the connections.",
+ lesson:"../science/#cells/systems",lessonText:"Open the Human Systems Explorer",focus:"Cells & Systems · Nervous, digestive, respiratory, circulatory and integumentary connections",
  reading:[
   "When you breathe, the respiratory system moves air into the lungs. Oxygen passes into the blood, and carbon dioxide passes from the blood into the lungs to be exhaled. The circulatory system then transports oxygen to body cells. Cells use oxygen in cellular respiration to release usable energy from nutrients.",
+  "During exercise, the nervous system coordinates body responses. The digestive system breaks food down and nutrients are absorbed—mostly in the small intestine—then the blood can carry them to cells. A meal does not become instant fuel the moment a run starts. As the body warms, sweat evaporating from skin and changes in blood flow near the skin help with heat loss.",
   "In this activity, the digital model expresses supply and demand using illustrative indexes. The smaller of the breathing and circulation capacities limits oxygen delivery. Muscle activity controls demand. These values are NOT medical readings, oxygen saturation values or heart rates.",
-  "A limitation is that real respiratory and circulatory systems are connected and adapt to exercise in more complicated ways. Still, a simple model can help identify relationships and make useful predictions."
+  "A limitation is that real respiratory and circulatory systems are connected and adapt to exercise in more complicated ways. The oxygen model does not simulate nervous signals, digestion, skin cooling or real physiology; it helps isolate a few relationships and make predictions."
  ],
  sections:[
   {title:"Explore the body map",intro:"Open the Human Systems Explorer. Select the systems and organ labels as you answer.",questions:[
@@ -27,6 +28,12 @@ store.activities.push(
    C("ox1","Which system moves oxygen from the lungs to body cells?",["Digestive system","Circulatory system","Integumentary system"],1,"Blood vessels and the heart move oxygen through the circulatory system."),
    C("ox2","Where does oxygen enter the blood?",["In the lungs","In the stomach","In bones"],0,"Gas exchange in the lungs allows oxygen into blood."),
    T("ox3","Explain what happens to a body cell if oxygen cannot be delivered efficiently.",25,"Cells need oxygen... Without sufficient delivery...")
+  ]},
+  {title:"Trace an exercise response",intro:"Imagine a student begins running. These systems respond together; the order below is a simplified path for learning, and several changes happen at the same time.",questions:[
+   C("ex1","Which system coordinates signals that help the body respond when running begins?",["Nervous system","Digestive system","Integumentary system"],0,"The brain and nerves coordinate body responses and send signals to working muscles."),
+   O("ex2","Order this simplified path for oxygen reaching active muscle cells.",["Blood carries oxygen to active muscles.","The brain sends signals that coordinate body responses.","Oxygen moves from lung air into blood.","Muscle cells use oxygen during cellular respiration.","Breathing brings air into the lungs."],[1,4,2,0,3],"Signals coordinate the response; breathing brings air to the lungs, oxygen enters blood, blood transports it, and cells use it."),
+   T("ex3","A student ate lunch before running. Explain how the digestive and circulatory systems can help deliver nutrients to muscle cells. Include where most nutrient absorption happens and clarify whether lunch is digested instantly when running starts.",32,"Most nutrients are absorbed in... The blood... Digestion does not happen instantly because..."),
+   T("ex4","During a run, the student gets warm and sweats. Explain how the integumentary system helps, and distinguish that job from oxygen delivery.",28,"The integumentary system... The circulatory system... This differs from oxygen delivery because...")
   ]},
   {title:"Run the oxygen model",intro:"Test at least three combinations, including one with low breathing capacity and one with low circulation capacity.",questions:[
    L("ox4","Use the Oxygen Delivery Model to record three different trials. Compare delivery with demand.","oxygen",3),
