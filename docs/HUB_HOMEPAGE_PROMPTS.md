@@ -39,6 +39,13 @@ What to build:
 7. ela/ela.css gives the ELA unit and lesson pages the same look as the homepage: the same dark bar and fonts, light reading pages, square edges, no rounded cards or soft shadows. Load it after assets/site.css.
 8. Fonts: the mockup uses Fraunces, Literata and Bricolage Grotesque. Self-host the ones you use as woff2 in assets/fonts/ and declare them in assets/fonts.css, downloading from the google/fonts GitHub repo. If you can't reach it, use the closest font already hosted and tell me.
 
+References. Open these before you build and take the idea, not the look or any images:
+- Penguin Books colour coding, Design Museum: https://designmuseum.org/penguin-books . From 1935 each genre had its own colour (orange fiction, green crime), so the shelf worked as a filing system. Do the same: spine colour families by unit (stories, films, novel), not random colours.
+- Penguin Classics, Wikipedia: https://en.wikipedia.org/wiki/Penguin_Classics . The 1985 design used a plain spine with a small coloured mark for language and period. Use a small coloured band at the top of each spine for the unit, the same way.
+- Open Library virtual shelf: https://openlibrary.org/docs/virtualshelf . Spines are drawn from the book's data, and thickness comes from the data too. Good model for building spines from data.js.
+- Papery 3D bookshelf (Framer): https://www.framer.com/marketplace/components/papery-3d-booksshelf/ . Spines fan open a little as the pointer passes and pull out on click. Use that for hover and focus, in plain CSS, and turn it off for prefers-reduced-motion.
+- CSS 3D bookshelf tutorial: https://writewhim.blogspot.com/2026/05/interactive-3d-minimalist-bookshelf.html . A clicked book slides out and opens into a detail view. That's the pulled-out spine and panel.
+
 Rules: real links and buttons that work with the keyboard; text contrast 4.5:1; it must work on a phone (the shelf scrolls sideways inside its box) and be readable on a projector. No outside requests. Don't change any lesson content. Don't touch the other hubs, except that a hub.js change must keep Science working.
 
 When done: add tools/test_ela_shelf.cjs (every story and film lesson is on the shelf or in the drawer, the layout is the same on every load, and nothing outside is loaded), run every test in tools/, check the page in a browser at 1920, 1366 and 390 wide, send me screenshots, then commit and push. Tell me anything you couldn't do.
@@ -69,6 +76,13 @@ What to build:
 4. Below the map: a "current station" panel (the unit's intro, three of its lessons and an "All N lessons" link) and a "Next stops" list of the next three units by order, with their dates.
 5. math/math.css gives the Math unit and lesson pages the same look as the homepage: the navy bar, the line colour of the unit's strand as its accent (use body[data-unit]), square edges, no rounded cards or soft shadows. Load it after assets/site.css. Keep the existing math tools and fraction visuals working.
 6. Fonts: the mockup uses Barlow and Barlow Condensed. Self-host them as woff2 in assets/fonts/, from the google/fonts GitHub repo, and declare them in assets/fonts.css. If you can't reach it, use the closest hosted font and tell me.
+
+References. Open these before you build and take the rules, not the images:
+- Harry Beck's 1933 Tube map, London Transport Museum: https://ltmuseum.co.uk/collections/stories/design/transforming-tube-map-harry-becks-iconic-design . Lines only horizontal, vertical or at 45 degrees, with evenly spaced stations. Follow those rules strictly in the SVG: no other angles, equal spacing between stations on a line, tight curves at the bends.
+- Beck's interchange marks, London Transport Museum: https://ltmuseum.co.uk/blog/brief-history-pocket-underground-map . Interchanges got their own symbol, different from ordinary stops. Make the "change here" stations clearly different, not just bigger dots.
+- Vignelli's 1972 New York subway diagram, New York Transit Museum: https://nytransitmuseum.org/vignelli . Straight lines, bright line colours and plain dots, with clarity chosen over geography. It's also the source of the plain signage type and the black band at the top.
+- Mini Metro press kit: https://dinopoloclub.com/press/index.php . The Beck style as a game, with bold colours and simple shapes. Many students know it, so it's the feel to aim for: calm, flat, nothing decorative.
+- MTA Live Subway Map by Work & Co: https://www.creativeboom.com/work/new-yorks-subway-map-is-taken-online-in-ambitious-project-by-work-co/ . A modern web transit map with a clear legend that works on a phone. Check our phone layout against it.
 
 Rules: the map must stay readable on a phone (it scrolls sideways in its box at under 820 px) and on a projector; real links; contrast 4.5:1; no outside requests; don't change lesson content.
 
@@ -101,6 +115,12 @@ What to build:
 4. Every card is a real link that opens its lesson with go().
 5. critical-thinking/ct.css gives the unit and lesson pages a matching look: typed card style for notes and questions, League Gothic headings, square edges, no rounded cards. Load it after assets/site.css.
 6. Fonts: League Gothic and Space Grotesk are already hosted. The typed cards use Courier Prime: self-host it as woff2 in assets/fonts/, from the google/fonts GitHub repo, and declare it in assets/fonts.css. If you can't reach it, use Space Mono and tell me.
+
+References. Open these before you build and take the idea, not the look or any images:
+- Itz Confidential case study: https://portfolio-website-lake-tau.vercel.app/work/itz-confidential . The site is an evidence board, a continuous thread links the sections and leads the eye, and the cards are tilted between -2 and 2 degrees. Keep our card tilt in that range so the text stays easy to read on a projector.
+- Bullet-in Board (Wix showcase): https://www.wix.com/explore/websites/site/bullet-in-board . A whole portfolio as a cork board with pinned cards and linked clues. Good for how far to push the theme before it gets in the way of the content.
+- Evidence board component (dev-haunt): https://mintlify.wiki/apursley2012/dev-haunt/components/evidence-board . The threads are one SVG layer of dashed curves between cards, and clicking a card opens its details. That's the technique for our thread layer. Use our mint and purple, not red.
+- Evidence board, Wikipedia: https://en.wikipedia.org/wiki/Evidence_board . Background on the "crazy wall" and why string between items reads as "these are connected".
 
 Rules: on a phone, the wall turns into a simple stacked list grouped the same way, with no sideways scroll for the main content. Readable on a projector; contrast 4.5:1 on the cards and labels; real links; no outside requests; don't change lesson content.
 
