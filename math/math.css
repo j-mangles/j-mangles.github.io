@@ -1,0 +1,101 @@
+/* Grade 7 Math: "the Math 7 line". Loaded after assets/site.css.
+   The homepage (metro.js) is a transit map of the year's units. Unit and lesson pages keep the same signage look:
+   a navy bar, condensed headings, and the colour of the unit's line as its accent. Square edges throughout.
+   Type: Barlow Condensed for titles, Barlow for everything else. */
+
+body[data-subject="math"]{
+  --sign:#15202B; --u:#D9482B; --u-ink:#A8321A;          /* line colour: set per unit below */
+  --navy:var(--sign); --ink:#15202B; --muted:#52606C; --rule:#D5D9DC; --paper:#FFFFFF; --bg:#F2F3EF; --soft:#E6E9E4;
+  --accent:var(--u-ink); --accent-ink:var(--u-ink); --accent-soft:color-mix(in srgb,var(--u) 12%,#fff); --on-accent:#fff;
+  --btn:var(--sign); --on-btn:#fff; --task:color-mix(in srgb,var(--u) 12%,#fff); --bigbg:color-mix(in srgb,var(--u) 16%,#fff); --toolbg:#fff;
+  --f-title:"Barlow Condensed","Arial Narrow",sans-serif; --title-w:800; --title-ls:0; --title-tt:uppercase; --title-scale:1.2;
+  --f-body:"Barlow",system-ui,sans-serif; --f-label:"Barlow",system-ui,sans-serif; --label-ls:.12em; --label-w:700; --f-big:"Barlow",system-ui,sans-serif;
+  --radius:0px; --btn-radius:0px;
+  color-scheme:light;
+}
+body[data-subject="math"][data-unit="fdp"],body[data-subject="math"][data-unit="div"],body[data-subject="math"][data-unit="fracops"],body[data-subject="math"][data-unit="int"],body[data-subject="math"][data-unit="dec"]{--u:#D9482B;--u-ink:#A8321A}
+body[data-subject="math"][data-unit="prob"],body[data-subject="math"][data-unit="prob2"]{--u:#7046B8;--u-ink:#5A35A0}
+body[data-subject="math"][data-unit="eq"],body[data-subject="math"][data-unit="lin"],body[data-subject="math"][data-unit="pat2"]{--u:#1F6FB2;--u-ink:#185A93}
+body[data-subject="math"][data-unit="circ"],body[data-subject="math"][data-unit="area"],body[data-subject="math"][data-unit="geo"]{--u:#22914E;--u-ink:#17693A}
+
+/* ---------- frame ---------- */
+body[data-subject="math"] .topbar{background:var(--sign);border:0}
+body[data-subject="math"] .topbar .home{color:#F2F3EF;font-family:var(--f-body)}
+body[data-subject="math"] .topbar .subnav a{color:#B8C2CC;border:0;font-weight:600}
+body[data-subject="math"] .topbar .subnav a:hover{color:#fff}
+body[data-subject="math"] .topbar .subnav a[aria-current="page"]{color:var(--sign);background:#F2F3EF;font-weight:700}
+body[data-subject="math"] .head{padding-block:30px 0}
+body[data-subject="math"] h1{line-height:.92}
+body[data-subject="math"] .units button{font-size:15px;font-weight:600;color:var(--muted)}
+body[data-subject="math"] .units button[aria-selected="true"]{background:var(--sign);color:#fff}
+body[data-subject="math"] .units button[aria-selected="true"]::after{background:var(--u);left:0;right:0;border-radius:0;height:4px}
+body[data-subject="math"] .course-shortcuts a{border-color:var(--ink);background:none}
+body[data-subject="math"] :is(.status,.span .status){border-radius:0}
+body[data-subject="math"] .big p{font-weight:600;letter-spacing:0}
+body[data-subject="math"] .tool{border:1px solid var(--rule)}
+body[data-subject="math"] .reviewcard{background:var(--sign);color:#fff}
+body[data-subject="math"] .reviewcard b{color:inherit}
+body[data-subject="math"] .reviewcard span:not(.eyebrow):not(.go){color:#C9D2DA}
+body[data-subject="math"] .reviewcard .go{color:#fff}
+body[data-subject="math"] ol.lessons .n{font-family:var(--f-title);font-weight:800;font-size:22px;color:var(--u-ink)}
+body[data-subject="math"] h3{border-bottom:2px solid var(--ink)}
+body[data-subject="math"] .btn{font-weight:700}
+body[data-subject="math"] .btn.ghost{border:1px solid var(--ink)}
+body[data-subject="math"] :is(.card,.tool,.ltool,details,.reviewcard,.big,.course-shortcuts a,input,select,textarea,.diagram){border-radius:0}
+body[data-subject="math"] footer.site{background:var(--sign);color:#B8C2CC;border:0}
+body[data-subject="math"][data-view="page"] #main{border-top:8px solid var(--u)}
+
+/* ---------- homepage: the map ---------- */
+body[data-subject="math"][data-view="home"] .head h1,body[data-subject="math"][data-view="home"] .head .lede,body[data-subject="math"][data-view="home"] .course-shortcuts{display:none}
+body[data-subject="math"][data-view="home"] .head{padding-block:4px 0}
+.mm{max-width:1280px;margin:0 auto;padding:0 max(18px,env(safe-area-inset-left,0px)) 64px;color:#15202B;font-family:"Barlow",system-ui,sans-serif}
+.mm-hero{display:flex;flex-wrap:wrap;gap:24px 40px;align-items:flex-end;justify-content:space-between;padding:40px 0 26px}
+.mm-hero>div{flex:999 1 520px;min-width:0}
+.mm-kick{margin:0;font-size:13.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#52606C}
+.mm h1{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:800;font-size:clamp(52px,8vw,96px);line-height:.9;text-transform:uppercase;letter-spacing:0;margin:10px 0 12px;color:#15202B}
+.mm-lede{margin:0;font-size:clamp(18px,1.8vw,21px);line-height:1.45;color:#3A4652;max-width:48ch}
+.mm-links{display:flex;flex-wrap:wrap;gap:6px 22px;margin:16px 0 0;font-size:15.5px;font-weight:600}
+.mm-links a{color:#15202B;text-underline-offset:4px}
+.mm-legend{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;font-size:15.5px;font-weight:600}
+.mm-legend li{display:flex;align-items:center;gap:10px}
+.mm-legend span{width:36px;height:8px;flex:none}
+.mm-map{overflow-x:auto;background:#fff;border:1px solid #D5D9DC;border-top:8px solid #15202B}
+.mm-map:focus-visible{outline:3px solid #1F6FB2;outline-offset:3px}
+.mm-map svg{display:block;width:100%;min-width:980px;height:auto}
+.mm-name{font-family:"Barlow",system-ui,sans-serif;font-size:18.5px;font-weight:700;fill:#15202B;paint-order:stroke;stroke:#fff;stroke-width:5px;stroke-linejoin:round}
+.mm-sub{font-family:"Barlow",system-ui,sans-serif;font-size:13.5px;font-weight:600;fill:#52606C;paint-order:stroke;stroke:#fff;stroke-width:5px;stroke-linejoin:round}
+.mm-here{font-family:"Barlow",system-ui,sans-serif;font-size:14px;font-weight:700;fill:#fff;letter-spacing:.04em}
+.mm-st{cursor:pointer;text-decoration:none}
+.mm-st:hover .mm-name,.mm-st:focus-visible .mm-name{text-decoration:underline;text-underline-offset:3px}
+.mm-st:focus-visible{outline:3px solid #1F6FB2;outline-offset:4px}
+.mm-st.s-soon .mm-name{font-weight:600}
+.mm-ring{transform-box:fill-box;transform-origin:center;animation:mm-ring 1.8s ease-out infinite}
+@keyframes mm-ring{from{transform:scale(1);opacity:.9}to{transform:scale(2.3);opacity:0}}
+.mm-swipe{display:none;margin:8px 0 0;font-size:14.5px;color:#52606C}
+@media (max-width:1016px){.mm-swipe{display:block}}
+.mm-extra{margin:12px 0 0;font-size:16px}
+.mm-below{display:flex;flex-wrap:wrap;gap:24px;margin-top:28px;align-items:flex-start}
+.mm-now{flex:999 1 520px;min-width:0;background:#15202B;color:#F2F3EF;padding:28px 30px;border-top:10px solid var(--line)}
+.mm-now .mm-kick{color:#C9D2DA}
+body[data-subject="math"] .mm-now h2{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:800;font-size:clamp(34px,4vw,48px);line-height:1;text-transform:uppercase;margin:8px 0;color:#fff}
+.mm-intro{margin:0 0 18px;font-size:18px;line-height:1.45;color:#C9D2DA;max-width:56ch}
+.mm-lessons{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;font-size:15.5px}
+.mm-lessons a{display:block;padding:12px 14px;background:#22303D;color:#F2F3EF;text-decoration:none;line-height:1.3}
+.mm-lessons b{display:block;font-family:"Barlow Condensed",sans-serif;font-size:24px;line-height:1.1}
+.mm-lessons a:hover,.mm-lessons a:focus-visible{background:#2F4254}
+.mm-acts{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.mm-btn{padding:12px 18px;background:#F2F3EF;color:#15202B;text-decoration:none;font-weight:700;border:2px solid #F2F3EF}
+.mm-btn.mm-ghost{background:none;color:#F2F3EF}
+.mm-btn:hover{background:#fff}.mm-btn.mm-ghost:hover{background:#F2F3EF;color:#15202B}
+.mm-now a:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.mm-next{flex:1 1 300px;background:#fff;border:1px solid #D5D9DC;padding:26px}
+.mm-next ol{list-style:none;margin:10px 0 0;padding:0}
+.mm-next li{display:flex;gap:14px;align-items:flex-start;padding:12px 0;border-bottom:1px solid #E3E6E8}
+.mm-next li:last-child{border:0;padding-bottom:0}
+.mm-dot{width:16px;height:16px;border:4px solid;border-radius:50%;flex:none;margin-top:5px}
+.mm-next a{color:#15202B;text-decoration:none;display:flex;flex-direction:column}
+.mm-next b{font-size:18.5px}.mm-next a span{font-size:15px;color:#52606C}
+.mm-next a:hover b{text-decoration:underline;text-underline-offset:3px}
+@media (max-width:640px){.mm-hero{padding:28px 0 20px}.mm-now{padding:22px 20px}.mm-map svg{min-width:1040px}}
+@media (min-width:1600px){.mm{max-width:1560px}.mm-intro{font-size:21px}.mm-lessons{font-size:18px}}
+@media (prefers-reduced-motion:reduce){.mm-ring{animation:none;opacity:.5;transform:scale(1.5)}}

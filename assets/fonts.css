@@ -10,3 +10,13 @@
 @font-face{font-family:"Space Grotesk";src:url(fonts/space-grotesk.woff2) format("woff2");font-weight:300 700;font-style:normal;font-display:swap}
 @font-face{font-family:"Space Mono";src:url(fonts/space-mono-400.woff2) format("woff2");font-weight:400;font-style:normal;font-display:swap}
 @font-face{font-family:"Space Mono";src:url(fonts/space-mono-700.woff2) format("woff2");font-weight:700;font-style:normal;font-display:swap}
+/* Added for the ELA, Math 7 and Critical Thinking homepages (all SIL Open Font License, Latin subset, from github.com/google/fonts). */
+@font-face{font-family:"Fraunces";src:url(fonts/fraunces.woff2) format("woff2");font-weight:400 900;font-style:normal;font-display:swap}
+@font-face{font-family:"Bricolage Grotesque";src:url(fonts/bricolage-grotesque.woff2) format("woff2");font-weight:400 800;font-style:normal;font-display:swap}
+@font-face{font-family:"Barlow";src:url(fonts/barlow-400.woff2) format("woff2");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Barlow";src:url(fonts/barlow-600.woff2) format("woff2");font-weight:600;font-style:normal;font-display:swap}
+@font-face{font-family:"Barlow";src:url(fonts/barlow-700.woff2) format("woff2");font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:"Barlow Condensed";src:url(fonts/barlow-condensed-700.woff2) format("woff2");font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:"Barlow Condensed";src:url(fonts/barlow-condensed-800.woff2) format("woff2");font-weight:800;font-style:normal;font-display:swap}
+@font-face{font-family:"Courier Prime";src:url(fonts/courier-prime-400.woff2) format("woff2");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Courier Prime";src:url(fonts/courier-prime-700.woff2) format("woff2");font-weight:700;font-style:normal;font-display:swap}

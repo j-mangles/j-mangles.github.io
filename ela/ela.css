@@ -1,0 +1,107 @@
+/* Grade 8 ELA: "our shelf so far". Loaded after assets/site.css.
+   The homepage (shelf.js) is a bookshelf on a bottle-green wall. Unit and lesson pages are cream reading pages under the same dark bar.
+   Type: Fraunces for titles, Newsreader for reading, Bricolage Grotesque for labels. Square edges throughout. */
+
+body[data-subject="ela"]{
+  --wall:#1D3529; --wall-2:#13241C; --cream:#F6EEDC; --gold:#F2C14E; --walnut:#6B4428;
+  --navy:var(--wall); --ink:#1F2A23; --muted:#55625A; --rule:#DCD3BF; --paper:#FFFDF7; --bg:#F6EEDC; --soft:#EDE4CF;
+  --accent:#8E2F2A; --accent-ink:#7A2622; --accent-soft:#F1E6CF; --on-accent:#fff; --btn:var(--wall); --on-btn:#F6EEDC; --task:#EFE3C8;
+  --f-title:"Fraunces",Georgia,serif; --title-w:800; --title-ls:-.015em; --title-tt:none; --title-scale:1.05;
+  --f-body:"Newsreader","Iowan Old Style",Georgia,serif; --f-label:"Bricolage Grotesque",system-ui,sans-serif; --label-ls:.1em; --label-w:600;
+  --f-big:"Fraunces",Georgia,serif;
+  --radius:0px; --btn-radius:0px;
+  color-scheme:light;
+}
+
+/* ---------- frame ---------- */
+body[data-subject="ela"] .topbar{background:var(--wall-2);border-bottom:4px solid var(--walnut)}
+body[data-subject="ela"] .topbar .home,body[data-subject="ela"] .topbar a{color:#EFE6D2;font-family:var(--f-label)}
+body[data-subject="ela"] .topbar .subnav a{color:#B9C7BC;border:0}
+body[data-subject="ela"] .topbar .subnav a:hover{color:#fff}
+body[data-subject="ela"] .topbar .subnav a[aria-current="page"]{color:var(--wall-2);background:var(--gold);font-weight:700}
+body[data-subject="ela"] .head{padding-block:30px 0}
+body[data-subject="ela"] h1{font-size:clamp(38px,6vw,64px)}
+body[data-subject="ela"] .lede{font-size:19px}
+body[data-subject="ela"] .units button{font-family:var(--f-label);font-size:14.5px;color:var(--muted)}
+body[data-subject="ela"] .units button[aria-selected="true"]{background:var(--wall);color:var(--cream)}
+body[data-subject="ela"] .units button[aria-selected="true"]::after{background:var(--gold);left:0;right:0;border-radius:0}
+body[data-subject="ela"] .course-shortcuts a{font-family:var(--f-label);border-color:var(--ink);background:none}
+body[data-subject="ela"] :is(.status,.span .status){border-radius:0;font-family:var(--f-label)}
+body[data-subject="ela"] .reviewcard{background:var(--wall);color:var(--cream)}
+body[data-subject="ela"] .reviewcard b{color:inherit}
+body[data-subject="ela"] .reviewcard span:not(.eyebrow):not(.go){color:#C9D4CB}
+body[data-subject="ela"] .reviewcard .go{color:var(--gold)}
+body[data-subject="ela"] ol.lessons .n{font-family:var(--f-title);color:var(--accent-ink);font-weight:800}
+body[data-subject="ela"] h3{font-family:var(--f-label);border-bottom:2px solid var(--ink)}
+body[data-subject="ela"] .btn{font-family:var(--f-label);letter-spacing:.02em}
+body[data-subject="ela"] .btn.ghost{border:1px solid var(--ink)}
+body[data-subject="ela"] :is(.card,.tool,.ltool,details,.reviewcard,.course-shortcuts a,input,select,textarea,.diagram,.direct-lesson,.direct-steps li,.direct-model,.direct-practice,.direct-answer){border-radius:0}
+body[data-subject="ela"] #main .direct-lesson h3{text-transform:none;letter-spacing:-.01em;color:var(--ink);border:0;font-family:var(--f-title);font-weight:800}
+body[data-subject="ela"] footer.site{background:var(--wall-2);color:#B9C7BC;font-family:var(--f-label);border:0}
+body[data-subject="ela"][data-view="page"] #main{border-top:6px solid var(--walnut)}
+
+/* ---------- homepage: the shelf ---------- */
+body[data-subject="ela"][data-view="home"]{background:var(--wall)}
+body[data-subject="ela"][data-view="home"] .head h1,body[data-subject="ela"][data-view="home"] .head .lede,body[data-subject="ela"][data-view="home"] .course-shortcuts{display:none}
+body[data-subject="ela"][data-view="home"] .head{padding-block:4px 0}
+body[data-subject="ela"][data-view="home"] .units{border-color:#2F4A3C}
+body[data-subject="ela"][data-view="home"] .units button{color:#B9C7BC}
+.sh{max-width:1240px;margin:0 auto;padding:0 max(18px,env(safe-area-inset-left,0px)) 64px;color:#EFE6D2;font-family:"Newsreader",Georgia,serif}
+.sh-kick,.sh-cap,.sh-foot,.sh-space,.sh-stats dt,.sh-links,.sh-btn,.sh-by,.sh-drawer span,.sh-drawer i,.sh-panel h3{font-family:"Bricolage Grotesque",system-ui,sans-serif}
+.sh-hero{display:flex;flex-wrap:wrap;gap:28px 48px;align-items:flex-end;justify-content:space-between;padding:48px 0 40px}
+.sh-hero>div{flex:999 1 520px;min-width:0}
+.sh-kick{margin:0;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:#9FB5A6}
+.sh h1{font-family:"Fraunces",Georgia,serif;font-weight:900;font-size:clamp(44px,7.4vw,84px);line-height:.95;letter-spacing:-.02em;color:#FFF7E6;margin:12px 0 14px}
+.sh-lede{margin:0;font-size:clamp(19px,2vw,22px);line-height:1.45;color:#D7D0BE;max-width:36ch}
+.sh-links{display:flex;flex-wrap:wrap;gap:6px 22px;margin:18px 0 0;font-size:15px}
+.sh-links a{color:var(--gold);text-underline-offset:4px}
+.sh-stats{display:flex;gap:30px;margin:0;flex:0 1 auto}
+.sh-stats dd{margin:0;font-family:"Fraunces",Georgia,serif;font-weight:900;font-size:56px;line-height:1;color:var(--gold)}
+.sh-stats .sh-left dd{color:#EFE6D2}
+.sh-stats dt{font-size:14px;color:#9FB5A6;margin-top:2px}
+.sh-stats div{display:flex;flex-direction:column}
+.sh-cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,360px);grid-template-areas:"shelf panel" "skills panel";gap:0 32px;align-items:start}
+.sh-main{grid-area:shelf;min-width:0}.sh-skills{grid-area:skills;min-width:0}
+.sh-cap{display:flex;justify-content:space-between;gap:12px;margin:0;padding:0 4px 10px;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:#9FB5A6}
+.sh-scroll{overflow-x:auto;scrollbar-color:#4F6B5A transparent}
+.sh-scroll:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.sh-row{display:flex;align-items:flex-end;gap:6px;min-width:max-content;height:356px;padding:0 18px;background:linear-gradient(#24402F,#1A3125);border-inline:14px solid #5B3A22;border-bottom:22px solid var(--walnut);box-shadow:0 14px 0 var(--wall-2);margin-bottom:28px;box-sizing:content-box}
+.sh-spine{flex:none;display:flex;flex-direction:column;justify-content:space-between;align-items:center;width:var(--w);height:var(--h);padding:14px 0 12px;background:var(--cloth);color:#FBEFD9;border:0;border-top:6px solid color-mix(in srgb,var(--cloth) 72%,#000);cursor:pointer;transform-origin:50% 100%;transition:transform .22s ease}
+.sh-spine.sh-dark{color:#2A1A08}
+.sh-spine.sh-film{color:var(--top);border-top-color:var(--top)}
+.sh-title{writing-mode:vertical-rl;transform:rotate(180deg);font-family:"Fraunces",Georgia,serif;font-weight:800;font-size:20px;line-height:1.05;white-space:nowrap}
+.sh-film .sh-title{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:700;font-size:16px}
+.sh-foot{font-size:11px;letter-spacing:.04em;max-width:100%;overflow:hidden}
+.sh-film .sh-foot{font-size:10px;letter-spacing:.1em;text-transform:uppercase}
+.sh-spine:hover{transform:translateY(-10px)}
+.sh-spine[aria-pressed="true"]{transform:translateY(-24px) rotate(-3.5deg);outline:3px solid var(--gold);outline-offset:3px;margin-inline:8px}
+.sh-spine:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.sh-gap{width:14px;flex:none}
+.sh-space{flex:none;display:flex;align-items:center;justify-content:center;width:var(--w);height:var(--h);border:2px dashed #5D7A68;color:#A9C0B1;font-size:13px;text-decoration:none}
+.sh-space span{writing-mode:vertical-rl;white-space:nowrap}
+.sh-space:hover,.sh-space:focus-visible{border-color:var(--gold);color:#fff}
+.sh-h2{font-family:"Fraunces",Georgia,serif;font-weight:800;font-size:30px;color:#FFF7E6;margin:44px 0 6px}
+.sh-sub{margin:0 0 18px;font-size:18px;color:#C9C2B0}
+.sh-drawer{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.sh-drawer a{display:flex;flex-direction:column;gap:6px;padding:18px;background:#EFE6D2;color:var(--wall);text-decoration:none;border-top:6px solid var(--tab)}
+.sh-drawer span{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#5C4A1E}
+.sh-drawer b{font-family:"Fraunces",Georgia,serif;font-size:22px;line-height:1.1}
+.sh-drawer i{font-style:normal;font-size:14px;color:#4A5A50;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.sh-drawer a:hover b{text-decoration:underline;text-underline-offset:4px}
+.sh-drawer a:focus-visible,.sh-btn:focus-visible,.sh-links a:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.sh-panel{grid-area:panel;background:var(--cream);color:#1F2A23;padding:28px 28px 30px;border-top:8px solid var(--cloth,#3C4A2A)}
+.sh-panel .sh-kick{color:#6B4428}
+body[data-subject="ela"] .sh-panel h2{font-family:"Fraunces",Georgia,serif;font-weight:900;font-size:clamp(30px,3vw,40px);line-height:1;margin:8px 0 4px;color:#1F2A23}
+.sh-by{margin:0 0 18px;font-size:15px;color:#55625A}
+.sh-big{margin:0 0 18px;font-size:19px;line-height:1.45;font-style:italic}
+body[data-subject="ela"] .sh-panel h3{margin:0 0 8px;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:#6B4428;border-bottom:2px solid #1F2A23;padding-bottom:6px}
+.sh-terms{margin:0 0 20px;font-size:17px;line-height:1.6}
+.sh-acts{display:flex;flex-wrap:wrap;gap:10px}
+.sh-btn{padding:12px 18px;background:var(--wall);color:var(--cream);text-decoration:none;font-weight:700;font-size:15px;border:2px solid var(--wall)}
+.sh-btn.sh-ghost{background:none;color:var(--wall)}
+.sh-btn:hover{background:#2A4A39;color:#fff}.sh-btn.sh-ghost:hover{background:var(--wall);color:var(--cream)}
+.sh-miss{margin:22px 0 0;font-size:15px;color:#55625A}
+@media (max-width:900px){.sh-cols{grid-template-columns:minmax(0,1fr);grid-template-areas:"shelf" "panel" "skills"}.sh-panel{margin-top:10px}}
+@media (max-width:640px){.sh-hero{padding:32px 0 28px}.sh-stats{gap:22px}.sh-stats dd{font-size:44px}.sh-cap span:last-child{display:none}.sh-panel{padding:22px 20px}}
+@media (min-width:1600px){.sh{max-width:1480px}.sh-row{height:400px;gap:8px}.sh-spine,.sh-space{width:calc(var(--w)*1.18);height:calc(var(--h)*1.12)}.sh-title{font-size:23px}.sh-big{font-size:22px}.sh-terms{font-size:19px}}
+@media (prefers-reduced-motion:reduce){.sh-spine{transition:none}}
