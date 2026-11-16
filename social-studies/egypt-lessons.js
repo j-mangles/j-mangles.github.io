@@ -104,7 +104,7 @@ window.EgyptLessons = [
       "Later king lists call the first pharaoh Menes. Egyptologists are still split on whether Menes was Narmer or his successor Hor-Aha.",
       "The Double Crown (Pschent) combined the White and Red crowns: one ruler for both lands.",
       "Divine kingship: the living pharaoh was Horus, and became Osiris after death. Obeying him kept ma'at, the order of the universe.",
-      "Egypt broke apart in two Intermediate Periods but kept reuniting: Old Kingdom, Middle Kingdom and New Kingdom."
+      "Egypt broke apart in the Intermediate Periods between its kingdoms but kept reuniting: Old Kingdom, Middle Kingdom and New Kingdom."
     ],
     "terms": [
       [
@@ -179,7 +179,7 @@ window.EgyptLessons = [
       "Imhotep designed the Step Pyramid of Djoser around 2670 BCE by stacking mastabas. He is the first architect we know by name.",
       "Pyramids were royal tombs, built to protect the pharaoh's body and launch him into the afterlife.",
       "The Great Pyramid of Khufu (c. 2560 BCE) was about 146 m tall, with a base almost perfectly square and lined up to true north.",
-      "Myth: slaves built the pyramids (that story comes from Herodotus, 2,000 years later). Evidence: paid, fed, organized crews, with their own town and honoured cemetery near Giza.",
+      "Myth: slaves built the pyramids (the idea grew out of Herodotus, who wrote 2,000 years later that 100,000 men were forced to work on it). Evidence: paid, fed, organized crews, with their own town and honoured cemetery near Giza.",
       "Blocks were cut with copper and stone tools, dragged on sledges over wetted sand, and raised with ramps. Exactly how the top blocks were raised is still debated.",
       "The real achievement was organizing a state: surplus grain, a workers' town, and scribes tracking labour and rations."
     ],
@@ -257,7 +257,7 @@ window.EgyptLessons = [
       "The body had to last so the ka (life force) and ba (personality) had somewhere to return. Mummification took about 70 days, and the heart stayed in.",
       "Tombs held canopic jars, shabtis (helper figures), a Book of the Dead and a heart scarab.",
       "At the weighing of the heart, your heart was balanced against the feather of Ma'at. If it was heavy, Ammit ate it and you stopped existing.",
-      "Temples were rich: the Temple of Amun at Thebes had over 84,000 workers and 56 towns."
+      "Temples were rich: a record from the reign of Ramesses III lists tens of thousands of workers and dozens of towns belonging to the Temple of Amun at Thebes."
     ],
     "terms": [
       [
@@ -333,7 +333,7 @@ window.EgyptLessons = [
       "Walking in, the floor rose, the ceiling dropped, the light faded and fewer people were allowed: pylon, open court, hypostyle hall, sanctuary.",
       "Karnak was built over 2,000 years by about 30 pharaohs. Its Great Hypostyle Hall has 134 columns.",
       "Most people only came near the god on festival days, like the Opet Festival procession from Karnak to Luxor.",
-      "Abu Simbel (Ramesses II) was cut into a cliff in Nubia. In the 1960s it was cut into 1,036 blocks and moved uphill to escape the Aswan High Dam's lake.",
+      "Abu Simbel (Ramesses II) was cut into a cliff in Nubia. In the 1960s it was cut into more than 1,000 blocks and moved uphill to escape the Aswan High Dam's lake.",
       "Art rules: head and legs from the side, eye and shoulders from the front; size shows rank; scenes in rows; a grid; a colour code.",
       "Temples and statues were brightly painted. Under Akhenaten, the art rules broke for about 17 years, then came back."
     ],
@@ -777,7 +777,7 @@ window.EgyptLessons = [
     "notes": [
       "Ramesses III beat the Sea Peoples around 1177 BCE, but war drained the treasury and trade partners collapsed.",
       "When the tomb builders' grain didn't arrive, they went on the first recorded strike in history.",
-      "Around 1070 BCE, Egypt split: kings in the Delta, and the High Priests of Amun ruling from Thebes.",
+      "Around 1070 BCE, Egypt split again (the Third Intermediate Period): kings in the Delta, and the High Priests of Amun ruling from Thebes.",
       "Then came foreign rulers: Kush, Assyria, Persia, Alexander the Great, the Greek Ptolemies and finally Rome in 30 BCE.",
       "Conquerors became pharaohs and kept building Egyptian-style temples, like Edfu.",
       "Using C.R.A.S.H.: conflict, resources and authority did the most damage. There is little evidence that sickness mattered much.",
@@ -964,7 +964,7 @@ window.EgyptLessons = [
           "The Rosetta Stone"
         ],
         "c": 0,
-        "why": "An outside visitor repeated what he was told, long after the fact."
+        "why": "He visited long after the fact and described huge gangs forced to work. Later retellings turned them into slaves."
       },
       {
         "q": "Which statement about Egypt and Nubia is true?",
