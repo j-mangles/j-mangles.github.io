@@ -157,3 +157,8 @@ body[data-subject="ct"][data-view="home"] .head{padding-block:4px 0}
   .tn-table th:first-child,.tn-rank{width:2.4em;padding-left:0}
 }
 @media (prefers-reduced-motion:reduce){.tn-anim tbody tr{animation:none}.tn-seg span{transition:none}}
+
+/* ---------- Run a Round (Game Theory Lesson 2); shares the tournament's form and table styles ---------- */
+.gr-in{max-width:none;min-height:104px;resize:vertical;font-family:var(--f-typed);font-size:17px;line-height:1.5}
+.gr-plot{margin-top:6px;border-bottom:1px solid var(--rule);padding-bottom:6px}
+.gr .tn-table td{font-variant-numeric:tabular-nums}
