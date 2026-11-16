@@ -344,7 +344,7 @@ window.HUB = {
   "big": "Matter is anything that has mass and takes up space. All of it is made of tiny particles that are always moving, and the particle theory explains why solids, liquids and gases behave so differently.",
   "notes": [
    "Matter has mass and takes up space. Light, sound and heat are not matter: they have no mass and take up no space.",
-   "The particle theory of matter is a scientific model. Nobody can watch single particles, but the model explains what we observe.",
+   "The particle theory of matter is a scientific model. Nobody can see single particles with their eyes, but the model explains what we observe.",
    "Point 1: all matter is made of tiny particles. Point 2: there is empty space between particles. Point 3: particles are always moving, and the more energy they have, the faster they move. Point 4: particles are attracted to each other, and some attractions are stronger than others.",
    "Evidence for point 3: food colouring spreads faster in hot water. The hot water particles have more energy, so they move faster and bump the colouring around more.",
    "Evidence for point 2: 50 mL of water plus 50 mL of rubbing alcohol makes about 97 mL, not 100 mL. Some particles fit into the spaces between the others.",
@@ -695,7 +695,7 @@ window.HUB = {
   "big": "A fluid is anything that flows, which means liquids and gases. Viscosity is a fluid's resistance to flowing: honey has high viscosity and water has low viscosity.",
   "notes": [
    "Liquids and gases are both fluids because their particles can move past each other.",
-   "High-viscosity fluids (honey, ketchup, syrup) flow slowly. Low-viscosity fluids (water, rubbing alcohol) flow quickly.",
+   "High-viscosity fluids (honey, ketchup, syrup) flow slowly. Low-viscosity fluids (water, vinegar) flow quickly.",
    "In particle terms, fluids with stronger attractions between particles (or bigger, tangled particles) resist flowing more.",
    "Warming most liquids lowers their viscosity. Warm syrup pours more easily than cold syrup because the particles have more energy.",
    "Density and viscosity are different properties. Vegetable oil flows more slowly than water, but it's less dense and floats on top.",
