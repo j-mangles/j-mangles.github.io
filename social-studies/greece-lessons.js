@@ -725,7 +725,7 @@ window.GreeceLessons=[
     "notes": [
       "Thucydides argued that Athens' growing power and Sparta's fear helped cause the war; his explanation remains open to interpretation.",
       "Athens relied on its navy and defensive walls, while Sparta held a strong land army and allied towns.",
-      "The war began in 431 BCE. A devastating epidemic struck crowded Athens in 430 BCE, and Pericles died.",
+      "The war began in 431 BCE. A devastating epidemic struck crowded Athens in 430 BCE, and Pericles died the next year.",
       "Athens' punishment of Melos exposed the gap between its democratic ideals and imperial practices.",
       "The Athenian expedition against Syracuse in 415–413 BCE was disastrous; Persian funding later helped Sparta build a fleet.",
       "Athens surrendered in 404 BCE, losing its walls and empire. Different causes can be examined using the C.R.A.S.H. framework."

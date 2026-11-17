@@ -532,7 +532,7 @@ window.MiddleAgesLessons = [
     "terms": [
       [
         "Magna Carta",
-        "An agreement sealed by King John and barons in 1215."
+        "An agreement between King John and rebel barons, sealed by the king in 1215."
       ],
       [
         "Baron",
