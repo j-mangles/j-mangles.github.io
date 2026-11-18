@@ -1,0 +1,105 @@
+/* Instruments inside the lapis-and-papyrus Egypt room. */
+.eg-work {
+  container-type: inline-size;
+  min-width: 0;
+  color: var(--ink);
+  font: 1rem/1.45 var(--f-ui);
+}
+figure.diagram.ix:has(.eg-work), .eg-exhibit {
+  margin: 1.4rem 0;
+  padding: clamp(.8rem, 2.8vw, 1.5rem);
+  background: var(--sheet);
+  border: 1px solid var(--rule);
+}
+.eg-work h4, .eg-work h5, .eg-phase-inline h5 {
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--f-display);
+  line-height: 1.05;
+  letter-spacing: normal;
+  text-transform: none;
+}
+.eg-work h4 {font-size:clamp(1.65rem,4vw,2.25rem)}
+.eg-work h5, .eg-phase-inline h5 {font-size:1.55rem}
+.eg-work p, .eg-phase-inline p, .sheet-card .eg-work p {margin:.5rem 0; font:1.1rem/1.45 var(--f-read); max-width:64ch}
+.eg-work .eg-lede {margin:.3rem 0 1rem}
+.sheet-card .eg-work .eg-caption, .eg-work .eg-caption, .eg-phase-inline .eg-caption {font: .87rem/1.45 var(--f-ui); color:var(--muted); margin:.45rem 0 0}
+.eg-caption a {color:var(--accent);text-underline-offset:.18em}
+.eg-layout, .eg-stone-layout, .eg-phase-inline {display:grid;grid-template-columns:minmax(0,1.12fr) minmax(0,1fr);gap:clamp(.85rem,2.5vw,1.6rem);align-items:start}
+.eg-work .eg-options {display:flex;flex-wrap:wrap;gap:.3rem;margin:0 0 .7rem}
+.eg-work button, html[data-room] .eg-work button {
+  min-height:44px; margin:0; padding:.44rem .72rem; border:1px solid var(--rule); border-radius:0;
+  background:var(--sheet); color:var(--ink); font:600 .92rem/1.15 var(--f-ui); letter-spacing:normal; text-transform:none; cursor:pointer;
+}
+.eg-work button:hover, html[data-room] .eg-work button:hover {border-color:var(--accent);background:color-mix(in srgb,var(--gilt) 18%,var(--sheet))}
+.eg-work button[aria-pressed="true"], html[data-room] .eg-work button[aria-pressed="true"] {background:var(--room);border-color:var(--room);color:var(--room-ink)}
+.eg-work :is(button,input,summary,a):focus-visible {outline:3px solid var(--accent);outline-offset:2px}
+.sheet-card .eg-work .eg-goods, .eg-work .eg-goods {font:600 .96rem/1.4 var(--f-ui);color:var(--accent);margin:.35rem 0 .65rem}
+.eg-work .eg-response, .eg-work .eg-note {font:1rem/1.45 var(--f-ui)}
+.eg-work .eg-reading {min-width:0}
+.eg-work .eg-task, .eg-work .eg-pair {border-top:1px solid var(--rule);margin-top:1rem;padding-top:.85rem}
+.eg-task > button, .eg-task .eg-options {margin-top:.65rem}
+.eg-task > p:empty {display:none}
+.eg-pair {display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.eg-pair h5 {font-size:1.25rem}
+.eg-work [data-pin] {margin-top:.4rem}
+.eg-map, .diagram .eg-work svg, .eg-work svg {display:block;width:100%;min-width:0;height:auto}
+.eg-map {background:#1b3260}
+.eg-place {font:600 16px var(--f-ui);fill:#251d13;stroke:#ddc892;stroke-width:3px;stroke-linejoin:round;paint-order:stroke}
+.eg-sea {font:italic 15px var(--f-read);fill:#eee9d9;stroke:#1b3260;stroke-width:2px}
+.eg-route {fill:none;stroke:#9e381c;stroke-width:3;stroke-dasharray:6 3;stroke-linecap:round;filter:drop-shadow(0 0 1px #fff8e0)}
+.eg-pin,.eg-port {fill:#192740;stroke:#f6ebcc;stroke-width:1.5}
+.eg-ring {fill:transparent;stroke:#9e381c;stroke-width:3}
+.eg-leader {stroke:#9e381c;stroke-width:2}
+.eg-uncertain {fill:transparent;stroke:#9e381c;stroke-width:2;stroke-dasharray:3 2}
+.eg-work .eg-stone-layout {grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr)}
+.eg-stone {background:#fff;border:1px solid var(--rule);display:grid;place-items:center;padding:.45rem}
+.eg-specimen {position:relative;max-width:230px;line-height:0}
+.eg-specimen img {display:block;width:100%;height:auto}
+.eg-work .eg-lens, html[data-room] .eg-work .eg-lens {
+  position:absolute;transform:translate(-50%,-50%);padding:0;width:36%;min-height:24px;height:13%;
+  border:2px dashed #f6e6a8;background:transparent;
+}
+.eg-work .eg-lens[aria-pressed="true"], html[data-room] .eg-work .eg-lens[aria-pressed="true"] {border:3px solid #ffda77;background:#e3b55230}
+.eg-detail {width:100%;aspect-ratio:3.8;overflow:hidden;position:relative;background:#ddd;border:1px solid var(--rule);margin:.35rem 0 .8rem}
+.eg-detail img {position:absolute;display:block;width:280%;max-width:none;height:auto}
+.eg-nile-view {display:grid;grid-template-columns:minmax(0,1fr) auto;background:#e8e5cf;align-items:stretch}
+.eg-nile-view [data-valley]{align-self:end}
+.eg-gauge {background:var(--room);color:var(--room-ink);padding:.7rem;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:.9rem}
+.eg-gauge strong {font:600 2.65rem/1.2 var(--f-display);color:var(--gilt);font-variant-numeric:tabular-nums}
+.eg-section-label text {font:600 17px var(--f-label)}
+.eg-section-label path {stroke:#665940;stroke-width:1.3}
+.eg-nile-controls {display:grid;grid-template-columns:minmax(0,1.4fr) minmax(max-content,1fr);gap:1rem;margin:1rem 0}
+.eg-nile-controls label,.eg-control-label {display:block;margin:0 0 .35rem;font:600 .92rem/1.4 var(--f-ui)}
+.eg-nile-controls label strong {font-weight:400;margin-left:.3rem}
+.eg-month-control {display:flex;align-items:center;gap:.55rem}
+.eg-month-control input {min-width:0;width:100%;accent-color:var(--accent);height:44px;cursor:pointer}
+.eg-month-control button {min-width:5rem;white-space:nowrap}
+.eg-nile-controls .eg-options {margin:0}
+.eg-compare {border-top:1px solid var(--rule);margin-top:1rem;padding-top:.6rem}
+.eg-compare summary {font:600 1rem/1.4 var(--f-ui);cursor:pointer;padding:.45rem 0}
+.eg-compare table {width:100%;border-collapse:collapse;font:1rem/1.4 var(--f-ui);margin:.45rem 0}
+.eg-compare th,.eg-compare td {padding:.4rem;text-align:left;border-bottom:1px solid var(--rule);vertical-align:top}
+.eg-phase-inline {margin:1rem 0}
+@container (max-width:570px) {
+  .eg-layout,.eg-work .eg-stone-layout {grid-template-columns:1fr}
+  .eg-nile-controls {grid-template-columns:1fr;gap:.5rem}
+  .eg-layout .eg-map {max-height:290px}
+  .eg-specimen {max-width:155px}
+  .eg-gauge {padding:.4rem;font-size:.78rem}
+  .eg-gauge strong {font-size:1.8rem}
+  .eg-pair {grid-template-columns:1fr}
+}
+@media(max-width:620px){.eg-phase-inline {grid-template-columns:1fr}.eg-phase-inline .eg-map{max-height:280px}}
+
+.eg-location {cursor:pointer}
+.eg-location:focus-visible {outline:3px solid #9e381c;outline-offset:2px}
+.eg-location[aria-pressed="true"] .eg-pin {stroke:#fff1ac;fill:#a63d1f;stroke-width:3}
+.eg-location[aria-pressed="true"] .eg-uncertain {fill:transparent}
+
+@container (max-width:380px) {
+  .eg-nile-view {grid-template-columns:1fr}
+  .eg-gauge {flex-direction:row;gap:.4rem;padding:.22rem .5rem}
+  .eg-gauge strong {font-size:1.5rem}
+  .eg-section-label text {font-size:21px}
+}
