@@ -247,6 +247,7 @@ figcaption{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.35}
 </style>
 <link rel="stylesheet" href="rooms.css?v=20261114a">
 <link rel="stylesheet" href="gallery.css?v=20261114a">
+<link rel="stylesheet" href="egypt-evidence.css">
 
 </head>
 <body>
@@ -289,6 +290,7 @@ figcaption{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.35}
 <script src="../assets/review.js?v=20261101d"></script>
 <script src="egypt-diagrams.js"></script>
 <script src="egypt-interactives.js"></script>
+<script src="egypt-evidence.js"></script>
 <script src="../assets/model3d.js"></script>
 <script src="egypt-3d.js"></script>
 <script src="egypt-lessons.js"></script>
@@ -678,7 +680,10 @@ const UNITS = [
 },
 {
   id:"egypt", n:"2", name:"Ancient Egypt", status:"next",
-  activities:[{href:"river-valley-lab.html?civilization=egypt",title:"River Valley Decision Lab",blurb:"Lesson 1: living with the Nile flood."},{href:"giza-harbour.html",title:"The Missing Stone Shipment",blurb:"Lesson 3: a 3D mystery at the Giza harbour."},{href:"temple-walkthrough.html",title:"Inside an Egyptian Temple",blurb:"Lesson 5: walk from the pylon to the sanctuary."}],
+  activities:[{href:"river-valley-lab.html?civilization=egypt",title:"River Valley Decision Lab",blurb:"Lesson 1: living with the Nile flood."},{href:"giza-harbour.html",title:"The Missing Stone Shipment",blurb:"Lesson 3: a 3D mystery at the Giza harbour."},{href:"temple-walkthrough.html",title:"Inside an Egyptian Temple",blurb:"Lesson 5: walk from the pylon to the sanctuary."},
+    {href:"egypt-trade-desk.html",title:"Royal Trade Desk",blurb:"Lesson 8 · Trace a cargo and plan an expedition."},
+    {href:"egypt-nubia-evidence.html",title:"Egypt and Nubia",blurb:"Lesson 9 · Follow five shifts in power along the Nile."},
+    {href:"egypt-rosetta-investigation.html",title:"Rosetta Stone Investigation",blurb:"Lesson 12 · Magnify three scripts and decipher royal names."}],
   span:"c. 3100 – 30 BCE",
   bbox:[24,14,41.5,33], anchor:[31.2,26.6], tol:40,
   intro:"One river through a desert. The Nile's yearly flood made Egypt rich and its deserts kept it safe, so one civilization lasted almost 3,000 years. To the south, Nubia was its trading partner, rival and, for a while, its ruler.",
@@ -1164,7 +1169,7 @@ function openLesson(unitId,lessonId){
   const u=unitById(unitId); if(!u||!u.lessons) return;
   const l=u.lessons.find(x=>x.id===lessonId); if(!l||!l.released) return;
   if(window.UnitReview)UnitReview.remember("ss",unitId,lessonId);
-  sheetCtx={u,l,answers:{},exitDraft:{}};
+  sheetCtx={u,l,answers:{},exitDraft:{},models:{}};
   $("#sheet").dataset.room=unitId;   // a lesson keeps its own unit's room, wherever it was opened from
   if($("#sheet").hidden) lastFocus=document.activeElement;
   renderSheet();
@@ -1213,6 +1218,7 @@ function renderSheet(){
   const {u,l,answers}=sheetCtx;
   const exitWasOpen=!!document.getElementById("ss-exit-ticket")?.open;
   const lessonLabel="Lesson";
+  const evidenceFirst=u.id==="egypt" && ["nileYear","trade","nubia","rosetta"].includes(l.diagram);
   const activity=l.activity || (u.id==="mesopotamia" && ["l1","l5"].includes(l.id) ? {href:"river-valley-lab.html?civilization=mesopotamia",title:"Try the River Valley Decision Lab"} : null);
   const rel=u.lessons.filter(x=>x.released); const i=rel.indexOf(l);
   const prev=rel[i-1], next=rel[i+1];
@@ -1229,8 +1235,9 @@ function renderSheet(){
     <h2>${esc(l.title)}</h2>
     ${l.imgs&&l.imgs.length?`<figure class="hero"><img src="${l.imgs[0].src}" alt="" data-cap="${esc(l.imgs[0].cap)}"><figcaption>${esc(l.imgs[0].cap)}</figcaption></figure>`:""}
     <div class="callout"><div class="eyebrow">The big idea</div><p class="big">${esc(l.big)}</p></div>
+    ${evidenceFirst?diagramsFor(l):""}
     <h3>What we covered</h3><ul class="notes">${l.notes.map(n=>`<li>${esc(n)}</li>`).join("")}</ul>
-    ${diagramsFor(l)}
+    ${evidenceFirst?"":diagramsFor(l)}
     ${l.imgs&&l.imgs.length>1?`<h3>Pictures from the lesson</h3><div class="gal">${l.imgs.slice(1).map(im=>`<figure><img src="${im.src}" alt="" loading="lazy" data-cap="${esc(im.cap)}"><figcaption>${esc(im.cap)}</figcaption></figure>`).join("")}</div>`:""}
     ${l.terms.length?`<h3>Key terms</h3><dl class="terms">${l.terms.map(t=>`<dt>${esc(t[0])}</dt><dd>${esc(t[1])}</dd>`).join("")}</dl>`:""}
     ${places.length?`<h3>On the map</h3><div class="chips">${places.map(p=>`<button class="chip" data-place="${p.id}">${glyph(p.kind)}${esc(p.name)}</button>`).join("")}</div>`:""}
@@ -1254,7 +1261,10 @@ function renderSheet(){
     </details>
     <div class="sheet-nav">${prev?`<button class="btn ghost" id="lprev">&larr; ${lessonLabel} ${esc(prev.n)}</button>`:"<span></span>"}${next?`<button class="btn ghost" id="lnext">${lessonLabel} ${esc(next.n)} &rarr;</button>`:""}</div>`;
   $("#sheet-x").onclick=closeLesson;
-  document.querySelectorAll("#sheetcard [data-ix]").forEach(d=>{const ix=window.EgyptInteractives&&window.EgyptInteractives[d.dataset.ix]; if(ix) try{ix.mount(d);}catch(e){d.textContent="This model didn't load. Refresh the page to try again.";}});
+  document.querySelectorAll("#sheetcard [data-ix]").forEach(d=>{const ix=window.EgyptInteractives&&window.EgyptInteractives[d.dataset.ix]; if(ix) try{ix.mount(d,sheetCtx.models[d.dataset.ix] ||= {});}catch(e){
+    const fallback=window.EgyptDiagrams?.[d.dataset.ix==="nileYear"?"flood":d.dataset.ix];
+    if(fallback) d.innerHTML=fallback().svg; else d.textContent="This model couldn’t load. Refresh to try again.";
+  }});
   document.querySelectorAll("#sheetcard .opt").forEach(b=>b.onclick=()=>{
     sheetCtx.answers[+b.dataset.q]=+b.dataset.o;
     const all=l.check.every((q,qi)=>sheetCtx.answers[qi]===q.c);

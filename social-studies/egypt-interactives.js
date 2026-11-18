@@ -1,136 +1,91 @@
-/* Interactive Egypt diagrams for the atlas lesson sheet.
-   Each entry is a function(el) that draws into a figure. The lesson sheet re-renders when a student answers
-   a question, so each interactive keeps its own state here and picks up where it left off. */
-(function(){
-"use strict";
-const NS="http://www.w3.org/2000/svg";
-const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-const F='font-family="Inter, system-ui, sans-serif"';
-const T=(x,y,s,o={})=>`<text x="${x}" y="${y}" ${F} font-size="${o.size||12}" ${o.w?`font-weight="${o.w}"`:""} fill="${o.fill||"var(--ink)"}" text-anchor="${o.a||"start"}"${o.id?` id="${o.id}"`:""}>${esc(s)}</text>`;
-
-/* ---------------- The Nile's year ---------------- */
-const MONTHS=["January","February","March","April","May","June","July","August","September","October","November","December"];
-const SEASON=m=>m>=6&&m<=9?["Akhet","flood season","var(--river)"]:(m>=10||m<=1)?["Peret","growing season","var(--farm)"]:["Shemu","harvest season","var(--accent)"];
-// Share of the year's rise, by month (Jan..Dec): first rise in June, fastest in July, levels off in September, peaks in October.
-const RISE=[.06,.04,.02,0,0,.06,.4,.7,.82,1,.55,.18];
-const FLOODS={normal:{peak:16,label:"Normal flood"},high:{peak:21,label:"Too high"},low:{peak:12,label:"Too low"}};
-const BASE=2;                         // dry-season depth in cubits
-const yOf=c=>186-2*c;                 // water surface height on screen for a level in cubits
-const FIELD_LO=8, FIELD_HI=15, VILLAGE=18;   // levels where the floodplain starts / is fully covered, and where the village floods
-const TEXT=[
- "Peret, the growing season. Wheat and barley grow in the black silt. Farmers lift water from canals with a shaduf to keep the fields wet.",
- "The crops keep growing. Farmers weed, chase off birds and keep the canals clear.",
- "Shemu, the harvest season, begins. The grain ripens and turns gold.",
- "Harvest. Farmers cut the grain with sickles and thresh it. Scribes measure the crop and take a share as tax.",
- "The last grain goes into the granaries. The empty fields dry out and crack in the heat.",
- "Far to the south, the river starts rising at Aswan. Farmers repair canals and banks before the water arrives.",
- "Akhet, the flood season. The Nile rises fastest now and spills over its banks.",
- "The fields are underwater. With no farm work to do, many farmers worked on the pharaoh's building projects.",
- "The water levels off and stays high for about three weeks.",
- "The flood peaks. Officials read the Nilometer to judge how big the harvest will be and set the taxes.",
- "The water drains back into the river and leaves a layer of black silt behind. Farmers plant right away.",
- "Seedlings sprout in the wet, rich soil."
-];
-const state={t:5,flood:"normal",playing:false};
-
-function level(t,flood){
-  t=(t+11.5)%12;   // each month's value applies at mid-month
-  const i=Math.floor(t)%12,j=(i+1)%12,f=t-Math.floor(t),r=RISE[i]+(RISE[j]-RISE[i])*f;
-  return BASE+r*(FLOODS[flood].peak-BASE);
-}
-// Ground profile, left half; mirrored for the right bank. Floodplain rises gently away from the river.
-const GL=[[0,100],[90,146],[155,150],[160,156],[310,170],[318,200]];
-const ground=x=>{const g=x>360?720-x:x;for(let k=1;k<GL.length;k++){const[a,b]=GL[k-1],[c,d]=GL[k];if(g<=c)return b+(d-b)*(g-a)/(c-a);}return 200;};
-const fieldXs=[];for(let x=166;x<=304;x+=9){fieldXs.push(x);fieldXs.push(720-x);}
-
-function cropAt(t,silted){
-  if(!silted)return null; const m=t%12;
-  if(m>=6&&m<10)return null;                              // underwater or waiting for the flood
-  if(m>=10&&m<10.6)return {h:0};                          // bare black silt, just planted
-  const grow=m>=10?m-10.6:m+1.4;                          // months since planting
-  if(grow<4.2)return {h:3+grow*3,c:"var(--farm)"};        // Nov-Feb: green and growing
-  if(grow<5.6)return {h:15,c:"color-mix(in srgb, #d9a62b 75%, var(--farm))"};   // March-April: ripening gold
-  if(grow<6.4)return {h:3,c:"color-mix(in srgb, #c9a46a 80%, var(--panel))"};    // May: stubble after harvest
-  return null;                                            // June: dry and cracked
-}
-
-function nileYear(el){
-  el.innerHTML=`<div class="ix-nile">
-   <div style="overflow-x:auto"><svg viewBox="0 0 820 300" role="img" aria-label="Animated cross-section of the Nile Valley through one year" style="display:block;width:100%;height:auto;min-width:600px;touch-action:none">
-    <rect x="0" y="0" width="720" height="250" fill="color-mix(in srgb, var(--river) 8%, var(--panel))"/>
-    <g id="nx-water"></g><g id="nx-ground"></g><g id="nx-crops"></g><g id="nx-village"></g><g id="nx-labels"></g>
-    <g id="nx-gauge"></g><g id="nx-time"></g>
-   </svg></div>
-   <div class="ix-row" style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px">
-    <button class="btn" type="button" id="nx-play" style="min-width:84px">Play</button>
-    <input id="nx-slider" type="range" min="0" max="11.95" step="0.05" aria-label="Month" style="flex:1;min-width:180px">
-    <span class="fine" style="margin:0">Flood:</span>
-    ${Object.entries(FLOODS).map(([k,v])=>`<button class="btn ghost" type="button" data-flood="${k}" aria-pressed="false">${v.label}</button>`).join("")}
-   </div>
-   <p id="nx-text" aria-live="polite" style="margin:10px 0 0;min-height:3em"></p>
-  </div>`;
-  const $=s=>el.querySelector(s),svg=$("svg");
-  // static ground
-  const pts=[];for(let x=0;x<=720;x+=5)pts.push([x,ground(x)]);
-  $("#nx-ground").innerHTML=`<path d="M0,250 L${pts.map(p=>p.join(",")).join(" L")} L720,250 Z" fill="color-mix(in srgb, var(--accent) 24%, var(--panel))"/>`;
-  $("#nx-village").innerHTML=[96,112,128,142].map((x,i)=>`<rect x="${x}" y="${133+(i%2)*2}" width="12" height="${14-(i%2)*2}" fill="color-mix(in srgb, var(--accent) 55%, var(--panel))" stroke="var(--muted)" stroke-width=".8"/>`).join("")+`<path d="M92,147 L156,150" stroke="var(--muted)"/>`+`<g id="nx-vwater"></g>`;
-  $("#nx-labels").innerHTML=T(48,90,"DESHRET",{w:700,fill:"var(--accent)",a:"middle"})+T(48,104,"desert",{size:11,fill:"var(--muted)",a:"middle"})+T(672,90,"DESHRET",{w:700,fill:"var(--accent)",a:"middle"})+T(672,104,"desert",{size:11,fill:"var(--muted)",a:"middle"})+T(124,126,"village",{size:11,fill:"var(--muted)",a:"middle"})+T(235,232,"KEMET: fields",{w:700,fill:"var(--farm)",a:"middle",size:11.5})+T(485,232,"KEMET: fields",{w:700,fill:"var(--farm)",a:"middle",size:11.5})+T(360,246,"the Nile",{size:11,fill:"var(--river)",a:"middle",w:600});
-  // gauge frame
-  const GY=c=>250-c*9.5;let g=`<rect x="748" y="${GY(22)}" width="34" height="${22*9.5}" rx="3" fill="var(--panel)" stroke="var(--muted)"/>`;
-  g+=`<rect x="749" y="${GY(16)}" width="32" height="${(16-14)*9.5}" fill="var(--good)" opacity=".18"/><rect x="749" y="${GY(22)}" width="32" height="${(22-18)*9.5}" fill="var(--bad)" opacity=".15"/><rect x="749" y="${GY(13)}" width="32" height="${13*9.5-1}" fill="var(--bad)" opacity=".07"/>`;
-  [4,8,12,16,20].forEach(c=>g+=`<line x1="782" y1="${GY(c)}" x2="788" y2="${GY(c)}" stroke="var(--muted)"/>`+T(791,GY(c)+4,c,{size:10,fill:"var(--muted)"}));
-  g+=T(765,18,"Nilometer",{a:"middle",size:11,w:700})+T(765,32,"cubits",{a:"middle",size:10,fill:"var(--muted)"})+`<rect id="nx-gfill" x="750" width="30" fill="var(--river)" opacity=".75"/>`+T(745,GY(16)+4,"plenty",{a:"end",size:10,fill:"var(--good)",w:600})+T(745,GY(12)+4,"hunger",{a:"end",size:10,fill:"var(--bad)",w:600})+T(745,GY(20)+4,"danger",{a:"end",size:10,fill:"var(--bad)",w:600});
-  $("#nx-gauge").innerHTML=g;
-  // season band + month ticks
-  const X=m=>20+m*(680/12);let tb="";
-  [[6,10,"Akhet · flood","var(--river)"],[10,14,"Peret · growing","var(--farm)"],[2,6,"Shemu · harvest","var(--accent)"]].forEach(([a,z,n,c])=>{
-    const seg=z>12?[[a,12],[0,z-12]]:[[a,z]];seg.forEach(([s,e],k)=>{tb+=`<rect x="${X(s)+1}" y="262" width="${X(e)-X(s)-2}" height="8" rx="3" fill="${c}" opacity=".8"/>`;if(k===0)tb+=T(X(s)+4,293,n,{size:11,fill:"var(--muted)"});});});
-  MONTHS.forEach((m,i)=>tb+=T(X(i)+680/24,282,m.slice(0,3),{a:"middle",size:10,fill:"var(--muted)"}));
-  tb+=`<rect x="20" y="255" width="680" height="45" fill="transparent" id="nx-hit" style="cursor:pointer"/><path id="nx-head" d="M0,0 l-6,-8 l12,0 Z" fill="var(--ink)"/>`;
-  $("#nx-time").innerHTML=tb;
-
-  const slider=$("#nx-slider"),play=$("#nx-play");
-  function draw(){
-    const t=state.t,m=Math.floor(t)%12,c=level(t,state.flood),pk=FLOODS[state.flood].peak,y=yOf(c),sy=yOf(pk);
-    $("#nx-water").innerHTML=`<rect x="0" y="${y}" width="720" height="${250-y}" fill="var(--river)" opacity=".85"/>`;
-    // silt where the season's peak reached; crops on silt
-    let cr="";fieldXs.forEach(x=>{const gy=ground(x),silted=gy>sy+.5,under=gy>y;
-      if(under)return;
-      const col=silted&&!(m===5)?"color-mix(in srgb, var(--ink) 70%, var(--farm))":"color-mix(in srgb, var(--accent) 35%, var(--panel))";
-      cr+=`<rect x="${x-4.5}" y="${gy-1.5}" width="9" height="4" fill="${col}"/>`;
-      const k=cropAt(t,silted);if(k&&k.h)cr+=`<line x1="${x}" y1="${gy-1}" x2="${x}" y2="${gy-1-k.h}" stroke="${k.c}" stroke-width="3" stroke-linecap="round"/><line x1="${x}" y1="${gy-1-k.h*.6}" x2="${x+3}" y2="${gy-3-k.h*.8}" stroke="${k.c}" stroke-width="1.6"/>`;
-      if(!silted&&(m>=10||m<=4))cr+=`<path d="M${x-3},${gy+1} l2,2 l2,-2 l2,2" stroke="var(--muted)" fill="none" stroke-width=".8"/>`;
-    });
-    $("#nx-crops").innerHTML=cr;
-    $("#nx-vwater").innerHTML=c>VILLAGE?`<rect x="88" y="${y}" width="72" height="${150-y}" fill="var(--river)" opacity=".85"/>`:"";
-    const GY=v=>250-v*9.5;const gf=$("#nx-gfill");gf.setAttribute("y",GY(c));gf.setAttribute("height",c*9.5-1);
-    $("#nx-head").setAttribute("transform",`translate(${20+t*(680/12)},262)`);
-    slider.value=t;
-    const [sn,se]=SEASON(m);let txt=`<b>${MONTHS[m]} · ${sn} (${se})</b> · Nilometer: about ${Math.round(c)} cubits. ${esc(TEXT[m])}`;
-    if(state.flood==="high"&&c>VILLAGE)txt+=` <b style="color:var(--bad)">Too high: the water reaches the village. Mudbrick houses collapse and stored grain is ruined.</b>`;
-    if(state.flood==="low"&&(m>=10||m<=4))txt+=` <b style="color:var(--bad)">Too low: the outer fields never got water or silt, so nothing grows there. Less grain means hunger.</b>`;
-    if(state.flood==="high"&&(m>=10||m<=4))txt+=` The fields that survived got plenty of silt, but the village has to rebuild.`;
-    $("#nx-text").innerHTML=txt;
-    el.querySelectorAll("[data-flood]").forEach(b=>{const on=b.dataset.flood===state.flood;b.setAttribute("aria-pressed",on);b.className=on?"btn":"btn ghost";});
-    play.textContent=state.playing?"Pause":"Play";
+/* Nile flood model for the Grade 8 atlas. Water heights are illustrative cubits.
+   The same land profile determines the waterline, silt coverage and village flooding. */
+(function () {
+  "use strict";
+  const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  const rise = [.06,.04,.02,0,0,.06,.4,.7,.82,1,.55,.18];
+  const floods = {low:{label:"Low",peak:12},normal:{label:"Typical",peak:16},high:{label:"High",peak:21}};
+  const work = ["Farmers water the growing wheat and barley.","Farmers weed the fields and clear the canals.","Grain begins to ripen.","Farmers cut and thresh the grain. Scribes measure the crop.","The last grain goes into the granaries.","Farmers repair canals and banks before the river rises.","The water begins to spread beyond the channel.","The rising water covers some of the farmland.","Officials watch the Nilometer as the river stays high.","Officials read the peak and estimate how much land received floodwater.","Farmers sow the wet soil as the water retreats.","Seedlings sprout on the land that received silt."];
+  const ground = [[0,63],[35,82],[77,103],[145,103],[155,109],[275,153],[304,194],[345,194],[374,153],[484,109],[502,97],[540,80]];
+  const waterY = cubits => 182 - cubits*4.3;
+  function surface(x) {
+    const i=ground.findIndex(p=>p[0]>=x);
+    if(i<1) return ground[0][1];
+    const [a,b]=ground[i-1],[c,d]=ground[i];
+    return b+(d-b)*(x-a)/(c-a);
   }
-  let last=0;
-  function tick(ts){
-    if(!el.isConnected){state.playing=false;return;}
-    if(!state.playing)return;
-    if(last)state.t=(state.t+(ts-last)/1000*0.9)%12;   // about 13 seconds per year
-    last=ts;draw();requestAnimationFrame(tick);
+  const plots = [165,178,191,204,217,230,243,256,269,379,392,405,418,431,444,457,470,481];
+  function landscape(m,c,peak) {
+    const y=waterY(c), peakY=waterY(peak);
+    const wet=plots.filter(x=>surface(x)>=y).length;
+    const reached=plots.filter(x=>surface(x)>=peakY).length;
+    const houses=[82,100,119].map((x,i)=>`<g fill="#c99758" stroke="#705338" stroke-width="1.5"><path d="M${x} 103v-${14+i*3}h16v${14+i*3}Z"/><path d="M${x+6} 103v-8h4v8" fill="#71563b"/></g>`).join("");
+    const field=plots.map(x=>{
+      const gy=surface(x), silt=gy>=peakY;
+      if(gy>=y)return "";
+      let marks=`<path d="M${x-4} ${surface(x-4)}L${x+4} ${surface(x+4)}" stroke="${silt?'#584731':'#a27f4f'}" stroke-width="4"/>`;
+      if(silt && (m<4 || m===11)) {
+        const h=[11,15,18,18][m]||6;
+        marks+=`<path d="M${x} ${gy}v-${h}m0 5-4-4m4 6 4-4" fill="none" stroke="${m>=2&&m<=3?'#a47818':'#526532'}" stroke-width="2"/>`;
+      }
+      return marks;
+    }).join("");
+    // Water sits above the bank profile only where the surface exceeds the land.
+    const earth="M"+ground.map(p=>p.join(",")).join(" L")+" L540,202 L0,202Z";
+    return {wet,reached,svg:`<svg viewBox="0 0 540 202" role="img" aria-label="Nile Valley cross-section in ${months[m]}. Water covers ${wet} of ${plots.length} model field strips.">
+      <rect width="540" height="202" fill="#e8e5cf"/>
+      <path d="M0 67L28 45 43 59 65 54 104 87 138 91 166 107H0Z M432 111l46-32 25 5 37-41v70Z" fill="#dabb84"/>
+      <path d="${earth}" fill="#c9a775"/><path d="M0 126q70 9 126-2t109 11m137 38q80-26 168-20M0 156q76 7 136 0t100 7" stroke="#b28d60" fill="none" stroke-width="2"/>
+      ${houses}<clipPath id="eg-nile-basin"><path d="M0 0H540V80 ${ground.slice().reverse().map(p=>"L"+p.join(",")).join(" ")} Z"/></clipPath>
+      <g clip-path="url(#eg-nile-basin)"><rect x="0" y="${y}" width="540" height="${202-y}" fill="#328595" opacity=".88"/>
+      <path d="M0 ${y}H540" stroke="#1d616c" stroke-width="3"/></g>${field}
+      <g class="eg-section-label"><text x="107" y="26" text-anchor="middle">Village</text><path d="M107 32v37"/><text x="233" y="61" text-anchor="middle">Fields</text><path d="M233 66v32"/><text x="325" y="186" text-anchor="middle" fill="#fff">Nile</text></g>
+    </svg>`};
   }
-  play.onclick=()=>{state.playing=!state.playing;last=0;draw();if(state.playing)requestAnimationFrame(tick);};
-  slider.oninput=()=>{state.t=+slider.value;draw();};
-  el.querySelectorAll("[data-flood]").forEach(b=>b.onclick=()=>{state.flood=b.dataset.flood;draw();});
-  const hit=$("#nx-hit");
-  const seek=e=>{const r=svg.getBoundingClientRect(),x=(e.clientX-r.left)/r.width*820;state.t=Math.min(11.95,Math.max(0,(x-20)/(680/12)));draw();};
-  hit.addEventListener("pointerdown",e=>{seek(e);hit.setPointerCapture(e.pointerId);hit.onpointermove=seek;});
-  hit.addEventListener("pointerup",()=>{hit.onpointermove=null;});
-  draw();
-  if(state.playing){last=0;requestAnimationFrame(tick);}
-}
 
-window.EgyptInteractives={nileYear:{mount:nileYear,cap:"Press Play or drag through the months. Then try a flood that's too high or too low. The timing came every year; the height was the gamble."}};
+  function nileYear(el,state={}) {
+    state.month ??= 9;
+    state.flood ??= "normal";
+    let timer=null;
+    el.classList.add("eg-work");
+    el.innerHTML=`<h4>How high will the Nile rise?</h4><p class="eg-lede">Hold the month steady and change the flood. Watch where the water reaches.</p>
+      <div class="eg-nile-view"><div data-valley></div><div class="eg-gauge"><span>Nilometer</span><strong data-cubits></strong><span>cubits</span></div></div>
+      <div class="eg-nile-controls"><div><label for="nx-slider">Month <strong data-month></strong></label>
+        <div class="eg-month-control"><button type="button" data-play>Play year</button><input id="nx-slider" type="range" min="0" max="11" step="1"></div></div>
+        <div><span class="eg-control-label">Flood height</span><div class="eg-options" role="group" aria-label="Flood height">${Object.entries(floods).map(([k,f])=>`<button type="button" data-flood="${k}">${f.label}</button>`).join("")}</div></div></div>
+      <div class="eg-season" aria-live="polite"></div>
+      <details class="eg-compare"><summary>Compare the three floods at their October peak</summary>
+      <table><thead><tr><th>Flood</th><th>Model peak</th><th>Effect</th></tr></thead><tbody>
+      <tr><th>Low</th><td>12 cubits</td><td>Outer fields miss the water and silt.</td></tr><tr><th>Typical</th><td>16 cubits</td><td>Much of the farmland receives silt.</td></tr><tr><th>High</th><td>21 cubits</td><td>Water reaches houses and stored grain.</td></tr></tbody></table></details>`;
+    const get=s=>el.querySelector(s), slider=get("input"),play=get("[data-play]"), compare=get("details");
+    compare.open=!!state.compare;
+    compare.ontoggle=()=>{state.compare=compare.open;};
+    function draw() {
+      const m=state.month,peak=floods[state.flood].peak,c=2+rise[m]*(peak-2),land=landscape(m,c,peak);
+      const season=m>=6&&m<=9?"Akhet · Flood season":m>=10||m<=1?"Peret · Growing season":"Shemu · Harvest season";
+      get("[data-valley]").innerHTML=land.svg;
+      get("[data-month]").textContent=months[m];
+      get("[data-cubits]").textContent=Math.round(c);
+      slider.value=m;slider.setAttribute("aria-valuetext",months[m]);
+      const effect=waterY(c)<=103?"Floodwater reaches the village and threatens stored grain.":
+        land.wet ? `Water covers ${land.wet} of the ${plots.length} field strips. The village is above the waterline.` :
+        m>=10||m<5 ? `The last flood left silt on ${land.reached} of the ${plots.length} field strips.` : "The river is still inside its channel.";
+      get(".eg-season").innerHTML=`<h5>${season}</h5><p>${work[m]} ${effect}</p>`;
+      el.querySelectorAll("[data-flood]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.flood===state.flood));
+    }
+    function stop() { clearTimeout(timer);timer=null;play.textContent="Play year";get(".eg-season").setAttribute("aria-live","polite"); }
+    function advance() {
+      if(!el.isConnected || el.closest("[hidden]") || document.hidden) {stop();return;}
+      state.month=(state.month+1)%12;draw();timer=setTimeout(advance,1300);
+    }
+    play.onclick=()=>{
+      if(timer!==null){stop();return;}
+      play.textContent="Pause";get(".eg-season").setAttribute("aria-live","off");advance();
+    };
+    slider.oninput=()=>{stop();state.month=Number(slider.value);draw();};
+    el.querySelectorAll("[data-flood]").forEach(b=>b.onclick=()=>{stop();state.flood=b.dataset.flood;draw();});
+    draw();
+  }
+
+  window.EgyptInteractives={nileYear:{mount:nileYear,cap:"This model uses illustrative water levels and field strips. The flood season returned each year, but its height varied."}};
 })();

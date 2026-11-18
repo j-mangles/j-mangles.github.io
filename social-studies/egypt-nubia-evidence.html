@@ -63,10 +63,11 @@ hr{border:0;border-top:1px solid var(--line);margin:22px 0}
 <link rel="stylesheet" href="../assets/fonts.css?v=20261114a">
 <link rel="stylesheet" href="rooms.css?v=20261114a">
 <link rel="stylesheet" href="lab.css?v=20261114a">
+<link rel="stylesheet" href="egypt-evidence.css">
 </head>
 <body>
 <main>
-<header><div><p class="kicker">Unit 2 · Ancient Egypt · Lesson 9</p><h1>Egypt and Nubia</h1></div><a href="index.html">Back to the Egypt atlas</a></header>
+<header><div><p class="kicker">Unit 2 · Ancient Egypt · Lesson 9</p><h1>Egypt and Nubia</h1></div><a href="index.html#egypt-l9">Back to the Egypt atlas</a></header>
 <p class="lede">Were Egypt and Nubia rivals, trading partners, or both? Track how power shifted across five phases, then weigh a Roman-era written account against a message preserved in an object. Make a choice before revealing the evidence each source can support.</p>
 <nav class="tabs" aria-label="Investigation sections">
 <button class="tab" type="button" aria-pressed="true" data-tab="timeline">1 · Track the relationship</button>
@@ -77,6 +78,7 @@ hr{border:0;border-top:1px solid var(--line);margin:22px 0}
 <p class="kicker">Evidence station 1</p><h2>Who had the upper hand?</h2>
 <p class="note">Choose the best-supported answer for each phase. Some relationships do not fit a simple winner-versus-loser story. Your work stays in this tab; nothing is submitted or saved online.</p>
 <div class="timeline" id="phase-list" aria-label="Five phases in chronological order"></div>
+<div class="eg-phase-inline" id="phase-location"></div>
 <div class="phase" id="phase-card"></div>
 <div class="nav"><button class="btn secondary" id="phase-prev" type="button">← Previous phase</button><span class="note" id="phase-count"></span><button class="btn" id="phase-next" type="button">Next phase →</button></div>
 </section>
@@ -105,6 +107,7 @@ hr{border:0;border-top:1px solid var(--line);margin:22px 0}
 </section>
 <p class="note final">Based on the student task “Rivals or Partners?” in the Egypt and Nubia lesson. A source can provide useful evidence while still reflecting the maker’s point of view.</p>
 </main>
+<script src="egypt-evidence.js"></script>
 <script>
 (function(){
 "use strict";
@@ -134,6 +137,7 @@ function renderPhases(){
  const list=$("phase-list");list.replaceChildren();
  phases.forEach((p,i)=>{const b=el("button","phasebtn");b.type="button";b.setAttribute("aria-current",i===phaseIndex?"true":"false");b.setAttribute("aria-label",p.name+", "+p.dates);b.append(el("b","",p.name),el("span","",p.dates));b.addEventListener("click",()=>{phaseIndex=i;renderPhases()});list.appendChild(b)});
  const p=phases[phaseIndex],choice=phaseAnswers[phaseIndex],checked=phaseChecked[phaseIndex],card=$("phase-card");card.replaceChildren();
+ window.EgyptInteractives.nubia.showEvidence($("phase-location"),phaseIndex);
  const head=el("div","phasehead");head.append(el("div","",p.prompt),el("span","badge",p.dates));card.appendChild(head);
  const opts=el("div","options");
  p.choices.forEach((c,i)=>{const b=el("button","option",c);b.type="button";b.disabled=checked;b.setAttribute("aria-pressed",choice===c?"true":"false");b.addEventListener("click",()=>{phaseAnswers[phaseIndex]=c;renderPhases()});opts.appendChild(b)});card.appendChild(opts);

@@ -17,9 +17,11 @@ footer{border-top:1px solid var(--line);padding-top:14px;font-size:.9rem}@media(
 </style><link rel="stylesheet" href="../assets/fonts.css?v=20261114a">
 <link rel="stylesheet" href="rooms.css?v=20261114a">
 <link rel="stylesheet" href="lab.css?v=20261114a">
+<link rel="stylesheet" href="egypt-evidence.css">
 </head><body><main>
-<div class="top"><div><p class="kicker">Unit 2 · Ancient Egypt · Lesson 12</p><h1>The Rosetta Stone Investigation</h1></div><a href="index.html">← Egypt atlas</a></div>
+<div class="top"><div><p class="kicker">Unit 2 · Ancient Egypt · Lesson 12</p><h1>The Rosetta Stone Investigation</h1></div><a href="index.html#egypt-l12">← Egypt atlas</a></div>
 <p class="intro">For about 1,400 years, nobody could read hieroglyphs. Investigate how scholars cracked the code, separate a documented death from the “mummy’s curse,” and weigh a question about who should hold an ancient object.</p>
+<div class="eg-exhibit" data-eg-exhibit="rosetta"></div>
 <section aria-labelledby="code-title"><p class="phase">01 · CRACK THE CODE</p><h2 id="code-title">Two royal names, one sound key</h2>
 <p>Scholars could read the Greek on the Rosetta Stone. It named Ptolemy V. A royal name sits inside a cartouche, and foreign names had to be spelled by sound. Follow the sign labels from the student assignment.</p>
 <div class="grid"><div class="card"><h3>Cartouche A</h3><p class="glyph" role="img" aria-label="P T O L M Y S">𓊪 𓏏 𓍯 𓃭 𓅓 𓇌 𓋴</p><p>stool · loaf · lasso · lion · owl · two reeds · cloth</p><label for="name-a">Enter the sound sequence</label><input id="name-a" autocomplete="off" placeholder="Letters only"></div>
@@ -43,7 +45,7 @@ footer{border-top:1px solid var(--line);padding-top:14px;font-size:.9rem}@media(
 <button type="button" data-build-position>Build my argument outline</button><p class="feedback" data-position-feedback aria-live="polite"></p>
 <button class="secondary" type="button" data-clear>Clear this page for the next student</button></section>
 <footer>Based on student-facing Unit 2 Lesson 12 Guided Notes, Crack the Code assignment, and class slides. The debate has no answer key: support your position with reasons and evidence. Responses stay in this page, are not submitted or saved online, and can be cleared before another student uses this device.</footer>
-</main><script>(function(){var q=function(s){return document.querySelector(s)};
+</main><script src="egypt-evidence.js"></script><script>(function(){var q=function(s){return document.querySelector(s)};
 q('[data-check-code]').onclick=function(){var a=q('#name-a').value.trim().toLowerCase().replace(/[^a-z]/g,''),b=q('#name-b').value.trim().toLowerCase().replace(/[^a-z]/g,''),s=q('#shared-signs').value.trim().toLowerCase().replace(/[^a-z]/g,'');var okA=a==='ptolmys'||a==='ptolemy',okB=b==='kleopatra'||b==='cleopatra',okS=s.length===3&&['pol','plo','opl','olp','lpo','lop'].indexOf(s)>=0;var e=q('[data-code-feedback]');e.className='feedback '+(okA&&okB&&okS?'good':'bad');e.textContent=(okA?'Cartouche A is right. ':'Check the sound sequence for Cartouche A. ')+(okB?'Cartouche B is Cleopatra. ':'Cartouche B represents Cleopatra. ')+(okS?'P, O and L are shared; seeing the same sound signs in both names helped show that signs could represent sounds.':'Find the same three sounds in both names; the student assignment expects P, O and L.')};
 var answers={'claim-date':'proven','claim-curse':'legend','claim-door':'legend','claim-news':'guess'};
 q('[data-check-curse]').onclick=function(){var n=Object.keys(answers).filter(function(k){return q('#'+k).value===answers[k]}).length;var e=q('[data-curse-feedback]');e.className='feedback '+(n===4?'good':'bad');e.textContent=n+' of 4 readings fit the lesson evidence. The date is documented; the curse and carved-warning stories are legends without evidence here; newspaper motives are a reasonable interpretation, not proof about every paper.'};
