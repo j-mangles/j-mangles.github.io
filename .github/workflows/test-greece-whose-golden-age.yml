@@ -1,0 +1,24 @@
+name: Test Whose Golden Age (Greece)
+on:
+  pull_request:
+    paths:
+      - 'social-studies/greece-whose-golden-age*'
+      - 'social-studies/index.html'
+      - 'tools/test_greece_whose_golden_age.cjs'
+      - '.github/workflows/test-greece-whose-golden-age.yml'
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  whose-golden-age:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: |
+          node --check social-studies/greece-whose-golden-age-core.js
+          node --check social-studies/greece-whose-golden-age.js
+          node tools/test_greece_whose_golden_age.cjs
