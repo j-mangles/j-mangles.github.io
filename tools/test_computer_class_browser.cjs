@@ -20,9 +20,10 @@ function checkOverflow(actual,where,width){assert.ok(actual.scroll<=actual.viewp
   const page=await browser.newPage({viewport:{width,height:844},acceptDownloads:true,deviceScaleFactor:1});
   const errors=[];page.on("pageerror",e=>errors.push(e.message));
   await page.goto(BASE+"/",{waitUntil:"domcontentloaded",timeout:30000});
-  await page.locator(".home-computer-link").waitFor({state:"visible"});
-  assert.equal(await page.locator(".home-computer-link").getAttribute("href"),"computer-class/");
-  await page.goto(BASE+"/computer-class/",{waitUntil:"domcontentloaded"});
+  const assignmentsLink=page.getByRole("link",{name:/Computer Class assignments/i});
+  assert.equal(await assignmentsLink.getAttribute("href"),"computer-class/");
+  await assignmentsLink.click();
+  await page.locator(".cc-entry").first().waitFor({state:"visible"});
   assert.equal(await page.locator(".cc-entry").count(),15,"All 15 assignments listed");
   assert.ok(await page.locator(".cc-policy").innerText().then(x=>x.includes("Nothing is submitted")));
   checkOverflow(await page.evaluate(()=>({scroll:document.documentElement.scrollWidth,viewport:window.innerWidth})),"directory",width);
