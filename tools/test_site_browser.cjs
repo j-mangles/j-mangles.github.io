@@ -25,7 +25,7 @@ async function checkNoHorizontalOverflow(page,label){
  const browser=await chromium.launch({channel:"chrome",headless:true,args:["--disable-dev-shm-usage"]});
  let page=null,stage="initial";
  try{
-  page=await browser.newPage({viewport:{width:1280,height:800},deviceScaleFactor:1});
+  page=await browser.newPage({viewport:{width:1280,height:800},deviceScaleFactor:1,reducedMotion:"reduce"});
   const jsErrors=[];
   page.on("pageerror",err=>jsErrors.push({url:page.url(),message:err.message}));
   stage="homepage";
@@ -178,7 +178,7 @@ async function checkNoHorizontalOverflow(page,label){
   assert.match(await page.locator("#cw-now").innerText(),/revised draft/);
   await capture(page,"ela-core-writing-thankyou-desktop");
   await goto(page,"/ela/#stories/summer","#cw-ev1");
-  assert.match(await page.locator(".cw-question").innerText(),/setting and group behaviour/);
+  await page.locator(".cw-question").filter({hasText:/setting and group behaviour/}).waitFor({state:"visible"});
   assert.match(await page.locator(".cw-evidence").first().innerText(),/Setting evidence/);
   assert.match(await page.locator(".cw-evidence").nth(1).innerText(),/Group-behaviour evidence/);
   await goto(page,"/ela/#stories/landlady","#cw-tech1");
@@ -454,7 +454,7 @@ async function checkNoHorizontalOverflow(page,label){
   await page.locator('[data-clear]').click();
   assert.equal(await page.locator('[data-script="0"]').getAttribute("aria-pressed"),"true");
   stage="mobile layout";
-  const phone=await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:1,isMobile:true,hasTouch:true});
+  const phone=await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:1,reducedMotion:"reduce",isMobile:true,hasTouch:true});
   phone.on("pageerror",err=>jsErrors.push({url:phone.url(),message:err.message}));
   await goto(phone,"/",".home-tiles .home-tile");
   await checkNoHorizontalOverflow(phone,"Homepage mobile");
