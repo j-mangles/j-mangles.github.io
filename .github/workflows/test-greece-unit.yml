@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - 'social-studies/greece-*'
+      - 'social-studies/athens-assembly-walk.html'
       - 'social-studies/greek-inquiry*'
       - 'social-studies/index.html'
       - 'tools/test_greece_unit.cjs'

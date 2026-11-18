@@ -102,6 +102,7 @@ async function checkNoHorizontalOverflow(page,label){
   await page.locator("#ep-claim").fill("With a 20% model, more energy is available at upper trophic levels.");
   await capture(page,"science-energy-food-chain-desktop");
   await goto(page,"/science/#light/u3t4-photosynthesis","#ep-chain");
+  await page.waitForFunction(()=>document.querySelector("article.lesson h2")?.textContent?.includes("Photosynthesis"),null,{timeout:10000});
   assert.match(await page.locator("article.lesson h2").innerText(),/Photosynthesis/);
   await goto(page,"/science/#light/u3t3-em","article.lesson h2");
   await page.waitForFunction(()=>document.querySelector("article.lesson h2")?.textContent?.includes("Electromagnetic Waves"),null,{timeout:10000});

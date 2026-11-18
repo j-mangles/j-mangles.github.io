@@ -18,6 +18,19 @@ for(const lesson of l){
 }
 for(const p of g.places)assert.ok(p.name&&p.text&&Number.isFinite(p.ll[0])&&Number.isFinite(p.ll[1])&&p.ll[0]>=-180&&p.ll[0]<=180&&p.ll[1]>=-90&&p.ll[1]<=90,p.id);
 for(const event of g.timeline)assert.ok(!event.p||ids.has(event.p),"Missing mapped timeline place "+event.p);
+const game=read("social-studies/athens-assembly-walk.html");
+assert.equal(l.find(x=>x.id==="l5").additionalActivities[0].href,"athens-assembly-walk.html");
+assert.match(game,/Who had a voice in Athenian democracy/);
+assert.match(game,/The Council of 500 helped prepare public decisions/);
+assert.match(game,/resident foreigners/);
+assert.match(game,/data-move/);
+assert.match(game,/role="progressbar"/);
+assert.ok(game.includes("Council House (Bouleuterion)"));
+assert.ok(!/localStorage|sessionStorage|fetch\(/.test(game),"Game work must remain local and page-only");
+assert.ok(!/<script src=|<img[^>]+src=/.test(game),"Game must remain self-contained");
+const gameStart=game.indexOf("<script>")+8,gameEnd=game.indexOf("</script>",gameStart);
+assert.ok(gameStart>=8&&gameEnd>gameStart,"Game needs inline interaction code");
+new Function(game.slice(gameStart,gameEnd));
 const act=l.filter(x=>x.activity);assert.deepEqual(Array.from(act,x=>x.id),["l1","l2","l3","l4","l5","l6","l7","l8","l9","l10","l11","l12","l13"]);
 const expectedLinks={"l1":"greek-inquiry-lab.html#","l2":"greece-troy-casefile.html","l3":"greece-myth-olympia.html","l4":"greece-sparta-lives.html","l5":"greek-inquiry-lab.html#","l6":"greek-inquiry-lab.html#","l7":"greece-persian-wars.html","l8":"greece-league-hearing.html","l9":"greece-socratic-method.html","l10":"greece-missing-voices.html","l11":"greece-peloponnesian-war.html","l12":"greece-alexander-perspectives.html","l13":"greece-review-circuit.html"};
 for(const x of act)assert.ok(x.activity.href.startsWith(expectedLinks[x.id]));
@@ -25,6 +38,7 @@ const html=read("social-studies/index.html");
 const scripts=[...html.matchAll(/<script src="([^"]+)"/g)].map(m=>m[1].split("?")[0]);
 assert.ok(scripts.indexOf("greece-lessons.js")>scripts.indexOf("egypt-lessons.js"));
 assert.ok(html.indexOf('src="greece-atlas.js"')<html.indexOf('<script src="https://cdnjs.cloudflare'));
+assert.ok(html.includes("l.additionalActivities"),"Renderer supports additional lesson activities");
 assert.match(html,/id:"greece", n:"3", name:"Ancient Greece", status:"soon"/);
 assert.match(html,/places:window\.GreeceAtlas\.places, timeline:window\.GreeceAtlas\.timeline, lessons:window\.GreeceLessons/);
 assert.ok(/src="greek-inquiry\.js(?:\?[^"]*)?"/.test(read("social-studies/greek-inquiry-lab.html")));

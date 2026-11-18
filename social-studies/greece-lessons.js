@@ -372,7 +372,13 @@ window.GreeceLessons=[
     "activity": {
       "href": "greek-inquiry-lab.html#ostracism",
       "title": "Open the Mystery in the Well Investigation"
-    }
+    },
+    "additionalActivities": [
+      {
+        "href": "athens-assembly-walk.html",
+        "title": "Play At the Assembly: Athens Field Walk"
+      }
+    ]
   },
   {
     "id": "l6",
