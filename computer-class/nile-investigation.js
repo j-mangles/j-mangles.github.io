@@ -45,12 +45,12 @@ function mount(root,question,original,onSave){
   '<div class="cc-lab-controls"><label>Field strips under water<input type="number" min="0" max="18" step="1" inputmode="numeric" data-nile-count></label>'+
   '<label>Where is the village?<select data-nile-village><option value="">Choose an observation</option><option value="dry">Above the water</option><option value="wet">Reached by water</option></select></label></div>'+
   '<div class="cc-lab-actions"><button type="button" data-nile-record>Record this flood</button><span role="status" data-nile-feedback></span></div>'+
-  '<div class="cc-lab-trials"><div class="cc-lab-table-wrap"><table><caption>Recorded October floods</caption><thead><tr>'+headings.map(label=>'<th scope="col">'+label+'</th>').join("")+'</tr></thead><tbody></tbody></table></div></div>';
+  '<div class="cc-lab-trials"><div class="cc-lab-table-wrap"><table><caption>Recorded October floods</caption><thead><tr>'+headings.map(label=>'<th scope="col">'+label+'</th>').join("")+'</tr></thead><tbody data-nile-trials></tbody></table></div></div>';
  const model=g.EgyptInteractives?.nileYear;
  const feedback=root.querySelector("[data-nile-feedback]"),count=root.querySelector("[data-nile-count]"),village=root.querySelector("[data-nile-village]");
  const record=root.querySelector("[data-nile-record]");
  function showTrials(){
-  const rows=root.querySelector("tbody");
+  const rows=root.querySelector("[data-nile-trials]");
   rows.replaceChildren();
   for(const trial of trials){
    const tr=rows.insertRow();

@@ -41,6 +41,10 @@ function checkOverflow(actual,where,width){assert.ok(actual.scroll<=actual.viewp
   }
   await page.goto(BASE+"/computer-class/#social-nile-advantage");
   const nile=page.locator("#cc-lab-nile-trials");
+  const observations=nile.getByRole("table",{name:"Recorded October floods"});
+  const floodReference=nile.locator(".cc-nile-simulation tbody");
+  const referenceRows=await floodReference.textContent();
+  assert.match(referenceRows,/21 cubits/);
   async function recordFlood(count,village){
    await nile.getByRole("spinbutton").fill(String(count));
    await nile.getByRole("combobox").selectOption(village);
@@ -49,9 +53,11 @@ function checkOverflow(actual,where,width){assert.ok(actual.scroll<=actual.viewp
   await recordFlood(16,"dry");
   await nile.getByText("High",{exact:true}).first().click();
   await recordFlood(18,"wet");
+  assert.equal(await floodReference.textContent(),referenceRows,"Recording a flood preserves the simulator reference table");
+  assert.equal(await observations.locator("tbody tr").count(),2);
   await page.reload();
-  assert.equal(await nile.locator("tbody tr").count(),2);
-  assert.match(await nile.locator("tbody").innerText(),/18 of 18/);
+  assert.equal(await observations.locator("tbody tr").count(),2);
+  assert.match(await observations.locator("tbody").innerText(),/18 of 18/);
   assert.match(await page.locator("#cc-progress-count").innerText(),/1 of 8/);
   await page.goto(BASE+"/computer-class/#science-membranes");
   const answer="Water moves through the membrane toward the higher solute concentration, so water leaves Cell A overall.";
