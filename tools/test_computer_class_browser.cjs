@@ -39,6 +39,20 @@ function checkOverflow(actual,where,width){assert.ok(actual.scroll<=actual.viewp
    assert.ok(await page.locator("#cc-progress-count").innerText().then(x=>x.includes("0 of")));
    checkOverflow(await page.evaluate(()=>({scroll:document.documentElement.scrollWidth,viewport:window.innerWidth})),id,width);
   }
+  await page.goto(BASE+"/computer-class/#social-nile-advantage");
+  const nile=page.locator("#cc-lab-nile-trials");
+  async function recordFlood(count,village){
+   await nile.getByRole("spinbutton").fill(String(count));
+   await nile.getByRole("combobox").selectOption(village);
+   await nile.getByRole("button",{name:"Record this flood"}).click();
+  }
+  await recordFlood(16,"dry");
+  await nile.getByText("High",{exact:true}).first().click();
+  await recordFlood(18,"wet");
+  await page.reload();
+  assert.equal(await nile.locator("tbody tr").count(),2);
+  assert.match(await nile.locator("tbody").innerText(),/18 of 18/);
+  assert.match(await page.locator("#cc-progress-count").innerText(),/1 of 8/);
   await page.goto(BASE+"/computer-class/#science-membranes");
   const answer="Water moves through the membrane toward the higher solute concentration, so water leaves Cell A overall.";
   await page.locator('textarea[data-id="sc3"]').fill(answer);
@@ -87,14 +101,14 @@ function checkOverflow(actual,where,width){assert.ok(actual.scroll<=actual.viewp
   await page.locator("#cc-q-ox10 .cc-evidence-loaded").waitFor({state:"visible"});
   await page.locator('textarea[data-id="ox10"]').fill("The report says the lungs exchange gases and the heart pumps blood. They work together because oxygen enters blood in the lungs before the heart moves it around the body.");
   assert.ok(await page.locator("a[href=\"../science/#cells/circulatory\"]").first().innerText().then(x=>x.includes("Exercise & Circulation Data Lab")),"Second related Science lesson link");
-  assert.match(await page.locator("#cc-progress-count").innerText(),/1 of 11/);
+  assert.match(await page.locator("#cc-progress-count").innerText(),/1 of 18/);
   await page.reload({waitUntil:"domcontentloaded"});
   assert.equal(await page.locator("#cc-q-ox10 .cc-evidence-loaded pre").textContent(),organReport,"Imported evidence stays in the local draft");
   const exerciseReport="Exercise & Circulation Data Lab — Grade 8 Science\nSample data from the Science 8 Systems booklet; one student, not a medical measurement.\nPeak while jogging: 142 bpm at minute 8\nIncrease above resting average: 70 bpm\nWithin 5 bpm of resting average by minute 13 (about 5 minutes after stopping).\nLimitation: heart rate does not measure oxygen or carbon dioxide directly.";
   await page.locator('input[data-evidence-file="ox11"]').setInputFiles({name:"exercise-circulation-data-report.txt",mimeType:"text/plain",buffer:Buffer.from(exerciseReport,"utf8")});
   await page.locator("#cc-q-ox11 .cc-evidence-loaded").waitFor({state:"visible"});
   await page.locator('textarea[data-id="ox11"]').fill("The sample reaches 142 beats per minute while jogging, which is 70 above the resting average. Working muscles need more oxygen, so the heart pumps blood faster. This graph does not measure oxygen levels or carbon dioxide exchange.");
-  assert.match(await page.locator("#cc-progress-count").innerText(),/2 of 11/);
+  assert.match(await page.locator("#cc-progress-count").innerText(),/2 of 18/);
   const [scienceReportDownload]=await Promise.all([
    page.waitForEvent("download",{timeout:10000}),
    page.locator('[data-action="download"]').click()
