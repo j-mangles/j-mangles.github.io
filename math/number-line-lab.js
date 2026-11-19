@@ -16,6 +16,21 @@ const gaps=[
  {a:"0.7",b:"71%",lo:.7,hi:.71}
 ];
 const fmt=n=>Number(n.toFixed(4)).toString();
+const near=(a,b)=>Math.abs(a-b)<.025;
+function diagnosePlacement(card,estimate){
+ const target=card.v;
+ if(card.v<0&&near(estimate,Math.abs(target)))return "The distance looks right, but the sign is missing: a negative number belongs to the left of zero.";
+ const mixed=card.label.match(/^(\d+)\s+(\d+)\/(\d+)$/);
+ if(mixed&&near(estimate,Number(mixed[2])/Number(mixed[3])))return "You placed only the fractional part. Keep the whole number, then add the fraction: "+card.label+" = "+fmt(target)+".";
+ const improper=card.label.match(/^(\d+)\/(\d+)$/);
+ if(improper&&Number(improper[1])>Number(improper[2])&&near(estimate,(Number(improper[1])%Number(improper[2]))/Number(improper[2])))return "This improper fraction is greater than one whole. Count the complete whole first, then place the remaining fraction.";
+ const percent=card.label.match(/^([\d.]+)%$/);
+ if(percent&&near(estimate,target/10))return "Move the decimal one place to the right: divide a percent by 100 to write it as a decimal.";
+ if(percent&&near(estimate,target/100))return "This is 100 times too small. A percent is divided by 100 once: "+card.label+" = "+fmt(target)+".";
+ const simple=card.label.match(/^(\d+)\/(\d+)$/);
+ if(simple&&near(estimate,Number(simple[2])/Number(simple[1])))return "You may have flipped the fraction. The numerator counts the parts and the denominator tells how many equal parts make one whole.";
+ return "Compare the value in different forms: "+card.label+" = "+fmt(target)+". Use zero, one and the quarter-unit ticks to check its position.";
+}
 function parseValue(raw){
  const s=String(raw||"").trim().replace(/[−–]/g,"-").replace(/\s+/g," ");
  let m;
@@ -29,7 +44,7 @@ function parseValue(raw){
  if(/^[-+]?(?:\d+\.?\d*|\.\d+)$/.test(s)){const n=Number(s);return Number.isFinite(n)?n:null;}
  return null;
 }
-H.numberLineModel={cards,gaps,parseValue};
+H.numberLineModel={cards,gaps,parseValue,diagnosePlacement};
 function studio(el){
  let mode="place",chosen=0,estimate=.5,submitted=false,selectedGap=0,candidate=null;
  const solved=new Set(),$=q=>el.querySelector(q),$$=q=>[...el.querySelectorAll(q)];
@@ -134,8 +149,8 @@ function studio(el){
  $("#nl-slider").oninput=()=>{estimate=Number($("#nl-slider").value);submitted=false;$("#nl-feedback").textContent="";$("#nl-estimate").textContent="Current estimate: "+fmt(estimate);draw();};
  $("#nl-check").onclick=()=>{
   submitted=true;const c=cards[chosen],delta=Math.abs(estimate-c.v);
-  if(delta<=.05+1e-9)solved.add(chosen);
-  $("#nl-feedback").textContent=(delta<=.05+1e-9?"Good placement! ":"Try moving "+(estimate<c.v?"right":"left")+". ")+c.label+" = "+fmt(c.v)+". Check your spacing.";
+  if(delta<=.05+1e-9){solved.add(chosen);$("#nl-feedback").textContent="Good placement! "+c.label+" = "+fmt(c.v)+".";}
+  else $("#nl-feedback").textContent=(estimate<c.v?"Try moving right. ":"Try moving left. ")+diagnosePlacement(c,estimate);
   cardButtons();draw();
  };
  $("#nl-reset").onclick=()=>{solved.clear();chosen=0;estimate=.5;submitted=false;$("#nl-slider").value=".5";$("#nl-selected").textContent=cards[0].label;$("#nl-estimate").textContent="Current estimate: 0.5";$("#nl-feedback").textContent="";cardButtons();draw();};

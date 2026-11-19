@@ -3,6 +3,7 @@
 (function(g){
 "use strict";
 const SCHEMA=1, STORE_KEY="eess-classroom-mission-control-v1";
+const PUBLIC_BOARD_KEY="eess-last-public-class-board-v1";
 const SUBJECTS=["math","sci","ss","ela","ct"];
 function catalog(){
  const configured=g.MissionResources||{lessons:[],subjects:{}};
@@ -33,7 +34,7 @@ function catalog(){
  );
 }
 function index(resources){return new Map(resources.map(item=>[item.id,item]));}
-function defaultSlot(period){return {resourceId:period===1?"lesson:math-home":"",note:"",taught:false};}
+function defaultSlot(period){return {resourceId:period===1?"lesson:math-home":"",lastClassId:"",note:"",taught:false};}
 function defaultPlan(){
  return {schema:SCHEMA,selectedDay:1,days:Array.from({length:6},(_,day)=>({
   day:day+1,slots:Array.from({length:5},(_,period)=>defaultSlot(period+1))
@@ -51,6 +52,7 @@ function sanitizePlan(input,resources){
    const id=typeof raw.resourceId==="string"&&available.has(raw.resourceId)?raw.resourceId:"";
    plan.days[d].slots[p]={
     resourceId:id,
+    lastClassId:available.has(raw.lastClassId)?raw.lastClassId:"",
     note:typeof raw.note==="string"?raw.note.slice(0,350):"",
     taught:raw.taught===true
    };
@@ -66,30 +68,47 @@ function progress(plan,day){
 function boardHash(day,slots,resources){
  if(!Number.isInteger(day)||day<1||day>6||!Array.isArray(slots)||slots.length!==5)throw Error("Invalid classroom day.");
  const items=index(resources);
- const ids=slots.map(slot=>slot?.resourceId&&items.has(slot.resourceId)?encodeURIComponent(slot.resourceId):"-");
- return "#v1/"+day+"/"+ids.join(",");
+ const encode=id=>items.has(id)?encodeURIComponent(id):"-";
+ const today=slots.map(slot=>encode(slot?.resourceId)).join(",");
+ const previous=slots.map(slot=>encode(slot?.lastClassId));
+ return previous.some(id=>id!=="-")?"#v2/"+day+"/"+today+"/"+previous.join(","):"#v1/"+day+"/"+today;
 }
 function parseBoardHash(hash,resources){
  const value=String(hash||"").replace(/^#/,"");
- if(value.length>500)return null;
- const m=/^v1\/([1-6])\/([A-Za-z0-9,:_%.~!\-]+)$/.exec(value);
- if(!m)return null;
- const parts=m[2].split(",");
- if(parts.length!==5)return null;
- const available=index(resources),ids=[];
- for(const part of parts){
-  if(part==="-"){ids.push("");continue;}
-  let key;
-  try{key=decodeURIComponent(part);}catch(e){return null;}
-  if(!available.has(key))return null;
-  ids.push(key);
+ if(value.length>1500)return null;
+ const [version,day,...lists]=value.split("/");
+ if(!/^[1-6]$/.test(day)||!((version==="v1"&&lists.length===1)||(version==="v2"&&lists.length===2)))return null;
+ const available=index(resources);
+ const decoded=[];
+ for(const list of lists){
+  const parts=list.split(",");
+  if(parts.length!==5)return null;
+  const ids=[];
+  for(const part of parts){
+   if(part==="-"){ids.push("");continue;}
+   let key;
+   try{key=decodeURIComponent(part);}catch(e){return null;}
+   if(!available.has(key))return null;
+   ids.push(key);
+  }
+  decoded.push(ids);
  }
- return {day:Number(m[1]),slots:ids};
+ return {day:Number(day),slots:decoded[0],lastClass:decoded[1]||Array(5).fill("")};
 }
 function backup(plan){
  return {schema:SCHEMA,application:"classroom-mission-control",exportedAt:new Date().toISOString(),
   selectedDay:plan.selectedDay,days:plan.days};
 }
+// The homepage remembers only an opened public board. Planner drafts and notes use a separate key.
+function rememberBoard(board,resources){
+ const slots=board.slots.map((resourceId,i)=>({resourceId,lastClassId:board.lastClass[i]}));
+ const hash=boardHash(board.day,slots,resources);
+ try{g.localStorage.setItem(PUBLIC_BOARD_KEY,hash);}catch(e){/* The shared URL also works without storage. */}
+ return hash;
+}
+function previousBoard(resources){
+ try{return parseBoardHash(g.localStorage.getItem(PUBLIC_BOARD_KEY),resources);}catch(e){return null;}
+}
 g.MissionCore={SCHEMA,STORE_KEY,SUBJECTS,catalog,index,defaultPlan,sanitizePlan,progress,
- boardHash,parseBoardHash,backup};
+ boardHash,parseBoardHash,backup,rememberBoard,previousBoard};
 })(window);

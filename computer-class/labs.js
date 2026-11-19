@@ -112,12 +112,14 @@ const CONFIG={
   summary:r=>r.checks+" of 3 verification checks met. This helps plan further verification but cannot prove that the claim is true."
  }
 };
+if(g.ComputerClassNile)CONFIG.nile=g.ComputerClassNile;
 function snapshot(tool,s){return calculate(tool,{...s});}
 function trialSummary(tool,r){
  const cfg=CONFIG[tool];return cfg.headings.map((h,i)=>h+": "+cfg.cells(r)[i]).join("; ");
 }
 function mount(root,q,original,onSave){
  const cfg=CONFIG[q.lab];if(!cfg){root.textContent="This investigation is unavailable.";return;}
+ if(cfg.mount){cfg.mount(root,q,original,onSave);return;}
  let state={...cfg.initial};
  let trials=Array.isArray(original)?original.slice(0,12):[];
  root.innerHTML='<div class="cc-lab-panel"><div class="cc-lab-heading"><h4>'+e(cfg.title)+'</h4>'+

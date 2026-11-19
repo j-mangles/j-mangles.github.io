@@ -7,16 +7,19 @@ const T=(id,prompt,minWords=20,placeholder="Explain your reasoning with evidence
 const N=(id,prompt,answer,why,tolerance=.005)=>({id,type:"number",prompt,answer,tolerance,unit:"",why});
 const O=(id,prompt,items,correct,why)=>({id,type:"order",prompt,items,correct,why});
 const L=(id,prompt,lab,minTrials=3)=>({id,type:"lab",prompt,lab,minTrials});
+const E=(id,prompt,minWords,placeholder,reflectionLabel)=>({id,type:"evidence",prompt,minWords,placeholder,reflectionLabel});
 store.activities.push(
 {
  id:"science-oxygen-systems",subject:"sci",subjectName:"Science",grade:"Grade 8",title:"Oxygen Mission: Systems Working Together",time:"50–60 min",
  summary:"Investigate how the nervous, digestive, respiratory, circulatory and integumentary systems support a body during exercise. Use the map and oxygen model to explain the connections.",
  lesson:"../science/#cells/systems",lessonText:"Open the Human Systems Explorer",focus:"Cells & Systems · Nervous, digestive, respiratory, circulatory and integumentary connections",
+   lessonLinks:[{href:"../science/#cells/systems",label:"Explore Human Systems and the Organ Inspector"},{href:"../science/#cells/circulatory",label:"Open the Exercise & Circulation Data Lab"}],
  reading:[
   "When you breathe, the respiratory system moves air into the lungs. Oxygen passes into the blood, and carbon dioxide passes from the blood into the lungs to be exhaled. The circulatory system then transports oxygen to body cells. Cells use oxygen in cellular respiration to release usable energy from nutrients.",
   "During exercise, the nervous system coordinates body responses. The digestive system breaks food down and nutrients are absorbed—mostly in the small intestine—then the blood can carry them to cells. A meal does not become instant fuel the moment a run starts. As the body warms, sweat evaporating from skin and changes in blood flow near the skin help with heat loss.",
   "In this activity, the digital model expresses supply and demand using illustrative indexes. The smaller of the breathing and circulation capacities limits oxygen delivery. Muscle activity controls demand. These values are NOT medical readings, oxygen saturation values or heart rates.",
-  "A limitation is that real respiratory and circulatory systems are connected and adapt to exercise in more complicated ways. The oxygen model does not simulate nervous signals, digestion, skin cooling or real physiology; it helps isolate a few relationships and make predictions."
+  "A limitation is that real respiratory and circulatory systems are connected and adapt to exercise in more complicated ways. The oxygen model does not simulate nervous signals, digestion, skin cooling or real physiology; it helps isolate a few relationships and make predictions.",
+  "Use the Human Systems Explorer and Organ Inspector to trace the lungs, heart and working muscles. Then inspect the sample heart-rate graph and use the Oxygen Delivery Model."
  ],
  sections:[
   {title:"Explore the body map",intro:"Open the Human Systems Explorer. Select the systems and organ labels as you answer.",questions:[
@@ -27,7 +30,7 @@ store.activities.push(
   {title:"Predict the system connection",intro:"Think about why two different systems are necessary.",questions:[
    C("ox1","Which system moves oxygen from the lungs to body cells?",["Digestive system","Circulatory system","Integumentary system"],1,"Blood vessels and the heart move oxygen through the circulatory system."),
    C("ox2","Where does oxygen enter the blood?",["In the lungs","In the stomach","In bones"],0,"Gas exchange in the lungs allows oxygen into blood."),
-   T("ox3","Explain what happens to a body cell if oxygen cannot be delivered efficiently.",25,"Cells need oxygen... Without sufficient delivery...")
+   T("ox3","Using the lungs, heart and a working muscle as examples, explain what may happen when oxygen is not delivered efficiently to body cells.",25,"The lungs... The heart... The muscle cells...")
   ]},
   {title:"Trace an exercise response",intro:"Imagine a student begins running. These systems respond together; the order below is a simplified path for learning, and several changes happen at the same time.",questions:[
    C("ex1","Which system coordinates signals that help the body respond when running begins?",["Nervous system","Digestive system","Integumentary system"],0,"The brain and nerves coordinate body responses and send signals to working muscles."),
@@ -43,7 +46,9 @@ store.activities.push(
   ]},
   {title:"Explain and evaluate",intro:"Connect model evidence to real structures without treating the numbers as physiological measurements.",questions:[
    O("ox8","Order the main path of oxygen to a working muscle cell.",["Oxygen is transported in the bloodstream","Oxygen enters the lungs with inhaled air","Oxygen is used by body cells","Oxygen diffuses into blood at the lungs"],[1,3,0,2],"Air enters lungs, oxygen moves into blood, blood transports it, and cells use it."),
-   T("ox9","Write a Claim–Evidence–Reasoning paragraph explaining why the respiratory and circulatory systems must work together. Cite one model trial and one model limitation.",52,"Claim: ... Evidence: ... Reasoning: ... Limitation: ...")
+   T("ox9","Write a Claim–Evidence–Reasoning paragraph explaining how lungs, heart, blood and working muscle cells cooperate. Include one oxygen-model trial, an organ-inspector detail and a model limitation.",52,"Claim: ... Trial evidence: ... Structure evidence: ... Reasoning: ... Limitation: ..."),
+   E("ox10","Import your Organ Inspector report, then use one structure detail as evidence about how systems work together.",20,"The report identifies... This structure helps...","Which structure and related system from your report support your explanation?"),
+   E("ox11","Import your Exercise & Circulation Data Lab report. Use an exact heart-rate value and explain how it relates to working muscles. State one thing the graph does not measure.",25,"The sample shows... This connects to working cells because... The graph does not measure...","Which heart-rate data support your explanation, and what limitation should you keep in mind?")
   ]}
  ]
 },

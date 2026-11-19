@@ -12,6 +12,11 @@ for(const [input,expected] of [["65%",.65],["−3/4",-.75],["1 1/2",1.5],["110%"
  assert.ok(Math.abs(model.parseValue(input)-expected)<1e-9,input);
 }
 for(const input of ["1/0","0/0","3/","not a number","2+3","1 2/0"])assert.equal(model.parseValue(input),null,input);
+assert.match(model.diagnosePlacement(model.cards[1],.75),/negative number belongs to the left/);
+assert.match(model.diagnosePlacement(model.cards[2],.5),/Keep the whole number/);
+assert.match(model.diagnosePlacement(model.cards[7],.25),/greater than one whole/);
+assert.match(model.diagnosePlacement(model.cards[0],.065),/divide a percent by 100/);
+assert.match(model.diagnosePlacement(model.cards[0],.0065),/100 times too small/);
 const index=fs.readFileSync(path.join(root,"math/index.html"),"utf8");
 const toolIndex=index.indexOf('src="number-line-lab.js'),hubIndex=index.indexOf('src="../assets/hub.js');
 assert.ok(toolIndex>=0&&hubIndex>=0&&toolIndex<hubIndex,"tool must register before lesson hub mounts");

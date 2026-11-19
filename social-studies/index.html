@@ -681,6 +681,7 @@ const UNITS = [
 {
   id:"egypt", n:"2", name:"Ancient Egypt", status:"next",
   activities:[{href:"river-valley-lab.html?civilization=egypt",title:"River Valley Decision Lab",blurb:"Lesson 1: living with the Nile flood."},{href:"giza-harbour.html",title:"The Missing Stone Shipment",blurb:"Lesson 3: a 3D mystery at the Giza harbour."},{href:"temple-walkthrough.html",title:"Inside an Egyptian Temple",blurb:"Lesson 5: walk from the pylon to the sanctuary."},
+    {href:"../computer-class/#social-nile-advantage",title:"Was the Nile always an advantage?",blurb:"Lessons 1 and 8 · Use flood and trade evidence to write an argument."},
     {href:"egypt-trade-desk.html",title:"Royal Trade Desk",blurb:"Lesson 8 · Trace a cargo and plan an expedition."},
     {href:"egypt-nubia-evidence.html",title:"Egypt and Nubia",blurb:"Lesson 9 · Follow five shifts in power along the Nile."},
     {href:"egypt-rosetta-investigation.html",title:"Rosetta Stone Investigation",blurb:"Lesson 12 · Magnify three scripts and decipher royal names."}],
@@ -1183,40 +1184,13 @@ function openReview(u){
   $("#sheetcard").innerHTML=`<button class="sheet-close" id="sheet-x" aria-label="Close review">&times;</button>
     <div class="eyebrow">${esc(u.name)} · Unit review</div><h2>Review the unit</h2><div id="ss-rv"></div>`;
   $("#sheet-x").onclick=closeLesson;
-  const exitPanel=$("#ss-exit-ticket");
-  if(exitPanel){
-    if(exitWasOpen)exitPanel.open=true;
-    const fields=[...exitPanel.querySelectorAll("textarea[data-exit]")],status=$("#ss-exit-status");
-    fields.forEach(el=>el.addEventListener("input",()=>{
-      sheetCtx.exitDraft[el.dataset.exit]=el.value;
-      status.textContent="Draft held in this lesson only. Copy or download it before closing if you want to keep it.";
-    }));
-    const contents=()=>[u.name+" — "+l.title,"One-minute exit ticket",
-      "One idea I can now explain:\n"+exitPanel.querySelector('[data-exit="recall"]').value.trim(),
-      "One question or idea I want to revisit:\n"+exitPanel.querySelector('[data-exit="question"]').value.trim()
-    ].join("\n\n")+"\n";
-    $("#ss-exit-download").onclick=()=>{
-      const blob=new Blob([contents()],{type:"text/plain;charset=utf-8"}),url=URL.createObjectURL(blob),link=document.createElement("a");
-      link.href=url;link.download=("exit-ticket-ss-"+u.id+"-"+l.id).replace(/[^a-z0-9-]/gi,"-")+".txt";
-      document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);
-      status.textContent="Exit ticket downloaded.";
-    };
-    $("#ss-exit-copy").onclick=()=>{
-      if(!navigator.clipboard?.writeText){status.textContent="Copy isn't available in this browser. Use Download my ticket instead.";return;}
-      navigator.clipboard.writeText(contents()).then(()=>{status.textContent="Exit ticket copied.";}).catch(()=>{status.textContent="Copy was blocked. Use Download my ticket instead.";});
-    };
-    $("#ss-exit-clear").onclick=()=>{
-      fields.forEach(el=>el.value="");sheetCtx.exitDraft={};status.textContent="Exit ticket cleared.";
-    };
-  }
-
   UnitReview.render($("#ss-rv"),{name:u.name,lessons:u.lessons.filter(l=>l.released),onLesson:l=>openLesson(u.id,l.id)});
   $("#sheet").hidden=false; $("#sheetcard").scrollTop=0; $("#sheet").scrollTop=0;
 }
 function closeLesson(){ $("#sheet").hidden=true; sheetCtx=null; if(lastFocus&&lastFocus.focus) lastFocus.focus(); }
-function renderSheet(){
+function renderSheet(keepTicketOpen=false){
   const {u,l,answers}=sheetCtx;
-  const exitWasOpen=!!document.getElementById("ss-exit-ticket")?.open;
+  const exitWasOpen=keepTicketOpen&&!!document.getElementById("ss-exit-ticket")?.open;
   const lessonLabel="Lesson";
   const evidenceFirst=u.id==="egypt" && ["nileYear","trade","nubia","rosetta"].includes(l.diagram);
   const activity=l.activity || (u.id==="mesopotamia" && ["l1","l5"].includes(l.id) ? {href:"river-valley-lab.html?civilization=mesopotamia",title:"Try the River Valley Decision Lab"} : null);
@@ -1243,6 +1217,7 @@ function renderSheet(){
     ${places.length?`<h3>On the map</h3><div class="chips">${places.map(p=>`<button class="chip" data-place="${p.id}">${glyph(p.kind)}${esc(p.name)}</button>`).join("")}</div>`:""}
     <h3>Your work</h3><p>${esc(l.work)}</p>
     ${activity?`<p><a class="atlas-compare-link" href="${esc(activity.href)}">${esc(activity.title||"Open investigation")}</a></p>`:""}<p class="fine">Get the handout from Mr. Mangles if you don't have it.</p>
+    ${u.id==="egypt"&&["l1","l8"].includes(l.id)?'<p><a class="atlas-compare-link" href="../computer-class/#social-nile-advantage">Was the Nile always an advantage? · Computer Class investigation</a></p>':""}
     <h3>Check yourself</h3>${qs}
     ${nAns===l.check.length?`<div class="qscore">${nRight} out of ${l.check.length}${nRight===l.check.length?". Nice, you've got this lesson.":". Have another look at the notes above, then try again."} <button class="btn ghost" id="retry" style="margin-left:8px">Try again</button></div>`:""}
     <details class="exit-ticket" id="ss-exit-ticket">
@@ -1261,6 +1236,32 @@ function renderSheet(){
     </details>
     <div class="sheet-nav">${prev?`<button class="btn ghost" id="lprev">&larr; ${lessonLabel} ${esc(prev.n)}</button>`:"<span></span>"}${next?`<button class="btn ghost" id="lnext">${lessonLabel} ${esc(next.n)} &rarr;</button>`:""}</div>`;
   $("#sheet-x").onclick=closeLesson;
+  const exitPanel=$("#ss-exit-ticket");
+  if(exitPanel){
+    if(exitWasOpen)exitPanel.open=true;
+    const fields=[...exitPanel.querySelectorAll("textarea[data-exit]")],status=$("#ss-exit-status");
+    fields.forEach(el=>el.addEventListener("input",()=>{
+      sheetCtx.exitDraft[el.dataset.exit]=el.value;
+      status.textContent="Draft held in this lesson only. Copy or download it before closing if you want to keep it.";
+    }));
+    const contents=()=>[u.name+" — "+l.title,"One-minute exit ticket",
+      "One idea I can now explain:\n"+exitPanel.querySelector('[data-exit="recall"]').value.trim(),
+      "One question or idea I want to revisit:\n"+exitPanel.querySelector('[data-exit="question"]').value.trim()
+    ].join("\n\n")+"\n";
+    $("#ss-exit-download").onclick=()=>{
+      const blob=new Blob([contents()],{type:"text/plain;charset=utf-8"}),url=URL.createObjectURL(blob),link=document.createElement("a");
+      link.href=url;link.download=("exit-ticket-ss-"+u.id+"-"+l.id).replace(/[^a-z0-9-]/gi,"-")+".txt";
+      document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);
+      status.textContent="Exit ticket downloaded.";
+    };
+    $("#ss-exit-copy").onclick=()=>{
+      if(!navigator.clipboard?.writeText){status.textContent="Copy isn't available in this browser. Use Download my ticket instead.";return;}
+      navigator.clipboard.writeText(contents()).then(()=>{status.textContent="Exit ticket copied.";}).catch(()=>{status.textContent="Copy was blocked. Use Download my ticket instead.";});
+    };
+    $("#ss-exit-clear").onclick=()=>{
+      fields.forEach(el=>el.value="");sheetCtx.exitDraft={};status.textContent="Exit ticket cleared.";
+    };
+  }
   document.querySelectorAll("#sheetcard [data-ix]").forEach(d=>{const ix=window.EgyptInteractives&&window.EgyptInteractives[d.dataset.ix]; if(ix) try{ix.mount(d,sheetCtx.models[d.dataset.ix] ||= {});}catch(e){
     const fallback=window.EgyptDiagrams?.[d.dataset.ix==="nileYear"?"flood":d.dataset.ix];
     if(fallback) d.innerHTML=fallback().svg; else d.textContent="This model couldn’t load. Refresh to try again.";
@@ -1269,9 +1270,9 @@ function renderSheet(){
     sheetCtx.answers[+b.dataset.q]=+b.dataset.o;
     const all=l.check.every((q,qi)=>sheetCtx.answers[qi]===q.c);
     if(all){ markDone(u.id+":"+l.id); renderPanel(); }
-    renderSheet();
+    renderSheet(true);
   });
-  const r=$("#retry"); if(r) r.onclick=()=>{sheetCtx.answers={}; renderSheet();};
+  const r=$("#retry"); if(r) r.onclick=()=>{sheetCtx.answers={}; renderSheet(true);};
   const pv=$("#lprev"); if(pv) pv.onclick=()=>openLesson(u.id,prev.id);
   const nx=$("#lnext"); if(nx) nx.onclick=()=>openLesson(u.id,next.id);
   document.querySelectorAll("#sheetcard [data-place]").forEach(b=>b.onclick=()=>{

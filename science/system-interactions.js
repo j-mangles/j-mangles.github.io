@@ -19,13 +19,17 @@ const SYSTEMS={
   path:[["Information","Signals arrive from the body or the surroundings."],["Brain and spinal cord","The central nervous system processes information and coordinates activity."],["Nerves","Peripheral nerves carry signals between the central nervous system and the body."],["Response","The body responds to the information received."]] },
  integumentary:{name:"Integumentary",organs:"Skin, hair and nails",job:"Forms a protective outer layer and helps the body regulate its temperature.",link:"Blood vessels near the skin help release or conserve heat. The skin also protects the tissues underneath.",structures:[
   ["skin","Skin","Skin is the body's outer protective layer and its largest organ."],["hair","Hair","Hair grows from structures in the skin."],["nails","Nails","Nails are part of the integumentary system along with skin and hair."]],
-  path:[["Protect","Skin, hair and nails form parts of the body's outer covering."],["Sense","Nerves in the skin detect conditions around the body."],["Adjust","The body can change heat loss at the skin's surface."],["Maintain","The integumentary and circulatory systems help regulate body temperature."]] }
+  path:[["Protect","Skin, hair and nails form parts of the body's outer covering."],["Sense","Nerves in the skin detect conditions around the body."],["Adjust","The body can change heat loss at the skin's surface."],["Maintain","The integumentary and circulatory systems help regulate body temperature."]] },
+ muscular:{structures:[["arm-muscle","Upper-arm muscle","When skeletal muscle contracts, a tendon transmits the pulling force to a bone."],["diaphragm","Diaphragm","The diaphragm contracts to draw air into the lungs."]],name:"Muscular",organs:"Skeletal muscles, tendons and other muscle tissues",job:"Skeletal muscles contract to pull on bones and move joints. Muscle tissue also helps move blood and food through the body.",link:"The nervous system signals muscles to contract; the skeletal system provides support, and the circulatory system brings oxygen and nutrients.",path:[["Brain and nerves","Motor signals travel through nerves to skeletal muscles."],["Muscle contraction","Muscle fibres shorten and generate a pulling force."],["Tendon and bone","A tendon transmits the muscle force to a bone."],["Movement","Bones move around a joint, often with an opposing muscle relaxing."]]},
+ skeletal:{structures:[["rib-cage","Rib cage","Ribs protect organs in the chest and move during breathing."],["femur","Femur","The femur bears weight and helps form the hip and knee joints."]],name:"Skeletal",organs:"Bones, joints, cartilage and ligaments",job:"Bones provide support and protection, and joints allow movement. Bone marrow also produces blood cells.",link:"Muscles pull on bones at joints; the nervous system coordinates actions, while blood supplies living bone tissues.",path:[["Bones","Rigid bones provide a framework and protect important organs."],["Joint","Two or more bones meet at a joint, which can permit movement."],["Muscle and tendon","A contracting skeletal muscle pulls on a bone through a tendon."],["Coordinated motion","The joint moves as muscles are activated and other muscles relax."]]},
 };
 const QUIZ=[
  {q:"Where are most digested nutrients absorbed?",a:["Stomach","Small intestine","Large intestine"],c:1,why:"Most nutrient absorption takes place in the small intestine."},
  {q:"How does oxygen reach body cells after entering the lungs?",a:["In blood","In the stomach","Through skin"],c:0,why:"The respiratory and circulatory systems work together."},
  {q:"Which two organs form the central nervous system?",a:["Brain and spinal cord","Heart and lungs","Stomach and liver"],c:0,why:"The brain and spinal cord form the central nervous system."},
- {q:"Which vessels allow exchange with cells?",a:["Arteries","Capillaries","Veins"],c:1,why:"Capillaries exchange gases, nutrients and wastes with cells."}
+ {q:"Which vessels allow exchange with cells?",a:["Arteries","Capillaries","Veins"],c:1,why:"Capillaries exchange gases, nutrients and wastes with cells."},
+ {q:"How do skeletal muscles move the bones of a joint?",a:["They push bones away using nerves","They contract and pull through tendons","They pump blood directly into joints"],c:1,why:"Skeletal muscles generate a pulling force, transmitted by tendons to bones."},
+ {q:"Which system includes bones, joints and protective structures such as the rib cage?",a:["Skeletal","Digestive","Nervous"],c:0,why:"The skeletal system supports the body and protects organs."}
 ];
 const STYLE=[
  ".hsi,.odi{color:var(--ink);min-width:0;line-height:1.5}",
@@ -74,7 +78,7 @@ const STYLE=[
 ].join("\n");
 const body=[
  '<svg class="anatomy" viewBox="0 0 520 590" role="group" aria-labelledby="body-title body-desc">',
- '<title id="body-title">Explore the major organs and connections in five body systems</title><desc id="body-desc">A labelled body map showing the brain, spinal cord, nerves, airway, lungs, heart, blood vessels, digestive organs and skin. Select an organ or use the system and structure buttons.</desc>',
+ '<title id="body-title">Explore the major organs and connections in seven body systems</title><desc id="body-desc">A labelled body map showing the brain, spinal cord, nerves, airway, lungs, heart, blood vessels, digestive organs, skin, muscles and bones. Select an organ or use the system and structure buttons.</desc>',
  '<defs><marker id="hsi-arrow-rich" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#bd514e"/></marker><marker id="hsi-arrow-poor" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#347c9e"/></marker></defs>',
  '<path class="human-base" d="M239 105 Q211 106 193 126 L158 158 L114 254 Q108 270 122 277 Q136 282 144 266 L183 204 L177 307 L185 419 L168 555 Q166 570 183 573 L207 573 L235 420 L254 420 L282 573 L307 573 Q324 570 321 554 L304 419 L311 307 L305 204 L344 266 Q353 282 367 277 Q381 270 374 254 L331 158 Q313 106 285 105 Z"/>',
  '<ellipse class="human-base" cx="262" cy="61" rx="39" ry="44"/><path class="human-base" d="M239 96 L239 115 M285 96 L285 115"/>',
@@ -129,6 +133,10 @@ const body=[
  '<path class="part" fill="none" d="M242 333 Q253 328 262 336 Q272 344 283 337 M241 344 Q252 337 263 346 Q274 355 285 345 M242 355 Q253 349 263 357 Q273 365 284 354"/><path class="leader" d="M240 345 L154 363"/><text class="callout" x="10" y="367">Small intestine</text></g>',
  '<g class="organ" data-organ="digestive" data-structure="rectum" role="button" tabindex="0" aria-label="Rectum and anus carry solid waste out of the body">',
  '<path class="part" d="M258 371 L267 371 L267 389 L258 389Z"/><path class="leader" d="M258 382 L184 402"/><text class="callout" x="10" y="406">Rectum and anus</text></g>',
+ '<g class="organ" data-organ="muscular" data-structure="arm-muscle" tabindex="0" role="button" aria-label="Upper-arm skeletal muscle"><path class="part" d="M181 161 Q190 169 174 192 L151 225 Q144 225 149 210 Q165 172 181 161Z"/></g>',
+ '<g class="organ" data-organ="muscular" data-structure="diaphragm" tabindex="0" role="button" aria-label="Diaphragm beneath the lungs"><path class="part" d="M201 271 Q262 244 321 269 L319 274 Q260 252 202 277Z"/></g>',
+ '<g class="organ" data-organ="skeletal" data-structure="femur" tabindex="0" role="button" aria-label="Femur in the thigh"><path class="part" d="M289 345 Q295 337 301 345 L298 417 Q302 424 294 429 Q283 427 286 418 L290 356 Q280 350 289 345Z"/></g>',
+ '<g class="organ" data-organ="skeletal" data-structure="rib-cage" tabindex="0" role="button" aria-label="Rib cage around the lungs"><path class="part" fill="none" stroke-width="3" d="M272 174 Q319 172 325 202 M273 186 Q320 184 327 213 M275 199 Q322 197 328 224 M276 211 Q322 213 325 238 M276 225 Q317 230 322 250"/></g>',
  '<g class="organ" data-organ="integumentary" data-structure="hair" role="button" tabindex="0" aria-label="Hair, part of the integumentary system">',
  '<path class="part" fill="none" d="M229 50 Q226 23 251 18 Q281 12 295 40 M232 42 Q240 26 248 23 M255 18 Q267 12 277 19 M282 23 Q290 29 293 39"/><path class="leader" d="M294 33 L385 25"/><text class="callout" x="389" y="29">Hair</text></g>',
  '<g class="organ" data-organ="integumentary" data-structure="nails" role="button" tabindex="0" aria-label="Nails, part of the integumentary system">',
@@ -172,6 +180,7 @@ function renderSystems(el){
  }
  function choose(k,structure){if(!SYSTEMS[k])return;chosen=k;chosenStructure=structure||SYSTEMS[k].structures[0][0];step=0;draw();}
  el.addEventListener("click",e=>{
+  if(e.target.closest(".oi"))return;
   const b=e.target.closest("[data-system],[data-organ],[data-structure],[data-step],[data-answer],.next,.connection-toggle");if(!b||!el.contains(b))return;
   if(b.dataset.system)choose(b.dataset.system);
   else if(b.dataset.structure){const owner=b.dataset.organ||chosen;choose(owner,b.dataset.structure);}
@@ -252,4 +261,5 @@ function extend(key,render,first){
 }
 extend("cells/systems",renderSystems,true);
 extend("cells/circulatory",renderOxygen,false);
+H.systemExplorerData={systems:SYSTEMS,quiz:QUIZ};
 })();

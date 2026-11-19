@@ -31,6 +31,11 @@ F.scenarios.forEach((p,i)=>{
  assert.ok(svg1.includes("A: ")&&!svg1.includes("Result"));
  assert.ok(svg2.includes("Result")&&svg2.includes(p.op==="+"?"Combine":"Remove"));
 });
+const denominatorError=F.diagnose(F.scenarios[1],18,"3/9");
+assert.match(denominatorError.denominator,/multiplied the denominators/);
+assert.match(denominatorError.answer,/combined the denominators too/);
+assert.equal(F.diagnose(F.scenarios[1],6,"5/6").correct,true,"equivalent final fractions should pass");
+assert.match(F.diagnose(F.scenarios[1],4,"5/6").denominator,/least common multiple is 6/);
 const main=read("math/index.html"),scripts=[...main.matchAll(/<script src="([^"]+)"/g)].map(m=>m[1].split("?")[0]);
 assert.ok(scripts.includes("fraction-strips.js")&&scripts.indexOf("tools.js")<scripts.indexOf("fraction-strips.js")&&scripts.indexOf("fraction-strips.js")<scripts.indexOf("../assets/course-map.js"));
 const datCtx={window:{}};
