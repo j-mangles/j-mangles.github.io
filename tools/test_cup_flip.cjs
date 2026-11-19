@@ -43,4 +43,16 @@ assert.ok(/prefers-reduced-motion/.test(html),"has a reduced-motion path");
 assert.ok(read("math/index.html").includes('href="cup-flip.html"'),"linked from the Math 7 hub");
 assert.ok(read("math/metro.js").includes('href="cup-flip.html"'),"linked from the course map");
 
+// the flip is animated: three resting shapes, whole-turn spins, and motion inside the house limit
+const shapes=html.match(/'<path d="[^']*'/g)||[];
+assert.equal(shapes.length,3,"one resting shape per outcome");
+assert.ok(/var LABELS=\[/.test(html),"each resting shape has a described label");
+const spin=/rotate\("\+turns\+"deg\)/.test(html)&&/var turns=quick\?360:720;/.test(html);
+assert.ok(spin,"the cup spins whole turns so the landing shape swaps unseen");
+const dur=/\{duration:quick\?(\d+):(\d+)\}/.exec(html);
+assert.ok(dur,"the toss declares a duration");
+assert.ok(Number(dur[2])<=400&&Number(dur[1])<=400,"motion stays within ~400ms");
+assert.ok(/stillness\|\|!cup\.animate/.test(html),"reduced motion and no-animation browsers skip straight to the result");
+assert.ok(/if\(busy\)return;/.test(html),"a flip in flight cannot be double-counted");
+
 console.log("Mystery Cup Flip: 3 hidden outcomes verified over "+N+" draws, reveal gated at 200 flips, linked from hub and course map.");

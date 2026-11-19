@@ -6,11 +6,13 @@
 .meta{color:var(--muted);margin:6px 0 0}
 .lab .lede{margin-top:14px}
 .panel{background:var(--paper);border:1px solid var(--rule);border-radius:var(--radius);padding:22px;margin:20px 0}
-.flipbox{background:var(--soft);border-radius:var(--radius);padding:26px 16px;text-align:center;min-height:132px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}
-.flipbox .cup{width:72px;height:60px;display:block}
-.flipbox .cup path,.flipbox .cup ellipse{fill:var(--paper);stroke:var(--ink);stroke-width:2.5;stroke-linejoin:round}
-.flipbox .word{font-size:1.5rem;font-weight:700}
-.flipbox .idle{color:var(--muted);font-weight:600}
+.flipbox{background:var(--soft);border-radius:var(--radius);padding:20px 16px 18px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:10px}
+.stage{position:relative;width:160px;height:132px;display:flex;align-items:flex-end;justify-content:center;padding-bottom:6px}
+.cup{width:72px;height:63px;display:block;transform-origin:50% 50%;overflow:visible}
+.cup path,.cup ellipse{fill:var(--paper);stroke:var(--ink);stroke-width:2.5;stroke-linejoin:round}
+.ground{position:absolute;left:6px;right:6px;bottom:0;height:2px;background:var(--rule);border-radius:2px}
+.word{font-size:1.5rem;font-weight:700;min-height:1.4em}
+.word.idle{font-size:1rem;color:var(--muted);font-weight:600}
 .controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
 .controls button{min-height:44px}
 table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
@@ -47,7 +49,10 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px soli
 </section>
 
 <section class="panel"><h2>2. Flip the cup</h2>
-<div class="flipbox" id="flipbox"><span class="idle">Press a button to flip</span></div>
+<div class="flipbox">
+<div class="stage"><svg class="cup" id="cup" viewBox="0 0 64 56" role="img" aria-label="Paper cup"><path d="M15 15 L49 15 L42 46 L22 46 Z"/><ellipse cx="32" cy="15" rx="17" ry="5"/></svg><span class="ground"></span></div>
+<span class="word idle" id="word">Press a button to flip</span>
+</div>
 <div class="controls" role="group" aria-label="Flip the cup">
 <button class="btn" data-flip="1">Flip 1</button>
 <button class="btn ghost" data-flip="10">Flip 10</button>
@@ -92,11 +97,15 @@ var $=function(id){return document.getElementById(id);};
 /* Long-run chances for this cup. Students estimate these from data; they are not shown until 200 flips. */
 var WEIGHTS=[0.11,0.26,0.63];
 var NAMES=["Open end up","Upside down","On its side"];
-var CUPS=[
- '<svg class="cup" viewBox="0 0 64 56" role="img" aria-label="Cup standing with its open end up"><path d="M15 15 L49 15 L42 46 L22 46 Z"/><ellipse cx="32" cy="15" rx="17" ry="5"/></svg>',
- '<svg class="cup" viewBox="0 0 64 56" role="img" aria-label="Cup upside down with its open end on the ground"><path d="M22 12 L42 12 L49 43 L15 43 Z"/><ellipse cx="32" cy="43" rx="17" ry="5"/></svg>',
- '<svg class="cup" viewBox="0 0 64 56" role="img" aria-label="Cup lying on its side"><path d="M14 11 L14 45 L47 38 L47 18 Z"/><ellipse cx="14" cy="28" rx="5" ry="17"/></svg>'
+/* The cup spins in whole turns, then lands in the resting shape for its outcome. */
+var SHAPES=[
+ '<path d="M15 15 L49 15 L42 46 L22 46 Z"/><ellipse cx="32" cy="15" rx="17" ry="5"/>',
+ '<path d="M22 12 L42 12 L49 43 L15 43 Z"/><ellipse cx="32" cy="43" rx="17" ry="5"/>',
+ '<path d="M14 11 L14 45 L47 38 L47 18 Z"/><ellipse cx="14" cy="28" rx="5" ry="17"/>'
 ];
+var LABELS=["Cup standing with its open end up","Cup upside down with its open end on the ground","Cup lying on its side"];
+var busy=false;
+var stillness=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 var counts=[0,0,0];
 function pct(n,d){return d?((100*n/d).toFixed(1).replace(/\.0$/,"")+"%"):"—";}
 function pickOutcome(){
@@ -113,22 +122,56 @@ function show(){
   $("b"+i).style.width=(total?100*counts[i]/total:0)+"%";
  }
 }
+function setButtons(on){
+ document.querySelectorAll("[data-flip],#reset").forEach(function(b){b.disabled=!on;});
+}
+/* Toss the cup: up fast, spin whole turns, fall and land in its resting shape. */
+function rest(outcome){
+ var cup=$("cup");
+ cup.innerHTML=SHAPES[outcome];
+ cup.setAttribute("aria-label",LABELS[outcome]);
+ cup.style.transform="rotate(0deg)";
+}
+function tumble(outcome,quick){
+ var cup=$("cup");
+ if(stillness||!cup.animate){rest(outcome);return Promise.resolve();}
+ var turns=quick?360:720;
+ var run=cup.animate([
+  {transform:"translateY(0) rotate(0deg)",easing:"cubic-bezier(.15,.7,.4,1)"},
+  {transform:"translateY(-46px) rotate("+Math.round(turns*0.62)+"deg)",offset:0.46,easing:"cubic-bezier(.55,0,.8,.6)"},
+  {transform:"translateY(0) rotate("+turns+"deg)"}
+ ],{duration:quick?320:400});
+ var done=run.finished||new Promise(function(f){run.onfinish=f;});
+ return done.then(function(){rest(outcome);});
+}
 function flip(n){
+ if(busy)return;
+ busy=true;setButtons(false);
  var last=0;
  for(var k=0;k<n;k++){last=pickOutcome();counts[last]++;}
- $("flipbox").innerHTML=CUPS[last]+'<span class="word">'+NAMES[last]+'</span>';
- var total=counts[0]+counts[1]+counts[2];
- var intro=n===1?"1 flip added. ":n+" flips added, the last one landed "+NAMES[last].toLowerCase()+". ";
- var advice=total>=50?"Compare your percentages with another group.":total>=10?"Keep flipping. Watch whether the percentages settle down or keep jumping.":"Run at least 10 flips before you compare anything.";
- $("status").textContent=intro+"Total flips: "+total+". "+advice;
- show();
+ var word=$("word");
+ word.classList.remove("idle");
+ word.textContent="";
+ tumble(last,n>1).then(function(){
+  word.textContent=NAMES[last];
+  var total=counts[0]+counts[1]+counts[2];
+  var intro=n===1?"1 flip added. ":n+" flips added, the last one landed "+NAMES[last].toLowerCase()+". ";
+  var advice=total>=50?"Compare your percentages with another group.":total>=10?"Keep flipping. Watch whether the percentages settle down or keep jumping.":"Run at least 10 flips before you compare anything.";
+  $("status").textContent=intro+"Total flips: "+total+". "+advice;
+  show();
+  busy=false;setButtons(true);
+ });
 }
 document.querySelectorAll("[data-flip]").forEach(function(btn){
  btn.addEventListener("click",function(){flip(Number(btn.dataset.flip));});
 });
 $("reset").addEventListener("click",function(){
+ if(busy)return;
  counts=[0,0,0];
- $("flipbox").innerHTML='<span class="idle">Press a button to flip</span>';
+ $("cup").getAnimations().forEach(function(a){a.cancel();});
+ rest(0);
+ $("word").textContent="Press a button to flip";
+ $("word").classList.add("idle");
  $("status").textContent="Tally cleared. The cup has not changed.";
  $("reveal").textContent="";
  show();
