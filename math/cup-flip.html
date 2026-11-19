@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mystery Cup Flip · Math 7</title><link rel="stylesheet" href="../assets/fonts.css"><link rel="stylesheet" href="../assets/site.css">
+<style>
+.lab{max-width:890px;margin:2rem auto;padding:0 18px 4rem}
+.meta{color:var(--muted);margin:6px 0 0}
+.lab .lede{margin-top:14px}
+.panel{background:var(--paper);border:1px solid var(--rule);border-radius:var(--radius);padding:22px;margin:20px 0}
+.flipbox{background:var(--soft);border-radius:var(--radius);padding:26px 16px;text-align:center;min-height:132px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}
+.flipbox .cup{width:72px;height:60px;display:block}
+.flipbox .cup path,.flipbox .cup ellipse{fill:var(--paper);stroke:var(--ink);stroke-width:2.5;stroke-linejoin:round}
+.flipbox .word{font-size:1.5rem;font-weight:700}
+.flipbox .idle{color:var(--muted);font-weight:600}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.controls button{min-height:44px}
+table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--rule)}
+th{font-size:.9rem;color:var(--muted)}
+td.n{font-weight:700;font-size:1.1rem}
+.table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.meter{height:10px;background:var(--soft);border-radius:99px;overflow:hidden;min-width:70px}
+.meter span{display:block;height:100%;background:var(--accent-ink);width:0;transition:width .25s ease}
+@media (prefers-reduced-motion:reduce){.meter span{transition:none}}
+.totals{display:flex;justify-content:space-between;align-items:baseline;margin-top:14px;padding-top:12px;border-top:2px solid var(--ink)}
+.totals b{font-size:1.3rem;font-variant-numeric:tabular-nums}
+.status{min-height:1.5em;font-weight:650;margin-top:12px}
+textarea{width:100%;min-height:85px;font:inherit;padding:8px;box-sizing:border-box;border:1px solid var(--rule);border-radius:var(--btn-radius);background:var(--paper);color:var(--ink)}
+input[type=number]{max-width:90px;padding:6px;font:inherit;border:1px solid var(--rule);border-radius:var(--btn-radius);background:var(--paper);color:var(--ink)}
+.question{margin:14px 0}
+.tiny{font-size:.9rem;color:var(--muted)}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+@media print{.topbar,.controls,.print-hide{display:none!important}.panel{break-inside:avoid}.lab{margin:0;max-width:none}}
+@media (max-width:520px){th:nth-child(4),td:nth-child(4){display:none}th,td{font-size:14px;padding:7px 6px}}
+</style></head><body data-subject="math">
+<header class="topbar"><div class="wrap"><a class="home" href="../">Mr. Mangles' Class</a><nav class="subnav" aria-label="Subjects"><a href="./">Math 7</a><a href="../science/">Science</a><a href="../ela/">ELA</a><a href="../social-studies/">Social Studies</a><a href="../critical-thinking/">Critical Thinking</a></nav></div></header>
+<main class="lab">
+<p><a href="./">← Back to Math 7</a></p>
+<h1>Mystery Cup Flip</h1>
+<p class="meta">Probability · experimental probability · no login, nothing saved or submitted</p>
+<p class="lede">Flip the cup and record where it lands. Nobody has told you the chances for this cup, so the only way to find out is to collect data.</p>
+
+<section class="panel"><h2>1. Predict first</h2>
+<p>The cup can land three ways: open end up, upside down, or on its side. Before you flip anything, decide which one you think happens most often.</p>
+<div class="question"><label for="guess">Out of 50 flips, how many do you think land <strong>on its side</strong>?</label> <input id="guess" type="number" min="0" max="50" placeholder="0–50"></div>
+<label for="why-guess">Why do you think that?</label>
+<textarea id="why-guess" placeholder="I think this because…"></textarea>
+</section>
+
+<section class="panel"><h2>2. Flip the cup</h2>
+<div class="flipbox" id="flipbox"><span class="idle">Press a button to flip</span></div>
+<div class="controls" role="group" aria-label="Flip the cup">
+<button class="btn" data-flip="1">Flip 1</button>
+<button class="btn ghost" data-flip="10">Flip 10</button>
+<button class="btn ghost" data-flip="50">Flip 50</button>
+<button class="btn ghost" id="reset">Reset tally</button>
+</div>
+<p class="status" id="status" aria-live="polite">No flips yet.</p>
+<div class="table-scroll"><table><caption class="tiny" style="text-align:left;padding-bottom:6px">Your results so far</caption>
+<thead><tr><th scope="col">Outcome</th><th scope="col">Tally</th><th scope="col">Experimental probability</th><th scope="col"></th></tr></thead>
+<tbody>
+<tr><th scope="row">Open end up</th><td class="n" id="c0">0</td><td class="n" id="p0">—</td><td><div class="meter" role="img" aria-label="Open end up share of flips"><span id="b0"></span></div></td></tr>
+<tr><th scope="row">Upside down</th><td class="n" id="c1">0</td><td class="n" id="p1">—</td><td><div class="meter" role="img" aria-label="Upside down share of flips"><span id="b1"></span></div></td></tr>
+<tr><th scope="row">On its side</th><td class="n" id="c2">0</td><td class="n" id="p2">—</td><td><div class="meter" role="img" aria-label="On its side share of flips"><span id="b2"></span></div></td></tr>
+</tbody></table></div>
+<div class="totals"><span>Total flips</span><b id="total">0</b></div>
+<p class="tiny">Experimental probability = the number of times an outcome happened ÷ the total number of flips.</p>
+</section>
+
+<section class="panel"><h2>3. Use your results as evidence</h2>
+<ol>
+<li class="question">After your first 10 flips, write the experimental probability of each outcome as a fraction and a percent.</li>
+<li class="question">Keep flipping to 50. Which percentages changed the most? Use numbers from your table.</li>
+<li class="question">Was your prediction from step 1 close? Say how far off it was, in flips.</li>
+<li class="question">Compare your table with another group's. Whose numbers are closer to each other: groups at 10 flips, or groups at 50 flips?</li>
+<li class="question">This cup has no equally likely outcomes, so you cannot calculate a theoretical probability from a sample space. Explain how you would describe the chance of landing on its side to someone who has not flipped it.</li>
+</ol>
+<label for="claim">Your claim and evidence</label>
+<textarea id="claim" placeholder="My claim is… My evidence is… This suggests…"></textarea>
+<div class="controls print-hide"><button class="btn ghost" id="print">Print this page</button><button class="btn ghost" id="copy">Copy my results</button><span id="copy-status" role="status" class="tiny"></span></div>
+</section>
+
+<section class="panel"><h2>4. The long-run chances</h2>
+<p class="tiny">This cup does have real chances built into it, but they only become clear after a lot of flips. Reach 200 flips and you can check how close you got.</p>
+<div class="controls"><button class="btn ghost" id="revealbtn">Show the long-run chances</button></div>
+<p id="reveal" aria-live="polite"></p>
+</section>
+</main><footer class="site"><div class="wrap">Mr. Mangles' Class · 2026–27</div></footer>
+<script>
+(function(){
+"use strict";
+var $=function(id){return document.getElementById(id);};
+/* Long-run chances for this cup. Students estimate these from data; they are not shown until 200 flips. */
+var WEIGHTS=[0.11,0.26,0.63];
+var NAMES=["Open end up","Upside down","On its side"];
+var CUPS=[
+ '<svg class="cup" viewBox="0 0 64 56" role="img" aria-label="Cup standing with its open end up"><path d="M15 15 L49 15 L42 46 L22 46 Z"/><ellipse cx="32" cy="15" rx="17" ry="5"/></svg>',
+ '<svg class="cup" viewBox="0 0 64 56" role="img" aria-label="Cup upside down with its open end on the ground"><path d="M22 12 L42 12 L49 43 L15 43 Z"/><ellipse cx="32" cy="43" rx="17" ry="5"/></svg>',
+ '<svg class="cup" viewBox="0 0 64 56" role="img" aria-label="Cup lying on its side"><path d="M14 11 L14 45 L47 38 L47 18 Z"/><ellipse cx="14" cy="28" rx="5" ry="17"/></svg>'
+];
+var counts=[0,0,0];
+function pct(n,d){return d?((100*n/d).toFixed(1).replace(/\.0$/,"")+"%"):"—";}
+function pickOutcome(){
+ var r=Math.random(),s=0;
+ for(var i=0;i<3;i++){s+=WEIGHTS[i];if(r<s)return i;}
+ return 2;
+}
+function show(){
+ var total=counts[0]+counts[1]+counts[2];
+ $("total").textContent=total;
+ for(var i=0;i<3;i++){
+  $("c"+i).textContent=counts[i];
+  $("p"+i).textContent=total?(counts[i]+"/"+total+" ("+pct(counts[i],total)+")"):"—";
+  $("b"+i).style.width=(total?100*counts[i]/total:0)+"%";
+ }
+}
+function flip(n){
+ var last=0;
+ for(var k=0;k<n;k++){last=pickOutcome();counts[last]++;}
+ $("flipbox").innerHTML=CUPS[last]+'<span class="word">'+NAMES[last]+'</span>';
+ var total=counts[0]+counts[1]+counts[2];
+ var intro=n===1?"1 flip added. ":n+" flips added, the last one landed "+NAMES[last].toLowerCase()+". ";
+ var advice=total>=50?"Compare your percentages with another group.":total>=10?"Keep flipping. Watch whether the percentages settle down or keep jumping.":"Run at least 10 flips before you compare anything.";
+ $("status").textContent=intro+"Total flips: "+total+". "+advice;
+ show();
+}
+document.querySelectorAll("[data-flip]").forEach(function(btn){
+ btn.addEventListener("click",function(){flip(Number(btn.dataset.flip));});
+});
+$("reset").addEventListener("click",function(){
+ counts=[0,0,0];
+ $("flipbox").innerHTML='<span class="idle">Press a button to flip</span>';
+ $("status").textContent="Tally cleared. The cup has not changed.";
+ $("reveal").textContent="";
+ show();
+});
+$("revealbtn").addEventListener("click",function(){
+ var total=counts[0]+counts[1]+counts[2];
+ if(total<200){$("reveal").textContent="Not yet. You are at "+total+" flips and need 200 before the long-run chances mean much.";return;}
+ var lines=NAMES.map(function(name,i){
+  return name+": "+Math.round(WEIGHTS[i]*100)+"% long-run, "+pct(counts[i],total)+" in your "+total+" flips";
+ });
+ $("reveal").textContent=lines.join(". ")+".";
+});
+$("print").addEventListener("click",function(){window.print();});
+$("copy").addEventListener("click",function(){
+ var total=counts[0]+counts[1]+counts[2];
+ var message="Mystery Cup Flip\nPrediction (on its side, out of 50): "+$("guess").value+
+ "\nReasoning: "+$("why-guess").value+
+ "\nTotal flips: "+total+
+ "\nOpen end up: "+counts[0]+" ("+pct(counts[0],total)+")"+
+ "\nUpside down: "+counts[1]+" ("+pct(counts[1],total)+")"+
+ "\nOn its side: "+counts[2]+" ("+pct(counts[2],total)+")"+
+ "\nClaim: "+$("claim").value;
+ if(navigator.clipboard&&navigator.clipboard.writeText){
+  navigator.clipboard.writeText(message).then(function(){$("copy-status").textContent="Copied.";},function(){$("copy-status").textContent="Copy unavailable. Use Print instead.";});
+ } else $("copy-status").textContent="Copy unavailable. Use Print instead.";
+});
+show();
+})();
+</script></body></html>

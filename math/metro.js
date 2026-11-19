@@ -53,7 +53,7 @@ function render(el,{go,units}){
      <p class="mm-kick">Mr. Mangles' Class · Grade 7 Mathematics · 2026–27</p>
      <h1>The Math 7 Line</h1>
      <p class="mm-lede">${units.length} stops, ${LINES.length} lines. Where two lines meet, you use a skill from one unit in another. Pick any station for its lessons.</p>
-     <p class="mm-links"><a href="#overview" data-go="overview">Course map</a><a href="#resources" data-go="resources">Resource Library</a><a href="probability-investigation.html">Probability Investigation</a></p></div>
+     <p class="mm-links"><a href="#overview" data-go="overview">Course map</a><a href="#resources" data-go="resources">Resource Library</a><a href="probability-investigation.html">Probability Investigation</a><a href="cup-flip.html">Mystery Cup Flip</a></p></div>
     <ul class="mm-legend" aria-label="Lines">${LINES.map(L=>`<li><span style="background:${L.colour}"></span>${esc(L.name)}</li>`).join("")}</ul></header>
    <div class="mm-map" tabindex="0" role="group" aria-label="Transit map of the Math 7 units. Scroll sideways to see every station.">
     <svg viewBox="0 0 1200 570" role="img" aria-label="${units.length} units on ${LINES.length} lines. ${esc(now.name)} is the current station.">
