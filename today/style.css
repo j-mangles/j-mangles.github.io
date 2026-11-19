@@ -180,3 +180,9 @@ button:focus-visible,select:focus-visible,a:focus-visible,input:focus-visible,te
  body{background:white!important;color:black!important}
  .mb-open{background:white!important;color:black!important;border:1px solid #777;text-decoration:underline}
 }
+
+.mc-home-preview{display:inline-block;margin:0 0 14px;font-size:.9rem;text-underline-offset:3px}
+.mc-block-body select[data-field="last-class"]{margin-bottom:16px}
+.mb-card .mb-last{margin-top:12px;font-size:1rem}
+.mb-last strong{margin-right:7px}
+.mb-last a{text-underline-offset:3px;color:var(--accent-ink)}

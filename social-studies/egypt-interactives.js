@@ -43,7 +43,7 @@
     </svg>`};
   }
 
-  function nileYear(el,state={}) {
+  function nileYear(el,state={},onObservation) {
     state.month ??= 9;
     state.flood ??= "normal";
     let timer=null;
@@ -67,11 +67,13 @@
       get("[data-month]").textContent=months[m];
       get("[data-cubits]").textContent=Math.round(c);
       slider.value=m;slider.setAttribute("aria-valuetext",months[m]);
-      const effect=waterY(c)<=103?"Floodwater reaches the village and threatens stored grain.":
+      const villageWet=waterY(c)<=103;
+      const effect=villageWet?`Water covers ${land.wet} of the ${plots.length} field strips. Floodwater reaches the village and threatens stored grain.`:
         land.wet ? `Water covers ${land.wet} of the ${plots.length} field strips. The village is above the waterline.` :
         m>=10||m<5 ? `The last flood left silt on ${land.reached} of the ${plots.length} field strips.` : "The river is still inside its channel.";
       get(".eg-season").innerHTML=`<h5>${season}</h5><p>${work[m]} ${effect}</p>`;
       el.querySelectorAll("[data-flood]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.flood===state.flood));
+      if(onObservation)onObservation({month:months[m],level:floods[state.flood].label,cubits:Math.round(c),fields:land.wet,total:plots.length,villageWet});
     }
     function stop() { clearTimeout(timer);timer=null;play.textContent="Play year";get(".eg-season").setAttribute("aria-live","polite"); }
     function advance() {

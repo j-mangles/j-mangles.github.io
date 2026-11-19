@@ -4,20 +4,17 @@ const assert=require("node:assert/strict"),fs=require("node:fs"),path=require("n
 const root=path.resolve(__dirname,"..");
 const source=(p)=>fs.readFileSync(path.join(root,p),"utf8");
 const window={};
-for(const name of ["computer-class/data.js","computer-class/activities-2.js","computer-class/activities-3.js","today/resources.js","today/released-lessons.js","today/core.js"]){
+for(const name of ["computer-class/data.js","computer-class/activities-2.js","computer-class/activities-3.js","computer-class/activities-4.js","computer-class/nile-investigation.js","today/resources.js","today/released-lessons.js","today/core.js"]){
  vm.runInNewContext(source(name),{window,console},{filename:name,timeout:3000});
 }
 const core=window.MissionCore,resource=window.MissionResources,list=core.catalog();
 assert.equal(resource.periods.length,5);
 assert.deepEqual(Array.from(resource.periods,p=>p.number),[1,2,3,4,5]);
-assert.equal(list.length,99,"Released lessons, featured tools and 15 assignments");
-assert.equal(new Set(list.map(x=>x.id)).size,99,"All IDs unique");
-assert.equal(list.filter(x=>x.kind==="Digital assignment").length,15);
-assert.equal(window.MissionReleasedLessons.length,76,"Only released lessons are generated");
-assert.equal(list.some(x=>x.href==="../math/#fracops"),false,"Future fraction unit stays hidden");
-assert.equal(list.filter(x=>x.subject==="math").length,23);
-assert.equal(list.filter(x=>x.subject==="sci").length,21);
-assert.equal(list.filter(x=>x.subject==="ss").length,19);
+assert.equal(new Set(list.map(x=>x.id)).size,list.length,"All IDs unique");
+assert.equal(list.filter(x=>x.kind==="Digital assignment").length,window.ComputerClassData.activities.length);
+assert.equal(list.some(x=>x.href==="../math/#fracops"),false,"Planned fraction unit stays hidden");
+assert.ok(list.some(x=>x.href==="../social-studies/#egypt-l1"),"Published Egypt lessons are selectable");
+assert.ok(list.some(x=>x.id==="assignment:social-nile-advantage"),"Assigned investigation is selectable");
 for(const x of list){
  assert.ok(core.SUBJECTS.includes(x.subject),"Recognized subject");
  assert.ok(x.href.startsWith("../")&&!x.href.includes("../../"),"Only same-site relative links");
@@ -56,10 +53,36 @@ assert.equal(core.parseBoardHash("#v1/9/-,-,-,-,-",list),null,"Invalid day rejec
 assert.equal(core.parseBoardHash("#hello-world",list),null,"Non-board hash rejected");
 assert.equal(core.parseBoardHash("#v1/3/-,-,-,-",list),null,"Malformed number of slots rejected");
 assert.equal(core.parseBoardHash("#v1/1/%3Cscript%3E,-,-,-,-",list),null,"Untrusted ID rejected");
+// Existing six-day backups and v1 links predate catch-up lessons.
+assert.deepEqual([...board.lastClass],Array(5).fill(""));
+const prior=JSON.parse(JSON.stringify(plan));
+for(const d of prior.days)for(const slot of d.slots)delete slot.lastClassId;
+assert.equal(core.sanitizePlan(prior,list).days[3].slots[1].lastClassId,"");
+plan.days[3].slots[1].lastClassId="lesson:released-ss-egypt-l1";
+plan.days[3].slots[2].lastClassId="lesson:sci-transport"; // Last class only.
+const withPins=core.boardHash(4,plan.days[3].slots,list);
+assert.match(withPins,/^#v2\/4\//);
+assert.ok(!withPins.includes("PRIVATE"));
+const pinned=core.parseBoardHash(withPins,list);
+assert.equal(pinned.lastClass[1],"lesson:released-ss-egypt-l1");
+assert.equal(pinned.slots[2],"");
+assert.equal(pinned.lastClass[2],"lesson:sci-transport");
+assert.equal(core.parseBoardHash(withPins+"/trailing",list),null);
+assert.equal(core.parseBoardHash(withPins.replace("sci-transport","missing"),list),null);
+assert.equal(core.parseBoardHash("#v1/2/-,-,-,-,-/-,-,-,-,-",list),null);
+assert.equal(core.parseBoardHash("#v2/2/-,-,-,-,-",list),null);
+const writes=new Map();
+window.localStorage={setItem:(k,v)=>writes.set(k,v),getItem:k=>writes.get(k)};
+assert.equal(core.rememberBoard(pinned,list),withPins);
+assert.deepEqual([...core.previousBoard(list).lastClass],[...pinned.lastClass]);
+assert.equal(writes.size,1);
+assert.equal(writes.get(core.STORE_KEY),undefined);
+assert.ok(![...writes.values()].join("").includes("PRIVATE"));
 const recovered=core.sanitizePlan(JSON.parse(JSON.stringify(core.backup(plan))),list);
 assert.equal(recovered.selectedDay,4);
 assert.equal(recovered.days[3].slots[1].note,plan.days[3].slots[1].note);
 assert.equal(recovered.days[3].slots[1].taught,true);
+assert.equal(recovered.days[3].slots[1].lastClassId,plan.days[3].slots[1].lastClassId);
 assert.deepEqual([...core.parseBoardHash(core.boardHash(4,recovered.days[3].slots,list),list).slots],[...board.slots]);
 const withInvalid=JSON.parse(JSON.stringify(core.backup(plan)));
 withInvalid.days[3].slots[2]={resourceId:"/http://evil.example",note:"A".repeat(500),taught:1};
@@ -75,10 +98,11 @@ for(const page of ["today/index.html","today/launch.html"]){
  assert.ok(html.includes('src="released-lessons.js'),page);
  assert.ok(html.includes('src="core.js'),page);
  assert.ok(html.includes('src="../computer-class/activities-3.js'),page);
+ assert.ok(html.includes('src="../computer-class/activities-4.js'),page);
  assert.ok(html.includes('name="viewport"'),page);
 }
 assert.ok(source("index.html").includes('href="today/"'),"Homepage entry point");
 assert.ok(source("today/launch.js").includes("parseBoardHash"),"Student screen only takes safe catalog IDs");
 assert.ok(!source("today/launch.js").includes("localStorage"),"Student presentation cannot read teacher browser notes");
 assert.ok(source("today/style.css").includes("prefers-reduced-motion"),"Motion-reduction support");
-console.log("Mission Control passed: 99 released resources, six days, five periods, backup/restore, privacy-safe board links and homepage integration.");
+console.log("Mission Control passed: "+list.length+" resources, six-day plans, Today/Last class pins, old links, private notes and homepage integration.");

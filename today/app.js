@@ -26,8 +26,8 @@ function save(){
  const status=document.getElementById("mc-save-status");
  if(status)status.textContent=lastSaved;
 }
-function boardUrl(){
- return new URL("launch.html",location.href).href.split("#")[0]+
+function boardUrl(path="launch.html"){
+ return new URL(path,location.href).href.split("#")[0]+
   core.boardHash(state.selectedDay,state.days[state.selectedDay-1].slots,resources);
 }
 function matchingResources(selected,filter){
@@ -40,9 +40,9 @@ function matchingResources(selected,filter){
    .some(value=>String(value||"").toLocaleLowerCase().includes(query));
  });
 }
-function optionGroups(selected,filter){
+function optionGroups(selected,filter,placeholder="Select an activity"){
  const available=matchingResources(selected,filter);
- return '<option value="">Select an activity</option>'+groups.map(subject=>{
+ return '<option value="">'+esc(placeholder)+'</option>'+groups.map(subject=>{
   const options=available.filter(x=>x.subject===subject);
   if(!options.length)return "";
   return '<optgroup label="'+esc(config.subjects[subject])+'">'+options.map(x=>
@@ -54,6 +54,8 @@ function renderOptions(n){
  const filter=currentFilter(n),selected=slotFor(n).resourceId;
  const select=document.getElementById("mc-resource-"+n),status=document.getElementById("mc-filter-count-"+n);
  if(select){select.innerHTML=optionGroups(selected,filter);select.value=selected;}
+ const last=document.getElementById("mc-last-"+n),lastId=slotFor(n).lastClassId;
+ if(last){last.innerHTML=optionGroups(lastId,filter,"No catch-up lesson");last.value=lastId;}
  if(status){
   const count=matchingResources(selected,filter).length;
   status.textContent=count+" matching "+(count===1?"resource":"resources")+
@@ -70,12 +72,14 @@ function blockHTML(n){
   '<option value="all">All subjects</option>'+groups.map(key=>'<option value="'+key+'" '+(filter.subject===key?'selected':'')+'>'+esc(config.subjects[key])+'</option>').join("")+'</select>'+
   '<input id="mc-search-'+n+'" type="search" data-field="search" data-slot="'+n+'" autocomplete="off" placeholder="Search by lesson, topic or unit…" value="'+esc(filter.query)+'"></div>'+
   '<p class="mc-picker-count" id="mc-filter-count-'+n+'" role="status">'+matchingResources(slot.resourceId,filter).length+' matching resources</p>'+
-  '<label class="mc-input-label" for="mc-resource-'+n+'">Choose an activity</label>'+
+  '<label class="mc-input-label" for="mc-resource-'+n+'">Today</label>'+
   '<select id="mc-resource-'+n+'" data-field="resource" data-slot="'+n+'">'+optionGroups(slot.resourceId,filter)+'</select>'+
   '<div class="mc-resource-summary" id="mc-info-'+n+'">'+(selected?
    '<span class="mc-subject-name">'+esc(config.subjects[subject])+' · '+esc(selected.kind)+'</span>'+
    '<p>'+esc(selected.description)+'</p><a href="'+esc(selected.href)+'" target="_blank" rel="noopener noreferrer">Open resource ↗</a>':
    '<p>Nothing assigned yet. Select a resource from the library.</p>')+'</div>'+
+  '<label class="mc-input-label" for="mc-last-'+n+'">Last class <span>(optional catch-up lesson)</span></label>'+
+  '<select id="mc-last-'+n+'" data-field="last-class" data-slot="'+n+'">'+optionGroups(slot.lastClassId,filter,"No catch-up lesson")+'</select>'+
   '<label class="mc-input-label" for="mc-note-'+n+'">Teacher preparation <span>(not shared on the student board)</span></label>'+
   '<textarea id="mc-note-'+n+'" data-field="note" data-slot="'+n+'" rows="2" maxlength="350" placeholder="Materials, opening question, or your preparation reminder…">'+esc(slot.note)+'</textarea></div>'+
   '<div class="mc-taught"><label><input type="checkbox" data-field="taught" data-slot="'+n+'" '+(slot.taught?"checked":"")+'>'+
@@ -106,8 +110,9 @@ function show(){
   '<button type="button" id="mc-reset">Reset this day</button>'+
   '<a href="../computer-class/">Browse Computer Class assignments ↗</a></div></div>'+
   '<aside class="mc-side"><div class="mc-side-inner"><h2>Student board</h2>'+
-  '<p>Project the chosen lessons or send students a link. The board includes the period and activity only—never your preparation notes.</p>'+
-  '<a class="mc-primary" id="mc-launch" href="'+esc(boardUrl())+'" target="_blank" rel="noopener noreferrer">Open student board ↗</a>'+
+  '<p>Project the board or share its link. Both views show the lessons you picked for today and last class. Share a new link after changing your selections.</p>'+
+  '<a class="mc-primary" id="mc-launch" href="'+esc(boardUrl())+'" target="_blank" rel="noopener noreferrer">Open student board</a>'+
+  '<a class="mc-home-preview" href="'+esc(boardUrl("../"))+'" target="_blank" rel="noopener noreferrer">View these lessons on the class homepage</a>'+
   '<label for="mc-share">Student link</label><input id="mc-share" type="text" readonly value="'+esc(boardUrl())+'">'+
   '<button type="button" id="mc-copy">Copy student link</button><p id="mc-share-status" role="status" class="mc-status"></p>'+
   '<h3>Keep your plan</h3><p id="mc-save-status" role="status">'+esc(lastSaved||"Changes save automatically in this browser.")+'</p>'+
@@ -178,11 +183,13 @@ root.addEventListener("change",async event=>{
   const filter=currentFilter(slotIndex);pickerFilters[pickerKey(slotIndex)]={...filter,subject:groups.includes(target.value)?target.value:"all"};
   renderOptions(slotIndex);return;
  }
- if(!["resource","taught"].includes(field)||slotIndex<0||slotIndex>4)return;
+ if(!["resource","last-class","taught"].includes(field)||slotIndex<0||slotIndex>4)return;
  const slot=slotFor(slotIndex);
  if(field==="resource"){
   slot.resourceId=lookup.has(target.value)?target.value:"";
   slot.taught=false;
+ }else if(field==="last-class"){
+  slot.lastClassId=lookup.has(target.value)?target.value:"";
  }else slot.taught=target.checked;
  save();feedback="";show();
 });

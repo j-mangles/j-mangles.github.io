@@ -1,0 +1,20 @@
+/* Math 7 FDP Error Detective — nine explainable worked-solution mistakes. */
+"use strict";
+const assert=require("node:assert/strict"),fs=require("node:fs"),path=require("node:path"),vm=require("node:vm");
+const root=path.resolve(__dirname,".."),source=fs.readFileSync(path.join(root,"math/error-detective.js"),"utf8");
+new vm.Script(source,{filename:"error-detective.js"});
+const win={HUB:{lessonTools:{"fdp/l21":()=>{}}}};
+vm.runInNewContext(source,{window:win,console},{timeout:3000});
+const bank=win.ErrorDetectiveData;
+assert.equal(bank.length,9);
+assert.equal(new Set(bank.map(x=>x.id)).size,bank.length);
+assert.ok(bank.every(q=>q.steps.length===3&&q.wrong>=0&&q.wrong<3));
+assert.ok(bank.every(q=>Number.isFinite(q.answer)&&q.question&&q.why.length>=42));
+assert.deepEqual(Array.from(bank.map(q=>q.answer)),[.05,-.35,20,37.5,53.76,60,.6,50,125]);
+assert.equal(typeof win.HUB.lessonTools["fdp/l21"],"function");
+assert.ok(fs.readFileSync(path.join(root,"math/index.html"),"utf8").includes("error-detective.js"));
+const data={};vm.runInNewContext(fs.readFileSync(path.join(root,"math/data.js"),"utf8"),{window:data});
+const review=data.HUB.units.find(u=>u.id==="fdp").lessons.find(l=>l.id==="l21");
+assert.match(review.title,/Review/);
+assert.ok(!/localStorage|fetch\s*\(/.test(source),"No student data stored or transmitted");
+console.log("Math Error Detective passed: nine errors, correct numerics, first-error positions and FDP review lesson wiring.");

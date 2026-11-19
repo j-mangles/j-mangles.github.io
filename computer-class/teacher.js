@@ -19,6 +19,7 @@ const response=(q,v)=>{
  if(q.type==="choice")return q.options[Number(v)]??"(not answered)";
  if(q.type==="order")return Array.isArray(v)?v.map((id,i)=>(i+1)+". "+(q.items[Number(id)]??"(not answered)")).join("\n"):"(not answered)";
  if(q.type==="lab")return Array.isArray(v)?v.map((x,i)=>(i+1)+". "+(lab?.trialSummary?.(q.lab,x)||JSON.stringify(x))).join("\n"):"(no trials recorded)";
+ if(q.type==="evidence")return v&&typeof v.content==="string"?"Imported investigation: "+String(v.fileName||"investigation.txt")+"\n\n"+v.content.slice(0,65536)+"\n\nEvidence reflection:\n"+String(v.reflection||""):"(no investigation report imported)";
  if(v==null||String(v).trim()==="")return "(not answered)";
  return String(v).slice(0,20000);
 };
@@ -36,6 +37,7 @@ function sanitize(data){
   else if(q.type==="choice"&&(typeof v==="string"||typeof v==="number"))safe[q.id]=String(v).slice(0,20);
   else if(q.type==="order"&&Array.isArray(v))safe[q.id]=v.slice(0,20).map(x=>String(x).slice(0,10));
   else if(q.type==="lab"&&Array.isArray(v))safe[q.id]=v.slice(0,12).filter(x=>x&&typeof x==="object"&&!Array.isArray(x));
+  else if(q.type==="evidence"&&v&&typeof v.content==="string"&&v.content.length<=65536)safe[q.id]={fileName:String(v.fileName||"investigation.txt").slice(0,120),content:v.content,reflection:String(v.reflection||"").slice(0,4000)};
  }
  return {activity:a,student:data.student_name.trim(),exportedAt:String(data.exported_at||"").slice(0,35),
   answers:safe,review:{},overall:"",fileName:""};
@@ -49,8 +51,12 @@ function stats(entry){
  const qs=all(entry.activity),auto=objective(entry.activity);
  const correct=auto.filter(q=>isCorrect(q,entry.answers[q.id])===true).length;
  const answered=auto.filter(q=>entry.answers[q.id]!=null&&String(entry.answers[q.id]).trim()!=="").length;
- const written=qs.filter(q=>q.type==="text"),labs=qs.filter(q=>q.type==="lab");
- const writtenDone=written.filter(q=>typeof entry.answers[q.id]==="string"&&entry.answers[q.id].trim().length>0).length;
+ const written=qs.filter(q=>q.type==="text"||q.type==="evidence"),labs=qs.filter(q=>q.type==="lab");
+ const writtenDone=written.filter(q=>{
+  const value=entry.answers[q.id];
+  if(q.type==="evidence")return value&&value.content&&String(value.reflection||"").trim().split(/\s+/).filter(Boolean).length>=(q.minWords||1);
+  return typeof value==="string"&&value.trim().length>0;
+ }).length;
  const labDone=labs.filter(q=>Array.isArray(entry.answers[q.id])&&entry.answers[q.id].length>=q.minTrials).length;
  return {correct,possible:auto.length,answered,writtenDone,written:written.length,labDone,labs:labs.length};
 }
@@ -175,7 +181,7 @@ function feedbackText(x){
  const s=stats(x);
  const out=["Computer Class · Teacher feedback","Student: "+x.student,"Assignment: "+x.activity.title,
   "Objective questions: "+s.correct+" of "+s.possible+" correct","Written responses: "+s.writtenDone+" of "+s.written,"",
-  ...all(x.activity).filter(q=>q.type==="text"||q.type==="lab").flatMap(q=>{
+  ...all(x.activity).filter(q=>q.type==="text"||q.type==="lab"||q.type==="evidence").flatMap(q=>{
    const r=x.review[q.id]||{};return ["Question: "+q.prompt,"Assessment: "+(r.level||"Not assessed"),
     "Feedback: "+(r.note||"No written feedback"),""];
   }),"Overall feedback:",x.overall||"No overall feedback added."];

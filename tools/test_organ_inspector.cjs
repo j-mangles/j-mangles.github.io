@@ -1,0 +1,22 @@
+/* Organ Inspector: structure-function labels, pathways and safe student interactions. */
+"use strict";
+const assert=require("node:assert/strict"),fs=require("node:fs"),path=require("node:path"),vm=require("node:vm");
+const root=path.resolve(__dirname,".."),source=fs.readFileSync(path.join(root,"science/organ-inspector.js"),"utf8");
+new vm.Script(source,{filename:"organ-inspector.js"});
+const win={HUB:{lessonTools:{"cells/systems":()=>{}}}};
+vm.runInNewContext(source,{window:win,console},{timeout:3000});
+const rows=win.OrganInspectorData;
+assert.equal(rows.length,12);
+assert.equal(new Set(rows.map(p=>p.id)).size,12);
+assert.ok(rows.every(p=>p.id&&p.label&&p.system&&p.job.length>35&&p.why.length>35));
+assert.ok(rows.every(p=>p.x>=0&&p.x<=430&&p.y>=0&&p.y<=530),"Markers stay on SVG diagram");
+assert.ok(rows.every(p=>p.choices.length===3&&new Set(p.choices).size===3&&p.choices.includes(p.partner)),"Each question has exactly one supported answer");
+assert.ok(rows.every(p=>p.system!==p.partner),"Challenge requires cross-system reasoning");
+assert.deepEqual([...new Set(rows.map(p=>p.system))].sort(),["Circulatory","Digestive","Integumentary","Muscular","Nervous","Respiratory","Skeletal"].sort());
+assert.equal(typeof win.HUB.lessonTools["cells/systems"],"function");
+const html=fs.readFileSync(path.join(root,"science/index.html"),"utf8");
+assert.ok(html.includes("organ-inspector.js"));
+assert.ok(html.indexOf("system-interactions.js")<html.indexOf("organ-inspector.js"));
+assert.ok(html.indexOf("digestion-pathway.js")<html.indexOf("organ-inspector.js"));
+assert.ok(!/localStorage|fetch\s*\(/.test(source));
+console.log("Organ Inspector passed: 12 anatomical labels, seven systems, supporting links, controls, privacy and lesson registration.");

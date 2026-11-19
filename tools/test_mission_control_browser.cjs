@@ -79,6 +79,28 @@ const overflow=async(page,label)=>{
    await board.locator("#mb-all").click();
    assert.equal(await board.locator(".mb-card:visible").count(),2);
    await overflow(board,"student board "+width);
+   await page.locator("#mc-filter-1").selectOption("ss");
+   await page.locator("#mc-search-1").fill("Gift of the Nile");
+   await page.locator("#mc-last-1").selectOption("lesson:released-ss-egypt-l1");
+   const shared=await page.locator("#mc-share").inputValue();
+   assert.match(shared,/#v2\/1\//);
+   assert.ok(!shared.includes("PRIVATE"));
+   const visitor=await browser.newContext({viewport:{width,height:845}}),guest=await visitor.newPage();
+   await guest.goto(shared,{waitUntil:"domcontentloaded"});
+   await guest.getByRole("link",{name:"Gift of the Nile",exact:true}).click();
+   assert.ok(guest.url().endsWith("/social-studies/#egypt-l1"));
+   await guest.goBack();
+   await guest.locator(".mb-home").click();
+   await guest.locator("#home-board").waitFor();
+   assert.ok(guest.url().includes("#v2/"));
+   assert.match(await guest.locator("#home-board").innerText(),/Last class/);
+   assert.equal(await guest.locator('#home-board a[href*="#egypt-l1"]').count(),1);
+   await guest.goto(BASE+"/");
+   await guest.locator("#home-board").waitFor();
+   assert.match(await guest.locator("#home-board p").innerText(),/Last board opened/);
+   assert.equal(await guest.locator('#home-board a[href*="#egypt-l1"]').count(),1);
+   await overflow(guest,"class homepage pins "+width);
+   await visitor.close();
    await board.close();
    const [backup]=await Promise.all([
     page.waitForEvent("download",{timeout:10000}),

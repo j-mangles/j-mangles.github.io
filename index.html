@@ -138,6 +138,17 @@
     .tool-row{grid-template-columns:1fr;gap:2px}
   }
   @media (max-width:460px){.home-tile .name{max-width:90%}}
+  .home-board{margin:0 0 32px}
+  .home-board h2{font-size:clamp(24px,3.5vw,34px);margin:0 0 6px}
+  .home-board p{color:var(--muted);margin:0}
+  .home-board ul{list-style:none;padding:0;margin:14px 0}
+  .home-board li{display:grid;grid-template-columns:minmax(10rem,1fr) 3fr;gap:10px 20px;padding:13px 0;border-block-start:1px solid var(--rule);align-items:baseline}
+  .home-board li>span{font-size:.9rem;font-weight:650}
+  .home-board li>div>div{display:flex;align-items:baseline;gap:8px;padding:2px 0}
+  .home-board li strong{font-size:.88rem;min-width:5rem;color:var(--muted)}
+  .home-board a{text-underline-offset:3px}
+  .home-board-open{font-weight:650}
+  @media(max-width:620px){.home-board li{grid-template-columns:1fr}.home-board li strong{min-width:4.6rem}}
 </style>
 </head>
 <body>
@@ -149,6 +160,10 @@
   </div>
 </header>
 <main class="wrap home-main">
+  <section id="home-board" class="home-board" aria-labelledby="home-board-title" hidden>
+    <h2 id="home-board-title">Class board</h2><p></p><ul></ul>
+    <a class="home-board-open" href="today/launch.html" hidden>Open full board</a>
+  </section>
   
   <section class="home-tiles" aria-label="Subjects">
     <article class="home-tile ss"><a href="social-studies/"><span class="year">Grade 8 · Historical atlas</span><span class="name">Social Studies</span><span class="detail">Trace human societies from the first people to the modern world through maps, stories and historical investigations.</span><span class="tile-link">Open the atlas ↗</span></a></article>
@@ -176,9 +191,18 @@
     </div>
   </section>
   <div class="how">
-    <p><b>How to use the site.</b> Pick a subject and it opens on the unit we're in now. Open a lesson for the notes, diagrams and a self-check. Nothing here is sent to your teacher, and checkmarks only save on this device.</p>
+    <p><b>How to use the site.</b> Open the class board your teacher shared, or choose a subject to browse its lessons, diagrams and self-checks. Nothing here is sent to your teacher, and checkmarks only save on this device.</p>
   </div>
 </main>
 <footer class="site"><div class="wrap">Mr. Mangles' Class · École Edward Schreyer School · 2026–27</div></footer>
+<script defer src="computer-class/data.js"></script>
+<script defer src="computer-class/activities-2.js"></script>
+<script defer src="computer-class/activities-3.js"></script>
+<script defer src="computer-class/activities-4.js"></script>
+<script defer src="computer-class/nile-investigation.js"></script>
+<script defer src="today/resources.js"></script>
+<script defer src="today/released-lessons.js?v=20261119"></script>
+<script defer src="today/core.js?v=20261119"></script>
+<script defer src="today/home.js?v=20261119"></script>
 </body>
 </html>

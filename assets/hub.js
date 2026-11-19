@@ -18,6 +18,7 @@
   function route(){
     Object.keys(exitDrafts).forEach(k=>delete exitDrafts[k]);
     const h = decodeURIComponent((location.hash||"").slice(1));
+    document.body.dataset.view = (!h && H.home) ? "home" : "page";
     const mapView = h==="overview";
     const mapLink=$("#course-map-link");
     if(mapLink){
@@ -42,9 +43,8 @@
       return;
     }
     // a subject can give its hub a homepage of its own (Science: the zoom); with no hash, show it
-    document.body.dataset.view = (!h && H.home) ? "home" : "page";
     if(!h && H.home){ document.body.dataset.unit=""; renderTabs(""); H.home($("#main"),{go,units}); window.scrollTo(0,0); return; }
-    const [uid, lid] = h.split("/");
+    const [uid, lid, section] = h.split("/");
     const u = unit(uid) || unit(defaultUnit());
     const l = u && lid && (u.lessons||[]).find(x=>x.id===lid);
     renderTabs(u.id);
@@ -52,6 +52,8 @@
     if(lid==="review" && (u.lessons||[]).length){ renderReview(u); window.scrollTo(0,0); }
     else if(l){ answers={}; renderLesson(u,l); window.scrollTo(0,0); }
     else renderUnit(u);
+    const model=section==="model"&&l?$("#ltool"):lid==="model"&&!l?$("#tool"):null;
+    if(model)window.CourseAtlas?.focusModel(model,H,u,l);
   }
   function go(h){ if(location.hash.slice(1)===h) route(); else location.hash=h; }
 
