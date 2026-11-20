@@ -119,6 +119,22 @@ const overflow=async(page,label)=>{
    }
    await guest.goto(BASE+"/ela/opening.html?lesson=stories/plot");
    assert.equal(await week.inputValue(),"40");
+   await guest.goto(BASE+"/ela/opening.html?week=1");
+   assert.equal(await week.inputValue(),"1");
+   if(width===390||width===1280){
+    await guest.setViewportSize({width,height:width===390?844:900});
+    await guest.screenshot({path:path.join(output,"mission-"+width+"-ela-opening.png"),fullPage:true});
+   }
+   await guest.route("https://drive.google.com/**",route=>route.fulfill({body:"Preview control test"}));
+   await guest.locator("#preview summary").click();
+   const frame=guest.locator("#slide-frame iframe");
+   const firstSource=await frame.getAttribute("src");
+   assert.match(firstSource,/\/preview$/);
+   await week.selectOption("2");
+   assert.notEqual(await frame.getAttribute("src"),firstSource);
+   await guest.locator("#preview summary").click();
+   await frame.waitFor({state:"detached"});
+   await guest.goto(BASE+"/ela/opening.html?lesson=stories/plot");
    assert.equal(await guest.locator("#topic").inputValue(),"stories/plot");
    const firstQuestion=await guest.locator("#question").innerText();
    await guest.getByText("Reveal answer",{exact:true}).click();
