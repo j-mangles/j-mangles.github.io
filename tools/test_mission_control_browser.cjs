@@ -107,6 +107,18 @@ const overflow=async(page,label)=>{
    assert.equal(await guest.locator('#home-board a[href*="#egypt-l1"]').count(),1);
    await overflow(guest,"class homepage pins "+width);
    await guest.goto(BASE+"/ela/opening.html?lesson=stories/plot");
+   const week=guest.locator("#week");
+   assert.equal(await week.locator("option").count(),40);
+   for(const number of [1,2,40]){
+    await week.selectOption(String(number));
+    const days=guest.locator("#slide-guide dd");
+    assert.equal(await days.count(),5);
+    assert.ok((await days.last().innerText()).endsWith("Slide "+(number===2?5:6)));
+    assert.match(await guest.locator("#slides").getAttribute("href"),/docs\.google\.com\/presentation\/d\//);
+    assert.match(await guest.locator("#handout").getAttribute("href"),/drive\.google\.com\/file\/d\//);
+   }
+   await guest.goto(BASE+"/ela/opening.html?lesson=stories/plot");
+   assert.equal(await week.inputValue(),"40");
    assert.equal(await guest.locator("#topic").inputValue(),"stories/plot");
    const firstQuestion=await guest.locator("#question").innerText();
    await guest.getByText("Reveal answer",{exact:true}).click();

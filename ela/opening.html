@@ -15,13 +15,28 @@
 .opening #question{font-size:clamp(1.35rem,3vw,2rem);line-height:1.3;margin:.8em 0 .4em}
 .opening li{margin:.3rem 0}.puzzles{display:flex;gap:.75rem;flex-wrap:wrap}
 .puzzles a{display:inline-flex;align-items:center;padding:0 1rem;border:1px solid var(--rule);border-radius:var(--btn-radius)}
+.week-controls,.week-links{display:flex;align-items:center;flex-wrap:wrap;gap:.5rem 1rem}
+.week-links a{display:inline-flex;align-items:center;min-height:44px}
+.slide-guide{display:flex;flex-wrap:wrap;gap:.5rem 1.5rem;margin:1rem 0}
+.slide-guide div{min-width:7em}.slide-guide dt{font-weight:600}.slide-guide dd{margin:0}
+.slide-preview{display:block;width:100%;aspect-ratio:16/10;min-height:15rem;border:1px solid var(--rule);margin:.5rem 0}
+.opening :focus-visible{outline:2px solid var(--accent-ink);outline-offset:3px}
 </style></head>
 <body data-subject="ela"><main class="opening"><a href="./">English Language Arts</a><h1>ELA opening routine</h1>
-<section><h2>Bell ringer</h2><label for="topic">Lesson to revisit</label> <select id="topic"></select>
-<p id="question"></p><ol id="choices" type="A"></ol>
-<details id="answer"><summary>Reveal answer</summary><p id="reason"></p></details>
-<button type="button" id="next">Next question</button></section>
+<section><h2>Weekly bell ringers</h2>
+<div class="week-controls"><label for="week">Choose a week</label><select id="week"></select></div>
+<dl id="slide-guide" class="slide-guide" aria-label="Slides by day"></dl>
+<div class="week-links"><a id="slides" target="_blank" rel="noopener noreferrer">Open weekly slides</a>
+<a id="handout" target="_blank" rel="noopener noreferrer">Open response handout (PDF)</a></div>
+<details id="preview"><summary>Show slides on this page</summary>
+<p>Use the arrows in the slides to find your day. If Google asks you to sign in, use the weekly slides link above.</p>
+<div id="slide-frame"></div></details></section>
 <section><h2>Daily puzzles</h2><div class="puzzles">
 <a href="https://www.nytimes.com/games/wordle/index.html" target="_blank" rel="noopener noreferrer">Play Wordle</a>
 <a href="https://www.nytimes.com/games/connections" target="_blank" rel="noopener noreferrer">Play Connections</a></div></section>
-</main><script src="data.js"></script><script src="opening.js"></script></body></html>
+<section><details id="lesson-review"><summary>Review a previous lesson</summary>
+<label for="topic">Lesson to revisit</label> <select id="topic"></select>
+<p id="question"></p><ol id="choices" type="A"></ol>
+<details id="answer"><summary>Reveal answer</summary><p id="reason"></p></details>
+<button type="button" id="next">Next question</button></details></section>
+</main><script src="data.js"></script><script src="bell-ringer-weeks.js"></script><script src="opening.js"></script></body></html>

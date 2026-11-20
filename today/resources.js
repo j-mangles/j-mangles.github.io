@@ -31,7 +31,7 @@ g.MissionResources={
   {id:"ss-home",subject:"ss",kind:"Lesson hub",title:"Social Studies 8 Atlas",href:"../social-studies/",description:"Visit the current Ancient Societies lessons and maps."},
   {id:"ss-river",subject:"ss",kind:"Interactive tool",title:"River Valley Decision Lab",href:"../social-studies/river-valley-lab.html",description:"Investigate how river geography shapes a society."},
   {id:"ss-evidence",subject:"ss",kind:"Interactive tool",title:"Artifact Evidence Desk",href:"../social-studies/evidence.html",description:"Examine historical evidence and test an interpretation."},
-  {id:"ela-opening",subject:"ela",kind:"Opening routine",title:"ELA bell ringer, Wordle & Connections",href:"../ela/opening.html",description:"Start with a lesson question and open the daily word puzzles."},
+  {id:"ela-opening",subject:"ela",kind:"Opening routine",title:"ELA bell ringer, Wordle & Connections",href:"../ela/opening.html",description:"Choose your week’s bell-ringer slides and response handout, then open the daily word puzzles."},
   {id:"ela-home",subject:"ela",kind:"Lesson hub",title:"English Language Arts 8",href:"../ela/",description:"Open the current ELA lessons and activities."},
   {id:"ela-plot",subject:"ela",kind:"Interactive lesson",title:"Plot Evidence Board",href:"../ela/#stories/plot",description:"Identify events, plot structure and evidence."},
   {id:"ela-writing",subject:"ela",kind:"Interactive lesson",title:"Writer's Studio",href:"../ela/#answering/day2",description:"Develop answers supported by details and explanation."},
