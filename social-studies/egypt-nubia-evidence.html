@@ -131,7 +131,9 @@ const ideas=[
  {fact:"Kush was often ruled by queens with real military power.",support:"This could be compared with powerful women in Egyptian history.",challenge:"It also points to a Kushite political tradition that was not simply the same as Egypt’s."},
  {fact:"Kushite pharaohs repaired Egyptian temples and revived Egyptian art styles.",support:"This is clear evidence that Kushite rulers adopted Egyptian traditions.",challenge:"They did so while governing as Kushite rulers; adopting traditions does not mean losing a distinct identity."}
 ];
-let phaseIndex=0;const phaseAnswers=Array(phases.length).fill(null);const phaseChecked=Array(phases.length).fill(false);const sourceAnswers=Array(comparisons.length).fill(null);const ideaAnswers=Array(ideas.length).fill(null);const ideaShown=Array(ideas.length).fill(false);let sourceChecked=false;
+function linkedPhase(){return location.hash==="#egypt-rules"?2:location.hash==="#kush-rules"?3:0;}
+window.addEventListener("hashchange",()=>{phaseIndex=linkedPhase();switchTab("timeline");renderPhases();});
+let phaseIndex=linkedPhase();const phaseAnswers=Array(phases.length).fill(null);const phaseChecked=Array(phases.length).fill(false);const sourceAnswers=Array(comparisons.length).fill(null);const ideaAnswers=Array(ideas.length).fill(null);const ideaShown=Array(ideas.length).fill(false);let sourceChecked=false;
 function $(id){return document.getElementById(id)}
 function el(tag,cls,txt){const n=document.createElement(tag);if(cls)n.className=cls;if(txt!==undefined)n.textContent=txt;return n}
 function renderPhases(){

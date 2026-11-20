@@ -7,7 +7,7 @@ const shots=path.resolve(__dirname,"../browser-artifacts");
 fs.mkdirSync(shots,{recursive:true});
 const routes=[
 "science-membranes","science-organelle-rescue","science-oxygen-systems","science-microscope-evidence",
-"social-nile-advantage","social-mesopotamia","social-hammurabi-justice","social-trade-network","social-historical-source",
+"social-kush-power","social-nile-advantage","social-mesopotamia","social-hammurabi-justice","social-trade-network","social-historical-source",
 "math-store","math-fraction-kitchen","math-decimal-detective","math-fraction-budget",
 "ela-slides","ela-second-draft","ela-the-choice","ela-revision-workshop",
 "thinking-case","thinking-misinformation","thinking-fair-test","thinking-ai-fact-check"
@@ -27,7 +27,7 @@ function checkOverflow(actual,where,width){assert.ok(actual.scroll<=actual.viewp
   assert.equal(await assignmentsLink.getAttribute("href"),"computer-class/");
   await assignmentsLink.click();
   await page.locator(".cc-entry").first().waitFor({state:"visible"});
-  assert.equal(await page.locator(".cc-entry").count(),21,"All 21 assignments listed");
+  assert.equal(await page.locator(".cc-entry").count(),22,"All 22 assignments listed");
   assert.ok(await page.locator(".cc-policy").innerText().then(x=>x.includes("Nothing is submitted")));
   checkOverflow(await page.evaluate(()=>({scroll:document.documentElement.scrollWidth,viewport:window.innerWidth})),"directory",width);
   for(const id of routes){
@@ -286,6 +286,6 @@ function checkOverflow(actual,where,width){assert.ok(actual.scroll<=actual.viewp
   assert.deepEqual(errors,[],"No uncaught JS errors at "+width+"px");
   await page.close();
  }
- console.log("Computer Class Chrome pass: 21 assignments, local Science evidence hand-offs, teacher review backup/restore, six labs and two screen sizes.");
+ console.log("Computer Class Chrome pass: 22 assignments, local Science evidence hand-offs, teacher review backup/restore, six labs and two screen sizes.");
  }finally{await browser.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;});
