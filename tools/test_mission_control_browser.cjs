@@ -9,6 +9,47 @@ const overflow=async(page,label)=>{
  const dims=await page.evaluate(()=>({scroll:document.documentElement.scrollWidth,viewport:window.innerWidth}));
  assert.ok(dims.scroll<=dims.viewport+4,label+" has horizontal overflow: "+JSON.stringify(dims));
 };
+async function checkStoryLab(page,width) {
+ await page.goto(BASE+"/ela/story-lab.html#simulation");
+ await page.locator("#keep").click();
+ const first=await page.locator("#earlier").innerText();
+ await page.getByLabel("Alongside Noor").check();
+ await page.getByLabel("Pass the envelope quietly").check();
+ assert.notEqual(await page.locator("#scene").innerText(),first);
+ assert.equal(await page.locator("#earlier").innerText(),first);
+ await page.getByRole("link",{name:"Team review",exact:true}).click();
+ for(let round=0;round<12;round++){
+  await page.locator("#board button:enabled").first().click();
+  assert.ok(await page.locator("#judging").isHidden());
+  await page.locator("#reveal").click();
+  await page.getByRole("button",{name:"Team 1 scores"}).click();
+ }
+ assert.match(await page.locator("#score").innerText(),/Team 1 · 30.*Team 1 wins/);
+ await page.locator("#new-game").click();
+ assert.equal(await page.locator("#board button:enabled").count(),12);
+ await page.getByRole("link",{name:"Individual test"}).click();
+ await page.locator("#student").fill("Test student");
+ await page.locator('input[name="q1"]').nth(1).check();
+ await page.locator("#questions textarea").first().fill("Two details from the scene.");
+ await page.reload();
+ assert.match(await page.locator("#progress").textContent(),/2 of 8/);
+ assert.equal(await page.locator("#questions textarea").first().inputValue(),"Two details from the scene.");
+ const download=page.waitForEvent("download");
+ await page.locator("#download").click();
+ assert.equal((await download).suggestedFilename(),"blue-line-responses.txt");
+ await page.emulateMedia({media:"print"});
+ assert.equal(await page.locator(".print-answer").first().innerText(),"Two details from the scene.");
+ await page.emulateMedia({media:"screen"});
+ if(width===1280||width===390){
+  await page.setViewportSize({width,height:width===390?844:900});
+  for(const mode of ["simulation","review","test"]){
+   await page.goto(BASE+"/ela/story-lab.html#"+mode);
+   await overflow(page,"short story "+mode);
+   await page.screenshot({path:path.join(output,"mission-story-"+mode+"-"+width+".png")});
+  }
+ }
+}
+
 (async()=>{
  const browser=await chromium.launch({channel:"chrome",headless:true,args:["--disable-dev-shm-usage"]});
  try{
@@ -106,6 +147,7 @@ const overflow=async(page,label)=>{
    assert.match(await guest.locator("#home-board p").innerText(),/Last board opened/);
    assert.equal(await guest.locator('#home-board a[href*="#egypt-l1"]').count(),1);
    await overflow(guest,"class homepage pins "+width);
+   await checkStoryLab(guest,width);
    await guest.goto(BASE+"/ela/opening.html?lesson=stories/plot");
    const week=guest.locator("#week");
    assert.equal(await week.locator("option").count(),40);
