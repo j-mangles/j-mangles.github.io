@@ -17,8 +17,9 @@
 .puzzles a{display:inline-flex;align-items:center;padding:0 1rem;border:1px solid var(--rule);border-radius:var(--btn-radius)}
 .week-controls,.week-links{display:flex;align-items:center;flex-wrap:wrap;gap:.5rem 1rem}
 .week-links a{display:inline-flex;align-items:center;min-height:44px}
-.slide-guide{display:flex;flex-wrap:wrap;gap:.5rem 1.5rem;margin:1rem 0}
-.slide-guide div{min-width:7em}.slide-guide dt{font-weight:600}.slide-guide dd{margin:0}
+.slide-guide{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:.9rem 1rem;margin:1rem 0}
+.slide-guide dt{font-weight:600}.slide-guide dd{margin:0;overflow-wrap:anywhere}
+@media(max-width:46rem){.slide-guide{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .slide-preview{display:block;width:100%;aspect-ratio:16/10;min-height:15rem;border:1px solid var(--rule);margin:.5rem 0}
 .opening :focus-visible{outline:2px solid var(--accent-ink);outline-offset:3px}
 </style></head>
