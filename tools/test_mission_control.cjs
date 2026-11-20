@@ -4,7 +4,7 @@ const assert=require("node:assert/strict"),fs=require("node:fs"),path=require("n
 const root=path.resolve(__dirname,"..");
 const source=(p)=>fs.readFileSync(path.join(root,p),"utf8");
 const window={};
-for(const name of ["computer-class/data.js","computer-class/activities-2.js","computer-class/activities-3.js","computer-class/activities-4.js","computer-class/nile-investigation.js","today/resources.js","today/released-lessons.js","today/core.js"]){
+for(const name of ["computer-class/data.js","computer-class/activities-2.js","computer-class/activities-3.js","computer-class/activities-4.js","computer-class/nile-investigation.js","computer-class/kush-investigation.js","today/resources.js","today/released-lessons.js","today/core.js"]){
  vm.runInNewContext(source(name),{window,console},{filename:name,timeout:3000});
 }
 const core=window.MissionCore,resource=window.MissionResources,list=core.catalog();

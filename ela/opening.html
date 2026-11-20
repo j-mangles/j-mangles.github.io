@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ELA opening routine · Mr. Mangles' Class</title>
+<link rel="stylesheet" href="../assets/fonts.css"><link rel="stylesheet" href="../assets/site.css">
+<style>
+.opening{max-width:54rem;margin:0 auto;padding:clamp(1rem,4vw,3rem)}
+.opening h1{font:600 clamp(2.4rem,6vw,4rem)/1.05 var(--f-big);margin:.5em 0}
+.opening section{border-top:1px solid var(--rule);padding:1.25rem 0}
+.opening h2{font-family:var(--f-title);margin:.2rem 0 .75rem}
+.opening select,.opening button,.opening summary,.puzzles a{font:inherit;min-height:44px}
+.opening select{max-width:100%;color:var(--ink);background:var(--paper)}
+.opening summary{cursor:pointer;color:var(--accent-ink);font-weight:600;padding:.5rem 0}
+.opening #question{font-size:clamp(1.35rem,3vw,2rem);line-height:1.3;margin:.8em 0 .4em}
+.opening li{margin:.3rem 0}.puzzles{display:flex;gap:.75rem;flex-wrap:wrap}
+.puzzles a{display:inline-flex;align-items:center;padding:0 1rem;border:1px solid var(--rule);border-radius:var(--btn-radius)}
+</style></head>
+<body data-subject="ela"><main class="opening"><a href="./">English Language Arts</a><h1>ELA opening routine</h1>
+<section><h2>Bell ringer</h2><label for="topic">Lesson to revisit</label> <select id="topic"></select>
+<p id="question"></p><ol id="choices" type="A"></ol>
+<details id="answer"><summary>Reveal answer</summary><p id="reason"></p></details>
+<button type="button" id="next">Next question</button></section>
+<section><h2>Daily puzzles</h2><div class="puzzles">
+<a href="https://www.nytimes.com/games/wordle/index.html" target="_blank" rel="noopener noreferrer">Play Wordle</a>
+<a href="https://www.nytimes.com/games/connections" target="_blank" rel="noopener noreferrer">Play Connections</a></div></section>
+</main><script src="data.js"></script><script src="opening.js"></script></body></html>

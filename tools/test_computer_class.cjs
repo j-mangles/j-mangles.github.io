@@ -21,12 +21,13 @@ vm.runInNewContext(extension1,ctx,{filename:"activities-2.js",timeout:3000});
 vm.runInNewContext(extension2,ctx,{filename:"activities-3.js",timeout:3000});
 vm.runInNewContext(extension3,ctx,{filename:"activities-4.js",timeout:3000});
 vm.runInNewContext(fs.readFileSync(path.join(root,"computer-class","nile-investigation.js"),"utf8"),ctx);
+vm.runInNewContext(fs.readFileSync(path.join(root,"computer-class","kush-investigation.js"),"utf8"),ctx);
 vm.runInNewContext(labJs,ctx,{filename:"labs.js",timeout:3000});
 const data=win.ComputerClassData;
 assert.equal(data.version,1);
-assert.equal(data.activities.length,21);
+assert.equal(data.activities.length,22);
 assert.deepEqual([...new Set(data.activities.map(a=>a.subject))].sort(),["ct","ela","math","sci","ss"].sort());
-for(const subject of ["ct","ela","math","sci","ss"])assert.equal(data.activities.filter(a=>a.subject===subject).length,subject==="ss"?5:4);
+for(const subject of ["ct","ela","math","sci","ss"])assert.equal(data.activities.filter(a=>a.subject===subject).length,subject==="ss"?6:4);
 const qids=new Set();
 for(const activity of data.activities){
  assert.ok(activity.sections.length>=2,"At least two parts "+activity.id);
@@ -78,7 +79,7 @@ vm.runInNewContext(appJs,ctx,{filename:"app.js",timeout:3000});
 const engine=win.ComputerClassEngine;
 assert.ok(engine);
 assert.match(domRoot.innerHTML,/Computer Class/);
-assert.equal((domRoot.innerHTML.match(/class="cc-entry"/g)||[]).length,21);
+assert.equal((domRoot.innerHTML.match(/class="cc-entry"/g)||[]).length,22);
 const labQ=engine.allQuestions(data.activities[0]).find(q=>q.type==="lab");
 assert.equal(engine.answered(labQ,[]),false);
 const trials=[

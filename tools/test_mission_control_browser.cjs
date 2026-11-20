@@ -87,6 +87,12 @@ const overflow=async(page,label)=>{
    assert.ok(!shared.includes("PRIVATE"));
    const visitor=await browser.newContext({viewport:{width,height:845}}),guest=await visitor.newPage();
    await guest.goto(shared,{waitUntil:"domcontentloaded"});
+   const warmup=guest.locator(".mb-warmup").first();
+   await warmup.locator("summary").first().click();
+   assert.ok(await warmup.locator("svg").isVisible());
+   await warmup.getByText("Reveal a sample answer",{exact:true}).click();
+   assert.ok(await warmup.locator(".wu-answer p").isVisible());
+   await overflow(guest,"expanded warm-up "+width);
    await guest.getByRole("link",{name:"Gift of the Nile",exact:true}).click();
    assert.ok(guest.url().endsWith("/social-studies/#egypt-l1"));
    await guest.goBack();
@@ -100,6 +106,16 @@ const overflow=async(page,label)=>{
    assert.match(await guest.locator("#home-board p").innerText(),/Last board opened/);
    assert.equal(await guest.locator('#home-board a[href*="#egypt-l1"]').count(),1);
    await overflow(guest,"class homepage pins "+width);
+   await guest.goto(BASE+"/ela/opening.html?lesson=stories/plot");
+   assert.equal(await guest.locator("#topic").inputValue(),"stories/plot");
+   const firstQuestion=await guest.locator("#question").innerText();
+   await guest.getByText("Reveal answer",{exact:true}).click();
+   assert.ok(await guest.locator("#reason").isVisible());
+   await guest.getByRole("button",{name:"Next question"}).click();
+   assert.notEqual(await guest.locator("#question").innerText(),firstQuestion);
+   assert.ok(await guest.locator("#reason").isHidden());
+   assert.ok(await guest.getByRole("link",{name:"Play Connections"}).isVisible());
+   await overflow(guest,"ELA opener "+width);
    await visitor.close();
    await board.close();
    const [backup]=await Promise.all([
