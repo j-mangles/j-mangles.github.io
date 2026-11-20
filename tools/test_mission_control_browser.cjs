@@ -107,6 +107,34 @@ const overflow=async(page,label)=>{
    assert.equal(await guest.locator('#home-board a[href*="#egypt-l1"]').count(),1);
    await overflow(guest,"class homepage pins "+width);
    await guest.goto(BASE+"/ela/opening.html?lesson=stories/plot");
+   const week=guest.locator("#week");
+   assert.equal(await week.locator("option").count(),40);
+   for(const number of [1,2,40]){
+    await week.selectOption(String(number));
+    const days=guest.locator("#slide-guide dd");
+    assert.equal(await days.count(),5);
+    assert.ok((await days.last().innerText()).endsWith("Slide "+(number===2?5:6)));
+    assert.match(await guest.locator("#slides").getAttribute("href"),/docs\.google\.com\/presentation\/d\//);
+    assert.match(await guest.locator("#handout").getAttribute("href"),/drive\.google\.com\/file\/d\//);
+   }
+   await guest.goto(BASE+"/ela/opening.html?lesson=stories/plot");
+   assert.equal(await week.inputValue(),"40");
+   await guest.goto(BASE+"/ela/opening.html?week=1");
+   assert.equal(await week.inputValue(),"1");
+   if(width===390||width===1280){
+    await guest.setViewportSize({width,height:width===390?844:900});
+    await guest.screenshot({path:path.join(output,"mission-"+width+"-ela-opening.png"),fullPage:true});
+   }
+   await guest.route("https://drive.google.com/**",route=>route.fulfill({body:"Preview control test"}));
+   await guest.locator("#preview summary").click();
+   const frame=guest.locator("#slide-frame iframe");
+   const firstSource=await frame.getAttribute("src");
+   assert.match(firstSource,/\/preview$/);
+   await week.selectOption("2");
+   assert.notEqual(await frame.getAttribute("src"),firstSource);
+   await guest.locator("#preview summary").click();
+   await frame.waitFor({state:"detached"});
+   await guest.goto(BASE+"/ela/opening.html?lesson=stories/plot");
    assert.equal(await guest.locator("#topic").inputValue(),"stories/plot");
    const firstQuestion=await guest.locator("#question").innerText();
    await guest.getByText("Reveal answer",{exact:true}).click();
