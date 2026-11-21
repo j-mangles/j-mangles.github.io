@@ -54,6 +54,12 @@
     else renderUnit(u);
     const model=section==="model"&&l?$("#ltool"):lid==="model"&&!l?$("#tool"):null;
     if(model)window.CourseAtlas?.focusModel(model,H,u,l);
+    else if(l && section){
+      const target=document.getElementById(section);
+      if(target && $("#ltool")?.contains(target)){
+        target.focus({preventScroll:true});target.scrollIntoView({block:"start"});
+      }
+    }
   }
   function go(h){ if(location.hash.slice(1)===h) route(); else location.hash=h; }
 

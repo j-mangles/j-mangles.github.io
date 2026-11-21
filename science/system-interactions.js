@@ -70,6 +70,7 @@ const STYLE=[
  ".odi .track{height:10px;margin:6px 0;background:var(--soft);border:1px solid var(--rule);border-radius:8px;overflow:hidden}.odi .fill{background:var(--accent);height:100%;transition:width .23s}.odi .fill.demand{background:var(--muted)}",
  ".odi .result{min-height:40px;font-weight:650}.odi .investigate{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:20px}",
  ".odi select,.odi textarea{box-sizing:border-box;width:100%;padding:10px;background:var(--paper);color:var(--ink);border:1px solid var(--rule);border-radius:var(--btn-radius,8px);font:inherit}.odi textarea{min-height:86px;resize:vertical}",
+ ".odi .od-test{margin:22px 0;padding-block:18px;border-block:1px solid var(--rule)}.odi .od-test h3{font-size:1.55rem}.odi .od-test h4{font-size:1.1rem;margin:1rem 0 .5rem}.odi .od-test select{max-width:38rem;display:block}.odi #od-pairs{display:flex;flex-wrap:wrap;gap:1rem}.odi .od-measure{flex:1 1 12rem}.odi .od-measure div{display:grid;align-items:center;grid-template-columns:3.5em minmax(4em,1fr) 2em;gap:.5em}.odi meter{width:100%}.odi #od-outcome[hidden]{display:none}",
  ".odi .table-scroll{overflow-x:auto;max-width:100%}.odi table{border-collapse:collapse;width:100%;font-size:.84rem}.odi td,.odi th{padding:8px 5px;text-align:left;border-bottom:1px solid var(--rule)}.odi th{white-space:nowrap}",
  "@media(max-width:820px){.hsi .layout{grid-template-columns:1fr}.hsi .diagram{max-width:520px;margin:auto;width:100%}.odi .controls,.odi .investigate{grid-template-columns:1fr}}",
  "@media(max-width:520px){.hsi .video-grid{grid-template-columns:1fr}}",
@@ -200,7 +201,7 @@ function oxygenModel(v){
  return {lung,pump,need,delivered,limit:lung<pump?"respiratory":pump<lung?"circulatory":"both",enough:delivered>=need};
 }
 function renderOxygen(el){
- let v={breathing:60,circulation:60,activity:30},trials=[];
+ let v={breathing:60,circulation:60,activity:30},trials=[],comparisons=[];
  const controls=[["breathing","Breathing effectiveness"],["circulation","Circulation effectiveness"],["activity","Muscle activity"]];
  const diagram='<svg viewBox="0 0 750 192" role="img" aria-label="Simplified path from lungs to heart and blood to muscle cells.">'+
  '<defs><marker id="oxygen-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10Z" fill="var(--accent)"/></marker></defs>'+
@@ -216,13 +217,18 @@ function renderOxygen(el){
  '<div class="bars"><div><div class="bar-top"><span>Oxygen delivered</span><output id="od-delivered">—</output></div><div class="track"><div id="od-supply" class="fill"></div></div></div>'+
  '<div><div class="bar-top"><span>Muscle need</span><output id="od-demand">—</output></div><div class="track"><div id="od-needbar" class="fill demand"></div></div></div></div>'+
  '<p class="result" id="od-result" role="status"></p><p class="hint">Teaching model: lungs supply oxygen, blood flow carries it, and the smaller capacity limits delivery. Activity changes the need. All values are illustrative indexes, not actual oxygen saturation, breathing rates or heart rates.</p>'+
- '<div class="investigate"><div><h3>Predict and test</h3><p class="hint">What happens if muscle activity rises but one delivery system stays less effective? Change only one slider at a time and record two trials.</p>'+
- '<div class="actions"><button id="od-record" type="button">Record trial</button><button id="od-reset" type="button">Reset controls</button></div></div>'+
- '<div><h3>Compare</h3><label for="od-predict">Which system is limiting delivery now?</label><select id="od-predict"><option value="">Make a prediction</option><option value="respiratory">Respiratory</option><option value="circulatory">Circulatory</option><option value="both">Both equally</option></select><p class="hint" id="od-pred-result" aria-live="polite"></p></div></div>'+
+ '<label for="od-predict">Which system sets the delivery limit in this free trial?</label><select id="od-predict"><option value="">Choose a system</option><option value="respiratory">Respiratory</option><option value="circulatory">Circulatory</option><option value="both">Both equally</option></select><p id="od-pred-result" class="hint" aria-live="polite"></p>'+
+ '<div class="actions"><button id="od-record" type="button">Record free trial</button><button id="od-reset" type="button">Reset controls</button></div>'+
+ '<div class="od-test"><h3 id="oxygen-trials" tabindex="-1">Test one change</h3><p>Each case has its own starting conditions. Change one factor and predict what will happen to oxygen delivery and muscle need.</p>'+
+ '<label for="od-case">Starting conditions</label><select id="od-case"><option value="run">Working muscles</option><option value="rest">Resting muscles</option><option value="equal">Equal lung and blood-flow capacity</option></select>'+
+ '<p class="hint" id="od-starting"></p><label for="od-change">Change to test</label><select id="od-change"></select>'+
+ '<div class="investigate"><label>Oxygen delivered will…<select id="od-guess-delivery"></select></label><label>Muscle need will…<select id="od-guess-demand"></select></label></div>'+
+ '<div class="actions"><button type="button" id="od-run-test" disabled>Run the comparison</button></div>'+
+ '<div id="od-outcome" hidden><h4>Before and after</h4><div id="od-pairs"></div><p id="od-verdict" role="status"></p></div><details id="od-notebook" hidden><summary>My comparison notes (<span id="od-count">0</span>)</summary><ol id="od-notes"></ol></details></div>'+
  '<div class="table-scroll"><table><thead><tr><th>Trial</th><th>Breathing</th><th>Flow</th><th>Activity</th><th>Delivered</th><th>Need</th><th>Limit</th></tr></thead><tbody id="od-trials"><tr><td colspan="7">No trials recorded.</td></tr></tbody></table></div>'+
  '<div class="investigate"><label>What evidence did the trials show?<textarea id="od-observe" placeholder="When I changed... the model showed..."></textarea></label>'+
  '<label>How do these systems work together?<textarea id="od-explain" placeholder="The lungs..., the blood..., and the muscle cells..."></textarea></label></div>'+
- '<div class="actions"><button id="od-download" type="button">Download investigation</button><button id="od-clear" type="button">Clear trials</button></div><p class="hint" id="od-message" role="status"></p></section>';
+ '<div class="actions"><button id="od-download" type="button">Download investigation</button><button id="od-clear" type="button">Clear recorded work</button></div><p class="hint" id="od-message" role="status"></p></section>';
  const get=k=>el.querySelector(k),name=k=>k==="respiratory"?"respiratory system":k==="circulatory"?"circulatory system":"both systems";
  function draw(){
   const m=oxygenModel(v);
@@ -232,19 +238,63 @@ function renderOxygen(el){
   get("#od-supply").style.width=m.delivered+"%";get("#od-needbar").style.width=m.need+"%";
   get("#od-lung-flow").classList.toggle("limited",m.limit==="respiratory");
   get("#od-pump-flow").classList.toggle("limited",m.limit==="circulatory");
-  get("#od-result").textContent=m.enough?"Model supply meets muscle demand. The current limit is the "+name(m.limit)+".":"Model supply is below muscle demand. The limiting factor is the "+name(m.limit)+".";
-  const p=get("#od-predict").value;get("#od-pred-result").textContent=p?(p===m.limit?"Your prediction matches the model.":"The model's limiting factor is "+name(m.limit)+"."):"";
+  get("#od-result").textContent=m.enough?"Model supply meets muscle demand.":"Model supply is below muscle demand.";
+  const guess=get("#od-predict").value;
+  get("#od-pred-result").textContent=guess ? (guess===m.limit?"Your choice matches. ":"Check the two capacities. ")+"Delivery is limited by "+name(m.limit)+"." : "";
+
  }
  function showTrials(){
   get("#od-trials").innerHTML=trials.length?trials.map((t,i)=>'<tr><td>'+(i+1)+'</td><td>'+t.breathing+'</td><td>'+t.circulation+'</td><td>'+t.activity+'</td><td>'+t.delivered+'</td><td>'+t.need+'</td><td>'+esc(name(t.limit))+'</td></tr>').join(""):'<tr><td colspan="7">No trials recorded.</td></tr>';
  }
- el.addEventListener("input",e=>{const key=e.target.dataset.control;if(Object.prototype.hasOwnProperty.call(v,key)){v[key]=Number(e.target.value);draw();}});
- get("#od-predict").addEventListener("change",draw);
- get("#od-record").onclick=()=>{trials.push(Object.assign({},v,oxygenModel(v)));if(trials.length>8)trials.shift();showTrials();get("#od-message").textContent="Trial recorded locally. Try a second condition.";};
- get("#od-reset").onclick=()=>{v={breathing:60,circulation:60,activity:30};draw();};
- get("#od-clear").onclick=()=>{trials=[];showTrials();get("#od-message").textContent="Trial table cleared.";};
+ el.addEventListener("input",e=>{const key=e.target.dataset.control;if(Object.prototype.hasOwnProperty.call(v,key)){v[key]=Number(e.target.value);get("#od-predict").value="";draw();}});
+ get("#od-predict").onchange=draw;
+ const cases={
+  run:{breathing:40,circulation:70,activity:80},
+  rest:{breathing:80,circulation:40,activity:20},
+  equal:{breathing:60,circulation:60,activity:60}
+ };
+ const guesses='<option value="">Choose a prediction</option><option value="up">Increase</option><option value="same">Stay the same</option><option value="down">Decrease</option>';
+ const trend=(a,b)=>b>a?"up":b<a?"down":"same";
+ const describe={up:"increase",same:"stay the same",down:"decrease"};
+ const chooseCase=get("#od-case"),change=get("#od-change"),delivery=get("#od-guess-delivery"),demand=get("#od-guess-demand");
+ delivery.innerHTML=guesses;demand.innerHTML=guesses;
+ function clearResult(){
+  delivery.value="";demand.value="";get("#od-outcome").hidden=true;get("#od-run-test").disabled=true;
+ }
+ function prepare(){
+  const base=cases[chooseCase.value] || cases.run, model=oxygenModel(base);
+  get("#od-starting").textContent=controls.map(([k,label])=>label+" "+base[k]).join(" · ")+". Starting delivery "+model.delivered+", muscle need "+model.need+" (model units).";
+  change.innerHTML=controls.flatMap(([k,label])=>[-20,20].filter(delta=>base[k]+delta>=0&&base[k]+delta<=100).map(delta=>
+   '<option value="'+k+':'+delta+'">'+label+' from '+base[k]+' to '+(base[k]+delta)+'</option>')).join("");
+  clearResult();
+ }
+ chooseCase.onchange=prepare;change.onchange=clearResult;
+ delivery.onchange=demand.onchange=()=>{get("#od-run-test").disabled=!delivery.value||!demand.value;get("#od-outcome").hidden=true;};
+ get("#od-run-test").onclick=()=>{
+  if(!delivery.value||!demand.value)return;
+  const base=cases[chooseCase.value], [key,step]=change.value.split(":"), modified={...base,[key]:base[key]+Number(step)};
+  const before=oxygenModel(base),after=oxygenModel(modified),d=trend(before.delivered,after.delivered),n=trend(before.need,after.need);
+  const label=controls.find(([k])=>k===key)[1];
+  const factor=label+" "+base[key]+" to "+modified[key];
+  const explanation=key==="activity"?"Activity changes muscle need. Both delivery capacities stay fixed.":
+   "The lungs can supply "+after.lung+" units and circulation can carry "+after.pump+". The smaller capacity sets delivery. Muscle activity stayed fixed.";
+  const feedback="Delivery: you predicted "+describe[delivery.value]+", observed "+describe[d]+". Muscle need: you predicted "+describe[demand.value]+", observed "+describe[n]+".";
+  const bar=(label,a,b)=>'<div class="od-measure"><strong>'+label+'</strong>'+[["Before",a],["After",b]].map(([stage,value])=>'<div><span>'+stage+'</span><meter min="0" max="100" value="'+value+'" aria-label="'+label+' '+stage.toLowerCase()+'"></meter><b>'+value+'</b></div>').join("")+'</div>';
+  get("#od-pairs").innerHTML=bar("Delivered",before.delivered,after.delivered)+bar("Needed",before.need,after.need);
+  get("#od-verdict").textContent=feedback+" "+explanation;
+  get("#od-outcome").hidden=false;get("#od-run-test").disabled=true;
+  const record=[chooseCase.options[chooseCase.selectedIndex].text,controls.map(([k,l])=>l+" "+base[k]).join(", "),factor,"Delivered "+before.delivered+" to "+after.delivered+", need "+before.need+" to "+after.need,feedback,explanation].join(" · ");
+  comparisons.push(record);
+  const item=document.createElement("li");item.textContent=record;get("#od-notes").append(item);
+  get("#od-count").textContent=comparisons.length;get("#od-notebook").hidden=false;
+  get("#od-message").textContent="Comparison "+comparisons.length+" added to your investigation.";
+ };
+ prepare();
+ get("#od-record").onclick=()=>{trials.push(Object.assign({},v,oxygenModel(v)));showTrials();get("#od-message").textContent="Trial recorded locally. Try a second condition.";};
+ get("#od-reset").onclick=()=>{v={breathing:60,circulation:60,activity:30};get("#od-predict").value="";draw();};
+ get("#od-clear").onclick=()=>{trials=[];comparisons=[];get("#od-notes").textContent="";get("#od-notebook").hidden=true;clearResult();showTrials();get("#od-message").textContent="Free trials and comparisons cleared.";};
  get("#od-download").onclick=()=>{
-  const text=["Oxygen Delivery Lab — Grade 8 Science","Recorded trials (illustrative indexes):",trials.length?trials.map((t,i)=>(i+1)+". Breathing "+t.breathing+", flow "+t.circulation+", activity "+t.activity+"; delivered "+t.delivered+", need "+t.need+"; limit: "+name(t.limit)).join("\n"):"No trials recorded.","What evidence did the trials show?",get("#od-observe").value.trim(),"How do these systems work together?",get("#od-explain").value.trim(),"Model limitation: simplified comparison, not actual physiology."].join("\n\n");
+  const text=["Oxygen Delivery Lab — Grade 8 Science","Recorded trials (illustrative indexes):",trials.length?trials.map((t,i)=>(i+1)+". Breathing "+t.breathing+", flow "+t.circulation+", activity "+t.activity+"; delivered "+t.delivered+", need "+t.need+"; limit: "+name(t.limit)).join("\n"):"No trials recorded.","One-change comparisons:",comparisons.length?comparisons.join("\n\n"):"No comparisons recorded.","What evidence did the trials show?",get("#od-observe").value.trim(),"How do these systems work together?",get("#od-explain").value.trim(),"Model limitation: simplified comparison, not actual physiology."].join("\n\n");
   const url=URL.createObjectURL(new Blob([text],{type:"text/plain;charset=utf-8"})),a=document.createElement("a");a.href=url;a.download="oxygen-delivery-investigation.txt";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);get("#od-message").textContent="Investigation downloaded.";
  };
  draw();showTrials();
