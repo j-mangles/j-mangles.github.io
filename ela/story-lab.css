@@ -25,8 +25,11 @@
 .board h3{min-height:2.5em}.board button{font-variant-numeric:tabular-nums}
 
 #evidence select{font:inherit;color:var(--ink);background:var(--paper);padding:.6em;border:1px solid var(--rule);border-radius:var(--btn-radius);max-width:100%;min-height:44px}
+#ec-check:enabled,#ec-next{background:var(--accent-ink);color:var(--paper);border-color:var(--accent-ink)}
+#ec-check:disabled{color:var(--muted);cursor:default}#ec-leave{background:transparent;border-color:transparent;text-decoration:underline}
+@media(max-width:540px){.lab nav{row-gap:0}.lab nav a{padding:.5rem .1rem}}
 #ec-setup label{font-weight:650}#ec-setup button{margin:.45rem 0}
-#ec-round,#ec-evidence{color:var(--muted)}.ec-claim{max-width:44ch;font-size:clamp(1.4rem,3vw,2rem)}
+#ec-round,#ec-evidence{color:var(--muted)}.lab .ec-claim{font-weight:650;letter-spacing:normal;text-transform:none;max-width:44ch;font-size:clamp(1.4rem,3vw,2rem)}
 #ec-choices{max-width:65ch}#ec-options label{display:flex;align-items:baseline;gap:.65rem;min-height:44px;padding:.55rem;cursor:pointer}
 #ec-options label:has(:checked){background:var(--soft)}#ec-feedback:not(:empty){border-block:1px solid var(--rule);padding:.8rem 0;max-width:65ch}
 #ec-breakdown li{margin-block:.5rem}.test-index{margin:1.4rem 0}.test-index p{margin:.4rem 0}
