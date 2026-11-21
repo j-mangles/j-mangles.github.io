@@ -17,7 +17,7 @@
   const by = id => document.getElementById("rv-"+id);
   const region = {egypt:"Nile Valley",mesopotamia:"Tigris–Euphrates"};
   const key = "river-valley-settlement-v1";
-  const blank = () => ({first:"",factor:0,pins:[],report:0,revealed:false,last:"",reason:""});
+  const blank = () => ({first:"",factor:0,pins:[],readings:[],locked:false,report:0,revealed:false,last:"",reason:""});
   const state = blank();
   try {
     const s=JSON.parse(sessionStorage.getItem(key));
@@ -26,6 +26,8 @@
       if(Number.isInteger(s.factor)&&factors[s.factor])state.factor=s.factor;
       if(Array.isArray(s.pins))state.pins=[...new Set(s.pins.filter(i=>Number.isInteger(i)&&factors[i]))];
       if(Number.isInteger(s.report)&&reports[s.report])state.report=s.report;
+      if(Array.isArray(s.readings))state.readings=s.readings.filter(r=>r && typeof r.month==="string" && typeof r.level==="string" && Number.isFinite(r.cubits)&&Number.isInteger(r.fields)&&Number.isInteger(r.total)&&typeof r.villageWet==="boolean").slice(0,2);
+      state.locked=Boolean(state.first && (s.locked || s.revealed));
       state.revealed=Boolean(state.first && s.revealed);state.reason=typeof s.reason==="string"?s.reason:"";
     }
   } catch {}
@@ -51,7 +53,7 @@
     }));
     by("reveal").disabled=!state.first||state.revealed;
     by("reveal").textContent=state.revealed?"Field report open":"Open field report";
-    by("first").disabled=state.revealed;
+    by("first").disabled=state.locked;
     by("field").hidden=!state.revealed;
     by("finding").textContent=state.revealed?reports[state.report].clue:"";
     by("question").textContent=state.revealed?reports[state.report].prompt:"";
@@ -65,6 +67,33 @@
     if(!state.reason.trim())missing.push("your argument");
     by("progress").textContent=missing.length?"Still needed: "+missing.join(", ")+".":"Your investigation is ready to hand in.";
   }
+  let observed=null;
+  function reading(r){
+    return r.month+", "+r.level.toLowerCase()+" flood: "+r.cubits+" model cubits, "+r.fields+" of "+r.total+" field strips under water; "+(r.villageWet?"water reaches the village.":"village above water.");
+  }
+  function showReadings(){
+    const [a,b]=state.readings;
+    by("readings").replaceChildren(...state.readings.map(r=>{const li=document.createElement("li");li.textContent=reading(r);return li;}));
+    by("record-flood").disabled=!observed || Boolean(b) || Boolean(a && a.month===observed.month && a.level===observed.level);
+    by("clear-flood").hidden=!a;
+    let message="";
+    if(b){
+      if(a.month===b.month){
+        const delta=b.fields-a.fields;
+        message="Same month, different flood heights. The second reading covers "+(delta===0?"the same number of field strips":Math.abs(delta)+(delta>0?" more":" fewer")+" field strips")+". Use the village reading to weigh the risk to homes.";
+      }else if(a.level===b.level){
+        message="Same flood setting, different months. Your readings show how water coverage changes during the year.";
+      }else message="Both month and flood setting changed. Hold one steady before drawing a conclusion about the other.";
+    }else if(a)message="First reading kept. Change the flood setting or month to keep a second reading.";
+    by("flood-result").textContent=message;
+  }
+  by("flood-lab").ontoggle=()=>{
+    if(by("flood-lab").open && !observed){
+      window.EgyptInteractives.nileYear.mount(by("flood-model"),{},r=>{observed=r;showReadings();});
+    }
+  };
+  by("record-flood").onclick=()=>{if(!by("record-flood").disabled){state.readings.push({...observed});save();showReadings();}};
+  by("clear-flood").onclick=()=>{state.readings=[];save();showReadings();};
   function set(k,value){state[k]=value;save();draw();}
   by("first").onchange=e=>set("first",e.target.value);
   by("last").onchange=e=>set("last",e.target.value);
@@ -74,16 +103,17 @@
     set("pins",state.pins.includes(i)?state.pins.filter(x=>x!==i):[...state.pins,i]);
   };
   by("report").onchange=e=>{state.revealed=false;set("report",Number(e.target.value));};
-  by("reveal").onclick=()=>{if(state.first)set("revealed",true);};
+  by("reveal").onclick=()=>{if(state.first){state.locked=true;set("revealed",true);}};
   by("reason").oninput=e=>set("reason",e.target.value);
   by("download").onclick=()=>{
     const output=["Which river would you choose?","Initial settlement: "+(region[state.first]||"[Not chosen]"),
       ...state.pins.map(i=>factors[i][0]+"\nNile: "+factors[i][1]+"\nTigris–Euphrates: "+factors[i][2]),
+      ...state.readings.map(r=>"Nile model reading: "+reading(r)),
       "Classroom field report: "+(state.revealed?reports[state.report].clue:"[Unopened]"),
       "Final settlement: "+(region[state.last]||"[Not chosen]"),"My argument:\n"+(state.reason.trim()||"[Unwritten]")];
     const a=document.createElement("a"),url=URL.createObjectURL(new Blob([output.join("\n\n")],{type:"text/plain;charset=utf-8"}));
     a.href=url;a.download="river-settlement-investigation.txt";a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
   };
-  by("reset").onclick=()=>{if(window.confirm("Clear your settlement choice, evidence and argument?")){Object.assign(state,blank());save();draw();by("first").focus();}};
-  draw();
+  by("reset").onclick=()=>{if(window.confirm("Clear your settlement choice, evidence and argument?")){Object.assign(state,blank());save();draw();showReadings();by("first").focus();}};
+  draw();showReadings();
 })();

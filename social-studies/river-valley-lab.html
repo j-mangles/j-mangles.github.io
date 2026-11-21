@@ -16,10 +16,11 @@ main{max-width:1060px;margin:auto;padding:30px 18px 85px}h1,h2,h3{font-family:"C
 .rv-valleys{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin:1rem 0;border-block:1px solid var(--rule);padding:.7rem 0}
 .rv-valleys h4{margin:.15rem 0;font-size:1.1rem}.rv-valleys p{margin:.4rem 0}
 #settlement :is(select,button,textarea):focus-visible{outline:3px solid var(--label);outline-offset:3px}
-#rv-notebook{padding:.7rem 1rem;margin:1rem 0}#rv-notebook summary{cursor:pointer;font-weight:650}#rv-evidence li{margin-block:.7rem}#rv-field{padding:.4rem 0}.rv-draft{color:var(--sub)}@media(max-width:600px){.rv-valleys{grid-template-columns:1fr;gap:.5rem}}
+#rv-flood-lab{margin:1.2rem 0;padding:.8rem 1rem;max-width:52rem}#rv-flood-lab>summary{font-weight:650;cursor:pointer}#rv-flood-model{margin:1rem 0}#settlement [hidden]{display:none!important}#rv-notebook{padding:.7rem 1rem;margin:1rem 0}#rv-notebook summary{cursor:pointer;font-weight:650}#rv-evidence li{margin-block:.7rem}#rv-field{padding:.4rem 0}.rv-draft{color:var(--sub)}@media(max-width:600px){.rv-valleys{grid-template-columns:1fr;gap:.5rem}}
 @media print{body[data-print="decision"] #settlement,body[data-print="decision"] .rv-jump{display:none}}
 </style><link rel="stylesheet" href="rooms.css?v=20261114a">
 <link rel="stylesheet" href="lab.css?v=20261114a">
+<link rel="stylesheet" href="egypt-evidence.css">
 </head>
 <body><header><div><small>Mr. Mangles' Class · Grade 8 Social Studies</small><div>Societies of the Past</div></div><a href="./">Return to historical atlas</a></header>
 <main><div class="eyebrow">Interactive historical reasoning · Cluster 2</div><h1>River Valley Decision Lab</h1>
@@ -38,6 +39,11 @@ main{max-width:1060px;margin:auto;padding:30px 18px 85px}h1,h2,h3{font-family:"C
 <h3>Compare the two valleys</h3><label for="rv-factor">Geographic factor</label><select id="rv-factor"></select>
 <div class="rv-valleys" aria-live="polite"><div><h4>Nile Valley</h4><p id="rv-nile"></p></div><div><h4>Tigris–Euphrates</h4><p id="rv-tigris"></p></div></div>
 <button type="button" id="rv-pin"></button><p id="rv-pinned" role="status"></p><details id="rv-notebook" hidden><summary>Read my saved evidence</summary><ul id="rv-evidence"></ul></details>
+<details id="rv-flood-lab"><summary>Investigate the Nile flood</summary>
+<p>At the October peak, compare a low flood and a high flood. Record where the water reaches. These are model readings in illustrative cubits.</p>
+<div id="rv-flood-model"></div><button type="button" id="rv-record-flood">Keep this reading</button>
+<button type="button" id="rv-clear-flood" hidden>Start a new pair</button>
+<ol id="rv-readings"></ol><p id="rv-flood-result" role="status"></p></details>
 <h3>Test your choice</h3><p>A field report describes an imagined season. Use the geographic evidence to decide how a family might respond.</p>
 <label for="rv-report">Select a field report</label><select id="rv-report"></select> <button id="rv-reveal" type="button">Open field report</button>
 <p id="rv-saved-choice"></p><div id="rv-field" hidden><p id="rv-finding"></p><p id="rv-question"></p></div>
@@ -135,4 +141,4 @@ document.querySelectorAll("[data-world]").forEach(b=>b.onclick=()=>{
 });
 const params=new URLSearchParams(location.search);start(params.get("civilization")==="mesopotamia"?"mesopotamia":"egypt");
 })();
-</script><script src="river-settlement.js"></script></body></html>
+</script><script src="egypt-interactives.js"></script><script src="river-settlement.js"></script></body></html>

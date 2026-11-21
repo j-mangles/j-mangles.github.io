@@ -29,6 +29,14 @@ async function settlement(page,width){
   await page.locator("#rv-pin").click();
  }
  assert.equal(await page.locator("#rv-evidence li").count(),3);
+ await page.locator("#rv-flood-lab > summary").click();
+ await page.locator('#rv-flood-model [data-flood="low"]').click();
+ await page.locator("#rv-record-flood").click();
+ assert.ok(await page.locator("#rv-record-flood").isDisabled());
+ await page.locator('#rv-flood-model [data-flood="high"]').click();
+ await page.locator("#rv-record-flood").click();
+ assert.match(await page.locator("#rv-flood-result").innerText(),/Same month, different flood heights/);
+ assert.match(await page.locator("#rv-readings li").last().innerText(),/21 model cubits.*water reaches the village/);
  await page.locator("#rv-reveal").click();
  assert.ok(await page.locator("#rv-first").isDisabled());
  await page.locator("#rv-last").selectOption("mesopotamia");
@@ -41,8 +49,12 @@ async function settlement(page,width){
  assert.equal(file.suggestedFilename(),"river-settlement-investigation.txt");
  const output=fs.readFileSync(await file.path(),"utf8");
  assert.match(output,/Initial settlement: Nile Valley/);assert.match(output,/Final settlement: Tigris–Euphrates/);
+ assert.match(output,/Nile model reading: October, low flood: 12 model cubits/);
  assert.match(output,/mountain|sowing/);assert.match(output,/timing, height and barriers/);
  await checkNoHorizontalOverflow(page,"river settlement "+width);
+ await page.locator("#rv-flood-lab > summary").click();
+ await page.locator("#rv-flood-lab").screenshot({path:path.join(artifacts,"nile-pair-"+width+".png")});
+ await page.locator("#rv-flood-lab > summary").click();
  await page.locator("#settlement").screenshot({path:path.join(artifacts,"river-settlement-"+width+".png")});
 }
 (async()=>{
