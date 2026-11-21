@@ -19,3 +19,7 @@
 #questions fieldset{margin:1.2rem 0}.lab [hidden]{display:none!important}
 @media(max-width:540px){.board{gap:.4rem}.board h3{font-size:1rem}.lab{padding:.95rem}.controls{gap:0}}
 @media print{.lab{max-width:none;padding:0;color:#111}.lab header,.lab .actions,#simulation,#review,.lab .note,#progress,#test-status{display:none!important}.lab #test h2{margin:0}.lab #test p{line-height:1.35}.lab fieldset{break-inside:avoid}.lab textarea{display:none}.lab .print-answer{display:block;white-space:pre-wrap;overflow-wrap:anywhere;min-height:6em}.lab #blue-line{font-size:11pt}.lab #questions fieldset{margin:.6rem 0}.lab form{max-width:none}}
+
+.lab .step-toggle{font-weight:650;margin:1rem 0}.lab .step-toggle input{accent-color:var(--accent)}
+#beat{font-weight:700;margin-bottom:.5rem}.changed-beat{background:var(--accent-soft);outline:1px dashed var(--accent);outline-offset:3px}
+.board h3{min-height:2.5em}.board button{font-variant-numeric:tabular-nums}

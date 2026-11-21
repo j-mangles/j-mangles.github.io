@@ -41,47 +41,50 @@ const css=[
 ".osmo textarea{box-sizing:border-box;width:100%;min-height:89px;resize:vertical;font:inherit;border:1px solid var(--rule);background:var(--paper);color:var(--ink);padding:10px;border-radius:8px}",
 "@media(max-width:750px){.osmo .layout{grid-template-columns:1fr}}"
 ].join("\n");
-function drawing(type,r){
- const shrink=r.direction==="out",expand=r.direction==="in",scale=shrink?.72:expand?1.04:.88;
- const cx=280,cy=180,shell=type==="plant"?
- '<rect x="150" y="66" width="260" height="216" rx="29" fill="color-mix(in srgb,var(--accent) 16%,var(--paper))" stroke="var(--accent)" stroke-width="12"/>':
- '<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+(126*scale).toFixed(1)+'" ry="'+(100*scale).toFixed(1)+'" fill="color-mix(in srgb,var(--accent) 17%,var(--paper))" stroke="var(--accent)" stroke-width="5"/>';
- const contents=type==="plant"?
- '<rect x="'+(cx-115*scale).toFixed(1)+'" y="'+(cy-87*scale).toFixed(1)+'" width="'+(230*scale).toFixed(1)+'" height="'+(174*scale).toFixed(1)+'" rx="24" fill="color-mix(in srgb,var(--accent) 22%,var(--paper))" stroke="var(--ink)" stroke-opacity=".55" stroke-width="3"/>'+
- '<rect x="'+(cx-83*scale).toFixed(1)+'" y="'+(cy-63*scale).toFixed(1)+'" width="'+(166*scale).toFixed(1)+'" height="'+(125*scale).toFixed(1)+'" rx="21" fill="color-mix(in srgb,var(--accent) 43%,var(--paper))" stroke="var(--accent)" stroke-width="3"/>'+
- '<text x="280" y="182" text-anchor="middle">Vacuole</text>':
- '<ellipse cx="'+(cx-21*scale).toFixed(1)+'" cy="'+(cy-10*scale).toFixed(1)+'" rx="'+(34*scale).toFixed(1)+'" ry="'+(30*scale).toFixed(1)+'" fill="color-mix(in srgb,var(--accent) 49%,var(--paper))" stroke="var(--accent)" stroke-width="3"/>'+
- '<text x="280" y="245" text-anchor="middle">Animal cell</text>';
- const left=type==="plant"?152:280-126*scale,right=type==="plant"?410:280+126*scale;
- const arrows=r.direction==="balanced"?'<text x="280" y="331" text-anchor="middle">Water moves both ways · no strong net movement</text>':
- r.direction==="in"?
- '<path d="M85 176H'+(left-12).toFixed(1)+' M475 176H'+(right+12).toFixed(1)+'" stroke="var(--accent)" stroke-width="5" stroke-dasharray="7 5"/>'+
- '<path d="M'+(left-13).toFixed(1)+' 176 l-14 -8 v16Z M'+(right+13).toFixed(1)+' 176 l14 -8 v16Z" fill="var(--accent)" transform="rotate(180 280 176)"/>':
- '<path d="M'+left.toFixed(1)+' 176H80 M'+right.toFixed(1)+' 176H480" stroke="var(--accent)" stroke-width="5" stroke-dasharray="7 5"/>'+
- '<path d="M80 176 l15 -8 v16Z M480 176 l-15 -8 v16Z" fill="var(--accent)"/>';
- return '<svg viewBox="0 0 560 370" role="img" aria-label="'+esc(type)+' cell, '+esc(r.shape)+'. Net water movement: '+esc(r.direction)+'.">'+
- '<text x="280" y="31" text-anchor="middle">Cell and surrounding solution</text>'+shell+contents+arrows+
- '<text x="280" y="353" text-anchor="middle">Conceptual volumes · not a scale drawing or measured flow rate</text></svg>';
+function waterArrow(from,to,y,heavy){
+ const sign=to>from?1:-1, width=heavy?5:2;
+ return '<g fill="var(--accent-ink)" stroke="var(--accent-ink)"><path d="M'+from+' '+y+'H'+(to-sign*6)+'" stroke-width="'+width+'"/><path stroke="none" d="M'+to+' '+y+'l'+(-sign*11)+' -6v12Z"/></g>';
+}
+function drawing(type,r,show=true){
+ const plant=type==="plant",cx=265,cy=163;
+ const scale=!show?.9:r.direction==="out"?.67:r.direction==="in"?1:.86;
+ const w=232*scale,h=166*scale;
+ const wall=plant?'<rect x="145" y="76" width="240" height="174" rx="30" fill="var(--paper)" stroke="var(--accent)" stroke-width="9"/>':"";
+ const membrane=plant?
+  '<rect x="'+(cx-w/2)+'" y="'+(cy-h/2)+'" width="'+w+'" height="'+h+'" rx="25" fill="var(--accent-soft)" stroke="var(--ink)" stroke-width="3"/>':
+  '<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+w/2+'" ry="'+h/2+'" fill="var(--accent-soft)" stroke="var(--ink)" stroke-width="3"/>';
+ const contents=plant?
+  '<rect x="'+(cx-w*.31)+'" y="'+(cy-h*.35)+'" width="'+w*.62+'" height="'+h*.70+'" rx="18" fill="var(--paper)" stroke="var(--accent)" stroke-width="2"/><text x="265" y="167" text-anchor="middle">Vacuole</text>':
+  '<ellipse cx="265" cy="160" rx="32" ry="24" fill="var(--paper)" stroke="var(--accent)" stroke-width="2"/><text x="265" y="165" text-anchor="middle">Nucleus</text>';
+ const edge=cx-w/2;
+ const arrows=show?waterArrow(62,edge+15,146,r.direction==="in")+waterArrow(edge+15,62,181,r.direction==="out"):"";
+ const wallLabel=plant?'<path d="M380 106H397L409 93" fill="none" stroke="var(--accent)"/><text x="411" y="94">Cell wall</text>':"";
+ const memX=plant?cx+w/2:cx+w*.46;
+ const membraneLabel='<path d="M'+memX+' 188L394 214H406" fill="none" stroke="var(--ink)"/><text x="410" y="218">Membrane</text>';
+ const description=show?(r.direction==="balanced"?"Equal arrows: no strong net water movement.":"Thicker arrow: net water movement "+(r.direction==="in"?"into":"out of")+" the cell."):"Starting conditions. Predict before revealing the cell response.";
+ return '<svg viewBox="0 0 520 287" role="img" aria-label="'+esc(type)+' cell. '+esc(description)+'"><text x="24" y="38">Surrounding solution</text>'+wall+membrane+contents+wallLabel+membraneLabel+arrows+
+ '<text x="260" y="275" text-anchor="middle">'+description+'</text></svg>';
 }
 function render(el){
- let type="plant",inside=30,outside=60,prediction="",records=[];
+ let type="plant",inside=30,outside=60,prediction="",records=[],challenge=false,revealed=false;
  const $=q=>el.querySelector(q);
  el.innerHTML='<section class="osmo"><style>'+css+'</style><h2>Osmosis: What Happens to a Cell?</h2>'+
- '<p class="note">Change the amount of dissolved material inside and outside a cell. Follow the overall movement of water and see how plant and animal cells respond differently.</p>'+
+ '<p class="note">Water can cross this membrane in both directions. The dissolved solute stays on its side. Set the starting concentrations, then compare a plant and an animal cell in the same solution.</p>'+
+ '<label><input type="checkbox" id="osmo-challenge"> Predict before revealing the cell response</label>'+
  '<div class="types" role="group" aria-label="Choose cell type"><button data-cell="plant" aria-pressed="true">Plant cell</button>'+
  '<button data-cell="animal" aria-pressed="false">Animal cell</button></div>'+
  '<div class="layout"><div class="diagram" id="osmo-diagram"></div><div class="controls">'+
- '<div class="control"><label for="osmo-inside">Dissolved material inside <output id="osmo-inside-value">30</output></label>'+
+ '<div class="control"><label for="osmo-inside">Starting solute concentration inside <output id="osmo-inside-value">30</output></label>'+
  '<input type="range" id="osmo-inside" min="0" max="100" step="10" value="30"></div>'+
- '<div class="control"><label for="osmo-outside">Dissolved material outside <output id="osmo-outside-value">60</output></label>'+
+ '<div class="control"><label for="osmo-outside">Starting solute concentration outside <output id="osmo-outside-value">60</output></label>'+
  '<input type="range" id="osmo-outside" min="0" max="100" step="10" value="60"></div>'+
- '<div><label for="osmo-predict"><b>Predict the overall movement of water</b></label>'+
+ '<div id="osmo-prompt" hidden><label for="osmo-predict"><b>Predict the overall movement of water</b></label>'+
  '<select id="osmo-predict"><option value="">Make a prediction</option><option value="in">Into the cell</option>'+
- '<option value="out">Out of the cell</option><option value="balanced">No strong net movement</option></select></div>'+
+ '<option value="out">Out of the cell</option><option value="balanced">No strong net movement</option></select><button id="osmo-check" type="button">Reveal result</button></div>'+
  '<div class="readout" id="osmo-reading" aria-live="polite"></div><p class="feedback" id="osmo-feedback" aria-live="polite"></p></div></div>'+
  '<div class="actions"><button id="osmo-record" type="button">Record trial</button><button id="osmo-reset" type="button">Reset comparison</button></div>'+
- '<div class="tablewrap"><table><thead><tr><th>Trial</th><th>Cell</th><th>Inside / outside</th><th>Water moves</th><th>Effect</th></tr></thead>'+
- '<tbody id="osmo-trials"><tr><td colspan="5">No trials recorded.</td></tr></tbody></table></div>'+
+ '<div class="tablewrap"><table><thead><tr><th>Trial</th><th>Cell</th><th>Inside / outside</th><th>Prediction</th><th>Net movement</th><th>Effect</th></tr></thead>'+
+ '<tbody id="osmo-trials"><tr><td colspan="6">No trials recorded.</td></tr></tbody></table></div>'+
  '<label for="osmo-explain"><b>Explain why two cells respond differently in the same surrounding solution.</b></label>'+
  '<textarea id="osmo-explain" placeholder="A plant cell has a cell wall, so... An animal cell..."></textarea>'+
  '<div class="actions"><button id="osmo-download" type="button">Download investigation</button><button id="osmo-clear" type="button">Clear trials</button></div>'+
@@ -89,35 +92,46 @@ function render(el){
  '<p class="note">The sliders show relative solute concentration only, not percentages or actual cell measurements. The model predicts a direction, not a rate. Real membranes also contain transport proteins and regulate ions.</p></section>';
  function m(){return outcome(inside,outside,type);}
  function paint(){
-  const r=m();$("#osmo-diagram").innerHTML=drawing(type,r);
+  const r=m(),show=!challenge||revealed;
+  $("#osmo-diagram").innerHTML=drawing(type,r,show);
+  $("#osmo-prompt").hidden=!challenge;
+  $("#osmo-record").disabled=!show;
+  $("#osmo-check").disabled=!prediction||revealed;
+  $("#osmo-predict").disabled=revealed;
+  $("#osmo-inside").value=inside;$("#osmo-outside").value=outside;
   $("#osmo-inside-value").textContent=inside;$("#osmo-outside-value").textContent=outside;
   el.querySelectorAll("[data-cell]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.cell===type)));
-  $("#osmo-reading").innerHTML='<h3>'+esc(r.shape[0].toUpperCase()+r.shape.slice(1))+' '+type+' cell</h3><p>'+esc(explanations[type][r.shape])+'</p>';
-  $("#osmo-feedback").textContent=prediction?(prediction===r.direction?"Your prediction matches the model.":"Your prediction differs. Water moves overall toward the side with more dissolved solute."):"Predict the direction, then compare with the model.";
+  $("#osmo-reading").innerHTML=show?'<h3>'+esc(r.shape[0].toUpperCase()+r.shape.slice(1))+' '+type+' cell</h3><p>'+esc(explanations[type][r.shape])+'</p>':'<p>Compare the two starting concentrations. Which way will more water move?</p>';
+  $("#osmo-feedback").textContent=challenge&&revealed?(prediction===r.direction?"Your prediction matches the model.":"Your prediction differs. Water moves overall toward the side with more dissolved solute."):"";
  }
+ function newConditions(){
+  prediction="";revealed=false;$("#osmo-predict").value="";paint();
+ }
+ $("#osmo-challenge").onchange=ev=>{challenge=ev.target.checked;newConditions();};
+ $("#osmo-check").onclick=()=>{if(challenge&&prediction){revealed=true;paint();}};
  function paintTrials(){
   $("#osmo-trials").innerHTML=records.length?records.map((x,i)=>'<tr><td>'+(i+1)+'</td><td>'+esc(x.type)+'</td><td>'+x.inside+' / '+x.outside+'</td>'+
-   '<td>'+esc(x.direction)+'</td><td>'+esc(x.shape)+'</td></tr>').join(""):'<tr><td colspan="5">No trials recorded.</td></tr>';
+   '<td>'+esc(x.prediction||'—')+'</td><td>'+esc(x.direction)+'</td><td>'+esc(x.shape)+'</td></tr>').join(""):'<tr><td colspan="6">No trials recorded.</td></tr>';
  }
- el.addEventListener("click",ev=>{const b=ev.target.closest("[data-cell]");if(!b||!el.contains(b))return;type=b.dataset.cell;paint();});
+ el.addEventListener("click",ev=>{const b=ev.target.closest("[data-cell]");if(!b||!el.contains(b))return;if(type!==b.dataset.cell){type=b.dataset.cell;newConditions();}});
  el.addEventListener("input",ev=>{
   if(ev.target.id==="osmo-inside")inside=Number(ev.target.value);
   else if(ev.target.id==="osmo-outside")outside=Number(ev.target.value);
   else return;
-  paint();
+  newConditions();
  });
  $("#osmo-predict").addEventListener("change",ev=>{prediction=ev.target.value;paint();});
- $("#osmo-record").onclick=()=>{records.push({...m(),type,inside,outside});if(records.length>8)records.shift();paintTrials();};
- $("#osmo-reset").onclick=()=>{type="plant";inside=30;outside=60;prediction="";$("#osmo-inside").value=inside;$("#osmo-outside").value=outside;$("#osmo-predict").value="";paint();};
+ $("#osmo-record").onclick=()=>{if(challenge&&!revealed)return;records.push({...m(),type,inside,outside,prediction:challenge?prediction:""});paintTrials();$("#osmo-notice").textContent="Trial "+records.length+" recorded.";};
+ $("#osmo-reset").onclick=()=>{type="plant";inside=30;outside=60;prediction="";$("#osmo-inside").value=inside;$("#osmo-outside").value=outside;newConditions();};
  $("#osmo-clear").onclick=()=>{records=[];paintTrials();};
  $("#osmo-download").onclick=()=>{
-  const lines=["Osmosis Cell Response — Science 8","Trials (conceptual relative concentrations):",...records.map((x,i)=>(i+1)+". "+x.type+" cell; inside "+x.inside+", outside "+x.outside+"; water "+x.direction+"; "+x.shape),"Explanation:",$("#osmo-explain").value.trim()];
+  const lines=["Osmosis Cell Response — Science 8","Trials (conceptual relative concentrations):",...records.map((x,i)=>(i+1)+". "+x.type+" cell; inside "+x.inside+", outside "+x.outside+"; prediction "+(x.prediction||"not made")+"; water "+x.direction+"; "+x.shape),"Explanation:",$("#osmo-explain").value.trim()];
   const url=URL.createObjectURL(new Blob([lines.join("\n\n")],{type:"text/plain;charset=utf-8"})),a=document.createElement("a");
   a.href=url;a.download="osmosis-cell-response.txt";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
   $("#osmo-notice").textContent="Investigation downloaded.";
  };
  paint();paintTrials();
- el.osmosisLab={get type(){return type},get result(){return m()},get records(){return records.slice()},set(a,b,t){inside=a;outside=b;type=t||type;paint();}};
+ el.osmosisLab={get type(){return type},get result(){return m()},get records(){return records.slice()},set(a,b,t){inside=a;outside=b;type=t||type;newConditions();}};
 }
 H.osmosisResponseCore={outcome,explanations,drawing};
 H.lessonTools=H.lessonTools||{};const prev=H.lessonTools["cells/transport"];

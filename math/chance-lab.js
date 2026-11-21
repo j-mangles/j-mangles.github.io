@@ -20,7 +20,42 @@ function summarize(e,draws){
  for(const d of draws){if(!Number.isInteger(d)||d<0||d>=counts.length)throw Error("Invalid draw");counts[d]++;}
  return {counts,total:draws.length,experimental:counts.map(n=>draws.length?n/draws.length:null),theoretical:probabilities(e)};
 }
-H.probabilityModel={experiments:EXP,probabilities,sample,summarize};
+// Each pair keeps the first ten results and then continues to one hundred.
+function classTrials(experiment, rng = Math.random) {
+ return Array.from({length:13}, () => {
+  const trials = Array.from({length:100}, () => sample(experiment, rng));
+  return {ten:summarize(experiment, trials.slice(0,10)).counts, hundred:summarize(experiment, trials).counts};
+ });
+}
+function classPlot(groups, target, key, size, theory, selected) {
+ const left=30, width=530, rows=[], points=[];
+ for (const [i,group] of groups.entries()) {
+  const x=left+width*group[key][target]/size;
+  let row=rows.findIndex(xs=>xs.every(other=>Math.abs(other-x)>=17));
+  if(row<0){row=rows.length;rows.push([]);}
+  rows[row].push(x);
+  points.push({i,x,row});
+ }
+ const base=20+18*rows.length, expected=left+width*theory;
+ const guides=[0,25,50,75,100].map(p=>'<text x="'+(left+width*p/100)+'" y="'+(base+21)+'" text-anchor="middle">'+p+'%</text>').join("");
+ const dots=points.map(({i,x,row})=>'<circle cx="'+x+'" cy="'+(base-10-18*row)+'" r="'+(i===selected?7:5)+'" fill="var(--accent)" '+(i===selected?'stroke="var(--ink)" stroke-width="3"':'')+'><title>Pair '+(i+1)+': '+fmt(groups[i][key][target]/size)+'</title></circle>').join("");
+ return '<svg class="pl-class-chart" viewBox="0 0 590 '+(base+30)+'" role="img" aria-label="Results from thirteen pairs after '+size+' trials. Each dot is one pair. Select a pair below for exact results.">'+
+ '<line x1="'+left+'" x2="'+(left+width)+'" y1="'+base+'" y2="'+base+'" stroke="var(--rule)"/><line x1="'+expected+'" x2="'+expected+'" y1="5" y2="'+base+'" stroke="var(--ink)" stroke-dasharray="4 3"/>'+guides+dots+'</svg>';
+}
+function classResults(groups, target, theory, selected) {
+ if(!groups.length)return "";
+ const pair=groups[selected];
+ const charts=[["ten",10],["hundred",100]].map(([key,n])=>{
+  const values=groups.map(g=>100*g[key][target]/n);
+  return '<h5>After '+n+' trials per pair</h5>'+classPlot(groups,target,key,n,theory,selected)+
+   '<p>Class range: '+Math.min(...values)+'% to '+Math.max(...values)+'%.</p>';
+ }).join("");
+ return charts+'<label>Inspect a pair<select id="pl-pair">'+groups.map((_,i)=>'<option value="'+i+'" '+(i===selected?'selected':'')+'>Pair '+(i+1)+'</option>').join("")+'</select></label>'+
+ '<p id="pl-pair-result">Pair '+(selected+1)+' recorded '+pair.ten[target]+'/10 ('+fmt(pair.ten[target]/10)+'), then '+pair.hundred[target]+'/100 ('+fmt(pair.hundred[target]/100)+').</p>'+
+ '<p>Which set of dots is more tightly grouped? Can you find a pair that moved farther from the dashed line?</p>';
+}
+
+H.probabilityModel={experiments:EXP,probabilities,sample,summarize,classTrials};
 const fmt=p=>(100*p).toFixed(1)+"%";
 const COLORS=["#D61E6C","#345DB2","#16764D","#9C6400","#7952AB","#597078"];
 function wheel(e){
@@ -69,6 +104,7 @@ function trend(e,draws,target){
 }
 function lab(el){
  let mode="coin",target=0,draws=[],prediction=null,message="Predict the chance, then run a trial.";
+ let groups=[], selectedPair=0;
  const get=sel=>el.querySelector(sel);
  function render(focus){
   const e=EXP[mode],s=summarize(e,draws),n=s.total,exp=s.theoretical[target],obs=s.experimental[target];
@@ -95,7 +131,8 @@ function lab(el){
   '.pl-lab th,.pl-lab td{border-bottom:1px solid var(--rule);padding:8px;text-align:left;white-space:nowrap}',
   '.pl-lab .pl-status{min-height:1.5em;font-weight:650}',
   '@media(max-width:600px){.pl-lab{padding:12px}.pl-lab label{min-width:125px}.pl-lab th,.pl-lab td{padding:6px}}',
-  '</style><div class="eyebrow">Probability · interactive investigation</div>',
+  '.pl-class-chart{display:block;width:100%;max-width:680px}.pl-class-chart text{font:13px var(--f-body);fill:var(--ink)}.pl-class h5{font-size:1rem;margin:1.3rem 0 0}.pl-class label{max-width:15rem}',
+  '</style>',
   '<h3>Chance Lab: prediction vs. results</h3>',
   '<p class="note">Model a coin, die or spinner. The grey bars show what theory predicts; the coloured bars show what the simulation actually produced. Run more trials to compare.</p>',
   '<div class="pl-controls"><label>Experiment<select id="pl-mode">'+options+'</select></label>',
@@ -115,10 +152,13 @@ function lab(el){
   '<div class="pl-panel"><h4>How does the chance settle? · '+e.labels[target]+'</h4>',
   '<p>'+gap+'</p><p class="note">Dashed line: theoretical chance. Solid line: experimental chance after each trial. More trials usually bring the overall percentage closer, but not necessarily after every single draw.</p>',
   trend(e,draws,target),'</div>',
+  '<section class="pl-class"><h4>What if the whole class ran the experiment?</h4><p>Thirteen pairs each run 10 trials and then continue to 100. Compare how often they get <b>'+e.labels[target]+'</b>. Each dot represents one pair. The dashed line marks the theoretical chance of '+fmt(exp)+'.</p>',
+  '<button type="button" class="btn ghost" id="pl-class-run">'+(groups.length?'Simulate another class':'Simulate 13 pairs')+'</button>',
+  classResults(groups,target,exp,selectedPair),'</section>',
   '<p class="note">Try the physical Tally Lab first, then compare your results. This browser simulation is practice, not a submitted assessment. No responses are saved or sent.</p></section>'
   ].join("");
-  get("#pl-mode").onchange=function(){mode=this.value;target=0;draws=[];prediction=null;message="New experiment. Make a prediction.";render("#pl-mode");};
-  get("#pl-target").onchange=function(){target=Number(this.value);message="Outcome changed. Compare the same trials from a new perspective.";render("#pl-target");};
+  get("#pl-mode").onchange=function(){mode=this.value;target=0;draws=[];groups=[];selectedPair=0;prediction=null;message="New experiment. Make a prediction.";render("#pl-mode");};
+  get("#pl-target").onchange=function(){target=Number(this.value);prediction=null;message="Outcome changed. Compare the same trials from a new perspective.";render("#pl-target");};
   get("#pl-predict").onchange=function(){const raw=this.value.trim();prediction=raw===""?null:Number(raw);if(prediction!==null&&(!Number.isFinite(prediction)||prediction<0||prediction>100)){prediction=null;message="Prediction must be between 0 and 100%.";render("#pl-predict");}};
   el.querySelectorAll("[data-pl-run]").forEach(b=>b.onclick=function(){
    const raw=get("#pl-predict").value.trim();prediction=raw===""?null:Number(raw);
@@ -130,6 +170,8 @@ function lab(el){
    message="Added "+k+" trial"+(k===1?'':'s')+". "+EXP[mode].labels[target]+" occurred "+s.counts[target]+" of "+s.total+" times."+(prediction===null?"":" Your prediction was "+prediction+"%; theoretical is "+fmt(s.theoretical[target])+".");
    render('[data-pl-run="'+k+'"]');
   });
+  get("#pl-class-run").onclick=()=>{groups=classTrials(EXP[mode]);selectedPair=0;message="Class results ready. Compare the two plots.";render("#pl-class-run");};
+  if(groups.length)get("#pl-pair").onchange=function(){selectedPair=Number(this.value);render("#pl-pair");};
   get("#pl-reset").onclick=function(){draws=[];message="Trials cleared. Theoretical chances have not changed.";render("#pl-reset");};
   if(focus){const next=get(focus);if(next)next.focus({preventScroll:true});}
  }

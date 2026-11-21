@@ -17,6 +17,14 @@ async function checkStoryLab(page,width) {
  await page.getByLabel("Pass the envelope quietly").check();
  assert.notEqual(await page.locator("#scene").innerText(),first);
  assert.equal(await page.locator("#earlier").innerText(),first);
+ await page.locator("#step-mode").check();
+ assert.equal(await page.locator("#scene p").count(),1);
+ assert.equal(await page.locator("#earlier p").count(),1);
+ assert.ok(await page.locator("#debrief").isHidden());
+ await page.locator("#next-beat").click();
+ assert.equal(await page.locator("#scene .changed-beat").count(),1);
+ await page.locator("#back-beat").click();
+ assert.ok(await page.locator("#back-beat").isDisabled());
  await page.getByRole("link",{name:"Team review",exact:true}).click();
  for(let round=0;round<12;round++){
   await page.locator("#board button:enabled").first().click();
@@ -25,6 +33,12 @@ async function checkStoryLab(page,width) {
   await page.getByRole("button",{name:"Team 1 scores"}).click();
  }
  assert.match(await page.locator("#score").innerText(),/Team 1 · 30.*Team 1 wins/);
+ await page.getByRole("button",{name:"Correct last award"}).click();
+ await page.reload();
+ assert.ok(await page.locator("#judging").isVisible());
+ await page.getByRole("button",{name:"Team 2 scores"}).click();
+ await page.reload();
+ assert.match(await page.locator("#score").innerText(),/Team 1 · 26.*Team 2 · 4/);
  await page.locator("#new-game").click();
  assert.equal(await page.locator("#board button:enabled").count(),12);
  await page.getByRole("link",{name:"Individual test"}).click();

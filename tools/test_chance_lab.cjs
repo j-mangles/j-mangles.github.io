@@ -27,6 +27,13 @@ assert.equal(counts.total,8);
 assert.equal(counts.experimental[0],.375);
 assert.equal(m.summarize(spin,[]).experimental[0],null);
 assert.throws(()=>m.summarize(spin,[99]),/Invalid draw/);
+let simulatedDraw=0;
+const classes=m.classTrials(coin,()=>simulatedDraw++%100<10?0:.9);
+assert.equal(classes.length,13);
+for(const pair of classes){
+ assert.deepEqual(Array.from(pair.ten),[10,0]);
+ assert.deepEqual(Array.from(pair.hundred),[10,90]);
+}
 const html=fs.readFileSync(path.join(root,"math/index.html"),"utf8");
 assert.ok(scriptSrcIndex(html,"chance-lab.js")>=0);
 assert.ok(scriptSrcIndex(html,"chance-lab.js")<scriptSrcIndex(html,"../assets/hub.js"));
