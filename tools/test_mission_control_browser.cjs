@@ -102,7 +102,7 @@ async function checkStoryLab(page,width) {
  await page.getByRole("link",{name:"Comparison test",exact:true}).click();
  await page.locator("#cmp-name").fill("Reader");
  await page.locator("#cmp-first").selectOption("roger");
- assert.ok(await page.locator('#cmp-second option[value="roger"]').isDisabled());
+ assert.equal(await page.locator('#cmp-second option[value="roger"]:disabled').count(),1);
  await page.locator("#cmp-second").selectOption("summer");
  await page.locator("#cmp-writing textarea").first().fill("My comparative claim.");
  await page.reload();
