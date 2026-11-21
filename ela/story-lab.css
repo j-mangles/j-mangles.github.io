@@ -23,3 +23,21 @@
 .lab .step-toggle{font-weight:650;margin:1rem 0}.lab .step-toggle input{accent-color:var(--accent)}
 #beat{font-weight:700;margin-bottom:.5rem}.changed-beat{background:var(--accent-soft);outline:1px dashed var(--accent);outline-offset:3px}
 .board h3{min-height:2.5em}.board button{font-variant-numeric:tabular-nums}
+
+#evidence select{font:inherit;color:var(--ink);background:var(--paper);padding:.6em;border:1px solid var(--rule);border-radius:var(--btn-radius);max-width:100%;min-height:44px}
+#ec-check:enabled,#ec-next{background:var(--accent-ink);color:var(--paper);border-color:var(--accent-ink)}
+#ec-check:disabled{color:var(--muted);cursor:default}#ec-leave{background:transparent;border-color:transparent;text-decoration:underline}
+@media(max-width:540px){.lab nav{row-gap:0}.lab nav a{padding:.5rem .1rem}}
+#ec-setup label{font-weight:650}#ec-setup button{margin:.45rem 0}
+#ec-round,#ec-evidence{color:var(--muted)}.lab .ec-claim{font-weight:650;letter-spacing:normal;text-transform:none;max-width:44ch;font-size:clamp(1.4rem,3vw,2rem)}
+#ec-choices{max-width:65ch}#ec-options label{display:flex;align-items:baseline;gap:.65rem;min-height:44px;padding:.55rem;cursor:pointer}
+#ec-options label:has(:checked){background:var(--soft)}#ec-feedback:not(:empty){border-block:1px solid var(--rule);padding:.8rem 0;max-width:65ch}
+#ec-breakdown li{margin-block:.5rem}.test-index{margin:1.4rem 0}.test-index p{margin:.4rem 0}
+#question-map{gap:.35rem}.lab .map-button{font-size:.95rem;padding:.45em .65em}
+.lab .flag-question{margin-top:.6rem;font-size:.9rem}.lab .flag-question[aria-pressed="true"]{background:var(--soft);font-weight:700}
+@media print{.lab .test-index,.lab .flag-question,#evidence{display:none!important}}
+
+.cmp-texts{display:flex;flex-wrap:wrap;gap:.8rem 1.2rem;margin:1rem 0}
+.cmp-texts label{font-weight:650}.cmp-texts select{display:block;max-width:100%;font:inherit;color:var(--ink);background:var(--paper);min-height:44px;border:1px solid var(--rule);padding:.45rem}
+#comparison-form .cmp-criteria{margin:.3rem 0 .7rem}.lab #comparison-form fieldset{margin-block:1.1rem}
+@media print{#cmp-progress,#cmp-status{display:none}.lab #comparison-form fieldset{break-inside:auto}.lab #comparison-form .print-answer{min-height:4em}.lab #comparison-form .cmp-criteria{color:#222}}

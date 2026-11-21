@@ -6,8 +6,15 @@ const node = (tag, text) => {
   return el;
 };
 
+const classStories = {
+    roger: "Thank You, Ma’am",
+    summer: "All Summer in a Day",
+    house: "The Landlady",
+    paw: "The Monkey’s Paw"
+  };
+
 function route() {
-  const current = ["review", "test"].includes(location.hash.slice(1)) ? location.hash.slice(1) : "simulation";
+  const current = ["evidence", "review", "test", "comparison"].includes(location.hash.slice(1)) ? location.hash.slice(1) : "simulation";
   for (const link of document.querySelectorAll(".lab nav a")) {
     const selected = link.hash === "#" + current;
     byId(link.hash.slice(1)).hidden = !selected;
@@ -170,6 +177,8 @@ const testItems = [
 const form = byId("assessment"), fields = [], storageKey = "ela-blue-line-responses-v1";
 let saved = {};
 try { saved = JSON.parse(sessionStorage.getItem(storageKey)) || {}; } catch {}
+if (!saved || typeof saved !== "object") saved = {};
+const flags = new Set(Array.isArray(saved.flags) ? saved.flags.filter(n => Number.isInteger(n) && n >= 1 && n <= testItems.length) : []);
 byId("student").value = typeof saved.name === "string" ? saved.name : "";
 testItems.forEach(([prompt, options], i) => {
   const group = document.createElement("fieldset"), number = i + 1;
@@ -188,6 +197,21 @@ testItems.forEach(([prompt, options], i) => {
     area.oninput = () => { printAnswer.textContent = area.value; };
     group.append(area, printAnswer);
   }
+  group.id = "test-question-" + number;
+  const flag = node("button", "");
+  flag.className = "flag-question";
+  flag.type = "button";
+  flag.onclick = () => {
+    if (flags.has(number)) flags.delete(number);
+    else flags.add(number);
+    storeTest();
+  };
+  group.append(flag);
+  const jump = node("button", "");
+  jump.type = "button";
+  jump.className = "map-button";
+  jump.onclick = () => group.querySelector("input, textarea").focus();
+  byId("question-map").append(jump);
   fields.push(group);
   byId("questions").append(group);
 });
@@ -195,22 +219,104 @@ function answers() {
   return fields.map(group => (group.querySelector("textarea, input:checked")?.value || "").trim());
 }
 function progress() {
-  byId("progress").textContent = answers().filter(Boolean).length + " of 8 answered.";
+  const responses = answers();
+  const map = byId("question-map").children;
+  fields.forEach((field, i) => {
+    const number = i + 1, flagged = flags.has(number);
+    const status = responses[i] ? "Answered" : "Open";
+    map[i].textContent = number + " · " + status + (flagged ? " · Flagged" : "");
+    map[i].setAttribute("aria-label", "Question " + number + ", " + status + (flagged ? ", flagged" : ""));
+    const flag = field.querySelector(".flag-question");
+    flag.textContent = flagged ? "Remove flag" : "Flag for review";
+    flag.setAttribute("aria-pressed", String(flagged));
+  });
+  byId("progress").textContent = responses.filter(Boolean).length + " of 8 answered." + (flags.size ? " Flagged for review: " + [...flags].sort((a,b)=>a-b).join(", ") + "." : "");
+  byId("review-open").hidden = responses.every(Boolean) && !flags.size;
 }
 form.addEventListener("submit", e => e.preventDefault());
-form.addEventListener("input", () => {
-  const values = {name:byId("student").value};
+form.addEventListener("input", storeTest);
+byId("review-open").onclick = () => {
+  const target = answers().findIndex((answer, i) => !answer || flags.has(i + 1));
+  if (target >= 0) fields[target].querySelector("input, textarea").focus();
+};
+function storeTest() {
+  const values = {name:byId("student").value, flags:[...flags]};
   answers().forEach((answer, i) => { values[i + 1] = answer; });
   try { sessionStorage.setItem(storageKey, JSON.stringify(values)); } catch { byId("test-status").textContent = "Session saving is unavailable. Download a copy before leaving."; }
   progress();
-});
+}
 byId("download").onclick = () => {
   const responses = answers();
   const lines = ["The blue line · Grade 8 ELA", "Name: " + byId("student").value, ...testItems.map(([q], i) => (i + 1) + ". " + q + "\n" + (responses[i] || "[Unanswered]"))];
-  const url = URL.createObjectURL(new Blob([lines.join("\n\n")], {type:"text/plain;charset=utf-8"}));
-  const link = document.createElement("a"); link.href = url; link.download = "blue-line-responses.txt"; link.click();
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  downloadText("blue-line-responses.txt", lines.join("\n\n"));
   byId("test-status").textContent = "Response copy prepared. Hand it in using your teacher’s instructions.";
 };
 byId("print").onclick = () => window.print();
 progress();
+
+function downloadText(filename, text) {
+  const url = URL.createObjectURL(new Blob([text], {type:"text/plain;charset=utf-8"}));
+  const link = document.createElement("a");
+  link.href = url; link.download = filename; link.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+const comparisonTasks = [
+  ["Make a claim", 2, "Name an idea about responsibility (1). Take a position that connects both stories (1)."],
+  ["Use evidence from your first story", 3, "Identify a choice (1). Give a precise detail from the text (1). Explain how it supports your claim (1)."],
+  ["Use evidence from your second story", 3, "Identify a choice (1). Give a precise detail from this text (1). Explain how it supports your claim (1)."],
+  ["Compare the endings", 4, "Connect the two endings directly (1). Support the comparison with a consequence from each ending (2). Explain what the similarity or difference adds to your idea about responsibility (1)."]
+];
+const comparisonKey = "ela-two-story-comparison-v1";
+const storyPickers = [byId("cmp-first"), byId("cmp-second")];
+let comparisonDraft = {};
+try { comparisonDraft = JSON.parse(sessionStorage.getItem(comparisonKey)) || {}; } catch {}
+byId("cmp-name").value = typeof comparisonDraft.name === "string" ? comparisonDraft.name : "";
+storyPickers.forEach((picker,i) => {
+  picker.add(new Option("Choose a story", ""));
+  Object.entries(classStories).forEach(([id,title]) => picker.add(new Option(title,id)));
+  const id = comparisonDraft.stories?.[i];
+  if (Object.hasOwn(classStories,id) && (!i || storyPickers[0].value !== id)) picker.value=id;
+});
+const comparisonAnswers = comparisonTasks.map(([title,marks,criteria], i) => {
+  const field = document.createElement("fieldset"), answer = document.createElement("textarea");
+  const hint = node("p", criteria);
+  hint.id = "cmp-criteria-"+i; hint.className="cmp-criteria";
+  answer.rows = i === 0 ? 3 : 5;
+  answer.setAttribute("aria-label", title); answer.setAttribute("aria-describedby",hint.id);
+  const previous=comparisonDraft.answers?.[i];
+  answer.value = typeof previous === "string" ? previous : "";
+  const printable = node("div",answer.value);
+  printable.className="print-answer";
+  answer.oninput = () => { printable.textContent=answer.value; };
+  field.append(node("legend",(i+1)+". "+title+" ("+marks+" marks)"),hint,answer,printable);
+  byId("cmp-writing").append(field);
+  return answer;
+});
+function comparisonProgress() {
+  storyPickers.forEach((picker,i) => {
+    const other=storyPickers[1-i].value;
+    Array.from(picker.options).forEach(o => {o.disabled=Boolean(other && o.value===other);});
+  });
+  const count=comparisonAnswers.filter(a=>a.value.trim()).length;
+  const texts=storyPickers.filter(p=>p.value).length;
+  byId("cmp-progress").textContent=texts+" of 2 stories chosen. "+count+" of 4 responses written.";
+}
+function saveComparison() {
+  comparisonProgress();
+  const draft={name:byId("cmp-name").value,stories:storyPickers.map(p=>p.value),answers:comparisonAnswers.map(a=>a.value)};
+  try { sessionStorage.setItem(comparisonKey,JSON.stringify(draft)); }
+  catch { byId("cmp-status").textContent="Download your copy before leaving this tab."; }
+}
+byId("comparison-form").addEventListener("input",saveComparison);
+byId("comparison-form").addEventListener("submit",e=>e.preventDefault());
+byId("cmp-download").onclick=()=>{
+  const lines=["Two choices, two consequences · Grade 8 ELA · 12 marks","Name: "+byId("cmp-name").value,
+    ...storyPickers.map((p,i)=>(i ? "Second" : "First")+" story: "+(classStories[p.value] || "[Not chosen]")),
+    "What do two stories suggest about taking responsibility for a choice?",
+    ...comparisonTasks.map(([title,marks],i)=>(i+1)+". "+title+" ("+marks+" marks)\n"+(comparisonAnswers[i].value.trim()||"[Unanswered]"))];
+  downloadText("two-story-comparison.txt",lines.join("\n\n"));
+  byId("cmp-status").textContent="Comparison prepared for download.";
+};
+byId("cmp-print").onclick=()=>window.print();
+comparisonProgress();
