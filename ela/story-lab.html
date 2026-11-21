@@ -8,6 +8,8 @@
 <section id="simulation"><h2>The last envelope</h2><p>The school vote is over. Noor has the microphone. Change who sees the trouble coming and what Noor does when it arrives.</p>
 <div class="controls"><fieldset><legend>When does the reader see the missing votes?</legend><label><input type="radio" name="reveal" value="early" checked> Before Noor does</label><label><input type="radio" name="reveal" value="late"> Alongside Noor</label></fieldset>
 <fieldset><legend>What does Noor do at the microphone?</legend><label><input type="radio" name="decision" value="speak" checked> Interrupt the announcement</label><label><input type="radio" name="decision" value="pass"> Pass the envelope quietly</label></fieldset></div>
+<label class="step-toggle"><input type="checkbox" id="step-mode"> Read one beat at a time</label>
+<div id="reader-controls" hidden><p id="beat" role="status"></p><div class="actions"><button id="back-beat">Previous beat</button><button id="next-beat">Next beat</button></div><p id="pause-question"></p></div>
 <div class="versions"><article><h3>Your scene</h3><div id="scene" class="passage"></div></article><article id="kept" hidden><h3>Earlier version</h3><div id="earlier" class="passage"></div></article></div>
 <button id="keep">Keep this version to compare</button><p id="compare" role="status"></p>
 <details id="debrief"><summary>Discuss the effect</summary><p id="effect"></p><p>Change just one choice. Which exact line now changes what you expect? Explain how the other version made you read that moment differently.</p></details></section>
@@ -15,7 +17,7 @@
 <p class="score" id="score" role="status"></p><div id="board" class="board"></div>
 <article id="clue" hidden><h3 id="clue-title" tabindex="-1"></h3><p class="prompt" id="clue-text"></p><button id="reveal">Reveal a strong answer</button>
 <div id="judging" hidden><p class="sample" id="model"></p><div class="actions" id="awards"></div></div></article>
-<button id="new-game" hidden>Play again</button></section>
+<button id="correct-score" hidden>Correct last award</button> <button id="new-game" hidden>Play again</button></section>
 <section id="test" hidden><h2>The blue line</h2><p>Individual short-story test · 20 marks · about 30 minutes</p><p>Read the scene, then answer all eight questions. For written responses, a short quotation or an accurate detail counts as evidence.</p>
 <article class="passage" id="blue-line"><h3>1</h3><p>By four o’clock, the hall smelled of wet wool and sawdust. Kit knelt beside the long-jump pit with a tin of blue chalk. A metre from his knee, the old school record stood on a little wooden sign. He had painted the numbers himself. They belonged to his sister.</p>
 <h3>2</h3><p>On her last jump, Mara landed beyond the sign. Sand lifted over Kit’s shoes. He pushed a blue peg into the dent made by her heels. Behind him, the crowd began stamping the bleachers. Then he saw a second dent, closer to the board, where her hand had brushed the sand. In the morning he had read the rule aloud to the officials: measure from the nearest mark made on landing.</p>

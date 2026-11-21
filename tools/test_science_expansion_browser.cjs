@@ -50,6 +50,14 @@ const tasks=[
  }},
  {hash:"matter/viscosity",selector:".vl",async check(page){
   assert.match(await page.locator("#vl-status").innerText(),/Fluid A flows faster/);
+  await page.locator("#vl-clock").fill("0");
+  assert.match(await page.locator("#vl-distance-a").innerText(),/^0%/);
+  await page.locator("#vl-clock").fill("2.5");
+  assert.match(await page.locator("#vl-distance-a").innerText(),/^100%/);
+  assert.match(await page.locator("#vl-distance-b").innerText(),/^30%/);
+  await page.locator("#vl-run").click();
+  await page.locator("#vl-pause").click();
+  assert.ok(await page.locator("#vl-pause").isDisabled());
   await page.locator("#vl-record").click();
   assert.equal(await page.locator("#vl-trials tr").count(),1);
   await page.locator("#vl-tb").fill("50");
@@ -156,6 +164,20 @@ const tasks=[
   assert.match(await page.locator("#osmo-reading").innerText(),/Swollen/i);
   await page.locator("#osmo-record").click();
   assert.equal(await page.locator("#osmo-trials tr").count(),1);
+  await page.locator("#osmo-challenge").check();
+  assert.ok(await page.locator("#osmo-record").isDisabled());
+  assert.doesNotMatch(await page.locator("#osmo-diagram svg").getAttribute("aria-label"),/swollen|net water movement into/i);
+  await page.locator("#osmo-predict").selectOption("out");
+  await page.locator("#osmo-check").click();
+  assert.match(await page.locator("#osmo-feedback").innerText(),/differs/);
+  await page.locator("#osmo-record").click();
+  assert.match(await page.locator("#osmo-trials tr").last().innerText(),/out\s+in\s+swollen/);
+  await page.locator("#osmo-outside").fill("60");
+  assert.ok(await page.locator("#osmo-check").isDisabled());
+  assert.match(await page.locator("#osmo-reading").innerText(),/starting concentrations/);
+  await page.locator("#osmo-predict").selectOption("balanced");
+  await page.locator("#osmo-check").click();
+  assert.match(await page.locator("#osmo-feedback").innerText(),/matches/);
   assert.ok(await page.locator("#ltool").innerText().then(x=>x.length>100),"Older membrane lab remains");
  }},
  {hash:"earth/e5-drift",selector:".wed",async check(page){
@@ -212,6 +234,9 @@ const tasks=[
     await t.check(page);
     const overflow=await lab.evaluate(el=>({content:el.scrollWidth,width:el.clientWidth}));
     assert.ok(overflow.content<=overflow.width+5,t.hash+" "+width+" tool overflow: "+JSON.stringify(overflow));
+    if(t.selector===".vl"||t.selector===".osmo"){
+     await lab.screenshot({path:path.join(screenshots,"science-detail-"+t.selector.slice(1)+"-"+width+".png")});
+    }
     if(width===390&&["cells/systems","cells/circulatory","light/u3t2-refraction","earth/e11-quakes","cells/specialized","light/u3t3-colour","skills/graph","cells/transport","earth/e5-drift"].includes(t.hash)){
      await page.screenshot({path:path.join(screenshots,"science-"+t.hash.replace("/","-")+"-mobile.png"),fullPage:true,animations:"disabled"});
     }

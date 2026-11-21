@@ -32,8 +32,8 @@ const style=[
 ".vl .lane{display:grid;grid-template-columns:80px minmax(0,1fr) 95px;gap:9px;align-items:center;margin:15px 0}",
 ".vl .track{height:27px;border:1px solid var(--rule);border-radius:999px;background:var(--paper);position:relative;overflow:hidden}",
 ".vl .track::after{content:'';position:absolute;right:9px;top:5px;bottom:5px;border-right:2px dashed var(--muted)}",
-".vl .drop{position:absolute;top:4px;left:4px;width:19px;height:19px;border-radius:65% 65% 65% 10%;transform:rotate(-45deg);background:var(--accent);transition:left 1.1s ease-out}",
-".vl .lane:last-child .drop{background:var(--muted)}.vl .time{font-variant-numeric:tabular-nums;font-weight:750;text-align:right}",
+".vl .drop{position:absolute;top:4px;left:4px;width:19px;height:19px;border-radius:65% 65% 65% 10%;transform:rotate(-45deg);background:var(--accent);}",
+".vl .course{position:absolute;inset:0 20px 0 3px}.vl .lane small{display:block;font-weight:400}.vl .lane:nth-of-type(2) .drop{background:var(--muted)}.vl .time{font-variant-numeric:tabular-nums;font-weight:750;text-align:right}",
 ".vl .buttons{display:flex;gap:9px;flex-wrap:wrap;margin:13px 0}.vl .status{min-height:42px;font-weight:650}",
 ".vl .tablewrap{overflow-x:auto;max-width:100%}.vl table{border-collapse:collapse;width:100%;font-size:.86rem}",
 ".vl th,.vl td{padding:8px;text-align:left;border-bottom:1px solid var(--rule)}.vl th{white-space:nowrap}",
@@ -48,11 +48,12 @@ function build(el){
  '<p class="note">Compare how quickly two liquids flow down the same imaginary ramp. Change the liquid or its temperature. Use the results to plan a fair real-world test.</p>'+
  '<div class="controls">'+[["a","Fluid A"],["b","Fluid B"]].map(([k,label])=>'<div class="control"><h3>'+label+'</h3><label for="vl-'+k+'">Liquid</label><select id="vl-'+k+'" data-fluid="'+k+'">'+select(k)+'</select>'+
  '<label for="vl-t'+k+'">Temperature: <output id="vl-t'+k+'-out">20</output>°C</label><input type="range" id="vl-t'+k+'" data-temperature="'+k+'" min="5" max="55" step="5" value="20"></div>').join("")+'</div>'+
- '<div class="diagram"><h3>Flow comparison</h3><p class="note">The droplet travelling farther along its track represents faster flow. Both tracks use the same ramp angle, distance, amount and starting time.</p>'+
- '<div class="lane"><b>A</b><div class="track"><span class="drop" id="vl-drop-a"></span></div><span class="time" id="vl-time-a">—</span></div>'+
- '<div class="lane"><b>B</b><div class="track"><span class="drop" id="vl-drop-b"></span></div><span class="time" id="vl-time-b">—</span></div>'+
+ '<div class="diagram"><h3>Flow comparison</h3><p class="note">Both drops start together on identical ramps. Move the clock to compare their positions at the same instant, or run the race from the start.</p>'+
+ '<div class="lane"><b>A</b><div class="track"><span class="course"><span class="drop" id="vl-drop-a"></span></span></div><span class="time"><span id="vl-time-a">—</span><small id="vl-distance-a"></small></span></div>'+
+ '<div class="lane"><b>B</b><div class="track"><span class="course"><span class="drop" id="vl-drop-b"></span></span></div><span class="time"><span id="vl-time-b">—</span><small id="vl-distance-b"></small></span></div>'+
+ '<label for="vl-clock">Race clock · <output id="vl-clock-out"></output></label><input id="vl-clock" type="range" min="0" step="0.1" value="0">'+
  '<div class="status" id="vl-status" role="status"></div><p class="note" id="vl-fair"></p></div>'+
- '<div class="buttons"><button type="button" id="vl-run">Run comparison</button><button type="button" id="vl-record">Record trial</button><button type="button" id="vl-reset">Reset controls</button></div>'+
+ '<div class="buttons"><button type="button" id="vl-run">Run comparison</button><button type="button" id="vl-pause" disabled>Pause</button><button type="button" id="vl-record">Record trial</button><button type="button" id="vl-reset">Reset controls</button></div>'+
  '<div class="tablewrap"><table><thead><tr><th>Trial</th><th>Fluid A · °C</th><th>Index A</th><th>Fluid B · °C</th><th>Index B</th><th>Faster</th></tr></thead>'+
  '<tbody id="vl-trials"><tr><td colspan="6">No trials yet.</td></tr></tbody></table></div>'+
  '<div class="write"><label>What did the trials show?<textarea id="vl-evidence" placeholder="When we changed..., fluid ... moved more quickly..."></textarea></label>'+
@@ -61,14 +62,55 @@ function build(el){
  '<p class="note">Model times are illustrative relative indexes, not measured seconds. In real life, different liquids may respond differently to temperature; density and viscosity are different properties.</p></section>';
  const $=s=>el.querySelector(s);
  function outcome(){return compare(setting.a,setting.ta,setting.b,setting.tb);}
+ let frame=null, elapsed=0;
+ function stop(){
+  if(frame!==null)cancelAnimationFrame(frame);
+  frame=null;
+  $("#vl-pause").disabled=true;
+ }
+ function placeDrops(time,r){
+  elapsed=time;
+  $("#vl-clock").value=time;
+  $("#vl-clock-out").textContent=time.toFixed(1)+" model units";
+  for(const key of ["a","b"]){
+   const progress=Math.min(1,time/r[key]);
+   $("#vl-drop-"+key).style.left=(progress*100)+"%";
+   $("#vl-distance-"+key).textContent=Math.round(progress*100)+"% of ramp";
+  }
+ }
+ function replay(){
+  stop();
+  const r=outcome(),end=Math.max(r.a,r.b);
+  if(window.matchMedia("(prefers-reduced-motion: reduce)").matches){
+   placeDrops(Math.min(r.a,r.b),r);
+   $("#vl-message").textContent="Showing the first finish. Use the clock to inspect both drops.";
+   return;
+  }
+  placeDrops(0,r);
+  $("#vl-message").textContent="Both drops start together.";
+  $("#vl-pause").disabled=false;
+  const start=performance.now();
+  function tick(now){
+   if(!el.isConnected){stop();return;}
+   placeDrops(Math.min(end,(now-start)*end/3500),r);
+   if(elapsed<end)frame=requestAnimationFrame(tick);
+   else{stop();$("#vl-message").textContent="Both drops reached the line. Move the clock back to compare their positions.";}
+  }
+  frame=requestAnimationFrame(tick);
+ }
  function readout(){
   const r=outcome();
   $("#vl-time-a").textContent=r.a.toFixed(1)+" units";$("#vl-time-b").textContent=r.b.toFixed(1)+" units";
-  $("#vl-drop-a").style.left=Math.round(4+Math.min(1,2.6/r.a)*78)+"%";
-  $("#vl-drop-b").style.left=Math.round(4+Math.min(1,2.6/r.b)*78)+"%";
+  stop();
+  $("#vl-clock").max=Math.max(r.a,r.b);
+  placeDrops(Math.min(r.a,r.b),r);
   const winner=r.faster==="tie"?"Both travel at the same rate in this model.":"Fluid "+r.faster+" flows faster in this model.";
   $("#vl-status").textContent=winner;
-  $("#vl-fair").textContent=r.fairTemperature?"Both fluids have the same temperature. This makes a fairer comparison between liquids.":"Temperatures differ. To compare which liquid is more viscous, match the temperatures first.";
+  const sameLiquid=setting.a===setting.b;
+  $("#vl-fair").textContent=r.fairTemperature
+   ? (sameLiquid?"Both samples are identical. Use this as a control.":"Temperature is held constant. This pair isolates the effect of liquid type.")
+   : (sameLiquid?"Temperatures differ for the same liquid. This pair isolates the effect of temperature.":"Temperatures differ and the liquids differ. Change only one to isolate its effect.");
+  $("#vl-message").textContent="Clock set to the first finish.";
   $("#vl-ta-out").textContent=setting.ta;$("#vl-tb-out").textContent=setting.tb;
  }
  function trials(){
@@ -76,8 +118,10 @@ function build(el){
  }
  el.addEventListener("change",ev=>{const k=ev.target.dataset.fluid;if(k&&FLUIDS[ev.target.value]){setting[k]=ev.target.value;readout();}});
  el.addEventListener("input",ev=>{const k=ev.target.dataset.temperature;if(k){setting["t"+k]=Number(ev.target.value);readout();}});
- $("#vl-run").onclick=()=>{readout();$("#vl-message").textContent="Compare the values and record the result if you want to keep it.";};
- $("#vl-record").onclick=()=>{records.push({a:setting.a,b:setting.b,ta:setting.ta,tb:setting.tb,result:outcome()});if(records.length>8)records.shift();trials();$("#vl-message").textContent="Comparison recorded. Change one variable for the next trial.";};
+ $("#vl-run").onclick=replay;
+ $("#vl-pause").onclick=()=>{stop();$("#vl-message").textContent="Race paused. Move the clock to inspect another instant.";};
+ $("#vl-clock").oninput=ev=>{stop();placeDrops(Number(ev.target.value),outcome());$("#vl-message").textContent="Comparing both drops at the selected instant.";};
+ $("#vl-record").onclick=()=>{records.push({a:setting.a,b:setting.b,ta:setting.ta,tb:setting.tb,result:outcome()});trials();$("#vl-message").textContent="Comparison recorded. Change one variable for the next trial.";};
  $("#vl-reset").onclick=()=>{setting={a:"water",b:"syrup",ta:20,tb:20};$("#vl-a").value=setting.a;$("#vl-b").value=setting.b;$("#vl-ta").value=20;$("#vl-tb").value=20;readout();};
  $("#vl-clear").onclick=()=>{records=[];trials();$("#vl-message").textContent="Trial records cleared.";};
  $("#vl-download").onclick=()=>{

@@ -27,29 +27,51 @@ const endings = {
   speak: ["Noor switched the microphone on. “There’s one row we haven’t counted.” She held up the envelope. Every face in the gym turned towards the balcony.", "Five minutes later the band put their instruments away. The drama club had won by one. On the stairs, someone from the balcony caught Noor’s sleeve. “You counted us,” he said."],
   pass: ["Noor left the microphone off. She slid the envelope under the tally sheet and nudged both towards the announcer. He was already reading from his copy.", "The band struck its first chord. Only then did the announcer break the seal. He struck out his figure and wrote a new one. From the front row the drama club watched him try to wave the music to a stop."]
 };
-let pinned = null;
+let pinned = null, beat = 0;
+const beats = ["Exposition", "Clue", "Discovery", "Decision", "Consequence"];
 function settings() {
   return ["reveal", "decision"].map(name => document.querySelector('input[name="' + name + '"]:checked').value);
 }
+function sceneParts([reveal, decision]) {
+  return [sceneOpening, reveal === "early" ? earlyClue : lateClue, discovery, ...endings[decision]];
+}
 function drawScene() {
-  const [reveal, decision] = settings();
-  const parts = [sceneOpening, reveal === "early" ? earlyClue : lateClue, discovery, ...endings[decision]];
-  byId("scene").replaceChildren(...parts.map(text => node("p", text)));
+  const current = settings(), [reveal, decision] = current;
+  const parts = sceneParts(current), earlier = pinned && sceneParts(pinned);
+  const stepping = byId("step-mode").checked;
+  const count = stepping ? beat + 1 : beats.length;
+  function paragraphs(version) {
+    return version.slice(0, count).map((text, i) => {
+      const p = node("p", text);
+      if (earlier && parts[i] !== earlier[i]) p.classList.add("changed-beat");
+      return p;
+    });
+  }
+  byId("scene").replaceChildren(...paragraphs(parts));
+  if (earlier) byId("earlier").replaceChildren(...paragraphs(earlier));
+  byId("kept").hidden = !earlier;
+  byId("reader-controls").hidden = !stepping;
+  byId("back-beat").disabled = beat === 0;
+  byId("next-beat").disabled = beat === beats.length - 1;
+  byId("beat").textContent = "Beat " + (beat + 1) + " of 5 · " + beats[beat];
+  const pauseQuestions = ["What seems settled at the start?", "What do you know that Noor knows, or does not know yet?", "What makes the two-vote margin matter now?", "What consequence do you expect from Noor’s choice?", "Which earlier line prepared you for this ending?"];
+  byId("pause-question").textContent = pauseQuestions[beat];
   const knowledge = reveal === "early" ? "You know about the votes while Noor is still preparing. Her ordinary movements now delay a discovery you expect." : "You find the votes with Noor. The question changes suddenly from who won to whether she can stop the announcement.";
   const result = decision === "speak" ? "Switching on the microphone forces a public recount before a winner is announced." : "Passing the envelope avoids interrupting the room, but the original result is announced before anyone reads it.";
+  byId("debrief").hidden = stepping && count < beats.length;
   byId("effect").textContent = knowledge + " " + result;
   if (pinned) {
-    const changed = (reveal !== pinned[0] ? 1 : 0) + (decision !== pinned[1] ? 1 : 0);
-    byId("compare").textContent = ["Earlier version kept. Change one choice to compare.", "One choice changed. Find the first line where the two versions differ.", "Both choices changed. Switch one back to isolate its effect."][changed];
+    const changed = parts.slice(0,count).filter((text,i) => text !== earlier[i]).length;
+    byId("compare").textContent = changed ? changed + (changed === 1 ? " visible paragraph changes." : " visible paragraphs change.") + " Look for the shaded passages." : "Both versions read the same up to this point.";
   }
 }
-byId("simulation").addEventListener("change", drawScene);
-byId("keep").onclick = () => {
-  pinned = settings();
-  byId("earlier").replaceChildren(...Array.from(byId("scene").children, p => p.cloneNode(true)));
-  byId("kept").hidden = false;
+byId("simulation").addEventListener("change", e => {
+  if (e.target.id === "step-mode") {beat=0;byId("debrief").open=false;}
   drawScene();
-};
+});
+byId("next-beat").onclick = () => {beat=Math.min(4,beat+1);drawScene();};
+byId("back-beat").onclick = () => {beat=Math.max(0,beat-1);drawScene();};
+byId("keep").onclick = () => {pinned=settings();drawScene();};
 drawScene();
 
 const rounds = [
@@ -69,58 +91,70 @@ const rounds = [
     ["A story mentions a split umbrella rib on page one. On page three the umbrella folds in a storm. Explain how the earlier detail changes the later moment.", "The split rib foreshadows the collapse. It gives readers grounds to anticipate trouble and makes the failure feel earned."],
     ["“When Ren spoke, the table went quiet. Lee put a second spoon beside Ren’s bowl.” Build a claim about Lee, cite one detail and explain its meaning.", "Lee offers quiet support. Setting out a spoon includes Ren in the meal despite everyone’s silence. Award for a defensible claim, a specific detail and a link between them."]]]
 ];
-let completed = new Set(), scores = [0, 0], active = null;
+const gameKey = "ela-showdown-v1";
+function validKey(key) {return typeof key === "string" && /^[0-2]-[0-3]$/.test(key);}
+let turns = [], active = null;
+try {
+  const saved = JSON.parse(sessionStorage.getItem(gameKey));
+  if (saved && Array.isArray(saved.turns) && saved.turns.length <= 12 &&
+      saved.turns.every(x => x && validKey(x.key) && [0,1,2].includes(x.award)) &&
+      new Set(saved.turns.map(x => x.key)).size === saved.turns.length) {
+    turns = saved.turns;
+    if (saved.active && validKey(saved.active.key) && typeof saved.active.revealed === "boolean" &&
+        !turns.some(x => x.key === saved.active.key)) active = saved.active;
+  }
+} catch {}
+function saveGame() {
+  try {sessionStorage.setItem(gameKey, JSON.stringify({turns, active}));} catch {}
+}
+function pointsFor(key) {return Number(key.split("-")[1]) + 1;}
 function drawBoard() {
-  const team = completed.size % 2 + 1;
-  const finished = completed.size === 12;
-  const outcome = scores[0] === scores[1] ? "Tie game." : "Team " + (scores[0] > scores[1] ? 1 : 2) + " wins.";
-  byId("score").textContent = "Team 1 · " + scores[0] + "     |     Team 2 · " + scores[1] + "     |     " + (finished ? outcome : "Team " + team + " picks.");
-  byId("new-game").hidden = !finished;
+  const scores=[0,0];
+  for (const turn of turns) if (turn.award<2) scores[turn.award]+=pointsFor(turn.key);
+  const team=turns.length%2+1, finished=turns.length===12;
+  const outcome=scores[0]===scores[1] ? "Tie game." : "Team "+(scores[0]>scores[1]?1:2)+" wins.";
+  byId("score").textContent="Team 1 · "+scores[0]+"     |     Team 2 · "+scores[1]+"     |     "+(finished?outcome:"Team "+team+" picks.");
+  byId("new-game").hidden=!finished;
+  byId("correct-score").hidden=!turns.length || Boolean(active);
   byId("board").replaceChildren(...rounds.map(([category, questions], c) => {
     const column = document.createElement("div");
     column.append(node("h3", category));
-    questions.forEach(([prompt, model], index) => {
-      const points = index + 1, key = c + "-" + index;
-      const button = node("button", completed.has(key) ? "Played" : points + (points === 1 ? " point" : " points"));
-      button.disabled = completed.has(key) || active !== null;
-      button.setAttribute("aria-label", category + ", " + points + " points" + (completed.has(key) ? ", played" : ""));
-      button.onclick = () => {
-        active = {key, points, model};
-        byId("clue-title").textContent = category + " · " + button.textContent;
-        byId("clue-text").textContent = prompt;
-        byId("model").textContent = "";
-        byId("clue").hidden = false;
-        byId("judging").hidden = true;
-        byId("reveal").hidden = false;
-        drawBoard();
-        byId("clue-title").focus();
-      };
+    questions.forEach((_, index) => {
+      const key=c+"-"+index, points=index+1, played=turns.some(turn=>turn.key===key);
+      const button=node("button",played?"Played":points+(points===1?" point":" points"));
+      button.disabled=played||Boolean(active);
+      button.setAttribute("aria-label",category+", "+points+" points"+(played?", played":""));
+      button.onclick=()=>{active={key,revealed:false};saveGame();drawBoard();byId("clue-title").focus();};
       column.append(button);
     });
     return column;
   }));
-}
-byId("reveal").onclick = () => {
+  byId("clue").hidden=!active;
   if (!active) return;
-  byId("model").textContent = active.model;
-  byId("judging").hidden = false;
-  byId("reveal").hidden = true;
-  byId("awards").replaceChildren(...["Team 1 scores", "Team 2 scores", "No points"].map((text, i) => {
-    const button = node("button", text);
-    button.onclick = () => {
-      if (!active) return;
-      if (i < 2) scores[i] += active.points;
-      completed.add(active.key);
-      active = null;
-      byId("clue").hidden = true;
-      drawBoard();
-      (byId("board").querySelector("button:enabled") || byId("new-game")).focus();
-    };
-    return button;
-  }));
-  byId("awards").firstElementChild.focus();
+  const [c,i]=active.key.split("-").map(Number), points=i+1;
+  byId("clue-title").textContent=rounds[c][0]+" · "+points+(points===1?" point":" points");
+  byId("clue-text").textContent=rounds[c][1][i][0];
+  byId("model").textContent=active.revealed?rounds[c][1][i][1]:"";
+  byId("judging").hidden=!active.revealed;
+  byId("reveal").hidden=active.revealed;
+}
+byId("reveal").onclick=()=>{if(active){active.revealed=true;saveGame();drawBoard();byId("awards").firstElementChild.focus();}};
+byId("awards").replaceChildren(...["Team 1 scores","Team 2 scores","No points"].map((label,award)=>{
+  const button=node("button",label);
+  button.onclick=()=>{
+    if(!active?.revealed)return;
+    turns.push({key:active.key,award});
+    active=null;saveGame();drawBoard();
+    (byId("board").querySelector("button:enabled")||byId("new-game")).focus();
+  };
+  return button;
+}));
+byId("correct-score").onclick=()=>{
+  const last=turns.pop();
+  if(!last)return;
+  active={key:last.key,revealed:true};saveGame();drawBoard();byId("awards").firstElementChild.focus();
 };
-byId("new-game").onclick = () => { completed.clear(); scores = [0, 0]; drawBoard(); byId("board").querySelector("button").focus(); };
+byId("new-game").onclick=()=>{turns=[];active=null;saveGame();drawBoard();byId("board").querySelector("button").focus();};
 drawBoard();
 
 const testItems = [

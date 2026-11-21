@@ -44,6 +44,21 @@ async function checkNoHorizontalOverflow(page,label){
    await page.locator("#resource-none").waitFor({state:"visible"});
    await capture(page,"resources-"+subject);
   }
+  stage="Compare thirteen probability experiments";
+  for(const width of [390,1280]){
+   await page.setViewportSize({width,height:width===390?844:900});
+   await goto(page,"/math/#prob/p2","#pl-class-run");
+   await page.locator("#pl-class-run").click();
+   await page.locator("#pl-pair").selectOption("12");
+   assert.equal(await page.locator(".pl-class-chart circle").count(),26);
+   assert.match(await page.locator("#pl-pair-result").innerText(),/Pair 13/);
+   await page.locator("#pl-target").selectOption("1");
+   assert.equal(await page.locator("#pl-pair").inputValue(),"12");
+   await page.locator(".pl-class").screenshot({path:path.join(artifacts,"class-trials-"+width+".png")});
+   await checkNoHorizontalOverflow(page,"class trials "+width);
+   await page.locator("#pl-mode").selectOption("die");
+   assert.equal(await page.locator(".pl-class-chart").count(),0);
+  }
   stage="Math integer operations";
   await goto(page,"/math/#int","#il-problem");
   await page.locator("#il-problem").selectOption("10"); // 4 - (-3)
