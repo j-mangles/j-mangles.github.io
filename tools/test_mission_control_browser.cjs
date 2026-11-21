@@ -9,6 +9,43 @@ const overflow=async(page,label)=>{
  const dims=await page.evaluate(()=>({scroll:document.documentElement.scrollWidth,viewport:window.innerWidth}));
  assert.ok(dims.scroll<=dims.viewport+4,label+" has horizontal overflow: "+JSON.stringify(dims));
 };
+async function checkEvidenceChallenge(page,width) {
+ await page.goto(BASE+"/ela/story-lab.html#evidence");
+ await page.locator("#ec-set").selectOption("roger");
+ await page.locator("#ec-start").click();
+ assert.ok(await page.locator("#ec-check").isDisabled());
+ async function answer(index) {
+  await page.locator("#ec-options input").nth(index).check();
+  await page.locator("#ec-check").click();
+ }
+ await answer(0);
+ assert.match(await page.locator("#ec-feedback").innerText(),/No point.*purse/);
+ await page.reload();
+ assert.ok(await page.locator("#ec-next").isVisible());
+ assert.ok(await page.locator("#ec-options input").first().isDisabled());
+ await page.locator("#ec-next").click();
+ assert.match(await page.locator("#ec-evidence").innerText(),/sits where/);
+ if(width===390||width===1280){
+  await overflow(page,"story evidence "+width);
+  await page.screenshot({path:path.join(output,"mission-evidence-round-"+width+".png"),fullPage:true});
+ }
+ await answer(0);await page.locator("#ec-next").click();
+ await answer(2);await page.locator("#ec-next").click();
+ await answer(1);await page.locator("#ec-next").click();
+ assert.match(await page.locator("#ec-total").innerText(),/First-pass score · 3 of 4/);
+ await page.locator("#ec-retry").click();
+ assert.match(await page.locator("#ec-round").innerText(),/Practice · Round 1 of 1/);
+ await answer(1);await page.locator("#ec-next").click();
+ await answer(0);await page.locator("#ec-next").click();
+ assert.match(await page.locator("#ec-total").innerText(),/Practice score · 2 of 2/);
+ assert.ok(await page.locator("#ec-retry").isHidden());
+ await page.locator("#ec-again").click();
+ await page.locator("#ec-set").selectOption("all");
+ await page.locator("#ec-start").click();
+ assert.match(await page.locator("#ec-round").innerText(),/Round 1 of 8/);
+ await page.locator("#ec-leave").click();
+ assert.ok(await page.locator("#ec-start").isVisible());
+}
 async function checkStoryLab(page,width) {
  await page.goto(BASE+"/ela/story-lab.html#simulation");
  await page.locator("#keep").click();
@@ -45,9 +82,17 @@ async function checkStoryLab(page,width) {
  await page.locator("#student").fill("Test student");
  await page.locator('input[name="q1"]').nth(1).check();
  await page.locator("#questions textarea").first().fill("Two details from the scene.");
+ await page.locator("#test-question-5 .flag-question").click();
  await page.reload();
  assert.match(await page.locator("#progress").textContent(),/2 of 8/);
  assert.equal(await page.locator("#questions textarea").first().inputValue(),"Two details from the scene.");
+ assert.match(await page.locator("#question-map button").nth(4).innerText(),/Answered · Flagged/);
+ await page.getByRole("button",{name:"Question 5, Answered, flagged",exact:true}).click();
+ assert.ok(await page.locator("#test-question-5 textarea").evaluate(e=>e===document.activeElement));
+ await page.locator("#review-open").click();
+ assert.ok(await page.locator('#test-question-2 input').first().evaluate(e=>e===document.activeElement));
+ await page.locator("#test-question-5 .flag-question").click();
+ assert.doesNotMatch(await page.locator("#progress").innerText(),/Flagged/);
  const download=page.waitForEvent("download");
  await page.locator("#download").click();
  assert.equal((await download).suggestedFilename(),"blue-line-responses.txt");
@@ -162,6 +207,7 @@ async function checkStoryLab(page,width) {
    assert.equal(await guest.locator('#home-board a[href*="#egypt-l1"]').count(),1);
    await overflow(guest,"class homepage pins "+width);
    await checkStoryLab(guest,width);
+   await checkEvidenceChallenge(guest,width);
    await guest.goto(BASE+"/ela/opening.html?lesson=stories/plot");
    const week=guest.locator("#week");
    assert.equal(await week.locator("option").count(),40);

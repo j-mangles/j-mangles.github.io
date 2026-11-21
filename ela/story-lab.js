@@ -7,7 +7,7 @@ const node = (tag, text) => {
 };
 
 function route() {
-  const current = ["review", "test"].includes(location.hash.slice(1)) ? location.hash.slice(1) : "simulation";
+  const current = ["evidence", "review", "test"].includes(location.hash.slice(1)) ? location.hash.slice(1) : "simulation";
   for (const link of document.querySelectorAll(".lab nav a")) {
     const selected = link.hash === "#" + current;
     byId(link.hash.slice(1)).hidden = !selected;
@@ -170,6 +170,8 @@ const testItems = [
 const form = byId("assessment"), fields = [], storageKey = "ela-blue-line-responses-v1";
 let saved = {};
 try { saved = JSON.parse(sessionStorage.getItem(storageKey)) || {}; } catch {}
+if (!saved || typeof saved !== "object") saved = {};
+const flags = new Set(Array.isArray(saved.flags) ? saved.flags.filter(n => Number.isInteger(n) && n >= 1 && n <= testItems.length) : []);
 byId("student").value = typeof saved.name === "string" ? saved.name : "";
 testItems.forEach(([prompt, options], i) => {
   const group = document.createElement("fieldset"), number = i + 1;
@@ -188,6 +190,21 @@ testItems.forEach(([prompt, options], i) => {
     area.oninput = () => { printAnswer.textContent = area.value; };
     group.append(area, printAnswer);
   }
+  group.id = "test-question-" + number;
+  const flag = node("button", "");
+  flag.className = "flag-question";
+  flag.type = "button";
+  flag.onclick = () => {
+    if (flags.has(number)) flags.delete(number);
+    else flags.add(number);
+    storeTest();
+  };
+  group.append(flag);
+  const jump = node("button", "");
+  jump.type = "button";
+  jump.className = "map-button";
+  jump.onclick = () => group.querySelector("input, textarea").focus();
+  byId("question-map").append(jump);
   fields.push(group);
   byId("questions").append(group);
 });
@@ -195,15 +212,32 @@ function answers() {
   return fields.map(group => (group.querySelector("textarea, input:checked")?.value || "").trim());
 }
 function progress() {
-  byId("progress").textContent = answers().filter(Boolean).length + " of 8 answered.";
+  const responses = answers();
+  const map = byId("question-map").children;
+  fields.forEach((field, i) => {
+    const number = i + 1, flagged = flags.has(number);
+    const status = responses[i] ? "Answered" : "Open";
+    map[i].textContent = number + " · " + status + (flagged ? " · Flagged" : "");
+    map[i].setAttribute("aria-label", "Question " + number + ", " + status + (flagged ? ", flagged" : ""));
+    const flag = field.querySelector(".flag-question");
+    flag.textContent = flagged ? "Remove flag" : "Flag for review";
+    flag.setAttribute("aria-pressed", String(flagged));
+  });
+  byId("progress").textContent = responses.filter(Boolean).length + " of 8 answered." + (flags.size ? " Flagged for review: " + [...flags].sort((a,b)=>a-b).join(", ") + "." : "");
+  byId("review-open").hidden = responses.every(Boolean) && !flags.size;
 }
 form.addEventListener("submit", e => e.preventDefault());
-form.addEventListener("input", () => {
-  const values = {name:byId("student").value};
+form.addEventListener("input", storeTest);
+byId("review-open").onclick = () => {
+  const target = answers().findIndex((answer, i) => !answer || flags.has(i + 1));
+  if (target >= 0) fields[target].querySelector("input, textarea").focus();
+};
+function storeTest() {
+  const values = {name:byId("student").value, flags:[...flags]};
   answers().forEach((answer, i) => { values[i + 1] = answer; });
   try { sessionStorage.setItem(storageKey, JSON.stringify(values)); } catch { byId("test-status").textContent = "Session saving is unavailable. Download a copy before leaving."; }
   progress();
-});
+}
 byId("download").onclick = () => {
   const responses = answers();
   const lines = ["The blue line · Grade 8 ELA", "Name: " + byId("student").value, ...testItems.map(([q], i) => (i + 1) + ". " + q + "\n" + (responses[i] || "[Unanswered]"))];

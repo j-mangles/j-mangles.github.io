@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="../assets/fonts.css"><link rel="stylesheet" href="../assets/site.css"><link rel="stylesheet" href="story-lab.css"></head>
 <body data-subject="ela"><main class="lab">
 <header><a href="./#stories">Grade 8 ELA · Short Stories</a><h1>Short Story Lab</h1>
-<nav aria-label="Activities"><a href="#simulation">Story simulation</a><a href="#review">Team review</a><a href="#test">Individual test</a></nav></header>
+<nav aria-label="Activities"><a href="#simulation">Story simulation</a><a href="#review">Team review</a><a href="#evidence">Evidence challenge</a><a href="#test">Individual test</a></nav></header>
 <section id="simulation"><h2>The last envelope</h2><p>The school vote is over. Noor has the microphone. Change who sees the trouble coming and what Noor does when it arrives.</p>
 <div class="controls"><fieldset><legend>When does the reader see the missing votes?</legend><label><input type="radio" name="reveal" value="early" checked> Before Noor does</label><label><input type="radio" name="reveal" value="late"> Alongside Noor</label></fieldset>
 <fieldset><legend>What does Noor do at the microphone?</legend><label><input type="radio" name="decision" value="speak" checked> Interrupt the announcement</label><label><input type="radio" name="decision" value="pass"> Pass the envelope quietly</label></fieldset></div>
@@ -18,12 +18,22 @@
 <article id="clue" hidden><h3 id="clue-title" tabindex="-1"></h3><p class="prompt" id="clue-text"></p><button id="reveal">Reveal a strong answer</button>
 <div id="judging" hidden><p class="sample" id="model"></p><div class="actions" id="awards"></div></div></article>
 <button id="correct-score" hidden>Correct last award</button> <button id="new-game" hidden>Play again</button></section>
+<section id="evidence" hidden aria-labelledby="ec-title">
+<h2 id="ec-title">Which detail proves it?</h2>
+<p>Read a claim about a class story. Pick the detail that best supports it, then explain the link. Earn one point for each first choice. Play on your own or agree on each choice with a partner.</p>
+<div id="ec-setup"><label for="ec-set">Choose your stories</label><select id="ec-set"></select> <button id="ec-start" type="button">Start challenge</button></div>
+<div id="ec-play" hidden>
+<p id="ec-round"></p><h3 class="ec-claim" id="ec-claim" tabindex="-1"></h3>
+<p id="ec-evidence" hidden></p><fieldset id="ec-choices"><legend id="ec-question" tabindex="-1"></legend><div id="ec-options"></div></fieldset>
+<p id="ec-feedback" role="status"></p><div class="actions"><button id="ec-check" type="button">Check choice</button><button id="ec-next" type="button" hidden></button><button type="button" id="ec-leave">Choose a different set</button></div></div>
+<div id="ec-results" hidden><h3 id="ec-results-title" tabindex="-1">Round results</h3><p id="ec-total"></p><ul id="ec-breakdown"></ul><div class="actions"><button type="button" id="ec-retry">Practise missed rounds</button><button type="button" id="ec-again">Choose stories</button></div></div>
+</section>
 <section id="test" hidden><h2>The blue line</h2><p>Individual short-story test · 20 marks · about 30 minutes</p><p>Read the scene, then answer all eight questions. For written responses, a short quotation or an accurate detail counts as evidence.</p>
 <article class="passage" id="blue-line"><h3>1</h3><p>By four o’clock, the hall smelled of wet wool and sawdust. Kit knelt beside the long-jump pit with a tin of blue chalk. A metre from his knee, the old school record stood on a little wooden sign. He had painted the numbers himself. They belonged to his sister.</p>
 <h3>2</h3><p>On her last jump, Mara landed beyond the sign. Sand lifted over Kit’s shoes. He pushed a blue peg into the dent made by her heels. Behind him, the crowd began stamping the bleachers. Then he saw a second dent, closer to the board, where her hand had brushed the sand. In the morning he had read the rule aloud to the officials: measure from the nearest mark made on landing.</p>
 <h3>3</h3><p>Kit laid the tape to the blue peg. A record by two centimetres. He measured again from the shallow handprint. Three centimetres short. He looked up at his sister. She had folded the programme so tightly that only her old number showed.</p>
 <h3>4</h3><p>“Ready?” the announcer asked. Kit pressed the peg deeper with his thumb. The blue dust settled into the whorls of his skin. Then he pulled it out and planted it at the handprint. He held the tape until Mara came over and showed her both marks. She studied them, nodded once, and raked the pit smooth for the next jumper.</p>
 <h3>5</h3><p>On the way out his sister tapped the wooden sign. “Another year,” she said. Kit put the chalk tin in his pocket. What he kept seeing was the rake passing over the place where his thumb had been.</p></article>
-<form id="assessment"><label for="student">Name</label><input id="student" autocomplete="off"><div id="questions"></div>
-<p id="progress" role="status"></p><div class="actions"><button type="button" id="download">Download my responses</button><button type="button" id="print">Print test or save PDF</button></div><p class="note">Give your completed copy to your teacher. This page keeps responses in this tab for this session.</p><p id="test-status" role="status"></p></form></section>
-</main><script src="story-lab.js"></script></body></html>
+<form id="assessment"><label for="student">Name</label><input id="student" autocomplete="off"><div class="test-index"><h3>Question map</h3><p>Jump to any question. Flag one to revisit before handing in.</p><div class="actions" id="question-map" aria-label="Question map"></div></div><div id="questions"></div>
+<p id="progress" role="status"></p><div class="actions"><button type="button" id="review-open" hidden>Review unfinished or flagged questions</button><button type="button" id="download">Download my responses</button><button type="button" id="print">Print test or save PDF</button></div><p class="note">Give your completed copy to your teacher. This page keeps responses in this tab for this session.</p><p id="test-status" role="status"></p></form></section>
+</main><script src="story-lab.js"></script><script src="evidence-challenge.js"></script></body></html>

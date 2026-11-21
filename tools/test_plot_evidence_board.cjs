@@ -11,7 +11,7 @@ assert.equal(ctx.window.HUB.tools.stories,old,"Preserve the original unit Plot A
 assert.equal(typeof ctx.window.HUB.lessonTools["stories/plot"],"function");
 assert.equal(typeof ctx.window.HUB.lessonTools["stories/snack"],"function","Embed the evidence board in the Snack Attack lesson");
 assert.deepEqual(Array.from(P.STAGES,x=>x.name),["Exposition","Inciting incident","Rising action","Climax","Falling action","Resolution"]);
-assert.deepEqual(Array.from(P.TEXTS,x=>x.id),["snack","thankyou"]);
+assert.deepEqual(Array.from(P.TEXTS,x=>x.id),["present","landlady","snack","thankyou"]);
 assert.equal(P.initial().length,6);
 const a=P.initial();
 assert.ok(a.every(x=>x.moment===""&&x.evidence===""&&x.tension===0));
@@ -21,6 +21,16 @@ assert.ok(g.includes("Climax 9 of 10")&&g.includes('role="img"')&&g.includes("no
 assert.ok(!g.includes("NaN")&&!g.includes("undefined"));
 const report=P.report("thankyou",a,"A student explanation of their interpretation");
 assert.ok(report.includes("Thank You, Ma’am")&&report.includes("4. Climax")&&report.includes("My tension rating: 9/10")&&report.includes("A student explanation"));
+const first={rows:a.map(r=>({tension:r.tension})),end:6};
+a[3].tension=6;
+const open=P.graph(a,4,first);
+assert.match(open,/Last stage shown: Climax/);
+assert.match(open,/First reading:.*Climax 9 of 10/);
+assert.equal((open.match(/<circle /g)||[]).length,4);
+assert.equal((open.match(/<polyline /g)||[]).length,2);
+const openReport=P.report("landlady",a,"Billy's fate stays uncertain.",4,first);
+assert.match(openReport,/Falling action · Left open/);
+assert.match(openReport,/First reading · .*Climax 9\/10/);
 const adversarial=P.initial();adversarial[0].moment='<img src=x onerror=alert(1)>';adversarial[0].tension='"><script>alert(1)</script>';
 const chart=P.graph(adversarial);
 assert.ok(!chart.includes("<script>")&&!chart.includes("<img"));
