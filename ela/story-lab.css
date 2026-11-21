@@ -33,3 +33,8 @@
 #question-map{gap:.35rem}.lab .map-button{font-size:.95rem;padding:.45em .65em}
 .lab .flag-question{margin-top:.6rem;font-size:.9rem}.lab .flag-question[aria-pressed="true"]{background:var(--soft);font-weight:700}
 @media print{.lab .test-index,.lab .flag-question,#evidence{display:none!important}}
+
+.cmp-texts{display:flex;flex-wrap:wrap;gap:.8rem 1.2rem;margin:1rem 0}
+.cmp-texts label{font-weight:650}.cmp-texts select{display:block;max-width:100%;font:inherit;color:var(--ink);background:var(--paper);min-height:44px;border:1px solid var(--rule);padding:.45rem}
+#comparison-form .cmp-criteria{margin:.3rem 0 .7rem}.lab #comparison-form fieldset{margin-block:1.1rem}
+@media print{#cmp-progress,#cmp-status{display:none}.lab #comparison-form fieldset{break-inside:auto}.lab #comparison-form .print-answer{min-height:4em}.lab #comparison-form .cmp-criteria{color:#222}}

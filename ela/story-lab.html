@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="../assets/fonts.css"><link rel="stylesheet" href="../assets/site.css"><link rel="stylesheet" href="story-lab.css"></head>
 <body data-subject="ela"><main class="lab">
 <header><a href="./#stories">Grade 8 ELA · Short Stories</a><h1>Short Story Lab</h1>
-<nav aria-label="Activities"><a href="#simulation">Story simulation</a><a href="#review">Team review</a><a href="#evidence">Evidence challenge</a><a href="#test">Individual test</a></nav></header>
+<nav aria-label="Activities"><a href="#simulation">Story simulation</a><a href="#review">Team review</a><a href="#evidence">Evidence challenge</a><a href="#test">Individual test</a><a href="#comparison">Comparison test</a></nav></header>
 <section id="simulation"><h2>The last envelope</h2><p>The school vote is over. Noor has the microphone. Change who sees the trouble coming and what Noor does when it arrives.</p>
 <div class="controls"><fieldset><legend>When does the reader see the missing votes?</legend><label><input type="radio" name="reveal" value="early" checked> Before Noor does</label><label><input type="radio" name="reveal" value="late"> Alongside Noor</label></fieldset>
 <fieldset><legend>What does Noor do at the microphone?</legend><label><input type="radio" name="decision" value="speak" checked> Interrupt the announcement</label><label><input type="radio" name="decision" value="pass"> Pass the envelope quietly</label></fieldset></div>
@@ -36,4 +36,17 @@
 <h3>5</h3><p>On the way out his sister tapped the wooden sign. “Another year,” she said. Kit put the chalk tin in his pocket. What he kept seeing was the rake passing over the place where his thumb had been.</p></article>
 <form id="assessment"><label for="student">Name</label><input id="student" autocomplete="off"><div class="test-index"><h3>Question map</h3><p>Jump to any question. Flag one to revisit before handing in.</p><div class="actions" id="question-map" aria-label="Question map"></div></div><div id="questions"></div>
 <p id="progress" role="status"></p><div class="actions"><button type="button" id="review-open" hidden>Review unfinished or flagged questions</button><button type="button" id="download">Download my responses</button><button type="button" id="print">Print test or save PDF</button></div><p class="note">Give your completed copy to your teacher. This page keeps responses in this tab for this session.</p><p id="test-status" role="status"></p></form></section>
+<section id="comparison" hidden aria-labelledby="comparison-title">
+<h2 id="comparison-title">Two choices, two consequences</h2>
+<p>Open-book comparison · 12 marks · about 25–30 minutes</p>
+<p class="prompt">What do two stories suggest about taking responsibility for a choice?</p>
+<p>Choose two stories you have read. Use your class copies to check details. An accurate description of a moment or a short quotation counts as evidence.</p>
+<form id="comparison-form">
+<label for="cmp-name">Name</label><input id="cmp-name" autocomplete="off">
+<div class="cmp-texts"><label>First story<select id="cmp-first" required></select></label><label>Second story<select id="cmp-second" required></select></label></div>
+<div id="cmp-writing"></div>
+<p role="status" id="cmp-progress"></p>
+<div class="actions"><button type="button" id="cmp-download">Download my comparison</button><button type="button" id="cmp-print">Print comparison or save PDF</button></div>
+<p class="note">This tab keeps your draft during this session. Hand in a downloaded or printed copy.</p>
+<p id="cmp-status" role="status"></p></form></section>
 </main><script src="story-lab.js"></script><script src="evidence-challenge.js"></script></body></html>

@@ -2,12 +2,6 @@
    All details are paraphrased. Each claim asks for one particular connection. */
 (() => {
   "use strict";
-  const stories = {
-    roger: "Thank You, Ma’am",
-    summer: "All Summer in a Day",
-    house: "The Landlady",
-    paw: "The Monkey’s Paw"
-  };
   const rounds = [
     {
       story: "roger", skill: "Character change",
@@ -128,7 +122,7 @@
   let run = null;
   const select = el("set");
   select.add(new Option("All four stories · 8 rounds", "all"));
-  for (const [id,title] of Object.entries(stories)) select.add(new Option(title + " · 2 rounds", id));
+  for (const [id,title] of Object.entries(classStories)) select.add(new Option(title + " · 2 rounds", id));
 
   function save() {
     try {
@@ -162,7 +156,7 @@
       el("total").textContent = (run.practice ? "Practice score" : "First-pass score") + " · " + scores.reduce((a,b) => a+b,0) + " of " + (scores.length*2) + " points.";
       el("breakdown").replaceChildren(...run.ids.map((id,i) => {
         const r = rounds[id], a = run.answers[i], li = document.createElement("li");
-        li.textContent = stories[r.story] + " · " + r.skill + " · " + scores[i] + "/2" +
+        li.textContent = classStories[r.story] + " · " + r.skill + " · " + scores[i] + "/2" +
           (scores[i] === 2 ? "" : " · Revisit " + [a[0] !== r.detailKey && "the detail", a[1] !== r.reasonKey && "the explanation"].filter(Boolean).join(" and ") + ".");
         return li;
       }));
@@ -172,7 +166,7 @@
     const r = rounds[run.ids[run.at]], reason = run.part === 1, selected = run.answers[run.at][run.part];
     const options = reason ? r.reasons : r.details, correct = reason ? r.reasonKey : r.detailKey;
     const locked = selected !== undefined;
-    el("round").textContent = (run.practice ? "Practice · " : "") + "Round " + (run.at+1) + " of " + run.ids.length + " · " + stories[r.story];
+    el("round").textContent = (run.practice ? "Practice · " : "") + "Round " + (run.at+1) + " of " + run.ids.length + " · " + classStories[r.story];
     el("claim").textContent = r.claim;
     el("question").textContent = reason ? "Which explanation links this detail to the claim?" : "Which detail gives the strongest support?";
     el("evidence").hidden = !reason;

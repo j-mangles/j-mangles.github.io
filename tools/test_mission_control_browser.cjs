@@ -99,9 +99,29 @@ async function checkStoryLab(page,width) {
  await page.emulateMedia({media:"print"});
  assert.equal(await page.locator(".print-answer").first().innerText(),"Two details from the scene.");
  await page.emulateMedia({media:"screen"});
+ await page.getByRole("link",{name:"Comparison test",exact:true}).click();
+ await page.locator("#cmp-name").fill("Reader");
+ await page.locator("#cmp-first").selectOption("roger");
+ assert.ok(await page.locator('#cmp-second option[value="roger"]').isDisabled());
+ await page.locator("#cmp-second").selectOption("summer");
+ await page.locator("#cmp-writing textarea").first().fill("My comparative claim.");
+ await page.reload();
+ assert.equal(await page.locator("#cmp-first").inputValue(),"roger");
+ assert.equal(await page.locator("#cmp-second").inputValue(),"summer");
+ assert.match(await page.locator("#cmp-progress").innerText(),/2 of 2 stories chosen. 1 of 4/);
+ assert.equal(await page.locator("#cmp-writing textarea").first().inputValue(),"My comparative claim.");
+ const comparisonFile=page.waitForEvent("download");
+ await page.locator("#cmp-download").click();
+ const file=await comparisonFile;
+ assert.equal(file.suggestedFilename(),"two-story-comparison.txt");
+ assert.match(fs.readFileSync(await file.path(),"utf8"),/First story: Thank You, Ma’am[\s\S]*Second story: All Summer in a Day[\s\S]*My comparative claim/);
+ await page.emulateMedia({media:"print"});
+ assert.equal(await page.locator("#cmp-writing .print-answer").first().innerText(),"My comparative claim.");
+ assert.ok(await page.locator("#test").isHidden());
+ await page.emulateMedia({media:"screen"});
  if(width===1280||width===390){
   await page.setViewportSize({width,height:width===390?844:900});
-  for(const mode of ["simulation","review","test"]){
+  for(const mode of ["simulation","review","test","comparison"]){
    await page.goto(BASE+"/ela/story-lab.html#"+mode);
    await overflow(page,"short story "+mode);
    await page.screenshot({path:path.join(output,"mission-story-"+mode+"-"+width+".png")});
