@@ -21,6 +21,42 @@ async function checkNoHorizontalOverflow(page,label){
  const o=await page.evaluate(()=>({width:window.innerWidth,scroll:document.documentElement.scrollWidth}));
  assert.ok(o.scroll<=o.width+6,label+" overflows: "+JSON.stringify(o));
 }
+async function settlement(page,width){
+ await goto(page,"/social-studies/river-valley-lab.html?civilization=egypt#settlement","#rv-first");
+ await page.locator("#rv-first").selectOption("egypt");
+ for(const n of ["1","2","4"]){
+  await page.locator("#rv-factor").selectOption(n);
+  await page.locator("#rv-pin").click();
+ }
+ assert.equal(await page.locator("#rv-evidence li").count(),3);
+ await page.locator("#rv-flood-lab > summary").click();
+ await page.locator('#rv-flood-model [data-flood="low"]').click();
+ await page.locator("#rv-record-flood").click();
+ assert.ok(await page.locator("#rv-record-flood").isDisabled());
+ await page.locator('#rv-flood-model [data-flood="high"]').click();
+ await page.locator("#rv-record-flood").click();
+ assert.match(await page.locator("#rv-flood-result").innerText(),/Same month, different flood heights/);
+ assert.match(await page.locator("#rv-readings li").last().innerText(),/21 model cubits.*water reaches the village/);
+ await page.locator("#rv-reveal").click();
+ assert.ok(await page.locator("#rv-first").isDisabled());
+ await page.locator("#rv-last").selectOption("mesopotamia");
+ await page.locator("#rv-reason").fill("The timing, height and barriers change how a family can plan.");
+ await page.reload();
+ assert.equal(await page.locator("#rv-last").inputValue(),"mesopotamia");
+ assert.match(await page.locator("#rv-progress").innerText(),/ready to hand in/);
+ assert.match(await page.locator("#rv-finding").innerText(),/lower Nile peak/);
+ const [file]=await Promise.all([page.waitForEvent("download"),page.locator("#rv-download").click()]);
+ assert.equal(file.suggestedFilename(),"river-settlement-investigation.txt");
+ const output=fs.readFileSync(await file.path(),"utf8");
+ assert.match(output,/Initial settlement: Nile Valley/);assert.match(output,/Final settlement: Tigris–Euphrates/);
+ assert.match(output,/Nile model reading: October, low flood: 12 model cubits/);
+ assert.match(output,/mountain|sowing/);assert.match(output,/timing, height and barriers/);
+ await checkNoHorizontalOverflow(page,"river settlement "+width);
+ await page.locator("#rv-flood-lab > summary").click();
+ await page.locator("#rv-flood-lab").screenshot({path:path.join(artifacts,"nile-pair-"+width+".png")});
+ await page.locator("#rv-flood-lab > summary").click();
+ await page.locator("#settlement").screenshot({path:path.join(artifacts,"river-settlement-"+width+".png")});
+}
 (async()=>{
  const browser=await chromium.launch({channel:"chrome",headless:true,args:["--disable-dev-shm-usage"]});
  let page=null,stage="initial";
@@ -314,6 +350,9 @@ async function checkNoHorizontalOverflow(page,label){
   assert.match(await page.locator("#game h2").innerText(),/canal/i);
   assert.match(await page.locator("#game").innerText(),/Irrigation|canal/i);
   await capture(page,"river-valley-mesopotamia-desktop");
+  await page.locator('[data-world="egypt"]').click();
+  assert.equal(await page.locator("#final").inputValue(),"Rivers shaped settlement, while human choices shaped fairness.");
+  await settlement(page,1280);
   stage="Ancient Greece coming-up release state";
   await goto(page,"/social-studies/#greece",'#tabs [data-id="greece"]');
   await page.locator("#panel .eyebrow").waitFor({state:"visible"});
@@ -571,6 +610,7 @@ async function checkNoHorizontalOverflow(page,label){
   await goto(phone,"/social-studies/river-valley-lab.html?civilization=egypt","#game .decision");
   await checkNoHorizontalOverflow(phone,"River Valley Lab mobile");
   await capture(phone,"river-valley-egypt-mobile");
+  await settlement(phone,390);
   await goto(phone,"/social-studies/temple-walkthrough.html","#zone-title");
   await checkNoHorizontalOverflow(phone,"Egyptian Temple Walkthrough mobile");
   await phone.locator('[data-zone="2"]').click();
