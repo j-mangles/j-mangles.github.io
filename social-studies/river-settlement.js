@@ -57,8 +57,11 @@
     by("field").hidden=!state.revealed;
     by("finding").textContent=state.revealed?reports[state.report].clue:"";
     by("question").textContent=state.revealed?reports[state.report].prompt:"";
-    by("saved-choice").textContent=state.revealed?"Your original choice was the "+region[state.first]+".":"Choose a starting valley before opening a field report.";
+    by("saved-choice").textContent=state.locked?"Your original choice was the "+region[state.first]+".":"Choose a starting valley before opening a field report.";
     by("reason").value=state.reason;
+    progress();
+  }
+  function progress(){
     const missing=[];
     if(!state.first)missing.push("a starting valley");
     if(state.pins.length<3)missing.push((3-state.pins.length)+" more evidence factor"+(state.pins.length===2?"":"s"));
@@ -104,7 +107,7 @@
   };
   by("report").onchange=e=>{state.revealed=false;set("report",Number(e.target.value));};
   by("reveal").onclick=()=>{if(state.first){state.locked=true;set("revealed",true);}};
-  by("reason").oninput=e=>set("reason",e.target.value);
+  by("reason").oninput=e=>{state.reason=e.target.value;save();progress();};
   by("download").onclick=()=>{
     const output=["Which river would you choose?","Initial settlement: "+(region[state.first]||"[Not chosen]"),
       ...state.pins.map(i=>factors[i][0]+"\nNile: "+factors[i][1]+"\nTigris–Euphrates: "+factors[i][2]),
