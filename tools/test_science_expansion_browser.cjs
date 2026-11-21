@@ -24,7 +24,7 @@ const tasks=[
   assert.equal(await page.locator(".erd .point").count(),15,"The interactive graph uses all sample data points");
   assert.equal(await page.locator(".odi").count(),1,"The existing oxygen index model remains available");
   await page.goto(origin+"/science/#cells/circulatory/oxygen-trials");
-  assert.equal(await page.locator("#oxygen-trials").evaluate(e=>e===document.activeElement),true);
+  await page.waitForFunction(()=>document.activeElement?.id==="oxygen-trials",{},{timeout:10000});
   await page.locator("#od-case").selectOption("run");
   await page.locator("#od-change").selectOption("circulation:20");
   assert.ok(await page.locator("#od-run-test").isDisabled());
