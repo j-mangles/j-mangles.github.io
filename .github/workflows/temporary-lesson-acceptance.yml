@@ -1,0 +1,49 @@
+name: Full lesson acceptance
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/temporary-lesson-acceptance.yml'
+permissions:
+  contents: read
+jobs:
+  full-suite:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run all classroom checks
+        run: |
+          npm install --no-save --no-package-lock playwright-core@1.56.1
+          python3 -m http.server 8765 --bind 127.0.0.1 > /tmp/classroom-http.log 2>&1 &
+          for wait in {1..20}; do curl -fsS http://127.0.0.1:8765/ -o /dev/null && break; sleep 1; done
+          failed=0
+          for test_file in tools/*.cjs; do
+            node "$test_file" > /tmp/classroom-test.log 2>&1 || { echo "::error::$test_file"; tail -35 /tmp/classroom-test.log; failed=1; }
+          done
+          exit "$failed"
+      - name: Check changed activity layouts
+        if: always()
+        run: |
+          git clone -q --depth 1 https://github.com/pbakaus/impeccable.git /tmp/layout-tool
+          checker=/tmp/layout-tool/.agents/skills/impeccable/scripts/impeccable
+          "$checker" context --target science/oxygen-review.html > /tmp/classroom-context.txt
+          "$checker" detect --json science/oxygen-review.html social-studies/river-council.html assets/lesson-challenge.css assets/lesson-challenge.js
+      - name: Inspect lesson pages at classroom and phone sizes
+        if: always()
+        run: |
+          python3 - <<'PY'
+          from PIL import Image, ImageOps
+          import base64, io, pathlib
+          files=sorted(pathlib.Path("browser-artifacts").glob("*review.html-*.png"))+sorted(pathlib.Path("browser-artifacts").glob("*council.html-*.png"))
+          for path in files:
+              im=Image.open(path).convert("RGB")
+              im.thumbnail((420,460))
+              b=io.BytesIO()
+              im.save(b,format="WEBP",quality=67)
+              print("CONTACT_START "+path.name+" "+base64.b64encode(b.getvalue()).decode()+" CONTACT_END")
+          PY
