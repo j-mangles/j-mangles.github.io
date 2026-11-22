@@ -37,3 +37,8 @@ body[data-subject=ss] .challenge tbody th{width:23%}
 #print-copy{display:none}
 @media(max-width:450px){.challenge th,.challenge td{padding:.45rem .3rem}.challenge table{font-size:.94rem}.challenge-nav{gap:1rem}}
 @media print{body:has(#print-copy:not(:empty))>:not(#print-copy){display:none!important}#print-copy:not(:empty){display:block;font:11pt/1.35 Georgia,serif;color:#111;background:white}#print-copy h1{font-size:19pt}#print-copy h2{font-size:14pt;break-after:avoid}#print-copy td,#print-copy th{border-bottom:1px solid #aaa;padding:.25rem}#print-copy ol{padding-left:1.5rem}#print-copy li{margin:.2rem 0}#print-copy .written{white-space:pre-wrap;overflow-wrap:anywhere}#print-copy .blank{height:5rem;border-bottom:1px solid #aaa}#print-copy .test-block+.test-block{break-before:page}#print-copy .prompt{break-inside:avoid}@page{margin:15mm}}
+
+html[data-room] body[data-subject=ss]{--paper:inherit;--ink:var(--paper-ink);--rule:inherit;--muted:inherit;--soft:inherit;--accent:var(--label);--accent-ink:var(--label);--accent-soft:var(--soft);--f-label:inherit;--btn:var(--room);--on-btn:var(--room-ink)}
+html[data-room] .challenge :is(.game-panel,.test-case){border:0;border-top:1px solid var(--rule);background:transparent}
+html[data-room] .challenge details{padding:.5rem .7rem}
+@media print{html[data-room] :is(#print-copy,.test-block){border:0;background:white}}

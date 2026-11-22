@@ -36,7 +36,9 @@ jobs:
       - name: Inspect lesson pages at classroom and phone sizes
         if: always()
         run: |
-          python3 - <<'PY'
+          python3 -m venv /tmp/classroom-image-env
+          /tmp/classroom-image-env/bin/pip -q install pillow
+          /tmp/classroom-image-env/bin/python - <<'PY'
           from PIL import Image, ImageOps
           import base64, io, pathlib
           files=sorted(pathlib.Path("browser-artifacts").glob("*review.html-*.png"))+sorted(pathlib.Path("browser-artifacts").glob("*council.html-*.png"))
