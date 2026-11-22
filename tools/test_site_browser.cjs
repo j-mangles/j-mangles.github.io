@@ -50,7 +50,7 @@ async function lessonChallenges(page,width) {
   await page.locator('.challenge-nav a[href="#test"]').click();
   await page.locator("#test-form").waitFor();
   await page.locator('#test-form button[type=button]').waitFor();
-  assert.equal(await page.locator("h1").innerText(),config.title);
+  assert.equal(await page.locator("#activity-title").innerText(),config.title);
   await page.locator('[name=student]').fill("Sample");
   await page.locator('[name="q0-0"][value="'+config.questions[0]+'"]').check();
   await page.locator("#w0").fill("A specific comparison supports my decision.");
