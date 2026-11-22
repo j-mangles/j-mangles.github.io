@@ -16,6 +16,8 @@
 .challenge th,.challenge td,#print-copy th,#print-copy td{text-align:left;vertical-align:top;padding:.55rem .65rem;border-bottom:1px solid var(--rule);overflow-wrap:anywhere}
 .challenge thead th{background:var(--soft)}
 body[data-subject=ss] .challenge tbody th{width:23%}
+body[data-subject=sci] .challenge table{table-layout:fixed}
+body[data-subject=sci] .challenge :is(th,td){overflow-wrap:normal}
 .challenge .game-panel,.challenge .test-case{border-top:1px solid var(--rule);margin-top:1.5rem;padding-top:1rem}
 .challenge .progress{margin:0}
 .challenge fieldset{min-width:0;margin:1.3rem 0;padding:0;border:0}
