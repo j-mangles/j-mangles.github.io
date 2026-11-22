@@ -21,6 +21,69 @@ async function checkNoHorizontalOverflow(page,label){
  const o=await page.evaluate(()=>({width:window.innerWidth,scroll:document.documentElement.scrollWidth}));
  assert.ok(o.scroll<=o.width+6,label+" overflows: "+JSON.stringify(o));
 }
+
+async function lessonChallenges(page,width) {
+ const cases=[
+  {route:"/science/oxygen-review.html",plays:[[0,2],[1,0],[2,1],[1,0],[2,2]],questions:[1,2,0,3],title:"Oxygen Delivery Test"},
+  {route:"/social-studies/river-council.html",plays:[[0,2],[1,0],[2,1],[0,2],[1,2]],questions:[2,1,3,0],title:"River Settlement Test"}
+ ];
+ for(const config of cases){
+  await goto(page,config.route+"#review","#start-game");
+  await page.locator("#start-game").click();
+  for(const [i,answers] of config.plays.entries()){
+   for(const [j,answer] of answers.entries()){
+    const choice=i===0&&j===0?(answer+1)%3:answer;
+    await page.locator('input[name=pick][value="'+choice+'"]').check();
+    await page.locator("#round-form button").click();
+    await page.locator("#decision-feedback").waitFor();
+    if(i===0&&j===0){
+     assert.match(await page.locator("#decision-feedback").innerText(),/No point/);
+     await page.reload();
+     await page.locator("#round-form").waitFor();
+     await checkNoHorizontalOverflow(page,config.route+" game "+width);
+     await page.screenshot({path:path.join(artifacts,config.route.split("/").pop()+"-game-"+width+".png")});
+    }
+   }
+   await page.locator("#next-round").click();
+  }
+  assert.match(await page.locator("#game-focus").innerText(),/9 \/ 10/);
+  await page.locator('.challenge-nav a[href="#test"]').click();
+  await page.locator("#test-form").waitFor();
+  await page.locator('#test-form button[type=button]').waitFor();
+  assert.equal(await page.locator("#activity-title").textContent(),config.title);
+  await page.locator('[name=student]').fill("Sample");
+  await page.locator('[name="q0-0"][value="'+config.questions[0]+'"]').check();
+  await page.locator("#w0").fill("A specific comparison supports my decision.");
+  await page.reload();
+  assert.ok(await page.locator('[name="q0-0"][value="'+config.questions[0]+'"]').isChecked());
+  assert.equal(await page.locator("#w0").inputValue(),"A specific comparison supports my decision.");
+  await page.locator("#test-form button:not([type])").click();
+  assert.ok(await page.locator("#test-form").isVisible(),"Incomplete tests stay open");
+  for(let k=1;k<4;k++){
+   const choice=k===3?(config.questions[k]+1)%4:config.questions[k];
+   await page.locator('[name="q'+Math.floor(k/2)+'-'+k%2+'"][value="'+choice+'"]').check();
+  }
+  await page.locator("#w1").fill("The follow-up addresses the risk <explicitly>.");
+  await checkNoHorizontalOverflow(page,config.route+" test "+width);
+  await page.evaluate(()=>window.scrollTo(0,0));
+  await page.screenshot({path:path.join(artifacts,config.route.split("/").pop()+"-test-"+width+".png")});
+  await page.locator("#test-form button:not([type])").click();
+  await page.locator("#download-test").waitFor();
+  assert.match(await page.locator("#activity").innerText(),/3 \/ 4/);
+  const [download]=await Promise.all([page.waitForEvent("download"),page.locator("#download-test").click()]);
+  const copy=fs.readFileSync(await download.path(),"utf8");
+  for(const text of [config.title,"Sample","3 / 4","____ / 6","<explicitly>","Marking criteria"])assert.ok(copy.includes(text));
+  await page.emulateMedia({media:"print"});
+  assert.ok(await page.locator("#print-copy").isVisible());
+  assert.equal(await page.locator("#print-copy .test-block").count(),2);
+  assert.equal(await page.locator('#print-copy li b').count(),4);
+  assert.ok((await page.locator("#print-copy").innerText()).includes("<explicitly>"));
+  await page.emulateMedia({media:"screen"});
+  await page.reload();
+  await page.locator("#download-test").waitFor();
+ }
+}
+
 async function settlement(page,width){
  await goto(page,"/social-studies/river-valley-lab.html?civilization=egypt#settlement","#rv-first");
  await page.locator("#rv-first").selectOption("egypt");
@@ -353,6 +416,8 @@ async function settlement(page,width){
   await page.locator('[data-world="egypt"]').click();
   assert.equal(await page.locator("#final").inputValue(),"Rivers shaped settlement, while human choices shaped fairness.");
   await settlement(page,1280);
+  stage="Science and Social Studies partner games and individual tests";
+  await lessonChallenges(page,1280);
   stage="Ancient Greece coming-up release state";
   await goto(page,"/social-studies/#greece",'#tabs [data-id="greece"]');
   await page.locator("#panel .eyebrow").waitFor({state:"visible"});
@@ -611,6 +676,8 @@ async function settlement(page,width){
   await checkNoHorizontalOverflow(phone,"River Valley Lab mobile");
   await capture(phone,"river-valley-egypt-mobile");
   await settlement(phone,390);
+  stage="Science and Social Studies games and tests on phones";
+  await lessonChallenges(phone,390);
   await goto(phone,"/social-studies/temple-walkthrough.html","#zone-title");
   await checkNoHorizontalOverflow(phone,"Egyptian Temple Walkthrough mobile");
   await phone.locator('[data-zone="2"]').click();

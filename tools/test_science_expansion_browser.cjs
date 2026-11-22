@@ -238,14 +238,15 @@ const tasks=[
    await page.goto(origin+"/science/labs.html",{waitUntil:"domcontentloaded",timeout:30000});
    await page.locator(".labs-page").waitFor({state:"visible",timeout:15000});
    assert.equal(await page.locator(".unit").count(),5,"Five Science units in the Lab Library");
-   assert.equal(await page.locator(".entry a").count(),14,"Only current Science labs should link");
+   assert.equal(await page.locator('.entry a[href^="./#"]').count(),14,"Only current Science labs should link");
+   assert.equal(await page.locator('.entry a[href="oxygen-review.html#review"]').count(),1,"The paired review and test open from the library");
    assert.equal(await page.locator(".entry .soon").count(),19,"Upcoming labs must stay unavailable in the library");
    await page.locator("#lab-search").fill("refraction");
    assert.equal(await page.locator(".entry").count(),1,"Science Lab Library search");
    assert.equal(await page.locator(".entry a").count(),0,"Future labs must not open from the library");
    await page.locator("#lab-search").fill("");
    await page.locator('[data-unit="cells"]').click();
-   assert.equal(await page.locator(".entry").count(),10,"Cells lab filter");
+   assert.equal(await page.locator(".entry").count(),11,"Cells lab and review filter");
    await page.locator('[data-unit="all"]').click();
    const libraryOverflow=await page.evaluate(()=>({w:window.innerWidth,s:document.documentElement.scrollWidth}));
    assert.ok(libraryOverflow.s<=libraryOverflow.w+5,"Science Lab Library horizontal overflow");

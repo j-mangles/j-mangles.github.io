@@ -1,0 +1,46 @@
+.challenge{width:min(100% - 2rem,52rem);margin:1.5rem auto 5rem;line-height:1.55}
+.challenge h1,.challenge h2,.challenge h3{font-family:var(--f-title);line-height:1.15;color:var(--ink);text-wrap:balance}
+.challenge h1{font-size:clamp(2.3rem,6vw,3.8rem);margin:1.7rem 0 .2rem}
+.challenge h2{font-size:clamp(1.5rem,4vw,2.2rem);margin:.75rem 0}
+.challenge h3{font-size:1.25rem;margin:1.5rem 0 .5rem}
+.challenge p{max-width:72ch}
+.challenge a{color:var(--accent-ink);text-underline-offset:.2em}
+.challenge .lab-link,.challenge .unit,.challenge .progress{font-size:.94rem;color:var(--muted)}
+.challenge .unit{margin:.25rem 0 1.25rem}
+.challenge-nav{display:flex;gap:1.4rem;flex-wrap:wrap;margin-top:1.4rem;border-bottom:1px solid var(--rule)}
+.challenge-nav a{padding:.4rem 0 .6rem;color:var(--ink);text-decoration:none}
+.challenge-nav a[aria-current=page]{font-weight:700;border-bottom:3px solid var(--accent)}
+.challenge :is(button,a,input,textarea,summary,[tabindex]):focus-visible{outline:3px solid var(--accent-ink);outline-offset:3px}
+.challenge .reading{margin:1rem 0 1.4rem}
+.challenge table,#print-copy table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.challenge th,.challenge td,#print-copy th,#print-copy td{text-align:left;vertical-align:top;padding:.55rem .65rem;border-bottom:1px solid var(--rule);overflow-wrap:anywhere}
+.challenge thead th{background:var(--soft)}
+body[data-subject=ss] .challenge tbody th{width:23%}
+body[data-subject=sci] .challenge table{table-layout:fixed}
+body[data-subject=sci] .challenge :is(th,td){overflow-wrap:normal}
+.challenge .game-panel,.challenge .test-case{border-top:1px solid var(--rule);margin-top:1.5rem;padding-top:1rem}
+.challenge .progress{margin:0}
+.challenge fieldset{min-width:0;margin:1.3rem 0;padding:0;border:0}
+.challenge legend,.challenge .write-label{font-weight:650;margin-bottom:.6rem}
+.challenge .choice{display:flex;gap:.75rem;align-items:baseline;padding:.55rem .7rem;cursor:pointer;border:1px solid var(--rule);border-radius:var(--radius);background:var(--paper);margin-bottom:.4rem;min-height:44px}
+.challenge .choice:has(input:checked){background:var(--accent-soft);border-color:var(--accent-ink)}
+.challenge .choice input{flex:0 0 auto;accent-color:var(--accent-ink)}
+.challenge .write-label,.challenge .name-label{display:block}
+.challenge textarea,.challenge input[type=text]{width:100%;background:var(--paper);color:var(--ink);border:1px solid var(--muted);border-radius:var(--radius);padding:.7rem;font:inherit}
+.challenge input[type=text]{max-width:24rem;display:block}.challenge textarea{min-height:7rem;resize:vertical}
+.challenge .action{font:inherit;font-weight:650;min-height:44px;border-radius:var(--btn-radius);border:1px solid var(--btn);padding:.55rem 1rem;background:var(--btn);color:var(--on-btn);cursor:pointer}
+.challenge .secondary{background:var(--paper);color:var(--ink);border-color:var(--muted)}
+.challenge .actions{display:flex;gap:.65rem;flex-wrap:wrap;margin:1.2rem 0}
+.challenge .feedback{background:var(--soft);padding:.7rem 1rem;margin:.75rem 0}
+.challenge .feedback p{margin:.35rem 0}
+.challenge .criteria{padding-left:1.25rem;margin:.5rem 0 1rem}
+.challenge details>summary{cursor:pointer;color:var(--accent-ink)}
+.challenge #game-focus,.challenge #activity-title{scroll-margin-top:1rem}
+#print-copy{display:none}
+@media(max-width:450px){.challenge th,.challenge td{padding:.45rem .3rem}.challenge table{font-size:.94rem}.challenge-nav{gap:1rem}}
+@media print{body:has(#print-copy:not(:empty))>:not(#print-copy){display:none!important}#print-copy:not(:empty){display:block;font:11pt/1.35 Georgia,serif;color:#111;background:white}#print-copy h1{font-size:19pt}#print-copy h2{font-size:14pt;break-after:avoid}#print-copy td,#print-copy th{border-bottom:1px solid #aaa;padding:.25rem}#print-copy ol{padding-left:1.5rem}#print-copy li{margin:.2rem 0}#print-copy .written{white-space:pre-wrap;overflow-wrap:anywhere}#print-copy .blank{height:5rem;border-bottom:1px solid #aaa}#print-copy .test-block+.test-block{break-before:page}#print-copy .prompt{break-inside:avoid}@page{margin:15mm}}
+
+html[data-room] body[data-subject=ss]{--paper:inherit;--ink:var(--paper-ink);--rule:inherit;--muted:inherit;--soft:inherit;--accent:var(--label);--accent-ink:var(--label);--accent-soft:var(--soft);--f-label:inherit;--btn:var(--room);--on-btn:var(--room-ink)}
+html[data-room] .challenge :is(.game-panel,.test-case){border:0;border-top:1px solid var(--rule);background:transparent}
+html[data-room] .challenge details{padding:.5rem .7rem}
+@media print{html[data-room] :is(#print-copy,.test-block){border:0;background:white}}
