@@ -228,7 +228,7 @@ function renderOxygen(el){
  '<div class="table-scroll"><table><thead><tr><th>Trial</th><th>Breathing</th><th>Flow</th><th>Activity</th><th>Delivered</th><th>Need</th><th>Limit</th></tr></thead><tbody id="od-trials"><tr><td colspan="7">No trials recorded.</td></tr></tbody></table></div>'+
  '<div class="investigate"><label>What evidence did the trials show?<textarea id="od-observe" placeholder="When I changed... the model showed..."></textarea></label>'+
  '<label>How do these systems work together?<textarea id="od-explain" placeholder="The lungs..., the blood..., and the muscle cells..."></textarea></label></div>'+
- '<div class="actions"><button id="od-download" type="button">Download investigation</button><button id="od-clear" type="button">Clear recorded work</button></div><p class="hint" id="od-message" role="status"></p></section>';
+ '<div class="actions"><button id="od-download" type="button">Download investigation</button><button id="od-clear" type="button">Clear recorded work</button></div><p class="hint" id="od-message" role="status"></p><p><a href="oxygen-review.html#review">Play Oxygen Detectives</a> · <a href="oxygen-review.html#test">Take the Oxygen Delivery Test</a></p></section>';
  const get=k=>el.querySelector(k),name=k=>k==="respiratory"?"respiratory system":k==="circulatory"?"circulatory system":"both systems";
  function draw(){
   const m=oxygenModel(v);
