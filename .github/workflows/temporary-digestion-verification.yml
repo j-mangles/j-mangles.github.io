@@ -43,6 +43,12 @@ jobs:
                 await p.locator(".dn-fork").screenshot({path:"/tmp/dn-wall-"+width+".png"});
                 await p.locator(".dn [data-trace=fibre]").click();await p.locator(".dn [value=gut]").check();await p.locator(".dn-test").click();
                 await p.locator(".dn-record").screenshot({path:"/tmp/dn-record-"+width+".png"});
+                await p.goto("http://127.0.0.1:8765/social-studies/egypt-unified-kingdom-lab.html#kingdom-ruler");
+                for(const [era,years] of [["old","500"],["new","480"]]){
+                  await p.locator("#kr-kingdom").selectOption(era);await p.locator("#old-years").fill(years);await p.locator("#kr-form button").click();
+                }
+                await p.locator("#kr-year").fill("550");
+                await p.locator("#kingdom-ruler").screenshot({path:"/tmp/dn-kingdoms-"+width+".png"});
                 await p.close();
               }
             }finally{await b.close()}

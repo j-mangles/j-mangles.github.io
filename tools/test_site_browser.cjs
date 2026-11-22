@@ -84,6 +84,28 @@ async function lessonChallenges(page,width) {
  }
 }
 
+async function kingdomRuler(page,width){
+ await goto(page,"/social-studies/egypt-unified-kingdom-lab.html#kingdom-ruler","#kr-year");
+ const slider=page.locator("#kr-year"), era=page.locator("#kr-kingdom"), answer=page.locator("#old-years");
+ await slider.fill("550");
+ assert.match(await page.locator("#kr-reading").innerText(),/2100 BCE.*First Intermediate/);
+ await slider.fill("600");
+ assert.match(await page.locator("#kr-reading").innerText(),/2050 BCE.*ends.*Middle Kingdom begins/);
+ await answer.fill("4800");await page.locator("#kr-form button").click();
+ assert.match(await page.locator("#kr-feedback").innerText(),/added/);
+ for(const [key,years] of [["old",500],["middle",350],["new",480]]){
+  await era.selectOption(key);await answer.fill(String(years));await page.locator("#kr-form button").click();
+ }
+ assert.equal(await page.locator("#kr-record li").count(),3);
+ await page.locator("#kr-difference").fill("20");await page.locator("#kr-compare button").click();
+ assert.match(await page.locator("#kr-verdict").innerText(),/20 years longer/);
+ await checkNoHorizontalOverflow(page,"Egypt scaled timeline "+width);
+ await page.locator("#kingdom-ruler").screenshot({path:path.join(artifacts,"egypt-duration-ruler-"+width+".png")});
+ await page.locator("[data-clear]").click();
+ assert.equal(await page.locator("#kr-record li").count(),0);
+ assert.ok(await page.locator("#kr-compare").isHidden());
+ assert.equal(await answer.inputValue(),"");
+}
 async function settlement(page,width){
  await goto(page,"/social-studies/river-valley-lab.html?civilization=egypt#settlement","#rv-first");
  await page.locator("#rv-first").selectOption("egypt");
@@ -416,6 +438,7 @@ async function settlement(page,width){
   await page.locator('[data-world="egypt"]').click();
   assert.equal(await page.locator("#final").inputValue(),"Rivers shaped settlement, while human choices shaped fairness.");
   await settlement(page,1280);
+  await kingdomRuler(page,1280);
   stage="Science and Social Studies partner games and individual tests";
   await lessonChallenges(page,1280);
   stage="Ancient Greece coming-up release state";
@@ -676,6 +699,7 @@ async function settlement(page,width){
   await checkNoHorizontalOverflow(phone,"River Valley Lab mobile");
   await capture(phone,"river-valley-egypt-mobile");
   await settlement(phone,390);
+  await kingdomRuler(phone,390);
   stage="Science and Social Studies games and tests on phones";
   await lessonChallenges(phone,390);
   await goto(phone,"/social-studies/temple-walkthrough.html","#zone-title");
