@@ -77,7 +77,7 @@ function render(el){
  '<div class="prompts"><label>How does glucose reach a muscle cell?<textarea data-note="0"></textarea></label>'+
  '<label>Where do the two routes separate? What happens to the fibre?<textarea data-note="1"></textarea></label></div>'+
  '<div class="dn-work-actions"><button class="dn-download" type="button">Download my traces</button><details class="dn-reset"><summary>Start a new investigation</summary><p>This clears the two predictions and both explanations in this tab.</p><button class="dn-clear" type="button">Clear and start again</button></details></div></section>'+
- '<div class="quiz"><h3>Check the pathway</h3><div class="question"></div><div class="answers"></div><div class="feedback" aria-live="polite"></div><button class="next" type="button" disabled>Next question</button></div></section>';
+ '<div class="quiz"><h3>Check the pathway</h3><div class="question"></div><div class="answers"></div><div class="feedback" aria-live="polite"></div><button class="next" type="button" disabled>Next question</button></div><p><a href="digestion-review.html#review">Play Trace the Bite</a> · <a href="digestion-review.html#test">Take the Digestion and Absorption Test</a></p></section>';
  const $=s=>el.querySelector(s);
  el.querySelectorAll("[data-note]").forEach(box=>{box.value=notes[Number(box.dataset.note)];});
  function paint(){

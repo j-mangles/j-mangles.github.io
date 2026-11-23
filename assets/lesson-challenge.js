@@ -52,6 +52,31 @@
     }, 0);
   }
   function moveFocus(id) { document.getElementById(id)?.focus(); }
+  function showCorrections(missed) {
+    const retry = game.practice;
+    const {round, question, second} = missed[retry.index];
+    const checked = Number.isInteger(retry.choice);
+    const solved = checked && retry.choice === question.key;
+    activity.innerHTML = '<p class="progress">Correction ' + (retry.index + 1) + ' of ' + missed.length +
+      ' · First score ' + points() + ' / 10</p><h2 id="game-focus" tabindex="-1">' + esc(round.title) + '</h2>' +
+      readings(round.rows) + (second ? '<p>' + esc(round.first.why) + '</p><h3>New report</h3><p>' + esc(round.update) + '</p>' : '') +
+      (checked ? '<div class="feedback" id="correction-feedback" tabindex="-1"><strong>' +
+        (solved ? 'Corrected.' : 'Try again.') + '</strong> ' + esc(question.why) + '</div>' : '') +
+      (solved ? button(retry.index + 1 === missed.length ? "Finish corrections" : "Next correction", "next-correction") :
+        '<form id="correction-form">' + choices(question, "correction", null) + '<button class="action">Check correction</button></form>');
+    if (solved) {
+      document.getElementById("next-correction").onclick = () => {
+        retry.index++; retry.choice = null; save(); showGame(true);
+      };
+    } else {
+      const form = document.getElementById("correction-form");
+      form.onsubmit = event => {
+        event.preventDefault();
+        retry.choice = Number(new FormData(form).get("correction"));
+        save(); showGame(true);
+      };
+    }
+  }
   function showGame(focus = false) {
     heading.textContent = data.gameTitle;
     paper.replaceChildren();
@@ -62,14 +87,27 @@
       return;
     }
     if (game.turn === game.order.length) {
-      const misses = game.order.map((n, i) => {
+      const missed = game.order.flatMap((n, i) => {
         const round = data.rounds[n];
-        return [round.first, round.second].filter((q, j) => q.key !== game.picks[i][j])
-          .map(q => '<li><strong>' + esc(round.title) + '</strong> · ' + esc(q.why) + '</li>').join("");
-      }).join("");
+        return [round.first, round.second].flatMap((question, j) =>
+          question.key === game.picks[i][j] ? [] : [{round, question, second:j === 1}]);
+      });
+      if (game.practice && game.practice.index < missed.length) {
+        showCorrections(missed);
+        if (focus) moveFocus(document.getElementById("correction-feedback") ? "correction-feedback" : "game-focus");
+        return;
+      }
       activity.innerHTML = '<h2 id="game-focus" tabindex="-1">Game complete · ' + points() + ' / 10</h2>' +
-        (misses ? '<h3>Revisit these decisions</h3><ul>' + misses + '</ul>' : '<p>You supported every decision. Try the individual test with a fresh case.</p>') +
+        (missed.length ? (game.practice ? '<p>You corrected all ' + missed.length + ' missed ' + (missed.length === 1 ? 'decision' : 'decisions') + '.</p>' :
+          '<p>Return to the clues for the decisions you missed. Your first score stays on this page.</p>' + button("Practise missed decisions", "start-corrections")) :
+          '<p>You supported every decision. Try the individual test with a fresh case.</p>') +
+        (missed.length ? '<details><summary>Read the explanations</summary><ul>' + missed.map(({round,question}) =>
+          '<li><strong>' + esc(round.title) + '</strong> · ' + esc(question.why) + '</li>').join("") + '</ul></details>' : '') +
         '<div class="actions">' + button("Play again","replay",true) + '<a href="#test">Open the individual test</a></div>';
+      const practise = document.getElementById("start-corrections");
+      if (practise) practise.onclick = () => {
+        game.practice = {index:0, choice:null}; save(); showGame(true);
+      };
       document.getElementById("replay").onclick = () => {
         const order = game.order.slice();
         for (let i = order.length - 1; i > 0; i--) {
