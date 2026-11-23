@@ -1,0 +1,52 @@
+name: Check digestion and Egypt reviews
+on:
+  push:
+    branches: [verify-digestion-kingdom-reviews]
+permissions:
+  contents: read
+jobs:
+  classroom:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Start the class site
+        run: |
+          npm install --no-save --no-package-lock playwright-core@1.56.1
+          python3 -m http.server 8765 --bind 127.0.0.1 >/tmp/class-site.log 2>&1 &
+          for try in {1..20}; do curl -fsS http://127.0.0.1:8765/ -o /dev/null && break; sleep 1; done
+      - name: Exercise all repository tests
+        run: |
+          mkdir /tmp/lesson-review-tests
+          failed=0
+          for test in tools/*.cjs; do
+            node "$test" > "/tmp/lesson-review-tests/$(basename "$test").log" 2>&1 || { echo "::error::$test"; tail -30 "/tmp/lesson-review-tests/$(basename "$test").log"; failed=1; }
+          done
+          echo "$(ls /tmp/lesson-review-tests | wc -l) scripts exercised"
+          exit "$failed"
+      - name: Inspect games and assessments on desktop and mobile
+        if: always()
+        run: |
+          python -m pip -q install pillow
+          python - <<'PY'
+          from PIL import Image,ImageOps
+          import pathlib,base64,io
+          for subject in ('digestion-review.html', 'kingdom-review.html'):
+              canvas=Image.new('RGB',(700,580),'#DDD')
+              for col,mode in enumerate(('game','test')):
+                  for row,width in enumerate((1280,390)):
+                      im=Image.open(f'browser-artifacts/{subject}-{mode}-{width}.png').convert('RGB')
+                      if width==1280:
+                          # Centre the lesson column in the desktop shot.
+                          im=im.crop((190,0,1090,900))
+                      im.thumbnail((343,280))
+                      canvas.paste(im,(col*350,row*290))
+              b=io.BytesIO()
+              canvas.save(b,format='WEBP',quality=75)
+              print('VIEW_START '+subject+' '+base64.b64encode(b.getvalue()).decode()+' VIEW_END')
+          PY
