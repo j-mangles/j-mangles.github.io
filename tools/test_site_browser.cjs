@@ -22,6 +22,65 @@ async function checkNoHorizontalOverflow(page,label){
  assert.ok(o.scroll<=o.width+6,label+" overflows: "+JSON.stringify(o));
 }
 
+async function evidenceAndCurves(page,width){
+ await goto(page,"/social-studies/egypt-social-evidence-lab.html","#first-judgments");
+ const loc=id=>page.locator("#"+id);
+ assert.ok(await loc("follow-up").isHidden());
+ await loc("farmer-first").fill("The tax scene shows a penalty.");
+ await loc("worker-first").fill("The missing ration shows dependence.");
+ await page.locator("#first-judgments button").click();
+ assert.equal(await page.locator("#strike-events li").count(),1);
+ for(let i=1;i<=4;i++){
+  assert.ok(await loc("discuss").isHidden());
+  await loc("next-event").click();
+  assert.equal(await page.locator("#strike-events li").count(),i+1);
+ }
+ assert.ok(await loc("first-a").innerText().then(v=>v.includes("penalty")));
+ assert.ok(await loc("ticket").isHidden());await loc("keep-verdict").click();
+ assert.match(await loc("verdict-status").innerText(),/Choose a strike entry/);
+ await loc("turning-point").selectOption("4");await loc("source-reading").fill("Taxes limited farmers. Together the workers could demand a hearing.");
+ await loc("keep-verdict").click();assert.ok(await loc("turning-point").isDisabled());
+ await loc("ticket-shows").fill("They could press for their grain.");await loc("ticket-limit").fill("Did other workers have the same leverage?");
+ const [ticket]=await Promise.all([page.waitForEvent("download"),loc("save-ticket").click()]);
+ const egyptText=fs.readFileSync(await ticket.path(),"utf8");
+ for(const word of ["penalty","dependence","Strike entry 4","vizier","Taxes limited","same leverage"])assert.ok(egyptText.includes(word));
+ await loc("new-ticket").click();assert.equal(await loc("ticket-limit").inputValue(),"");
+ assert.match(await loc("source-reading").inputValue(),/Together/);
+ await loc("women-support").fill("Bread");await loc("women-challenge").fill("A");
+ await page.locator("[data-check-claims]").click();assert.match(await loc("women-note").innerText(),/letter from A to I/);
+ await loc("women-support").fill("a, b");await page.locator("[data-check-claims]").click();
+ assert.match(await loc("women-note").innerText(),/different cards/);
+ await loc("women-challenge").fill("C");await loc("women-verdict").selectOption({label:"Partly true"});await loc("women-reason").fill("Compare court decisions with access to public office.");
+ await page.locator("[data-check-claims]").click();assert.match(await page.locator("[data-claims-feedback]").innerText(),/1 of 3/);
+ await checkNoHorizontalOverflow(page,"Egypt evidence "+width);
+ await loc("strike-record").screenshot({path:path.join(artifacts,"strike-"+width+".png")});
+ await page.getByText("Start a fresh investigation",{exact:true}).click();await page.locator("[data-clear]").click();
+ assert.ok(await loc("first-judgments").isVisible());assert.equal(await loc("farmer-first").inputValue(),"");
+ await loc("open-cards").click();assert.ok(await loc("follow-up").isVisible());
+ await goto(page,"/science/labs.html","#lab-search");await loc("lab-search").fill("Temperature Curves");
+ await page.locator(".entry a").click();await page.waitForFunction(()=>document.activeElement?.id==="compare-feedback");
+ await loc("hx-pair-source").selectOption("current");await loc("hx-make-pair").click();
+ assert.match(await loc("hx-pair-status").innerText(),/at least one minute/);
+ await page.locator("#hx-env [data-env='8']").click();await loc("hx-ten").click();await loc("hx-reset").click();
+ await loc("hx-pair-source").selectOption("trial-0");await loc("hx-make-pair").click();
+ assert.equal(await loc("hx-pair-minute").getAttribute("max"),"10");
+ assert.equal(await loc("hx-pair-result").textContent(),"");await loc("hx-pair-minute").fill("5");
+ const reading=await loc("hx-pair-reading").innerText(),numbers=[...reading.matchAll(/([\d.]+)°C/g)].map(m=>Number(m[1]));
+ assert.equal(numbers.length,2);assert.ok(numbers.every(n=>n<37));assert.ok(Math.abs(numbers[0]-numbers[1])>.4);
+ // In cold air the warmer of these readings is closer to the set point. Pick the other curve to exercise the correction.
+ const wrong=numbers[0]>numbers[1]?"B":"A";await loc("hx-guess").selectOption(wrong);
+ await loc("hx-justification").fill("The lower reading looks like cooling.");await page.locator("#hx-identify button").click();
+ assert.match(await loc("hx-pair-result").innerText(),/Compare your interpretation/);
+ await loc("hx-pair-minute").fill("2");assert.ok((await loc("hx-pair-result").innerText()).includes(reading));
+ await checkNoHorizontalOverflow(page,"Homeostasis curves "+width);await loc("hx-pair-plot").screenshot({path:path.join(artifacts,"curves-"+width+".png")});
+ await loc("hx-pair-source").selectOption("room");await loc("hx-make-pair").click();await loc("hx-guess").selectOption("same");
+ await loc("hx-justification").fill("Both curves stay at 37 degrees.");await page.locator("#hx-identify button").click();
+ assert.match(await loc("hx-pair-result").innerText(),/interpretation is supported.*coincide/);
+ const [file]=await Promise.all([page.waitForEvent("download"),loc("hx-download").click()]);
+ const text=fs.readFileSync(await file.path(),"utf8");
+ for(const item of [reading,"lower reading","Both curves stay","First prediction: Curve "+wrong])assert.ok(text.includes(item));
+}
+
 async function lessonChallenges(page,width) {
  const cases=[
   {route:"/science/oxygen-review.html",plays:[[0,2],[1,0],[2,1],[1,0],[2,2]],questions:[1,2,0,3],title:"Oxygen Delivery Test"},
@@ -461,6 +520,7 @@ async function settlement(page,width){
   assert.equal(await page.locator("#final").inputValue(),"Rivers shaped settlement, while human choices shaped fairness.");
   await settlement(page,1280);
   await kingdomRuler(page,1280);
+  await evidenceAndCurves(page,1280);
   stage="Science and Social Studies partner games and individual tests";
   await lessonChallenges(page,1280);
   stage="Ancient Greece coming-up release state";
@@ -722,6 +782,7 @@ async function settlement(page,width){
   await capture(phone,"river-valley-egypt-mobile");
   await settlement(phone,390);
   await kingdomRuler(phone,390);
+  await evidenceAndCurves(phone,390);
   stage="Science and Social Studies games and tests on phones";
   await lessonChallenges(phone,390);
   await goto(phone,"/social-studies/temple-walkthrough.html","#zone-title");
