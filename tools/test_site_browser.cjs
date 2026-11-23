@@ -25,14 +25,21 @@ async function checkNoHorizontalOverflow(page,label){
 async function lessonChallenges(page,width) {
  const cases=[
   {route:"/science/oxygen-review.html",plays:[[0,2],[1,0],[2,1],[1,0],[2,2]],questions:[1,2,0,3],title:"Oxygen Delivery Test"},
-  {route:"/social-studies/river-council.html",plays:[[0,2],[1,0],[2,1],[0,2],[1,2]],questions:[2,1,3,0],title:"River Settlement Test"}
+  {route:"/social-studies/river-council.html",plays:[[0,2],[1,0],[2,1],[0,2],[1,2]],questions:[2,1,3,0],title:"River Settlement Test"},
+  {route:"/science/digestion-review.html",lab:"/science/#cells/systems/digestion-pathway",plays:[[1,0],[2,1],[0,2],[1,2],[0,1]],questions:[2,0,3,1],title:"Digestion and Absorption Test"},
+  {route:"/social-studies/kingdom-review.html",lab:"/social-studies/egypt-unified-kingdom-lab.html#kingdom-ruler",plays:[[0,2],[1,0],[1,2],[2,1],[1,0]],questions:[1,3,0,2],title:"Egyptian Kingdoms and Evidence Test"}
  ];
  for(const config of cases){
-  await goto(page,config.route+"#review","#start-game");
+  if(config.lab){
+   const file=config.route.split("/").pop();
+   await goto(page,config.lab,'a[href="'+file+'#review"]');
+   assert.equal(await page.locator('a[href="'+file+'#test"]').count(),1);
+   await page.locator('a[href="'+file+'#review"]').click();
+  }else await goto(page,config.route+"#review","#start-game");
   await page.locator("#start-game").click();
   for(const [i,answers] of config.plays.entries()){
    for(const [j,answer] of answers.entries()){
-    const choice=i===0&&j===0?(answer+1)%3:answer;
+    const choice=i===0&&(config.lab||j===0)?(answer+1)%3:answer;
     await page.locator('input[name=pick][value="'+choice+'"]').check();
     await page.locator("#round-form button").click();
     await page.locator("#decision-feedback").waitFor();
@@ -46,7 +53,22 @@ async function lessonChallenges(page,width) {
    }
    await page.locator("#next-round").click();
   }
-  assert.match(await page.locator("#game-focus").innerText(),/9 \/ 10/);
+  const score=config.lab?"8 / 10":"9 / 10";
+  assert.ok((await page.locator("#game-focus").innerText()).includes(score));
+  await page.locator("#start-corrections").click();
+  const correction=value=>page.locator('[name=correction][value="'+value+'"]').check();
+  await correction((config.plays[0][0]+1)%3);
+  await page.locator("#correction-form button").click();
+  assert.match(await page.locator("#correction-feedback").innerText(),/Try again/);
+  for(let j=0;j<(config.lab?2:1);j++){
+   if(j===1)await page.getByRole("heading",{name:"New report"}).waitFor();
+   await correction(config.plays[0][j]);await page.locator("#correction-form button").click();
+   await page.reload();await page.locator("#next-correction").waitFor();
+   assert.match(await page.locator("#correction-feedback").innerText(),/Corrected/);
+   await page.locator("#next-correction").click();
+  }
+  assert.ok((await page.locator("#game-focus").innerText()).includes(score));
+  assert.match(await page.locator("#activity").innerText(),/You corrected all/);
   await page.locator('.challenge-nav a[href="#test"]').click();
   await page.locator("#test-form").waitFor();
   await page.locator('#test-form button[type=button]').waitFor();
