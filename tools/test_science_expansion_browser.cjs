@@ -275,7 +275,7 @@ const tasks=[
    assert.equal(await page.locator(".entry a").count(),0,"Future labs must not open from the library");
    await page.locator("#lab-search").fill("");
    await page.locator('[data-unit="cells"]').click();
-   assert.equal(await page.locator(".entry").count(),13,"Cells lab and review filter");
+   assert.equal(await page.locator(".entry").count(),14,"Cells lab and review filter");
    assert.equal(await page.locator('.entry a[href="digestion-review.html#review"]').count(),1,"The digestion game and test open from the Cells filter");
    await page.locator('[data-unit="all"]').click();
    const libraryOverflow=await page.evaluate(()=>({w:window.innerWidth,s:document.documentElement.scrollWidth}));
