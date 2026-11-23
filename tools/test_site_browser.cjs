@@ -81,6 +81,50 @@ async function evidenceAndCurves(page,width){
  for(const item of [reading,"lower reading","Both curves stay","First prediction: Curve "+wrong])assert.ok(text.includes(item));
 }
 
+async function rallyAssessments(page,width){
+ const loc=id=>page.locator("#"+id);
+ await goto(page,"/science/review-game.html",'a[href="systems-rally.html"]');
+ await page.locator('a[href="systems-rally.html"]').click();
+ await loc("pairs").selectOption("3");await loc("start").click();
+ for(let i=0;i<4;i++){
+  assert.ok(await loc("next").isDisabled());
+  if(i===2){
+   await loc("rally-minute").fill("4");assert.match(await loc("rally-reading").innerText(),/92 beats/);
+   await checkNoHorizontalOverflow(page,"projected graph "+width);
+   await page.locator('[data-round]:visible .pulse-chart').screenshot({path:path.join(artifacts,"rally-graph-"+width+".png")});
+  }
+  await loc("reveal").click();
+  const pairs=page.locator("#marks button");assert.equal(await pairs.count(),3);
+  await pairs.first().click();await pairs.first().click();
+  if(i<3)await loc("full-points").click();
+  if(i===1){await page.reload();await loc("marks").waitFor();assert.match(await pairs.first().innerText(),/1\/2/);}
+  await loc("next").click();
+ }
+ assert.match(await loc("score-note").innerText(),/still need marks/);
+ assert.match(await loc("rankings").innerText(),/Pair 1 · 4\/8/);
+ await loc("edit").click();await loc("full-points").click();await loc("next").click();
+ assert.match(await loc("score-note").innerText(),/All four rounds/);
+ assert.match(await loc("rankings").innerText(),/Pair 2 · 8\/8/);
+ await loc("reset").locator("summary").click();await loc("restart").click();assert.equal(await loc("pairs").inputValue(),"13");
+ for(const [hub,link,questions] of [["/science/systems-rally.html","body-systems-test.html",4],["/social-studies/egypt-fact-myth.html","egypt-exhibit-test.html",3]]){
+  await goto(page,hub,'a[href="'+link+'"]');await page.locator('a[href="'+link+'"]').click();await loc("print-test").waitFor();
+  assert.equal(await page.locator("textarea").count(),questions);
+  if(width===1280){
+   await page.emulateMedia({media:"print"});await page.pdf({path:path.join(artifacts,link+".pdf"),preferCSSPageSize:true,printBackground:false});await page.emulateMedia({media:"screen"});
+  }
+  await loc("student").fill("Player One");await loc("q1").fill("First line\nA <second> line with reasoning.");
+  await page.reload();assert.equal(await loc("q1").inputValue(),"First line\nA <second> line with reasoning.");
+  const [dl]=await Promise.all([page.waitForEvent("download"),loc("download-test").click()]);
+  const tx=fs.readFileSync(await dl.path(),"utf8");assert.match(tx,/Player One/);assert.match(tx,/<second>/);assert.match(tx,/\[blank\]/);
+  await page.emulateMedia({media:"print"});assert.ok(await loc("q1-paper").isVisible());assert.ok(await loc("q1").isHidden());
+  assert.match(await loc("q1-paper").innerText(),/<second>/);await page.emulateMedia({media:"screen"});
+  await checkNoHorizontalOverflow(page,link+" "+width);
+  await page.screenshot({path:path.join(artifacts,link+"-"+width+".png")});
+  await loc("reset-panel").locator("summary").click();await loc("clear-test").click();await page.reload();
+  assert.equal(await loc("q1").inputValue(),"");
+ }
+}
+
 async function lessonChallenges(page,width) {
  const cases=[
   {route:"/science/oxygen-review.html",plays:[[0,2],[1,0],[2,1],[1,0],[2,2]],questions:[1,2,0,3],title:"Oxygen Delivery Test"},
@@ -523,6 +567,7 @@ async function settlement(page,width){
   await evidenceAndCurves(page,1280);
   stage="Science and Social Studies partner games and individual tests";
   await lessonChallenges(page,1280);
+  await rallyAssessments(page,1280);
   stage="Ancient Greece coming-up release state";
   await goto(page,"/social-studies/#greece",'#tabs [data-id="greece"]');
   await page.locator("#panel .eyebrow").waitFor({state:"visible"});
@@ -785,6 +830,7 @@ async function settlement(page,width){
   await evidenceAndCurves(phone,390);
   stage="Science and Social Studies games and tests on phones";
   await lessonChallenges(phone,390);
+  await rallyAssessments(phone,390);
   await goto(phone,"/social-studies/temple-walkthrough.html","#zone-title");
   await checkNoHorizontalOverflow(phone,"Egyptian Temple Walkthrough mobile");
   await phone.locator('[data-zone="2"]').click();

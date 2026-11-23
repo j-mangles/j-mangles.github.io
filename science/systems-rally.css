@@ -1,0 +1,11 @@
+.rally{width:min(100% - 2rem,66rem)}
+.rally [hidden]{display:none!important}.rally section[data-round]{font-size:clamp(1.13rem,1.75vw,1.58rem);border-top:2px solid var(--ink);margin-top:.75rem;padding-top:.3rem}
+.rally h3{font-size:1.12em;margin:.75rem 0 .3rem}.rally .rally-route{padding:0;list-style:none;display:flex;flex-wrap:wrap;align-items:center;gap:.4em;font-weight:700}
+.rally-route li+li::before{content:"→";padding-right:.4em}.exchange{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,17rem),1fr));gap:1.25rem;border-block:1px solid var(--rule);padding:.7rem 0}
+.exchange p{margin:.25rem 0}.rally blockquote{margin:1rem 0;font:italic 1.25em/1.4 var(--f-title,Georgia)}
+.rally [data-key]{background:var(--soft);padding:.5rem 1rem;margin:1rem 0}.rally [data-key] ol{margin:.4rem 0}
+.rally .pair-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(6.6rem,1fr));gap:.45rem;margin:.5rem 0}
+.rally .pair-grid button{padding:.5rem}.rally .pair-grid button[data-marked=true]{font-weight:700;border-color:var(--accent-ink)}
+.rally #rankings{padding-left:1.75rem;columns:2;column-width:14rem}.rally #rankings li{break-inside:avoid;padding:.3rem}
+.rally #rally-reading{display:block;font-variant-numeric:tabular-nums}.rally input[type=range]{width:min(100%,15rem);min-height:44px;vertical-align:middle;accent-color:var(--accent)}
+.rally details{margin:.8rem 0}.rally summary{cursor:pointer}.rally button:disabled{opacity:.55;cursor:default}
