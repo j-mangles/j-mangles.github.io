@@ -12,6 +12,83 @@ function simulateStep(temperature, ambient, active, regulated){
   return {temperature:clamp(temperature+external+exertion+regulation,35,40),external,exertion,regulation};
 }
 H.thermoModel={simulateStep,setPoint:SET}; // pure function for regression tests
+function setupComparison(el, currentTrial, history){
+ const $=id=>el.querySelector("#"+id);
+ const presets={
+  cold:{ambient:8,active:false,minutes:20},
+  warm:{ambient:35,active:true,minutes:20},
+  room:{ambient:22,active:false,minutes:20}
+ };
+ const report=[], minute=$("hx-pair-minute"), guess=$("hx-guess"), reason=$("hx-justification");
+ let pair=null, onLetter="", same=false, revealed=false;
+ function run(source,feedback){
+  if(source.trace && source.regulated===feedback)return source.trace.map(point=>point[1]);
+  const temps=[SET];
+  for(let i=1;i<=source.minutes;i++)temps.push(simulateStep(temps[i-1],source.ambient,source.active,feedback).temperature);
+  return temps;
+ }
+ function reading(){
+  const t=Number(minute.value);
+  return "Minute "+t+" · Curve A "+pair.A[t].toFixed(2)+"°C · Curve B "+pair.B[t].toFixed(2)+"°C";
+ }
+ function draw(){
+  const t=Number(minute.value), end=pair.A.length-1;
+  const x=m=>48+352*m/end, y=v=>175-(v-35)*30;
+  const ticks=[...new Set([0,Math.round(end/2),end])];
+  const line=values=>values.map((v,i)=>(i?"L":"M")+x(i).toFixed(2)+" "+y(v).toFixed(2)).join(" ");
+  const axisLabels=[35,36,37,38,39,40].map(v=>'<path d="M48 '+y(v)+'H400" stroke="var(--rule)"/><text x="40" y="'+(y(v)+4)+'" text-anchor="end">'+v+'</text>').join("");
+  const timeLabels=ticks.map(v=>'<text x="'+x(v)+'" y="196" text-anchor="middle">'+v+'</text>').join("");
+  $("hx-pair-plot").innerHTML='<svg viewBox="0 0 424 216" role="img" aria-label="Model core temperature in degrees Celsius against simulated minutes. '+reading()+'."><g fill="var(--ink)" font-family="system-ui,sans-serif" font-size="13">'+
+   axisLabels+timeLabels+'<text x="25" y="16">°C</text><text x="222" y="212" text-anchor="middle">Simulated minutes</text></g>'+
+   '<path d="M48 '+y(SET)+'H400" stroke="var(--muted)" stroke-dasharray="2 3"/>'+
+   '<path d="M'+x(t)+' 25V175" stroke="var(--muted)"/>'+
+   '<path d="'+line(pair.A)+'" stroke="var(--accent)" fill="none" stroke-width="4"/>'+
+   '<path d="'+line(pair.B)+'" stroke="var(--ink)" fill="none" stroke-dasharray="7 5" stroke-width="2.5"/>'+
+   '<circle cx="'+x(t)+'" cy="'+y(pair.A[t])+'" r="5" fill="var(--paper)" stroke="var(--accent)" stroke-width="2"/>'+
+   '<rect x="'+(x(t)-3)+'" y="'+(y(pair.B[t])-3)+'" width="6" height="6" fill="var(--ink)"/></svg>';
+  $("hx-pair-reading").textContent=reading();
+  minute.setAttribute("aria-valuetext",reading());
+ }
+ $("hx-make-pair").onclick=()=>{
+  const key=$("hx-pair-source").value;
+  const source=key==="current"?currentTrial():key.startsWith("trial-")?history[Number(key.slice(6))]:presets[key];
+  if(!source || !source.minutes){
+   $("hx-pair-status").textContent="Run at least one minute of your trial above, or choose one of the three ready-made pairs.";
+   return;
+  }
+  const on=run(source,true), off=run(source,false);
+  onLetter=Math.random()<.5?"A":"B";
+  pair=onLetter==="A"?{A:on,B:off}:{A:off,B:on};
+  same=on.every((v,i)=>v.toFixed(2)===off[i].toFixed(2));
+  revealed=false;
+  $("hx-pair-settings").textContent=source.ambient+"°C air · "+(source.active?"exercising":"resting")+" · "+source.minutes+" simulated minutes · both start at 37°C";
+  minute.max=source.minutes;minute.value=source.minutes;
+  guess.value="";reason.value="";reason.setCustomValidity("");
+  $("hx-identify").hidden=false;$("hx-pair-work").hidden=false;$("hx-pair-result").textContent="";
+  $("hx-pair-status").textContent="";
+  $("hx-make-pair").disabled=true;$("hx-pair-source").disabled=true;
+  draw();minute.focus();
+ };
+ minute.oninput=draw;
+ reason.oninput=()=>reason.setCustomValidity("");
+ $("hx-identify").onsubmit=event=>{
+  event.preventDefault();
+  if(!pair||revealed)return;
+  if(!reason.value.trim()){reason.setCustomValidity("Explain what your two readings show.");reason.reportValidity();return;}
+  const correct=guess.value===(same?"same":onLetter);
+  const labels="Feedback on: curve "+onLetter+". Feedback off: curve "+(onLetter==="A"?"B":"A")+".";
+  const why=same?"The readings coincide at every plotted minute. These data alone cannot distinguish the settings.":
+   "Over the run, the feedback-on curve stays closer to the 37°C set point.";
+  const note=(correct?"Your interpretation is supported. ":"Compare your interpretation with the curves. ")+labels+" "+why;
+  const pick=guess.options[guess.selectedIndex].textContent, cited=reading();
+  report.push(["Matched trial · "+$("hx-pair-settings").textContent,"First prediction: "+pick,cited,"My reasoning: "+reason.value.trim(),labels,why].join("\n"));
+  revealed=true;$("hx-identify").hidden=true;
+  $("hx-pair-result").textContent=note+" Your prediction: "+pick+". Your evidence: "+cited+". Your explanation: "+reason.value.trim();
+  $("hx-make-pair").disabled=false;$("hx-make-pair").textContent="Plot another pair";$("hx-pair-source").disabled=false;
+  $("hx-pair-result").focus();
+ };
+ return report;
+}
 function render(el){
  let ambient=22,active=false,regulated=true,temperature=SET,minutes=0,trace=[[0,SET]],prediction=null;
  const history=[];
@@ -32,6 +109,10 @@ function render(el){
    .hx-lab .hx-pred button[aria-pressed="true"]{border-color:var(--accent);font-weight:700}
    .hx-lab textarea{width:100%;font:inherit;background:var(--paper);color:var(--ink);border:1px solid var(--rule);border-radius:var(--btn-radius,8px);padding:10px;resize:vertical;min-height:85px}
    .hx-lab textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+   .hx-compare{margin:1.5rem 0;border-block:1px solid var(--rule);padding:1.2rem 0}.hx-compare h3{font:700 clamp(1.4rem,4vw,2rem)/1.12 var(--f-title);margin:0 0 .5rem;scroll-margin-top:1rem}
+   .hx-compare p{max-width:66ch;overflow-wrap:anywhere}.hx-compare label,.hx-compare output{display:block;margin:.8rem 0 .3rem}.hx-compare label{font-weight:650}.hx-compare select{max-width:100%;min-height:44px;font:inherit;color:var(--ink);background:var(--paper);border:1px solid var(--rule);padding:.45rem}.hx-compare button{margin:.45rem 0;min-height:44px}
+   .hx-compare [hidden]{display:none!important}.hx-compare figure{margin:1rem 0}.hx-compare figcaption{font-size:.94rem}.hx-compare input[type=range]{width:min(100%,30rem);accent-color:var(--accent);min-height:36px}
+   .hx-compare output{font-weight:650;font-variant-numeric:tabular-nums}.hx-compare :focus-visible{outline:2px solid var(--accent);outline-offset:3px}.hx-compare [role=status]:empty{display:none}
    @media(max-width:580px){.hx-lab .hx-layout{grid-template-columns:1fr}.hx-lab .hx-temperature{font-size:36px}}
    @media(prefers-reduced-motion:reduce){.hx-lab *{scroll-behavior:auto!important}}
   </style>
@@ -82,6 +163,17 @@ function render(el){
    <div id="hx-history" aria-live="polite"></div>
    <button type="button" class="btn ghost" id="hx-clear-history">Clear trial records</button>
   </div>
+  <section class="hx-compare" aria-labelledby="compare-feedback"><h3 id="compare-feedback" tabindex="-1">Which curve shows negative feedback?</h3>
+   <p>Follow the same body in two model runs. Air temperature, activity and starting temperature match. Only the feedback setting changes.</p>
+   <label for="hx-pair-source">Choose conditions for the two runs</label>
+   <select id="hx-pair-source"><option value="cold">Cold air · 8°C · resting · 20 min</option><option value="warm">Hot air · 35°C · exercising · 20 min</option><option value="room">Room temperature · 22°C · resting · 20 min</option><option value="current">My current trial</option></select>
+   <button type="button" class="btn" id="hx-make-pair">Plot two curves</button>
+   <div id="hx-pair-work" hidden><p id="hx-pair-settings"></p><figure><div class="hx-plot" id="hx-pair-plot"></div><figcaption>Curve A is solid. Curve B is dashed. The reference temperature is 37°C.</figcaption></figure>
+   <label for="hx-pair-minute">Choose a minute to cite</label><input type="range" id="hx-pair-minute" min="0" step="1"><output for="hx-pair-minute" id="hx-pair-reading" aria-live="polite"></output>
+   <form id="hx-identify"><label for="hx-guess">Which curve shows feedback switched on?</label><select required id="hx-guess"><option value="">Choose an interpretation</option><option value="A">Curve A</option><option value="B">Curve B</option><option value="same">The curves are indistinguishable</option></select>
+   <label for="hx-justification">Use the two readings at your chosen minute to explain your prediction.</label><textarea id="hx-justification" required rows="2"></textarea>
+   <button class="btn">Record prediction and reveal labels</button></form>
+   <p id="hx-pair-result" role="status" tabindex="-1"></p></div><p id="hx-pair-status" role="status"></p></section>
   <div class="hx-panel">
    <b>5 · Explain your investigation</b>
    <p class="note">Repeat the experiment with feedback off while keeping the other conditions the same. Describe the difference.</p>
@@ -100,12 +192,19 @@ function render(el){
  const $=q=>el.querySelector(q);
  const $$=q=>[...el.querySelectorAll(q)];
  const fmt=t=>t.toFixed(2)+"°C";
- const record=()=>{if(minutes>0){history.push({ambient,active,regulated,temperature,minutes,prediction});if(history.length>12)history.shift();}};
+ const record=()=>{if(minutes>0){history.push({ambient,active,regulated,temperature,minutes,prediction,trace});if(history.length>12)history.shift();}};
  const start=(changes={})=>{record();if(Object.prototype.hasOwnProperty.call(changes,"ambient"))ambient=changes.ambient;
   if(Object.prototype.hasOwnProperty.call(changes,"active"))active=changes.active;
   if(Object.prototype.hasOwnProperty.call(changes,"regulated"))regulated=changes.regulated;
   temperature=SET;minutes=0;trace=[[0,SET]];prediction=null;paint();};
  function renderHistory(){
+  const menu=$("#hx-pair-source"), selected=menu.value;
+  if(menu.options){
+   const options=history.map((t,i)=>new Option("Recorded trial "+(i+1)+" · "+t.ambient+"°C · "+(t.active?"exercise":"rest")+" · "+t.minutes+" min","trial-"+i));
+   for(const item of Array.from(menu.options).slice(4))item.remove();
+   menu.append(...options);
+   if(Array.from(menu.options).some(option=>option.value===selected))menu.value=selected;
+  }
   if(!history.length){$("#hx-history").innerHTML='<p class="note">No completed trials recorded yet. Run a trial, then change one setting to save it.</p>';return;}
   $("#hx-history").innerHTML='<div class="tablewrap"><table class="data"><caption>Up to twelve recent simulated trials</caption><thead><tr><th scope="col">Air</th><th scope="col">Activity</th><th scope="col">Feedback</th><th scope="col">Minutes</th><th scope="col">Final core temp.</th></tr></thead><tbody>'+
   history.map(t=>'<tr><td>'+t.ambient+'°C</td><td>'+(t.active?'Exercise':'Rest')+'</td><td>'+(t.regulated?'On':'Off')+'</td><td>'+t.minutes+'</td><td>'+fmt(t.temperature)+'</td></tr>').join("")+'</tbody></table></div>';
@@ -158,6 +257,7 @@ function render(el){
  $("#hx-ten").onclick=()=>advance(10);
  $("#hx-reset").onclick=()=>start();
  $("#hx-clear-history").onclick=()=>{history.length=0;renderHistory();};
+ const comparisonReport=setupComparison(el,()=>({ambient,active,regulated,minutes,trace}),history);
  function report(){
   return ["Homeostasis Lab — Investigation",
    "Environment: "+ambient+"°C; activity: "+(active?"exercising":"resting")+
@@ -166,6 +266,7 @@ function render(el){
    "Simulated temperature after "+minutes+" minute(s): "+fmt(temperature),
    "Previous trial records (illustrative, not actual physiology):\n"+
     (history.length?history.map((t,i)=>(i+1)+". Air "+t.ambient+"°C, "+(t.active?"exercise":"rest")+", feedback "+(t.regulated?"on":"off")+", "+t.minutes+" minutes, "+fmt(t.temperature)).join("\n"):"No prior trials recorded"),
+   ...comparisonReport,
    "Observation:\n"+$("#hx-observation").value.trim(),
    "Explanation:\n"+$("#hx-explanation").value.trim(),
    "Model limitation: simplified teaching illustration; not actual physiology."

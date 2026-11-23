@@ -1,1 +1,12 @@
-"use strict";const assert=require("node:assert/strict"),fs=require("node:fs"),path=require("node:path"),vm=require("node:vm");const root=path.resolve(__dirname,".."),page=fs.readFileSync(path.join(root,"social-studies/egypt-social-evidence-lab.html"),"utf8"),lessons=fs.readFileSync(path.join(root,"social-studies/egypt-lessons.js"),"utf8");for(const p of [/Who Benefited from Egypt/,/Naunakhte/,/data-check-claims/,/data-check-strike/,/source-reading/,/does not label one social group/i,/not submitted or saved online/i,/@media\(max-width:560px\)/,/focus-visible/])assert.match(page,p);assert.match(lessons,/"id": "l7"[\s\S]*?"activity": \{"href":"egypt-social-evidence-lab.html","title":"Build an Egypt Evidence File"\}/);assert.doesNotMatch(page,/\bfetch\s*\(|localStorage|sessionStorage/);const s=[...page.matchAll(/<script>([\s\S]*?)<\/script>/g)][0][1];assert.doesNotThrow(()=>new vm.Script(s));console.log("Egypt Lesson 7 social evidence lab checks passed.");
+"use strict";
+const assert=require("node:assert/strict"),fs=require("node:fs"),path=require("node:path"),vm=require("node:vm");
+const root=path.resolve(__dirname,"..");
+const page=fs.readFileSync(path.join(root,"social-studies/egypt-social-evidence-lab.html"),"utf8");
+const script=fs.readFileSync(path.join(root,"social-studies/egypt-strike.js"),"utf8");
+const lessons=fs.readFileSync(path.join(root,"social-studies/egypt-lessons.js"),"utf8");
+for(const pattern of [/Who Benefited from Egypt/,/Naunakhte/,/data-check-claims/,/data-check-strike/,/source-reading/,/ticket-limit/,/not submitted or saved online/i,/@media\(max-width:560px\)/,/focus-visible/,/src="egypt-strike.js"/])assert.match(page,pattern);
+assert.match(lessons,/"id": "l7"[\s\S]*?"activity": \{"href":"egypt-social-evidence-lab.html","title":"Build an Egypt Evidence File"\}/);
+assert.doesNotMatch(page+script,/\bfetch\s*\(|localStorage|sessionStorage/);
+assert.deepEqual([...page.matchAll(/<select id="strike-([^"]+)"/g)].map(x=>x[1]),["officials","paid","walkout","ration","demand"]);
+assert.doesNotThrow(()=>new vm.Script(script));
+console.log("Egypt Lesson 7 source, sequence and evidence-file checks passed.");
