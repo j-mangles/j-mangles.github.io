@@ -1,0 +1,61 @@
+name: Verify rally scoring and assessment printouts
+on:
+  push:
+    branches: [qa-body-systems-rally-egypt-print]
+permissions:
+  contents: read
+jobs:
+  classroom:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Start the class site
+        run: |
+          npm install --no-save --no-package-lock playwright-core@1.56.1
+          python3 -m http.server 8765 --bind 127.0.0.1 >/tmp/class-site.log 2>&1 &
+          for try in {1..20}; do curl -fsS http://127.0.0.1:8765/ -o /dev/null && break; sleep 1; done
+      - name: Exercise all repository tests
+        run: |
+          mkdir /tmp/lesson-review-tests
+          failed=0
+          for test in tools/*.cjs; do
+            node "$test" > "/tmp/lesson-review-tests/$(basename "$test").log" 2>&1 || { echo "::error::$test"; tail -30 "/tmp/lesson-review-tests/$(basename "$test").log"; failed=1; }
+          done
+          echo "$(ls /tmp/lesson-review-tests | wc -l) scripts exercised"
+          exit "$failed"
+      - name: Inspect printed assessments and classroom views
+        if: always()
+        run: |
+          python -m pip -q install pillow pymupdf
+          python - <<'PY'
+          from PIL import Image
+          import base64,io,fitz,pathlib
+          root=pathlib.Path('browser-artifacts')
+          print_sheet=Image.new('RGB',(840,560),'#ddd')
+          for row,name in enumerate(['body-systems-test','egypt-exhibit-test']):
+              pdf=root/(name+'.html.pdf')
+              d=fitz.open(pdf)
+              print('PRINT_INFO',name,len(d),[len(p.get_text()) for p in d],flush=True)
+              for i,p in enumerate(d):
+                  pix=p.get_pixmap(matrix=fitz.Matrix(.35,.35),alpha=False)
+                  im=Image.frombytes('RGB',(pix.width,pix.height),pix.samples);im.thumbnail((205,270))
+                  print_sheet.paste(im,(i*210,row*280))
+              print('FILE_START '+name+' '+base64.b64encode(pdf.read_bytes()).decode()+' FILE_END',flush=True)
+              assert len(d)==2
+              text=' '.join(p.get_text() for p in d)
+              assert ('resting rate' in text if row==0 else 'Your revised labels' in text)
+              assert 'Download answers' not in text
+          canvas=Image.new('RGB',(820,600),'#ddd')
+          for i,name in enumerate(['rally-graph-1280','rally-graph-390','body-systems-test.html-390','egypt-exhibit-test.html-390']):
+              im=Image.open(root/(name+'.png')).convert('RGB')
+              im.thumbnail((405,295));canvas.paste(im,((i%2)*410,(i//2)*300))
+          for name,im in [('print',print_sheet),('screen',canvas)]:
+              b=io.BytesIO();im.save(b,format='WEBP',quality=81)
+              print('VIEW_START '+name+' '+base64.b64encode(b.getvalue()).decode()+' VIEW_END',flush=True)
+          PY
