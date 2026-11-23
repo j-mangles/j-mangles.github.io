@@ -15,6 +15,7 @@
 .pulse-chart{max-width:38rem;margin:1rem 0}.pulse-chart svg{display:block;width:100%;height:auto;color:var(--ink)}
 .pulse-chart figcaption{font-size:.95rem}.pulse-chart details{margin:.5rem 0}.pulse-chart table{border-collapse:collapse}.pulse-chart :is(td,th){padding:.22rem .5rem;text-align:left;border-bottom:1px solid var(--rule)}
 html[data-room] .assessment .part{background:transparent;border:0;border-top:1px solid var(--rule)}
+html[data-room] .assessment button:hover{background:var(--room);color:var(--room-ink)}
 html[data-room] .assessment .source{background:var(--sheet);color:var(--ink)}
 @media print{
  @page{size:letter;margin:15mm}
@@ -30,6 +31,8 @@ html[data-room] .assessment .source{background:var(--sheet);color:var(--ink)}
  .assessment .source{background:white!important;border:0;padding:0;margin:4pt 0 8pt}
  .assessment .print-answer{display:block;min-height:50pt;white-space:pre-wrap;overflow-wrap:anywhere;border-bottom:1px solid #999;margin-bottom:5pt}
  .assessment .name-output{min-height:16pt;max-width:20rem}
+ .assessment .print-answer:not(.filled):not(.name-output){min-height:84pt;border-bottom:0;background:repeating-linear-gradient(to bottom,transparent 0 20pt,#b8bdc1 20pt 21pt);print-color-adjust:exact;-webkit-print-color-adjust:exact}
+ .assessment .part:not(.new-sheet) .print-answer:not(.filled){min-height:126pt}
  .assessment .print-answer.filled{min-height:0;padding-bottom:5pt}
  .assessment .pulse-chart{max-width:330pt;margin:3pt 0}.assessment .pulse-chart figcaption{font-size:9pt}
  .assessment p,.assessment .response{orphans:2;widows:2}.assessment .question{break-after:avoid}
