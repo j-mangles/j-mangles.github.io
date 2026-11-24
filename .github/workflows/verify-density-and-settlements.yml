@@ -1,0 +1,47 @@
+name: Verify density and settlement decisions
+on:
+  push:
+    branches: [verify-density-and-settlements]
+permissions:
+  contents: read
+jobs:
+  classroom:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Start the class site
+        run: |
+          npm install --no-save --no-package-lock playwright-core@1.56.1
+          python3 -m http.server 8765 --bind 127.0.0.1 >/tmp/class-site.log 2>&1 &
+          for try in {1..20}; do curl -fsS http://127.0.0.1:8765/ -o /dev/null && break; sleep 1; done
+      - name: Exercise all repository tests
+        run: |
+          mkdir /tmp/lesson-review-tests
+          failed=0
+          for test in tools/*.cjs; do
+            node "$test" > "/tmp/lesson-review-tests/$(basename "$test").log" 2>&1 || { echo "::error::$test"; tail -30 "/tmp/lesson-review-tests/$(basename "$test").log"; failed=1; }
+          done
+          echo "$(ls /tmp/lesson-review-tests | wc -l) scripts exercised"
+          exit "$failed"
+      - name: Inspect investigations at both screen sizes
+        if: always()
+        run: |
+          python -m pip -q install pillow
+          python - <<'PY'
+          from PIL import Image
+          import base64,io
+          canvas=Image.new('RGB',(1100,940),'#ddd')
+          for i,name in enumerate(['sample-bench-1280','second-council-1280','sample-bench-390','second-council-390']):
+              im=Image.open('browser-artifacts/'+name+'.png').convert('RGB')
+              im.thumbnail((545,464))
+              canvas.paste(im,((i%2)*550,(i//2)*470))
+          b=io.BytesIO()
+          canvas.save(b,format='WEBP',quality=80)
+          print('VIEW_START bench '+base64.b64encode(b.getvalue()).decode()+' VIEW_END')
+          PY
