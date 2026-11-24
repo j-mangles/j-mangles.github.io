@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mystery Sample Lab · Grade 8 Science</title>
+<link rel="stylesheet" href="../assets/fonts.css"><link rel="stylesheet" href="../assets/site.css">
+<link rel="stylesheet" href="../assets/class-assessment.css"><link rel="stylesheet" href="mystery-sample-lab.css">
+<script defer src="mystery-sample-lab.js"></script>
+</head>
+<body data-subject="sci"><main class="rally mystery">
+<a href="labs.html">Science labs</a>
+<h1>Mystery Sample Lab</h1>
+<p class="meta">Grade 8 Science · Matter, Density &amp; Fluids</p>
+<nav class="modes" aria-label="Activity"><a href="#bench">Lab bench</a><a href="#partners">Partner challenge</a><a href="#ticket">Individual exit ticket</a></nav>
+<section id="bench" class="mode">
+<h2>Which sample is aluminium?</h2>
+<p>The labels fell off two solid samples. One is dense plastic and one is aluminium. Choose tests, collect readings and identify each sample. Swap who measures and who calculates for the second sample.</p>
+<div class="toolbar"><label for="sample">On the bench</label> <select id="sample"><option value="A">Sample A</option><option value="B">Sample B</option></select><span id="progress"></span></div>
+<div class="workbench">
+<div class="instruments">
+<h3>Test the sample</h3>
+<div class="actions" id="test-tools"><button type="button" data-tool="float">Try fresh water</button><button type="button" data-tool="balance">Weigh dry sample</button><button type="button" data-tool="cylinder">Measure displacement</button></div>
+<div id="instruments"></div>
+<p id="observation" role="status"></p>
+</div>
+<div class="notebook"><h3>Lab notebook</h3>
+<p class="reference">Model densities in g/cm³<br><strong>Dense plastic 1.2 &nbsp;·&nbsp; Aluminium 2.7</strong></p>
+<form id="identify" novalidate>
+<label>Displaced volume (cm³)<input name="volume" type="number" step="any" inputmode="decimal"></label>
+<label>Density (g/cm³)<input name="density" type="number" step="any" inputmode="decimal"></label>
+<label>Material<select name="material"><option value="">Choose a material</option><option value="plastic">Dense plastic</option><option value="metal">Aluminium</option></select></label>
+<button class="primary">Check identification</button>
+</form><p id="lab-response" role="status"></p><div id="next-sample"></div>
+</div></div></section>
+<section id="partners" class="mode" hidden><h2>Challenge the lab partner</h2><p>One partner reads the claim. The other explains the mistake aloud before you choose a reply together. Switch roles each round. Earn one point for each correct first choice.</p>
+<div id="partner-round"></div><p id="partner-feedback" role="status"></p><div id="partner-next"></div></section>
+<section id="ticket" class="mode" hidden><h2>Identify a fresh sample</h2><p>Work independently. Use the readings to find the sample’s volume, calculate its density and identify its material. Each part earns one mark on your first submission.</p>
+<p class="reference">Reference densities: dense plastic 1.2 g/cm³ · aluminium 2.7 g/cm³. Each mL displaced equals 1 cm³.</p>
+<dl class="readings" id="ticket-readings"></dl>
+<form id="exit-form" novalidate>
+<label>Displaced volume (cm³)<input name="volume" type="number" step="any" inputmode="decimal"></label>
+<label>Density (g/cm³)<input name="density" type="number" step="any" inputmode="decimal"></label>
+<label>Material<select name="material"><option value="">Choose a material</option><option value="metal">Aluminium</option><option value="plastic">Dense plastic</option></select></label>
+<button class="primary">Mark my ticket</button>
+</form><p id="ticket-result" role="status"></p><div class="actions" id="ticket-actions" hidden><button id="save-ticket" type="button">Download marked ticket</button><button id="new-ticket" type="button">Try another ticket</button></div></section>
+<noscript>Enable JavaScript to operate the instruments and check your results.</noscript>
+</main></body></html>

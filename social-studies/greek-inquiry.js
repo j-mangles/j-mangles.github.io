@@ -52,12 +52,121 @@ function intro(n,title,description){
 function container(){
  $("#content").replaceChildren();const el=document.createElement("section");el.className="panel";$("#content").append(el);return el;
 }
+const siteNeeds=["Harbour","Food","Fresh water","Defence","Trade"];
+const disruptions={
+ A:{news:"A grain ship due at the island’s harbour is delayed. Nearby households already use the fields and spring.",keep:"Waiting keeps both harbours available. Food stores must now last longer.",adapt:"A smaller shipment or a locally agreed exchange could bridge the delay. The nearby fields are already in use."},
+ B:{news:"A river cargo is delayed. The sheltered inlet still has access to sea traffic, but the expected metal for exchange has not arrived.",keep:"Waiting preserves the river trading plan. The missing cargo leaves less to exchange for supplies.",adapt:"Trading a different good may keep supplies moving. Ask the growers who rely on the vines and olives what they can spare."},
+ C:{news:"Strong currents at the strait delay supply boats. Nearby fishing crews already rely on the sheltered landing space.",keep:"Waiting leaves the strait open as a future trade route. The settlement still needs food while boats are delayed.",adapt:"Relying more on fish could reduce the need for cargo. More boats would share the landing and fishing grounds."},
+ D:{news:"A cart breaks on the route from the port. Supplies reach the coast, but the final journey to the plateau is delayed.",keep:"Waiting keeps the farmland and spring within reach. The supplies at the port still need an overland journey.",adapt:"Changing the load or arranging more carriers could shorten the delay. Nearby households also need carriers and paths."}
+};
+const councilActions={keep:"Keep the original plan",adapt:"Change the supply plan",move:"Move to another site"};
+const peerCriteria=[
+ "The explanation uses a detail from a scout’s report to explain a consequence.",
+ "It identifies people affected and explains what the council would ask or negotiate.",
+ "It weighs a gain against a cost and explains why this choice fits the new problem."
+];
+let originalPlan=null,decision=null,peerMarks=null;
+const peerDraft=peerCriteria.map(()=>false);
+const councilDraft={action:"",destination:"",reason:"",people:""};
+function city(id){return cities.find(row=>row[0]===id);}
+function paragraph(parent,text){const p=document.createElement("p");p.textContent=text;parent.append(p);return p;}
+function heading(parent,level,text){const h=document.createElement(level);h.textContent=text;parent.append(h);return h;}
+function councilSelect(labelText,id,options,value,onChange){
+ const label=document.createElement("label");label.className="write";label.textContent=labelText+" ";
+ const select=document.createElement("select");select.id=id;
+ for(const [v,t] of options){const o=document.createElement("option");o.value=v;o.textContent=t;select.append(o);}
+ select.value=value;select.onchange=()=>onChange(select.value);label.append(select);return label;
+}
+function showCouncil(root){
+ intro("01","Found a City","Reopen the scouts’ reports and put your original decision to a second vote.");
+ const source=city(originalPlan.site),event=disruptions[source[0]];
+ const record=heading(root,"h3","Your original decision");
+ record.id="first-decision";
+ paragraph(root,"You chose Site "+source[0]+" · "+source[2]+".");
+ paragraph(root,originalPlan.why);
+ if(originalPlan.risk)paragraph(root,"Original risk and plan: "+originalPlan.risk);
+ const reports=document.createElement("details"),summary=document.createElement("summary");
+ summary.textContent="Reopen all four scout reports and your ratings";reports.append(summary);
+ for(const [id,detail,name] of cities){
+  const p=paragraph(reports,"Site "+id+" · "+name+". "+detail);
+  p.append(document.createElement("br"),siteNeeds.map(need=>need+" "+originalPlan.scores[id+":"+need]+"/3").join(" · "));
+ }
+ root.append(reports);
+ const council=document.createElement("section");council.id="second-council";root.append(council);
+ const h=heading(council,"h3","A second council meeting");h.tabIndex=-1;
+ paragraph(council,"Fictional scenario · "+event.news);
+ paragraph(council,"Your original scout reported: “"+source[1]+"”");
+ const choices=[["","Choose a response"],...Object.entries(councilActions)];
+ const controls=document.createElement("div"),detail=document.createElement("div");detail.id="decision-detail";council.append(controls,detail);
+ controls.append(councilSelect("Council response","council-action",choices,councilDraft.action,value=>{
+  councilDraft.action=value;councilDraft.destination="";drawDetail();
+ }));
+ function drawDetail(){
+  detail.replaceChildren();const action=councilDraft.action;
+  if(!action)return;
+  if(action==="move"){
+   detail.append(councilSelect("Proposed new site","council-destination",[["","Choose a different site"],...cities.filter(c=>c[0]!==source[0]).map(c=>[c[0],"Site "+c[0]+" · "+c[2]])],councilDraft.destination,value=>{
+    councilDraft.destination=value;drawDetail();document.getElementById("council-destination").focus();
+   }));
+   if(!councilDraft.destination)return;
+   const dest=city(councilDraft.destination);
+   paragraph(detail,"Destination scout: “"+dest[1]+"”");
+   paragraph(detail,"Moving means transporting 200 people again. Weigh what you leave at "+source[2]+" against what the new site offers. Who already depends on the new site?");
+  }else paragraph(detail,event[action]);
+  for(const [key,title] of [["reason","Which geographic detail supports your response? Explain what you gain and what you give up."],["people","Who else uses this land, water or trade route? What would you ask them before acting?"]]){
+   const label=document.createElement("label");label.className="write";label.textContent=title;
+   const field=document.createElement("textarea");field.id="council-"+key;field.value=councilDraft[key];field.readOnly=Boolean(decision);
+   field.oninput=()=>{councilDraft[key]=field.value;};label.append(field);detail.append(label);
+  }
+  const feedback=document.createElement("p");feedback.setAttribute("role","status");
+  if(!decision){
+   detail.append(button("Record council decision",()=>{
+    if(!councilDraft.reason.trim()||!councilDraft.people.trim()){feedback.textContent="Record your geographic trade-off and your plan for the people affected.";return;}
+    decision={...councilDraft};showResult();
+    document.getElementById("council-verdict").focus();
+   }),feedback);
+  }
+ }
+ function showResult(){
+  controls.querySelector("select").disabled=true;drawDetail();
+  const dest=detail.querySelector("select");if(dest)dest.disabled=true;
+  const result=document.createElement("section");detail.append(result);
+  const title=heading(result,"h3","Council decision recorded");title.id="council-verdict";title.tabIndex=-1;
+  const last=decision.destination?city(decision.destination):source;
+  paragraph(result,councilActions[decision.action]+". Final site: "+last[2]+".");
+  paragraph(result,"Partner review: use the written decision to award one point for each criterion you can show. Any of the three responses can earn full marks.");
+  const fieldset=document.createElement("fieldset");const legend=document.createElement("legend");legend.textContent="Evidence in the council decision";fieldset.append(legend);
+  const boxes=peerCriteria.map((criterion,i)=>{
+   const label=document.createElement("label"),box=document.createElement("input");label.className="peer-mark";box.type="checkbox";
+   box.checked=peerDraft[i];label.append(box,criterion);fieldset.append(label);return box;
+  });
+  const feedback=paragraph(result,"");feedback.id="council-score";feedback.setAttribute("role","status");
+  function showScore(){feedback.textContent=peerMarks?"Peer score: "+peerMarks.filter(Boolean).length+" of 3.":"";}
+  boxes.forEach((box,i)=>box.onchange=()=>{peerDraft[i]=box.checked;peerMarks=null;showScore();});
+  result.append(fieldset,button("Save peer score",()=>{peerMarks=boxes.map(box=>box.checked);showScore();}),feedback);showScore();
+ }
+ if(decision)showResult();else drawDetail();
+}
+function councilReport(){
+ const source=city(originalPlan.site);
+ const lines=["FOUND A CITY","Original site: "+source[2],"Original reasons: "+originalPlan.why,"Original risk and plan: "+(originalPlan.risk||"No entry"),
+ ...cities.map(c=>"Site "+c[0]+": "+c[1]+" "+siteNeeds.map(n=>n+" "+originalPlan.scores[c[0]+":"+n]+"/3").join(", ")),
+ "Fictional complication: "+disruptions[source[0]].news];
+ const d=decision||councilDraft;
+ if(d.action)lines.push((decision?"Recorded response: ":"Draft response: ")+councilActions[d.action]);
+ if(d.destination)lines.push("Destination: "+city(d.destination)[2]);
+ if(d.reason)lines.push("Geographic trade-off: "+d.reason);
+ if(d.people)lines.push("People affected and consultation: "+d.people);
+ if(peerMarks)lines.push("Peer score: "+peerMarks.filter(Boolean).length+"/3",...peerCriteria.map((criterion,i)=>(peerMarks[i]?"1/1 ":"0/1 ")+criterion));
+ return lines.join("\n\n");
+}
 function siteGame(){
+ if(originalPlan){showCouncil(container());return;}
  intro("01","Found a City","Around 650 BCE, you lead 200 Greek settlers. Read four scouts' reports, score each need 1–3, and defend one choice. These are fictional reports about real places.");
  const root=container(),grid=document.createElement("div");grid.className="grid";root.append(grid);
  for(const c of cities){
   const node=card("Site "+c[0],c[1]);
-  for(const need of ["Harbour","Food","Fresh water","Defence","Trade"]){
+  for(const need of siteNeeds){
    const label=document.createElement("label");label.textContent=need;
    const sel=document.createElement("select");
    for(const [v,t] of [["","Rate 1–3"],["1","1 · Problem"],["2","2 · Fine"],["3","3 · Excellent"]]){
@@ -75,11 +184,12 @@ function siteGame(){
  choice.value=selected;choice.onchange=()=>selected=choice.value;
  const lbl=document.createElement("label");lbl.className="write";lbl.textContent="My chosen site ";lbl.append(choice);
  root.append(lbl,textArea("found-why","My two evidence-based reasons"),textArea("found-risk","Biggest risk and plan"));
- const result=document.createElement("p");result.className="hint";
+ const result=document.createElement("p");result.className="hint";result.setAttribute("role","status");
  root.append(button("Reveal the historical cities",()=>{
-  const ready=cities.every(c=>["Harbour","Food","Fresh water","Defence","Trade"].every(n=>scores[c[0]+":"+n]));
+  const ready=cities.every(c=>siteNeeds.every(n=>scores[c[0]+":"+n]));
   if(!ready||(memory["found-why"]||"").trim().length<20){result.textContent="Score all four sites and write two reasons before the reveal.";return;}
-  result.textContent="You chose "+cities.find(c=>c[0]===selected)[2]+". The sites were A = Syracuse; B = Massalia; C = Byzantium; D = Cyrene. All four became real settlements. There is no single best choice. Consider impacts on communities already living there.";
+  originalPlan={site:selected,why:memory["found-why"],risk:memory["found-risk"]||"",scores:{...scores}};
+  siteGame();document.querySelector("#second-council h3").focus();
  }),result);
 }
 function citizenGame(){
@@ -150,6 +260,7 @@ function ostracismGame(){
 function report(){
  return ["GRADE 8 ANCIENT GREECE — INQUIRY RESPONSE","Activity: "+tab,"Selected colony: "+selected,"Role: "+lives[role][0],
  "Scoring: "+JSON.stringify(scores),"Voting: "+JSON.stringify(votes),
+ ...(originalPlan?[councilReport()]:[]),
  ...Object.entries(memory).map(([k,v])=>k+"\n"+v),
  (tab==="ostracism"?"Historical clues are observations; proposed explanations are student hypotheses.":"Fictional examples are teaching simulations.")].join("\n\n");
 }

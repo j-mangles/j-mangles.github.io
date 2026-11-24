@@ -269,7 +269,7 @@ const tasks=[
    assert.equal(await page.locator(".unit").count(),5,"Five Science units in the Lab Library");
    assert.equal(await page.locator('.entry a[href^="./#"]').count(),15,"Only current Science labs should link");
    assert.equal(await page.locator('.entry a[href="oxygen-review.html#review"]').count(),1,"The paired review and test open from the library");
-   assert.equal(await page.locator(".entry .soon").count(),19,"Upcoming labs must stay unavailable in the library");
+   assert.equal(await page.locator(".entry .soon").count(),20,"Upcoming labs must stay unavailable in the library");
    await page.locator("#lab-search").fill("refraction");
    assert.equal(await page.locator(".entry").count(),1,"Science Lab Library search");
    assert.equal(await page.locator(".entry a").count(),0,"Future labs must not open from the library");
