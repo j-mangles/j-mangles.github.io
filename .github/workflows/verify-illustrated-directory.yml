@@ -1,0 +1,58 @@
+name: Verify illustrated directory and classroom reveals
+on:
+  push:
+    branches: [verify-illustrated-directory-reveals]
+permissions:
+  contents: read
+jobs:
+  classroom:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Start the class site
+        run: |
+          npm install --no-save --no-package-lock playwright-core@1.56.1
+          python3 -m http.server 8765 --bind 127.0.0.1 >/tmp/class-site.log 2>&1 &
+          for try in {1..20}; do curl -fsS http://127.0.0.1:8765/ -o /dev/null && break; sleep 1; done
+      - name: Exercise all repository tests
+        run: |
+          mkdir /tmp/lesson-review-tests
+          failed=0
+          for test in tools/*.cjs; do
+            node "$test" > "/tmp/lesson-review-tests/$(basename "$test").log" 2>&1 || { echo "::error::$test"; tail -30 "/tmp/lesson-review-tests/$(basename "$test").log"; failed=1; }
+          done
+          echo "$(ls /tmp/lesson-review-tests | wc -l) scripts exercised"
+          exit "$failed"
+      - name: Inspect investigations at both screen sizes
+        if: always()
+        run: |
+          python -m pip -q install pillow
+          python - <<'PY'
+          from PIL import Image
+          import base64,io
+          for key, names in {
+              'home':['home','home'],
+              'classroom':['stone','rise','board'],
+              'lessons':['cells-unit','egypt-unit','microscope','rally','body-test','egypt-test'],
+          }.items():
+              if key=='home':
+                  canvas=Image.new('RGB',(1135,790),'#d9d7cc')
+                  for width,maximum,pos in [(1280,(815,760),(0,0)),(390,(312,760),(820,0))]:
+                      im=Image.open(f'browser-artifacts/ill-home-{width}.png').convert('RGB')
+                      im.thumbnail(maximum); canvas.paste(im,pos)
+              else:
+                  canvas=Image.new('RGB',(1050,260*len(names)),'#d9d7cc')
+                  for i,name in enumerate(names):
+                      for col,width in enumerate([1280,390]):
+                          im=Image.open(f'browser-artifacts/ill-{name}-{width}.png').convert('RGB')
+                          im.thumbnail((710,255) if not col else (330,255));canvas.paste(im,(col*650,i*260))
+              b=io.BytesIO()
+              canvas.save(b,format='WEBP',quality=78)
+              print('VIEW_START '+key+' '+base64.b64encode(b.getvalue()).decode()+' VIEW_END')
+          PY
