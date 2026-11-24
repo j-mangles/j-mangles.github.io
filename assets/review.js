@@ -87,7 +87,7 @@
     function shell(inner){
       return `<div class="rv">
         <div class="rv-tabs" role="tablist">
-          ${[["ideas","Big ideas"],["cards",`Flashcards · ${cards.length}`],["test","Practice test"]].map(([k,t])=>`<button role="tab" aria-selected="${tab===k}" data-tab="${k}">${t}</button>`).join("")}
+          ${[["ideas","Big ideas"],["cards",`Flashcards · ${cards.length}`],["test","Practice test"]].map(([k,t])=>`<button role="tab" aria-selected="${tab===k}" data-tab="${k}">${k==="test"?'<span class="activity-format" data-format="test">Practice test</span>':t}</button>`).join("")}
         </div>${inner}</div>`;
     }
     function ideas(){

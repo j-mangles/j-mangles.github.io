@@ -87,7 +87,7 @@
       },
       draw(stage,step){
         const s=samples[selected],y1=183-1.85*s.start,y2=183-1.85*s.end;
-        const rise=step?`<g class="rise"><path d="M79 ${y1}H183M181 ${y2}h28" stroke-dasharray="3 3"/><path d="M185 ${y2}v${y1-y2}m-4 0h8m-8 ${y2-y1}h8"/></g><text class="rise-label" x="179" y="${(y1+y2)/2+4}" text-anchor="end" font-size="13">${s.volume} mL</text>`:'';
+        const rise=step?`<g class="rise"><path d="M102 ${y1}H183M181 ${y2}h28" stroke-dasharray="3 3"/><path d="M185 ${y2}v${y1-y2}m-4 0h8m-8 ${y2-y1}h8"/></g><text class="rise-label" x="179" y="${(y1+y2)/2+4}" text-anchor="end" font-size="13">${s.volume} mL</text>`:'';
         stage.innerHTML=`<svg class="reveal-cylinders" viewBox="0 0 296 217" role="img" aria-label="Sample ${selected}. Before ${s.start} millilitres. After ${s.end} millilitres.${step?' The rise is '+s.volume+' millilitres.':''}"><text x="148" y="16" text-anchor="middle" font-size="13">Water level (mL)</text>${cylinder(24,s.start,0,'Before')}${cylinder(203,s.end,s.volume,'After')}${rise}</svg>`;
         return step?`${s.end} mL − ${s.start} mL = ${s.volume} mL. The solid occupies ${s.volume} cm³.`:'';
       }
