@@ -14,10 +14,12 @@ button{font:inherit;font-weight:750;color:#fff;background:var(--accent);border:0
 button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid var(--focus);outline-offset:3px}.feedback{min-height:1.6em;font-weight:750}.good{color:var(--good)}.bad{color:var(--bad)}.muted,footer{color:var(--muted)}
 .glyph{font-size:1.6rem;letter-spacing:.1em}.cartouche{display:inline-block;border:2px solid var(--accent);border-radius:50%;padding:8px 18px;color:var(--accent);font-size:1.3rem}
 footer{border-top:1px solid var(--line);padding-top:14px;font-size:.9rem}@media(max-width:520px){main{padding:18px 12px 40px}section{border-radius:12px}}
+html[data-room] main :is(input,textarea)::placeholder{color:var(--muted);opacity:1}html[data-room] main button:hover{background:var(--room);color:var(--room-ink)}
 </style><link rel="stylesheet" href="../assets/fonts.css?v=20261114a">
 <link rel="stylesheet" href="rooms.css?v=20261114a">
 <link rel="stylesheet" href="lab.css?v=20261114a">
 <link rel="stylesheet" href="egypt-evidence.css">
+<link rel="stylesheet" href="../assets/classroom-reveal.css">
 </head><body><main>
 <div class="top"><div><p class="kicker">Unit 2 · Ancient Egypt · Lesson 12</p><h1>The Rosetta Stone Investigation</h1></div><a href="index.html#egypt-l12">← Egypt atlas</a></div>
 <p class="intro">For about 1,400 years, nobody could read hieroglyphs. Investigate how scholars cracked the code, separate a documented death from the “mummy’s curse,” and weigh a question about who should hold an ancient object.</p>
@@ -45,7 +47,7 @@ footer{border-top:1px solid var(--line);padding-top:14px;font-size:.9rem}@media(
 <button type="button" data-build-position>Build my argument outline</button><p class="feedback" data-position-feedback aria-live="polite"></p>
 <button class="secondary" type="button" data-clear>Clear this page for the next student</button></section>
 <footer>Based on student-facing Unit 2 Lesson 12 Guided Notes, Crack the Code assignment, and class slides. The debate has no answer key: support your position with reasons and evidence. Responses stay in this page, are not submitted or saved online, and can be cleared before another student uses this device.</footer>
-</main><script src="egypt-evidence.js"></script><script>(function(){var q=function(s){return document.querySelector(s)};
+</main><script src="../assets/classroom-reveal.js"></script><script src="egypt-evidence.js?v=20261124"></script><script>(function(){var q=function(s){return document.querySelector(s)};
 q('[data-check-code]').onclick=function(){var a=q('#name-a').value.trim().toLowerCase().replace(/[^a-z]/g,''),b=q('#name-b').value.trim().toLowerCase().replace(/[^a-z]/g,''),s=q('#shared-signs').value.trim().toLowerCase().replace(/[^a-z]/g,'');var okA=a==='ptolmys'||a==='ptolemy',okB=b==='kleopatra'||b==='cleopatra',okS=s.length===3&&['pol','plo','opl','olp','lpo','lop'].indexOf(s)>=0;var e=q('[data-code-feedback]');e.className='feedback '+(okA&&okB&&okS?'good':'bad');e.textContent=(okA?'Cartouche A is right. ':'Check the sound sequence for Cartouche A. ')+(okB?'Cartouche B is Cleopatra. ':'Cartouche B represents Cleopatra. ')+(okS?'P, O and L are shared; seeing the same sound signs in both names helped show that signs could represent sounds.':'Find the same three sounds in both names; the student assignment expects P, O and L.')};
 var answers={'claim-date':'proven','claim-curse':'legend','claim-door':'legend','claim-news':'guess'};
 q('[data-check-curse]').onclick=function(){var n=Object.keys(answers).filter(function(k){return q('#'+k).value===answers[k]}).length;var e=q('[data-curse-feedback]');e.className='feedback '+(n===4?'good':'bad');e.textContent=n+' of 4 readings fit the lesson evidence. The date is documented; the curse and carved-warning stories are legends without evidence here; newspaper motives are a reasonable interpretation, not proof about every paper.'};

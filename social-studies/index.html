@@ -249,6 +249,8 @@ figcaption{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.35}
 <link rel="stylesheet" href="gallery.css?v=20261114a">
 <link rel="stylesheet" href="egypt-evidence.css">
 
+<link rel="stylesheet" href="../assets/activity-formats.css"><link rel="stylesheet" href="../assets/unit-covers.css">
+<link rel="stylesheet" href="../assets/classroom-reveal.css">
 </head>
 <body>
 <div class="app">
@@ -287,10 +289,10 @@ figcaption{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.35}
   </div>
 </div>
 
-<script src="../assets/review.js?v=20261101d"></script>
+<script src="../assets/review.js?v=20261124"></script>
 <script src="egypt-diagrams.js"></script>
 <script src="egypt-interactives.js"></script>
-<script src="egypt-evidence.js"></script>
+<script src="../assets/classroom-reveal.js"></script><script src="egypt-evidence.js?v=20261124"></script>
 <script src="../assets/model3d.js"></script>
 <script src="egypt-3d.js"></script>
 <script src="egypt-lessons.js"></script>
@@ -1131,7 +1133,8 @@ function renderPanel(){
   }
   const hasL=!!(u.lessons&&u.lessons.length);
   if(!hasL) S.ptab="places";
-  const head=`<div class="eyebrow">Unit ${u.n} ${statusTag(u)}</div><h2>${esc(u.name)}</h2><div class="span">${esc(u.span)}</div>
+  const unitCover=["egypt","greece"].includes(u.id);
+  const head=`<div class="eyebrow">Unit ${u.n} ${statusTag(u)}</div>${unitCover?`<div class="unit-cover-title" data-cover="${u.id}"><span class="cover-art" aria-hidden="true"></span>`:""}<h2>${esc(u.name)}</h2><div class="span">${esc(u.span)}</div>${unitCover?"</div>":""}
     <p>${esc(u.intro)}</p>
     ${hasL?`<div class="ptabs" role="tablist"><button role="tab" id="tab-places" aria-selected="${S.ptab!=="lessons"}">Places</button><button role="tab" id="tab-lessons" aria-selected="${S.ptab==="lessons"}">Lessons</button></div>`:""}`;
   let body;
@@ -1216,7 +1219,8 @@ function renderSheet(keepTicketOpen=false){
     ${l.terms.length?`<h3>Key terms</h3><dl class="terms">${l.terms.map(t=>`<dt>${esc(t[0])}</dt><dd>${esc(t[1])}</dd>`).join("")}</dl>`:""}
     ${places.length?`<h3>On the map</h3><div class="chips">${places.map(p=>`<button class="chip" data-place="${p.id}">${glyph(p.kind)}${esc(p.name)}</button>`).join("")}</div>`:""}
     <h3>Your work</h3><p>${esc(l.work)}</p>
-    ${activity?`<p><a class="atlas-compare-link" href="${esc(activity.href)}">${esc(activity.title||"Open investigation")}</a></p>`:""}<p class="fine">Get the handout from Mr. Mangles if you don't have it.</p>
+    ${u.id==="egypt"&&l.id==="l13"?'<nav class="lesson-activities" aria-label="Egypt assessment"><a href="egypt-exhibit-test.html"><span class="activity-format" data-format="test">Test</span> Egypt on Exhibit</a></nav>':""}
+    ${activity?`<p><a class="atlas-compare-link" href="${esc(activity.href)}">${u.id==="egypt"&&l.id==="l13"?'<span class="activity-format" data-format="review">Review game</span> · ':""}${esc(activity.title||"Open investigation")}</a></p>`:""}<p class="fine">Get the handout from Mr. Mangles if you don't have it.</p>
     ${u.id==="egypt"&&["l1","l8"].includes(l.id)?'<p><a class="atlas-compare-link" href="../computer-class/#social-nile-advantage">Was the Nile always an advantage? · Computer Class investigation</a></p>':""}
     <h3>Check yourself</h3>${qs}
     ${nAns===l.check.length?`<div class="qscore">${nRight} out of ${l.check.length}${nRight===l.check.length?". Nice, you've got this lesson.":". Have another look at the notes above, then try again."} <button class="btn ghost" id="retry" style="margin-left:8px">Try again</button></div>`:""}

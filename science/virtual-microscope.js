@@ -20,7 +20,7 @@ const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&
 const rnd=x=>Math.round(x*10)/10;
 function mount(el){
  let name="onion",obj=4,focus=100,panX=0,panY=0,records=[];
- el.innerHTML='<section class="vm"><h3>Virtual Microscope Investigation</h3>'+
+ el.innerHTML='<section class="vm" id="virtual-microscope" tabindex="-1"><h3>Virtual Microscope Investigation</h3><span class="activity-format" data-format="simulation">Simulation</span>'+
  '<p>Focus a specimen, change magnification, record measurements, and use your evidence to explain how field of view changes.</p><p class="vm-small">For an independent follow-up, complete the <a href="../computer-class/#science-microscope-evidence">Microscope Field Notes computer-class assignment</a>.</p>'+
  '<div class="vm-grid"><div class="vm-view"><svg id="vm-picture" viewBox="0 0 420 420" role="img" aria-label="Stylized microscope specimen"></svg><p id="vm-scale" class="vm-canvas-label"></p></div>'+
  '<div class="vm-controls">'+

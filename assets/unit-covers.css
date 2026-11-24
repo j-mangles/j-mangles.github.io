@@ -1,0 +1,16 @@
+/* Shared artwork for the directory and the corresponding unit headings. */
+[data-cover="cells"]{--cover-art:url("covers/onion-root.webp");--cover-paper:#e6e8fb;--cover-ink:#202759}
+[data-cover="matter"]{--cover-art:url("covers/cylinder.svg");--cover-paper:#e6e8fb;--cover-ink:#202759}
+[data-cover="egypt"]{--cover-art:url("covers/rosetta.webp");--cover-paper:#f1d7bc;--cover-ink:#38261d}
+[data-cover="greece"]{--cover-art:url("covers/piraeus.svg");--cover-paper:#e6e1cb;--cover-ink:#283c38}
+[data-cover="books"]{--cover-art:url("covers/books.svg");--cover-paper:#eee8d9;--cover-ink:#34302a}
+[data-cover="transit"]{--cover-art:url("covers/transit.svg");--cover-paper:#fae7aa;--cover-ink:#302e24}
+[data-cover="evidence"]{--cover-art:url("covers/evidence.svg");--cover-paper:#222b28;--cover-ink:#f5f3e6}
+.cover-art{position:absolute;display:block;inset:0 0 0 auto;width:44%;background:var(--cover-art) center/cover no-repeat;pointer-events:none}
+[data-cover="cells"] .cover-art{width:52%;inset:0 -4% 0 auto;clip-path:ellipse(85% 80% at 85% 55%);background-position:45% 52%}
+[data-cover="egypt"] .cover-art{background-size:100% auto;background-position:center top;top:5%;right:-3%;mix-blend-mode:multiply}
+[data-cover="matter"] .cover-art,[data-cover="books"] .cover-art,[data-cover="evidence"] .cover-art{background-size:contain;background-position:right bottom}
+.unit-cover-title{position:relative;isolation:isolate;overflow:hidden;padding:1rem .95rem;background:var(--cover-paper);color:var(--cover-ink);margin:0 0 .9rem}
+.unit-cover-title .cover-art{width:31%;opacity:.92}
+.unit-cover-title h2,.unit-cover-title .span{position:relative;max-width:67%;color:var(--cover-ink)!important;margin:0}
+.unit-cover-title .span{margin-top:.4rem}

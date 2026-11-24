@@ -21,6 +21,10 @@ g.MissionResources={
  lessons:[
   {id:"math-home",subject:"math",kind:"Lesson hub",title:"Grade 7 Mathematics",href:"../math/",description:"Open the current Math 7 unit and lessons."},
   {id:"math-percent",subject:"math",kind:"Interactive lesson",title:"Percent Strategy Studio",href:"../math/#fdp/l05",description:"Explore the connection between fractions, decimals and percents."},
+  {id:"sci-microscope-sim",subject:"sci",kind:"Simulation",title:"Virtual Microscope",href:"../science/#cells/theory/virtual-microscope",description:"Focus a specimen and measure how the field of view changes."},
+  {id:"sci-systems-rally",subject:"sci",kind:"Review game",title:"Body Systems Rally",href:"../science/systems-rally.html",description:"Trace fuel and oxygen through a player’s body in four partner rounds."},
+  {id:"sci-body-test",subject:"sci",kind:"Test",title:"Body Systems in Action",href:"../science/body-systems-test.html",description:"Explain how body systems work together using new evidence."},
+  {id:"ss-exhibit-test",subject:"ss",kind:"Test",title:"Egypt on Exhibit",href:"../social-studies/egypt-exhibit-test.html",description:"Use exhibit evidence to support an individual assessment."},
   {id:"sci-home",subject:"sci",kind:"Lesson hub",title:"Science 8",href:"../science/",description:"Open the current Science lesson and unit resources."},
   {id:"sci-cells",subject:"sci",kind:"Interactive lesson",title:"Inside Plant & Animal Cells",href:"../science/#cells",description:"Study organelles, functions and the parts of cells."},
   {id:"sci-transport",subject:"sci",kind:"Interactive lesson",title:"Membrane Transport & Osmosis",href:"../science/#cells/transport",description:"Test how materials and water move through membranes."},

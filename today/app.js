@@ -45,9 +45,12 @@ function optionGroups(selected,filter,placeholder="Select an activity"){
  return '<option value="">'+esc(placeholder)+'</option>'+groups.map(subject=>{
   const options=available.filter(x=>x.subject===subject);
   if(!options.length)return "";
-  return '<optgroup label="'+esc(config.subjects[subject])+'">'+options.map(x=>
-   '<option value="'+esc(x.id)+'" '+(selected===x.id?"selected":"")+'>'+
-   esc((x.kind==="Digital assignment"?"Assignment · ":"")+x.title)+'</option>').join("")+'</optgroup>';
+  const choices=options.map(x=>{
+   const label=core.activityFormat(x.kind)?.label || (x.kind==="Digital assignment"?"Assignment":"");
+   const title=label?label+" · "+x.title:x.title;
+   return '<option value="'+esc(x.id)+'" '+(selected===x.id?"selected":"")+'>'+esc(title)+'</option>';
+  });
+  return '<optgroup label="'+esc(config.subjects[subject])+'">'+choices.join("")+'</optgroup>';
  }).join("");
 }
 function renderOptions(n){

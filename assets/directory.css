@@ -1,0 +1,50 @@
+:root{--school:#133e2e;--school-ink:#faf6e8;--directory:#faf8f0;--dir-ink:#232a24;--dir-muted:#535d52;--dir-rule:#c8c7b9}
+@media(prefers-color-scheme:dark){:root{--directory:#19231f;--dir-ink:#f6f2e8;--dir-muted:#c3cbbf;--dir-rule:#536055}}
+body{background:var(--directory);color:var(--dir-ink);font-family:Inter,system-ui,sans-serif}
+.homehero{background:var(--school);color:var(--school-ink)}
+.homehero .wrap{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding-block:clamp(1.1rem,2.8vw,2rem)}
+.homehero .school-name{margin:0 0 .3rem;font:500 1rem/1.3 Newsreader,Georgia,serif;color:#e4ecdc}
+.homehero h1{margin:0;color:inherit;font:650 clamp(2.05rem,4.3vw,3.75rem)/1 Newsreader,Georgia,serif;letter-spacing:-.035em}
+.board-shortcut{flex:none;padding:.6rem .9rem;border:1px solid #b6cbb4;color:inherit;font:600 1rem/1.3 Inter,system-ui,sans-serif;text-decoration:none}
+.board-shortcut:hover{background:#29523e}
+.home-main{padding-block:clamp(1.25rem,2.8vw,2.1rem) 3.5rem}
+.directory-heading{display:flex;align-items:center;gap:1rem;margin:0 0 .8rem;font:600 clamp(1.65rem,3vw,2.45rem)/1.1 Newsreader,Georgia,serif;letter-spacing:-.03em;color:var(--dir-ink)}
+.directory-heading::after{content:"";height:1px;flex:1;background:currentColor;opacity:.6}
+.home-tiles{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:clamp(.45rem,1vw,.85rem)}
+.home-tile{position:relative;isolation:isolate;overflow:hidden;grid-column:span 2;background:var(--cover-paper);color:var(--cover-ink)}
+.home-tile a{position:relative;display:flex;align-items:flex-start;flex-direction:column;justify-content:center;padding:clamp(1rem,2.1vw,1.8rem);min-height:clamp(7rem,10.8vw,9.2rem);text-decoration:none;color:inherit}
+.home-tile.sci,.home-tile.ss{grid-column:span 3}
+.home-tile.sci a,.home-tile.ss a{min-height:clamp(11rem,17.2vw,15rem)}
+.home-tile .name,.home-tile .year,.home-tile .tile-link{position:relative;max-width:56%}
+.home-tile .name{font:650 clamp(1.6rem,2.65vw,2.5rem)/.99 Newsreader,Georgia,serif;letter-spacing:-.035em;text-wrap:balance}
+.home-tile.sci .name,.home-tile.ss .name{font-size:clamp(2.15rem,4.5vw,4.4rem)}
+.home-tile.sci .name,.home-tile.math .name{font-family:Inter,system-ui,sans-serif;font-weight:720;letter-spacing:-.06em}
+.home-tile.ss .name{font-family:"Cormorant Garamond",Georgia,serif;font-weight:700}
+.home-tile.ct .name{font-family:"League Gothic",Impact,sans-serif;text-transform:uppercase;letter-spacing:.01em}
+.home-tile .year{font-size:.85rem;margin-top:.6rem}.home-tile .tile-link{margin-top:1.1rem;font-weight:650;font-size:.92rem;text-decoration:underline;text-underline-offset:.22em}
+.home-tile:not(.sci,.ss) .cover-art{width:39%;right:-1%}
+.home-tile a:focus-visible{outline:3px solid currentColor;outline-offset:-5px}
+.home-tile a:hover .name{text-decoration:underline;text-decoration-thickness:.045em;text-underline-offset:.12em}
+.home-featured{margin:clamp(1.4rem,3vw,2.2rem) 0}
+.feature-links{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.8rem}
+.feature-links a{display:flex;align-items:center;gap:.85rem;text-decoration:none;color:inherit;padding:.45rem .7rem .7rem 0}
+.feature-links a+a{border-left:1px solid var(--dir-rule);padding-left:1.2rem}
+.feature-links .activity-format{display:grid;grid-template-columns:2.3rem 1fr;align-items:center;gap:0 .7rem}
+.feature-links .activity-format::before{grid-row:span 2;width:2.25rem;height:2.25rem;color:var(--dir-ink)}
+.feature-links small{font:550 .85rem/1.3 Inter,system-ui,sans-serif;color:var(--dir-muted)}
+.feature-links b{font:600 clamp(1.15rem,2vw,1.55rem)/1.2 Newsreader,Georgia,serif}
+.feature-links a:hover b{text-decoration:underline;text-underline-offset:.16em}
+.home-computer{display:flex;align-items:center;justify-content:space-between;gap:1.4rem;border-block:1px solid var(--dir-rule);padding:1.25rem 0;margin:2rem 0}
+.home-main h2:not(.directory-heading){font:600 clamp(1.4rem,2.6vw,2rem)/1.1 Newsreader,Georgia,serif;color:var(--dir-ink);margin:0 0 .4rem}
+.home-computer p,.how,.home-board p{color:var(--dir-muted);font-size:1rem;margin:.25rem 0}
+.home-workspace-links{display:grid;gap:.3rem;min-width:max-content}
+.home-workspace-links a,.home-tools a,.home-board a{color:var(--dir-ink);text-underline-offset:.18em}
+.tool-row{display:grid;grid-template-columns:minmax(9rem,170px) 1fr;gap:.5rem 1rem;padding:.75rem 0;border-bottom:1px solid var(--dir-rule);font-size:.95rem;line-height:1.65}
+.how{margin:1.8rem 0 0;max-width:72ch}
+.home-board{margin-bottom:2rem}
+.home-board ul{list-style:none;margin:.6rem 0;padding:0}.home-board li{display:grid;grid-template-columns:minmax(10rem,1fr) 3fr;gap:.4rem 1rem;padding:.7rem 0;border-block-start:1px solid var(--dir-rule)}
+.home-board li>span{font-weight:650}.home-board li>div>div{display:flex;gap:.55rem;align-items:baseline;flex-wrap:wrap}
+.home-board li strong{font-size:.88rem;min-width:4.7rem;color:var(--dir-muted)}.home-board-open{font-weight:650}
+footer.site{border-top:3px solid var(--school)}
+@media(max-width:680px){.home-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}.home-tile.sci,.home-tile.ss{grid-column:span 1}.home-tile{grid-column:auto}.home-tile.ct{grid-column:span 2}.home-tile.sci a,.home-tile.ss a{min-height:10.5rem}.home-tile .name{font-size:1.64rem}.home-tile.sci .name,.home-tile.ss .name{font-size:2.1rem}.home-tile a{padding:.9rem}.feature-links{grid-template-columns:1fr;gap:0}.feature-links a,.feature-links a+a{border:0;border-bottom:1px solid var(--dir-rule);padding:.55rem 0}.feature-links .activity-format{grid-template-columns:1.8rem 1fr}.feature-links .activity-format::before{width:1.65rem;height:1.65rem}.home-computer{display:block}.home-workspace-links{min-width:0;margin-top:.6rem}.tool-row,.home-board li{grid-template-columns:1fr}}
+@media(max-width:510px){.home-tiles{grid-template-columns:1fr}.home-tile.ct{grid-column:auto}.home-tile.sci a,.home-tile.ss a{min-height:8.7rem}.home-tile a{min-height:4.65rem;padding:.85rem 1rem}.home-tile .name{max-width:66%}.home-tile .year{font-size:.82rem;margin-top:.25rem}.home-tile .tile-link{margin-top:.55rem}.home-tile:not(.sci,.ss) .year{margin-top:.1rem}.home-tile:not(.sci,.ss) .cover-art{width:32%}.homehero .wrap{align-items:center;gap:.6rem}.homehero .school-name{font-size:.87rem}.board-shortcut{font-size:.85rem;padding:.5rem}.homehero h1{font-size:clamp(1.5rem,6.9vw,2.12rem)}}
