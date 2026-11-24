@@ -133,7 +133,7 @@ function lab(el){
   '@media(max-width:600px){.pl-lab{padding:12px}.pl-lab label{min-width:125px}.pl-lab th,.pl-lab td{padding:6px}}',
   '.pl-class-chart{display:block;width:100%;max-width:680px}.pl-class-chart text{font:13px var(--f-body);fill:var(--ink)}.pl-class h5{font-size:1rem;margin:1.3rem 0 0}.pl-class label{max-width:15rem}',
   '</style>',
-  '<h3>Chance Lab: prediction vs. results</h3>',
+  '<h3>Chance Lab: prediction vs. results</h3><span class="activity-format" data-format="simulation">Simulation</span>',
   '<p class="note">Model a coin, die or spinner. The grey bars show what theory predicts; the coloured bars show what the simulation actually produced. Run more trials to compare.</p>',
   '<div class="pl-controls"><label>Experiment<select id="pl-mode">'+options+'</select></label>',
   '<label>Watch this outcome<select id="pl-target">'+targets+'</select></label>',

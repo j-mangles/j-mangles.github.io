@@ -67,7 +67,7 @@ async function illustratedDirectory(page,width){
  await find("Reveal the rise").click();assert.match(await dialog.innerText(),/55 mL − 35 mL = 20 mL/);
  await dialog.locator("select").selectOption("B");
  assert.equal(await dialog.locator(".rise-label").count(),0);
- await find("Reveal the rise").click();assert.equal(await dialog.locator(".rise-label").innerText(),"45 mL");
+ await find("Reveal the rise").click();assert.equal(await dialog.locator(".rise-label").textContent(),"45 mL");
  await snap("rise");
  await find("Start over").click();assert.equal(await dialog.locator(".rise-label").count(),0);
  await find("Back to activity").click();assert.equal(await page.locator("#sample").inputValue(),"A");

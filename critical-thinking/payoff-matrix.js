@@ -96,7 +96,7 @@ function render(el){
  '<p><strong>Think:</strong> Which decision gives Player A more points if B cooperates? What if B betrays?</p>'+
  '<div class="pl-controls"><button type="button" class="btn ghost" id="pl-check">Show the one-round incentive</button></div>'+
  '<p id="pl-incentive" class="pl-feedback" aria-live="polite"></p></div>'+
- '<div class="pl-panel"><h3>Part 2 · Simulate 10 repeated rounds</h3>'+
+ '<div class="pl-panel"><h3>Part 2 · Simulate 10 repeated rounds</h3><span class="activity-format" data-format="simulation">Simulation</span>'+
  '<p class="note">Choose one strategy for each player. Strategies use the previous rounds, not secret information about the next move.</p>'+
  '<div class="pl-controls"><label>Player A strategy<select id="pl-a"></select></label>'+
  '<label>Player B strategy<select id="pl-b"></select></label>'+
