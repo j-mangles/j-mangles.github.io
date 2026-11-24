@@ -73,6 +73,27 @@
       <text x="212" y="18" text-anchor="middle" font-size="13">Water level (mL)</text>
       ${cylinder(117, measured ? sample.start : 0, 0, 'Before')}${cylinder(228, measured ? sample.end : 0, sample.volume, 'After')}</svg>`;
   }
+  const projector=$('project-samples');
+  function projectSamples(){
+    let selected=current;
+    window.ClassroomReveal.open({
+      trigger:projector,title:'How much water moved?',prompt:'Read both cylinders. Predict the volume of the solid before you reveal the rise.',
+      steps:1,nextLabel:'Reveal the rise',
+      setup(settings,reset){
+        const label=document.createElement('label');label.textContent='Sample ';
+        const select=$('sample').cloneNode(true);select.removeAttribute('id');select.value=selected;
+        select.onchange=()=>{selected=select.value;reset();};
+        label.append(select);settings.append(label);
+      },
+      draw(stage,step){
+        const s=samples[selected],y1=183-1.85*s.start,y2=183-1.85*s.end;
+        const rise=step?`<g class="rise"><path d="M79 ${y1}H183M181 ${y2}h28" stroke-dasharray="3 3"/><path d="M185 ${y2}v${y1-y2}m-4 0h8m-8 ${y2-y1}h8"/></g><text class="rise-label" x="179" y="${(y1+y2)/2+4}" text-anchor="end" font-size="13">${s.volume} mL</text>`:'';
+        stage.innerHTML=`<svg class="reveal-cylinders" viewBox="0 0 296 217" role="img" aria-label="Sample ${selected}. Before ${s.start} millilitres. After ${s.end} millilitres.${step?' The rise is '+s.volume+' millilitres.':''}"><text x="148" y="16" text-anchor="middle" font-size="13">Water level (mL)</text>${cylinder(24,s.start,0,'Before')}${cylinder(203,s.end,s.volume,'After')}${rise}</svg>`;
+        return step?`${s.end} mL − ${s.start} mL = ${s.volume} mL. The solid occupies ${s.volume} cm³.`:'';
+      }
+    });
+  }
+  projector.onclick=projectSamples;
   const labForm = $('identify');
   function readForm(form) {
     return Object.fromEntries(['volume', 'density', 'material'].map(key => [key, form.elements[key].value]));
@@ -196,4 +217,5 @@
   $('new-ticket').onclick = () => { marked = null; ticket = (ticket + 1) % tickets.length; drawTicket(); exitForm.elements.volume.focus(); };
   window.addEventListener('hashchange', showMode);
   drawBench(); drawRound(); drawTicket(); showMode();
+  if(location.hash==='#project')projectSamples();
 })();

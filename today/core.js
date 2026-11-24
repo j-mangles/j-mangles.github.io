@@ -5,6 +5,11 @@
 const SCHEMA=1, STORE_KEY="eess-classroom-mission-control-v1";
 const PUBLIC_BOARD_KEY="eess-last-public-class-board-v1";
 const SUBJECTS=["math","sci","ss","ela","ct"];
+function activityFormat(kind){
+ const keys={"Simulation":"simulation","Story simulation":"simulation","Review game":"review","Team review":"review","Individual test":"test","Test":"test"};
+ const key=keys[kind];
+ return key?{key,label:{simulation:"Simulation",review:"Review game",test:"Test"}[key]}:null;
+}
 function catalog(){
  const configured=g.MissionResources||{lessons:[],subjects:{}};
  const lessonEntries=[...(configured.lessons||[]).map(x=>({
@@ -109,6 +114,6 @@ function rememberBoard(board,resources){
 function previousBoard(resources){
  try{return parseBoardHash(g.localStorage.getItem(PUBLIC_BOARD_KEY),resources);}catch(e){return null;}
 }
-g.MissionCore={SCHEMA,STORE_KEY,SUBJECTS,catalog,index,defaultPlan,sanitizePlan,progress,
+g.MissionCore={activityFormat,SCHEMA,STORE_KEY,SUBJECTS,catalog,index,defaultPlan,sanitizePlan,progress,
  boardHash,parseBoardHash,backup,rememberBoard,previousBoard};
 })(window);

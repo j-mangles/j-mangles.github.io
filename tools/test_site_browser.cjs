@@ -22,6 +22,77 @@ async function checkNoHorizontalOverflow(page,label){
  assert.ok(o.scroll<=o.width+6,label+" overflows: "+JSON.stringify(o));
 }
 
+async function illustratedDirectory(page,width){
+ const actual=page.viewportSize();
+ await page.setViewportSize({width,height:width===390?844:900});
+ const snap=async name=>{
+  await page.evaluate(()=>document.fonts.ready);
+  await checkNoHorizontalOverflow(page,name);
+  await page.screenshot({path:path.join(artifacts,"ill-"+name+"-"+width+".png"),animations:"disabled"});
+ };
+ const find=name=>page.getByRole("button",{name,exact:true});
+ await goto(page,"/","[data-cover=cells]");
+ assert.deepEqual(await page.locator(".feature-links [data-format]").evaluateAll(nodes=>nodes.map(n=>n.dataset.format)),["simulation","review","test"]);
+ assert.deepEqual(await page.locator(".home-tile").evaluateAll(nodes=>nodes.map(n=>n.dataset.cover)),["cells","egypt","books","transit","evidence"]);
+ const covers=await page.locator(".home-tile .cover-art").evaluateAll(nodes=>Promise.all(nodes.map(async n=>{
+  const src=getComputedStyle(n).backgroundImage.match(/url\("(.*)"\)/)[1];const img=new Image();img.src=src;await img.decode();return img.naturalWidth;
+ })));
+ assert.ok(covers.every(w=>w>0));await snap("home");
+ await page.locator('.feature-links a').first().click();
+ await page.locator("#virtual-microscope").waitFor();assert.equal(await page.evaluate(()=>document.activeElement.id),"virtual-microscope");
+ await snap("microscope");
+ await goto(page,"/science/#cells/systems",".lesson-activities");
+ assert.equal(await page.locator(".lesson-activities [data-format=review]").count(),1);
+ await page.locator('.lesson-activities a[href="systems-rally.html"]').click();await page.locator(".meta [data-format=review]").waitFor();
+ await snap("rally");
+ await page.locator('a[href="body-systems-test.html"]').click();await page.locator(".meta [data-format=test]").waitFor();await snap("body-test");
+ await goto(page,"/science/review-game.html",'a[href="systems-rally.html"]');assert.equal(await page.locator('a[href="systems-rally.html"] [data-format=review]').count(),1);
+ await goto(page,"/science/#cells",".unit-cover-title[data-cover=cells]");await snap("cells-unit");
+ await goto(page,"/social-studies/#egypt",".unit-cover-title[data-cover=egypt]");await snap("egypt-unit");
+ await goto(page,"/social-studies/egypt-exhibit-test.html",".meta [data-format=test]");await snap("egypt-test");
+ await goto(page,"/social-studies/egypt-rosetta-investigation.html#project","dialog[open]");
+ const dialog=page.locator("dialog[open]");
+ assert.equal(await dialog.locator(".script-pin").count(),0);
+ const names=["Hieroglyphs","Demotic","Greek"];
+ for(let i=0;i<names.length;i++){
+  await find("Reveal next script").click();
+  assert.deepEqual(await dialog.locator(".script-pin").allTextContents(),names.slice(0,i+1));
+ }
+ assert.match(await dialog.locator("[role=status]").innerText(),/two languages/);await snap("stone");
+ await find("Start over").click();assert.equal(await dialog.locator(".script-pin").count(),0);
+ await page.keyboard.press("Escape");await page.locator("dialog").waitFor({state:"detached"});
+ assert.equal(await page.evaluate(()=>document.activeElement.hasAttribute("data-project-stone")),true);
+ await goto(page,"/science/mystery-sample-lab.html#project","dialog[open]");
+ assert.equal(await dialog.locator(".rise-label").count(),0);
+ await find("Reveal the rise").click();assert.match(await dialog.innerText(),/55 mL − 35 mL = 20 mL/);
+ await dialog.locator("select").selectOption("B");
+ assert.equal(await dialog.locator(".rise-label").count(),0);
+ await find("Reveal the rise").click();assert.equal(await dialog.locator(".rise-label").innerText(),"45 mL");
+ await snap("rise");
+ await find("Start over").click();assert.equal(await dialog.locator(".rise-label").count(),0);
+ await find("Back to activity").click();assert.equal(await page.locator("#sample").inputValue(),"A");
+ const ids=["sci-microscope-sim","sci-systems-rally","ss-exhibit-test"].map(v=>"lesson%3A"+v).join(",");
+ const hash="#v1/4/"+ids+",-,-";
+ await goto(page,"/today/launch.html"+hash,"#mb-list");
+ assert.deepEqual(await page.locator(".mb-subject [data-format]").evaluateAll(nodes=>nodes.map(n=>n.dataset.format)),["simulation","review","test"]);
+ await snap("board");
+ await page.locator('.mb-head .mb-home').click();await page.locator("#home-board li").first().waitFor();
+ assert.equal(await page.locator("#home-board .activity-format").count(),3);
+ await page.locator(".board-shortcut").click();await page.locator("#mb-list").waitFor();assert.match(page.url(),/#v1\/4\//);
+ // Keep the rest of the broad site walkthrough independent of this demonstration board.
+ await page.evaluate(()=>localStorage.removeItem("eess-last-public-class-board-v1"));
+ if(width===1280){
+  const fixture="**/today/released-lessons.js*";
+  await page.route(fixture,async route=>{
+   const response=await route.fetch();
+   await route.fulfill({response,body:await response.text()+'\nwindow.MissionReleasedLessons.push({id:"released-sci-matter-lab",subject:"sci",kind:"Course lesson",title:"Density Lab",href:"../science/#matter/lab"},{id:"released-ss-greece-l1",subject:"ss",kind:"Course lesson",title:"Geography",href:"../social-studies/#greece-l1"});'});
+  });
+  await goto(page,"/",".home-tile[data-cover=matter]");assert.equal(await page.locator(".home-tile[data-cover=greece]").count(),1);
+  await page.unroute(fixture);
+ }
+ await page.setViewportSize(actual);
+}
+
 async function mysteryAndCouncil(page,width){
  const id=name=>page.locator("#"+name);
  const screen=async name=>page.screenshot({path:path.join(artifacts,name+"-"+width+".png"),animations:"disabled"});
@@ -371,6 +442,8 @@ async function settlement(page,width){
   await goto(page,"/",".home-tiles .home-tile");
   assert.equal(await page.locator(".home-tile").count(),5,"Homepage should have five course cards");
   await capture(page,"01-home-desktop");
+  stage="illustrated directory and smartboard reveals";
+  await illustratedDirectory(page,1280);
   stage="course maps and resource libraries";
   for(const subject of courses){
    await goto(page,"/"+subject+"/#overview","#atlas-unit-grid .atlas-unit");
@@ -837,6 +910,8 @@ async function settlement(page,width){
   await goto(phone,"/",".home-tiles .home-tile");
   await checkNoHorizontalOverflow(phone,"Homepage mobile");
   await capture(phone,"home-mobile");
+  stage="illustrated directory and smartboard reveals on mobile";
+  await illustratedDirectory(phone,390);
   for(const subject of courses){
    await goto(phone,"/"+subject+"/#overview","#atlas-unit-grid .atlas-unit");
    await checkNoHorizontalOverflow(phone,subject+" overview mobile");

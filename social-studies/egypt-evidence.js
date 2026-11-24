@@ -162,7 +162,7 @@
     state.band ??= 0;
     state.reason ??= null;
     el.classList.add("eg-work");
-    el.innerHTML=`<h4>Read the Rosetta Stone up close</h4><p class="eg-lede">Inspect three bands of writing on one decree from 196 BCE.</p>
+    el.innerHTML=`<h4>Read the Rosetta Stone up close</h4><p class="eg-lede">Inspect three bands of writing on one decree from 196 BCE.</p><button type="button" data-project-stone>Project the unlabelled stone</button>
       <div class="eg-stone-layout"><div class="eg-stone"><div class="eg-specimen"><img src="${photo}" alt="The Rosetta Stone has a broken top and three bands of carved writing.">
       ${scripts.map((s,i)=>`<button type="button" class="eg-lens" data-band="${i}" style="left:${s.x}%;top:${s.y}%" aria-label="Inspect ${s.label.toLowerCase()} band"></button>`).join("")}</div></div>
       <div class="eg-reading">${buttonGroup("Inscription band",scripts.map(s=>s.label+" band"),state.band,"data-script")}
@@ -189,7 +189,19 @@
     }
     el.querySelectorAll("[data-band],[data-script]").forEach(b=>b.onclick=()=>inspect(Number(b.dataset.band??b.dataset.script)));
     el.querySelectorAll("[data-start-script]").forEach(b=>b.onclick=()=>{state.reason=Number(b.dataset.startScript);explain();});
+    const projector=el.querySelector("[data-project-stone]");
+    projector.onclick=()=>window.ClassroomReveal.open({
+      trigger:projector,title:"Read the Rosetta Stone",prompt:"Where does the writing change? Point to two boundaries and describe one difference in the marks.",
+      steps:scripts.length,nextLabel:"Reveal next script",
+      draw(stage,step){
+        const pins=scripts.slice(0,step).map(s=>`<span class="script-pin" style="top:${s.y}%">${s.name}</span>`).join("");
+        stage.innerHTML=`<div class="reveal-specimen"><img src="${photo}" alt="The unlabelled surface of the Rosetta Stone.">${pins}</div>`;
+        if(step===3)return "Three scripts record the decree in two languages. Hieroglyphs and Demotic both write Egyptian. The lower band is Greek.";
+        return step?scripts[step-1].label+" band · "+scripts[step-1].name:"";
+      }
+    });
     inspect(state.band);explain();
+    if(location.hash==="#project" && el.hasAttribute("data-eg-exhibit"))projector.click();
   }
 
   Object.assign(registry,{trade:{mount:trade},nubia:{mount:nubia,showEvidence(el,i){

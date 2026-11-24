@@ -1,0 +1,23 @@
+dialog.classroom-reveal{box-sizing:border-box;position:fixed;inset:0;margin:0;width:100%;max-width:none;height:100vh;height:100dvh;max-height:none;overflow:auto;border:0;background:var(--paper,#fffaf0);color:var(--ink,#232620);padding:clamp(.8rem,3vw,2.5rem);font:500 clamp(1rem,1.65vw,1.4rem)/1.4 var(--f-body,system-ui,sans-serif)}
+dialog.classroom-reveal::backdrop{background:#19251e}
+dialog.classroom-reveal[open]{display:flex;flex-direction:column;align-items:stretch;gap:.6rem}
+dialog.classroom-reveal header{display:flex;align-items:center;justify-content:space-between;gap:1rem;background:transparent;color:inherit;padding:0;border:0}
+dialog.classroom-reveal h2{margin:0;font:700 clamp(1.55rem,3.7vw,3.3rem)/1.04 var(--f-title,Georgia,serif);color:inherit;letter-spacing:-.025em}
+dialog.classroom-reveal .reveal-prompt{margin:0;max-width:75ch}
+dialog.classroom-reveal :is(button,select){font:650 1rem/1.25 var(--f-body,system-ui,sans-serif);min-height:44px;margin:0;padding:.55rem .85rem;background:var(--paper);color:var(--ink);border:1px solid var(--ink);cursor:pointer}
+dialog.classroom-reveal button:not(:disabled):hover,dialog.classroom-reveal [data-next]{background:var(--ink);color:var(--paper)}
+dialog.classroom-reveal button:disabled{opacity:.55;cursor:default}
+dialog.classroom-reveal :focus-visible{outline:3px solid var(--accent-ink,var(--label,#12647d));outline-offset:3px}
+.reveal-stage{flex:1;display:grid;place-items:center;min-height:0}
+.reveal-controls{display:flex;align-items:center;flex-wrap:wrap;gap:.65rem}
+.reveal-answer{margin:0;font-weight:650}.reveal-answer:empty,[data-settings]:empty{display:none}
+.reveal-specimen{position:relative;height:min(57vh,42rem);max-width:100%;aspect-ratio:1400/1710}
+.reveal-specimen img{display:block;height:100%;width:100%;object-fit:contain}
+.reveal-specimen .script-pin{position:absolute;left:50%;display:flex;align-items:center;gap:.3em;color:#fff;font:bold clamp(.95rem,2.5vw,1.65rem)/1.15 system-ui;white-space:nowrap;background:#183448;padding:.2em .4em;border:2px solid #fff;transform:translateY(-50%)}
+.script-pin::before{content:"";width:.45em;height:.45em;border-radius:50%;background:#ffe6a5}
+.reveal-cylinders{width:min(100%,58rem);height:min(51vh,35rem);display:block;color:var(--ink);fill:currentColor;font-family:Inter,system-ui,sans-serif}
+.reveal-cylinders .glass{fill:none;stroke:currentColor;stroke-width:1.8}.reveal-cylinders .ticks{stroke:currentColor;stroke-width:1.3}
+.reveal-cylinders .water{fill:#c3dcf3;stroke:#374e83}.reveal-cylinders .sample-piece{fill:#606d87;stroke:#293954}
+.reveal-cylinders .rise{stroke:#8d4326;fill:none;stroke-width:2.3}.reveal-cylinders .rise-label{fill:#71331c;font-weight:700}
+@media(max-width:540px){dialog.classroom-reveal header{align-items:flex-start}dialog.classroom-reveal header button{font-size:.9rem;max-width:7rem}.reveal-answer{flex-basis:100%}.reveal-stage{min-height:12rem}.reveal-specimen{height:auto;max-height:47vh;width:min(100%,36vh)}.reveal-cylinders{height:auto;max-height:43vh}.reveal-controls{margin-top:.4rem}}
+@media(max-height:460px){.reveal-stage{min-height:12rem}.reveal-cylinders{min-height:12rem}.reveal-specimen{min-height:12rem}}

@@ -9,7 +9,12 @@
  function link(label,id){
   const item=byId.get(id),entry=document.createElement("div"),name=document.createElement("strong"),a=document.createElement("a");
   name.textContent=label;
-  a.textContent=item.title;
+  const format=core.activityFormat(item.kind);
+  if(format){
+   const tag=document.createElement("span");tag.className="activity-format";tag.dataset.format=format.key;tag.textContent=format.label;
+   a.append(tag," · ");
+  }
+  a.append(item.title);
   a.href=new URL(item.href,new URL("today/",document.baseURI)).href;
   entry.append(name,a);return entry;
  }
@@ -17,6 +22,8 @@
   const shared=/^#v[0-9]+\//.test(location.hash);
   const board=shared?core.parseBoardHash(location.hash,resources):core.previousBoard(resources);
   list.replaceChildren();open.hidden=true;
+  const shortcut=document.querySelector(".board-shortcut");
+  if(shortcut)shortcut.href="today/launch.html";
   if(!board){
    section.hidden=!shared;
    if(shared){heading.textContent="Class board";message.textContent="This link could not be opened. Ask for the latest class board link.";}
@@ -37,9 +44,16 @@
   });
   if(!list.children.length)message.textContent="No lessons were posted on this board.";
   open.href="today/launch.html"+hash;open.hidden=false;
+  if(shortcut)shortcut.href=open.href;
  }
  window.addEventListener("hashchange",render);
  window.addEventListener("pageshow",render);
  window.addEventListener("storage",render);
+ // The board catalog is regenerated when a unit opens. Use the same release signal for its cover.
+ const released=window.MissionReleasedLessons||[];
+ for(const [subject,prefix,cover] of [["sci","released-sci-matter-","matter"],["ss","released-ss-greece-","greece"]]){
+  const tile=document.querySelector(".home-tile."+subject);
+  if(tile && released.some(item=>item.id.startsWith(prefix)))tile.dataset.cover=cover;
+ }
  render();
 })();

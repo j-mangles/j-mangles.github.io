@@ -7,20 +7,25 @@ if(!root||!core||!config)return;
 const resources=core.catalog(),available=core.index(resources);
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 let focused=0;
+function formatTag(item){
+ const format=core.activityFormat(item.kind);
+ return format?'<span class="activity-format" data-format="'+format.key+'">'+format.label+'</span> · ':"";
+}
 function card(period,id,lastId){
  const time=config.periods[period-1],item=available.get(id),last=available.get(lastId);
  if(!item&&!last)return "";
  const subject=config.subjects[(item||last).subject];
- const label=item?.kind==="Digital assignment"?"Begin assignment":"Open lesson";
+ const format=item&&core.activityFormat(item.kind);
+ const label=format?"Open "+format.label.toLowerCase():item?.kind==="Digital assignment"?"Begin assignment":"Open lesson";
  const title=item?item.title:"Catch up from last class";
  const ela=(item||last).subject==="ela";
  const lesson=last?.subject==="ela"&&last.href.startsWith("../ela/#")?last.href.split("#")[1]:"";
  const opening=ela&&item?.id!=="lesson:ela-opening"?'<p><a href="../ela/opening.html'+(lesson?'?lesson='+encodeURIComponent(lesson):'')+'">ELA bell ringer, Wordle &amp; Connections</a></p>':"";
  const warmup=window.ClassWarmups?.render(last)||"";
- const previous=last?'<p class="mb-last"><strong>Last class</strong> <a href="'+esc(last.href)+'">'+esc(last.title)+'</a></p>':"";
+ const previous=last?'<p class="mb-last"><strong>Last class</strong> <a href="'+esc(last.href)+'">'+formatTag(last)+esc(last.title)+'</a></p>':"";
  return '<article class="mb-card" data-period="'+period+'">'+
  '<div class="mb-card-no"><strong>Period '+period+'</strong><span>'+esc(time.start+'–'+time.end)+'</span></div>'+
- '<div class="mb-card-content"><span class="mb-subject">'+esc(subject)+'</span>'+
+ '<div class="mb-card-content"><span class="mb-subject">'+(item?formatTag(item):"")+esc(subject)+'</span>'+
  '<h2>'+esc(title)+'</h2>'+(item?'<p>'+esc(item.description)+'</p>':"")+previous+opening+warmup+'</div>'+
  '<div class="mb-card-actions">'+(item?'<a href="'+esc(item.href)+'" class="mb-open">'+label+'</a>':"")+
  '<button type="button" class="mb-focus-button" data-focus="'+period+'">Present this period</button></div></article>';

@@ -73,8 +73,9 @@
 
   function renderUnit(u){
     const done=getDone(); const ls=u.lessons||[]; const tool=H.tools&&H.tools[u.id];
+    const unitCover=H.subject==="sci" && ["cells","matter"].includes(u.id);
     const left = `<div>
-      <h2>${esc(u.name)}</h2><div class="span">Unit ${esc(u.n)}${u.when?` · ${esc(u.when)}`:""} <span class="status s-${esc(u.status||"soon")}">${statusLabel(u)}</span></div>
+      ${unitCover?`<div class="unit-cover-title" data-cover="${u.id}"><span class="cover-art" aria-hidden="true"></span>`:""}<h2>${esc(u.name)}</h2><div class="span">Unit ${esc(u.n)}${u.when?` · ${esc(u.when)}`:""} <span class="status s-${esc(u.status||"soon")}">${statusLabel(u)}</span></div>${unitCover?"</div>":""}
       ${u.intro?`<p>${esc(u.intro)}</p>`:""}
       ${ls.length>1?`<button class="reviewcard" id="openreview"><b>Review ${esc(u.name)}</b><span>Big ideas, ${ls.reduce((a,l)=>a+(l.terms||[]).length,0)} flashcards and a practice test from every lesson.</span><span class="go">Start &rarr;</span></button>`:""}
       ${ls.length?`<h3>Lessons</h3>
@@ -228,6 +229,7 @@
       ${imgs[0]?`<figure class="hero"><img src="${imgs[0].src}" alt="" data-cap="${esc(imgs[0].cap)}"><figcaption>${esc(imgs[0].cap)}</figcaption></figure>`:""}
       ${l.big?`<div class="big"><div class="eyebrow">The big idea</div><p>${esc(l.big)}</p></div>`:""}
       ${directLessonHTML(l)}
+      ${H.subject==="sci" && ltKey==="cells/systems"?'<nav class="lesson-activities" aria-label="Body systems activities"><a href="systems-rally.html"><span class="activity-format" data-format="review">Review game</span> Body Systems Rally</a><a href="body-systems-test.html"><span class="activity-format" data-format="test">Test</span> Body Systems in Action</a></nav>':""}
       ${LT?`<div id="ltool-slot"></div>`:""}
       ${(l.charts||[]).map((c,ci)=>`<div id="lc-${ci}"></div>`).join("")}
       ${l.notes&&l.notes.length?`<h3>What we covered</h3><ul class="notes">${l.notes.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:""}
