@@ -69,5 +69,9 @@
     const companion=document.createElement('div');
     root.appendChild(companion);
     densityLabCompanion(companion);
+    const mystery=document.createElement("a");
+    mystery.href="mystery-sample-lab.html";
+    mystery.textContent="Investigate two unknown solids in the Mystery Sample Lab";
+    companion.append(mystery);
   };
 })();

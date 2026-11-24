@@ -22,6 +22,99 @@ async function checkNoHorizontalOverflow(page,label){
  assert.ok(o.scroll<=o.width+6,label+" overflows: "+JSON.stringify(o));
 }
 
+async function mysteryAndCouncil(page,width){
+ const id=name=>page.locator("#"+name);
+ const screen=async name=>page.screenshot({path:path.join(artifacts,name+"-"+width+".png"),animations:"disabled"});
+ const choice=(label)=>page.getByRole("button",{name:label,exact:true});
+ async function answers(form,volume,density,material){
+  const area=id(form);
+  await area.locator('[name="volume"]').fill(volume);
+  await area.locator('[name="density"]').fill(density);
+  await area.locator('[name="material"]').selectOption(material);
+ }
+ await goto(page,"/science/mystery-sample-lab.html","#sample");
+ await choice("Check identification").click();
+ assert.match(await id("lab-response").innerText(),/Collect a dry mass/);
+ await choice("Try fresh water").click();
+ assert.match(await id("observation").innerText(),/Sample A sinks/);
+ await choice("Measure displacement").click();
+ await choice("Weigh dry sample").click();
+ assert.match(await id("instruments").locator("svg").getAttribute("aria-label"),/54 grams.*35 millilitres.*55 millilitres/);
+ await checkNoHorizontalOverflow(page,"mystery lab");
+ await page.evaluate(()=>window.scrollTo(0,0));
+ await screen("sample-bench");
+ await answers("identify","55","0.98","metal");
+ await choice("Check identification").click();
+ assert.match(await id("lab-response").innerText(),/final reading includes the starting water/);
+ await id("sample").selectOption("B");
+ assert.equal(await id("identify").locator('[name="volume"]').inputValue(),"");
+ await id("sample").selectOption("A");
+ assert.equal(await id("identify").locator('[name="volume"]').inputValue(),"55");
+ await answers("identify","20","2.70","metal");await choice("Check identification").click();
+ assert.match(await id("lab-response").innerText(),/Sample A is aluminium/);
+ await choice("Investigate the other sample").click();
+ await choice("Try fresh water").click();assert.match(await id("observation").innerText(),/Sample B sinks/);
+ await choice("Weigh dry sample").click();await choice("Measure displacement").click();
+ await answers("identify","45","1.2","plastic");await choice("Check identification").click();
+ assert.match(await id("progress").innerText(),/2 of 2/);
+ await choice("Start partner challenge").click();
+ const options=id("partner-round").getByRole("button");
+ await options.nth(0).click();assert.match(await id("partner-feedback").innerText(),/try again/);
+ await options.nth(1).click();assert.match(await id("partner-feedback").innerText(),/Correct on a retry/);
+ await choice("Next round").click();await options.nth(2).click();await choice("Next round").click();
+ await options.nth(0).click();await choice("See partner result").click();
+ assert.match(await id("partner-round").innerText(),/2 of 3 first choices/);
+ await choice("Open individual exit ticket").click();
+ assert.match(await id("ticket-readings").innerText(),/37.8 g/);
+ await answers("exit-form","14","2.7","metal");await choice("Mark my ticket").click();
+ assert.match(await id("ticket-result").innerText(),/3\/3/);
+ const [ticket]=await Promise.all([page.waitForEvent("download"),id("save-ticket").click()]);
+ assert.match(fs.readFileSync(await ticket.path(),"utf8"),/My answers: 14 cm³, 2.7 g\/cm³, Aluminium/);
+ await id("new-ticket").click();assert.match(await id("ticket-readings").innerText(),/33.6 g/);
+ await answers("exit-form","28","0.65","plastic");await choice("Mark my ticket").click();
+ assert.match(await id("ticket-result").innerText(),/2\/3.*Density 0\/1/);
+ const scenarios=width===1280?[["A","adapt",/grain ship/],["B","move",/river cargo/],["C","keep",/currents/],["D","adapt",/cart/]]:[["D","move",/cart/]];
+ for(const [site,action,scenario] of scenarios){
+  await goto(page,"/social-studies/greek-inquiry-lab.html#found",'[data-rating]');
+  for(const rating of await page.locator("[data-rating]").all())await rating.selectOption("2");
+  await page.getByLabel("My chosen site").selectOption(site);
+  await page.locator('[data-key="found-why"]').fill("We chose the site for access to food and water.");
+  await page.locator('[data-key="found-risk"]').fill("A delayed supply shipment could leave people short.");
+  await choice("Reveal the historical cities").click();
+  assert.match(await id("second-council").innerText(),scenario);
+  assert.match(await id("content").innerText(),/We chose the site for access/);
+  await page.getByText("Reopen all four scout reports and your ratings").click();
+  assert.match(await id("content").locator("details").innerText(),/Trade 2\/3/);
+  await page.getByText("Reopen all four scout reports and your ratings").click();
+  await id("council-action").selectOption(action);
+  if(action==="move"){
+   assert.equal(await id("council-destination").locator('option[value="'+site+'"]').count(),0);
+   await id("council-destination").selectOption("A");
+   assert.match(await id("decision-detail").innerText(),/Island with two harbours/);
+  }
+  if(site==="A"||width===390){
+   await id("second-council").evaluate(el=>el.scrollIntoView());
+   await screen("second-council");await checkNoHorizontalOverflow(page,"second council");
+  }
+  await choice("Record council decision").click();
+  assert.match(await id("decision-detail").innerText(),/Record your geographic trade-off/);
+  await id("council-reason").fill("We weighed access to the port against steady supplies from nearby fields.");
+  await id("council-people").fill("We would ask local growers what they can spare after feeding their households.");
+  await choice("Record council decision").click();
+  const marks=id("decision-detail").getByRole("checkbox");
+  await marks.nth(0).check();await marks.nth(2).check();await choice("Save peer score").click();
+  await page.locator('[data-tab="lot"]').click();await page.locator('[data-tab="found"]').click();
+  assert.ok(await id("council-action").isDisabled());
+  assert.match(await id("council-score").innerText(),/2 of 3/);
+  const [file]=await Promise.all([page.waitForEvent("download"),id("download").click()]);
+  const record=fs.readFileSync(await file.path(),"utf8");
+  assert.match(record,/Original reasons: We chose/);assert.match(record,/Peer score: 2\/3/);
+  assert.match(record,/People affected and consultation: We would ask/);
+  if(action==="move")assert.match(record,/Destination: Syracuse/);
+  await goto(page,"/science/labs.html",".labs-page");
+ }
+}
+
 async function evidenceAndCurves(page,width){
  await goto(page,"/social-studies/egypt-social-evidence-lab.html","#first-judgments");
  const loc=id=>page.locator("#"+id);
@@ -568,6 +661,7 @@ async function settlement(page,width){
   stage="Science and Social Studies partner games and individual tests";
   await lessonChallenges(page,1280);
   await rallyAssessments(page,1280);
+  await mysteryAndCouncil(page,1280);
   stage="Ancient Greece coming-up release state";
   await goto(page,"/social-studies/#greece",'#tabs [data-id="greece"]');
   await page.locator("#panel .eyebrow").waitFor({state:"visible"});
@@ -831,6 +925,7 @@ async function settlement(page,width){
   stage="Science and Social Studies games and tests on phones";
   await lessonChallenges(phone,390);
   await rallyAssessments(phone,390);
+  await mysteryAndCouncil(phone,390);
   await goto(phone,"/social-studies/temple-walkthrough.html","#zone-title");
   await checkNoHorizontalOverflow(phone,"Egyptian Temple Walkthrough mobile");
   await phone.locator('[data-zone="2"]').click();
