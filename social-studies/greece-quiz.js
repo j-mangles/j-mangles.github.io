@@ -1,5 +1,5 @@
 const greeceQuiz = {
-  name:"Ancient Greece", n:"3",
+  name:"Ancient Greece", n:"3", lessonPrefix:"./#greece-",
   quizIntro:"Eight new questions on geography, evidence, citizenship and power. You will get feedback after each choice and can revisit the lesson for any missed question.",
   lessons:[
     {id:"l1",title:"Mountains and sea",check:[{q:"Two coastal poleis have a difficult mountain journey between them. Which discovery would best support the claim that they remained connected?",a:["Both sites have steep slopes.","Each city chose its own laws.","Pottery made in one city turns up in the other city’s harbour."],c:2,why:"An object that travelled between the two places is evidence of exchange across the geographic divide."}]},
@@ -12,8 +12,7 @@ const greeceQuiz = {
     {id:"l12",title:"Alexander’s legacy",check:[{q:"Greek and Egyptian traditions appear together in an object from a Hellenistic city. Which interpretation is most cautious?",a:["The object suggests contact and cultural blending in this setting.","Everyone in the city followed the same customs.","All earlier Egyptian customs disappeared."],c:0,why:"One object can show traditions interacting. It cannot establish how everyone lived."}]}
   ]
 };
-window.UnitPracticeQuiz.mount(document.getElementById("greece-quiz-panel"), greeceQuiz,
-  id => { location.href = "./#greece-" + encodeURIComponent(id); });
+window.UnitPracticeQuiz.mount(document.getElementById("greece-quiz-panel"), greeceQuiz);
 
 function showCircuitMode(focusHeading) {
   const quizOpen = location.hash === "#quiz";

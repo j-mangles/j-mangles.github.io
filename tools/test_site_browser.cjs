@@ -51,6 +51,7 @@ async function cellAndGreeceAssessments(page, width) {
   }
   assert.match(await page.locator(".uq-score").innerText(),/\/ 8/);
   await page.locator('a[href="'+test+'"]').last().click();
+  await page.waitForLoadState("domcontentloaded");
   await page.locator("#q5").fill("My evidence.");
   await page.reload();
   assert.equal(await page.locator("#q5").inputValue(),"My evidence.");
@@ -77,11 +78,36 @@ async function unitAssessmentPair(page, width) {
   const review=slug+"-review.html",test=slug+"-test.html";
   await goto(page,unitRoute,'a[href="'+review+'"]');
   await page.locator('a[href="'+review+'"]').first().click();
+  await page.waitForLoadState("domcontentloaded");
   await page.locator("#begin-game").click();
   for(const [i,[decision,reason]] of scoreKeys.entries()){
    await page.locator("#choices button").nth(i===0?(decision+1)%3:decision).click();
+   if(slug==="matter"){
+    const decisionText=await page.locator("#decision").innerText();
+    await page.locator("#enlarge-evidence").click();
+    const exhibit=page.locator("#evidence-view[open] figure");
+    assert.ok(await exhibit.isVisible());
+    if(i===2){
+     assert.ok(await exhibit.locator("#pressure-model").isHidden());
+     await exhibit.locator("input").focus();
+     await page.keyboard.press("Home");
+     assert.equal(await exhibit.locator(".readout output").first().innerText(),"12 mL");
+    }
+    if(i%2) await page.locator("#close-evidence").click();
+    else await page.keyboard.press("Escape");
+    assert.equal(await page.locator("#decision").innerText(),decisionText);
+    assert.ok(await page.locator("#enlarge-evidence").evaluate(el=>el===document.activeElement));
+    if(i===2) assert.equal(await page.locator("#syringe-volume").inputValue(),"12");
+   }
    await page.locator("#choices button").nth(reason).click();
    assert.match(await page.locator("#round-result").innerText(),i===0?/1 of 2/:/2 of 2/);
+   if(slug==="matter" && i===2){
+    assert.ok(await page.locator("#pressure-model").isVisible());
+    assert.equal(await page.locator("#syringe-pressure").innerText(),"1.50×");
+    await page.locator("#syringe-volume").press("End");
+    assert.equal(await page.locator("#syringe-pressure").innerText(),"1.00×");
+    assert.equal(await page.locator(".gas-particle").count(),12);
+   }
    await page.locator("#continue").click();
   }
   assert.match(await page.locator("#total").innerText(),/7 of 8/);
@@ -91,18 +117,35 @@ async function unitAssessmentPair(page, width) {
   await page.locator("#choices button").nth(scoreKeys[0][1]).click();
   await page.locator("#continue").click();
   assert.match(await page.locator("#total").innerText(),/2 of 2/);
+  assert.match(await page.locator("#summary").innerText(),/First game: 7 of 8 points.*1 of 1 missed round/);
   await page.locator('[data-mode="quiz"]').click();
   await page.locator(".uq-start").click();
-  for(let i=0;i<8;i++){
-   await page.locator(".uq-choice").first().click();
-   await page.locator(".uq-next").click();
-   assert.ok(await page.locator(".uq-feedback").isVisible());
-   await page.locator(".uq-next").click();
+  const originalMisses=[];
+  for(const [pass,size] of [8,2,1].entries()){
+   for(let i=0;i<size;i++){
+    const question=await page.locator(".uq-question").evaluate(el=>el.lastChild.textContent);
+    const correct=await page.evaluate(q=>window.UnitPrep.lessons.flatMap(lesson=>lesson.check).find(item=>item.q===q).c,question);
+    const miss=pass===0?i<2:pass===1&&i===1;
+    if(pass===0 && miss) originalMisses.push(question);
+    if(pass) assert.equal(question,originalMisses[pass-1+i]);
+    await page.locator(".uq-choice").nth(miss?(correct+1)%3:correct).click();
+    await page.locator(".uq-next").click();
+    assert.ok(await page.locator(".uq-feedback").isVisible());
+    if(miss) assert.match(await page.locator(".uq-feedback").innerText(),/Correct answer:[\s\S]*You chose:/);
+    await page.locator(".uq-next").click();
+   }
+   assert.equal(await page.locator(".uq-score").innerText(),"6 / 8");
+   if(pass) assert.match(await page.locator(".uq-summary").innerText(),new RegExp(pass+" of 2"));
+   if(pass<2){
+    assert.equal(await page.locator("a.uq-review-lesson").count(),2-pass);
+    assert.equal(await page.locator("a.uq-review-lesson").first().getAttribute("target"),"_blank");
+    await page.locator("[data-retry-missed]").click();
+   }else assert.equal(await page.locator("[data-retry-missed]").count(),0);
   }
-  assert.match(await page.locator(".uq-score").innerText(),/\/ 8/);
   await page.locator("[data-restart-quiz]").click();
   assert.match(await page.locator(".uq-head").innerText(),/Question 1 of 8/);
   await page.locator('a[href="'+test+'"]').click();
+  await page.waitForLoadState("domcontentloaded");
   await page.locator('#q5').waitFor();
   assert.equal(await page.locator('textarea[data-answer]').count(),5);
   await page.locator("#q1").fill("Evidence and reasoning for this sample.");
@@ -120,6 +163,62 @@ async function unitAssessmentPair(page, width) {
   await checkNoHorizontalOverflow(page,folder+" test "+width);
  }
  await page.setViewportSize(originalViewport);
+}
+
+async function egyptReview(page,width){
+ const initialSize=page.viewportSize();
+ await page.setViewportSize({width,height:width===390?844:900});
+ await goto(page,"/social-studies/#egypt-l13",'a[href="egypt-fact-myth.html#quiz"]');
+ await page.locator('a[href="egypt-fact-myth.html#quiz"]').first().click();
+ await page.locator(".uq-start").click();
+ assert.match(await page.locator(".uq-head").innerText(),/Question 1 of 7/);
+ await page.locator('[data-mode="game"]').click();
+ const correct=[false,true,false,true,true,false,false];
+ for(const [i,fact] of correct.entries()){
+  const chooseFact=i===2||i===5?!fact:fact;
+  await page.getByRole("button",{name:chooseFact?"Fact":"Myth",exact:true}).click();
+  await page.locator("#show-evidence").click();
+  if([2,4,5].includes(i)){
+   await page.locator(".source-inspector summary").click();
+   if(i===2){
+    await page.locator('[data-script="2"]').click();
+    await page.locator("[data-project-stone]").click();
+    await page.locator(".classroom-reveal [data-next]").click();
+    assert.match(await page.locator(".classroom-reveal .reveal-answer").innerText(),/Hieroglyphs/);
+    await page.keyboard.press("Escape");
+   }else if(i===4){
+    await page.locator('[data-partner-choice="3"]').click();
+    assert.equal(await page.locator('[data-partner-choice="3"]').getAttribute("aria-pressed"),"true");
+   }else{
+    await page.locator('[data-nubia-phase="2"]').click();
+    await page.locator("[data-pin]").click();
+    await page.locator('[data-nubia-phase="3"]').click();
+    assert.deepEqual(await page.locator("[data-comparison] h5").allTextContents(),["Egypt in Nubia","Kush in Egypt"]);
+   }
+   await checkNoHorizontalOverflow(page,"Egypt source "+i+" at "+width);
+  }
+  await page.locator("#next").click();
+ }
+ assert.match(await page.locator("#result").innerText(),/5 of 7/);
+ await page.locator("#practise-missed").click();
+ await page.locator(".uq-start").click();
+ const lessons=[];
+ for(let i=0;i<2;i++){
+  lessons.push(await page.locator(".uq-lesson").innerText());
+  assert.match(await page.locator(".uq-head").innerText(),/of 2/);
+  await page.locator(".uq-choice").first().click();
+  await page.locator(".uq-next").click();
+  await page.locator(".uq-next").click();
+ }
+ assert.deepEqual(lessons.sort(),["Egypt and Nubia","Hieroglyphics and Scribes"]);
+ await page.locator('[data-mode="game"]').click();
+ assert.match(await page.locator("#result").innerText(),/5 of 7/);
+ await page.locator("#practise-missed").click();
+ assert.match(await page.locator(".uq-score").innerText(),/\/ 2/);
+ await page.locator('#all-topics a').click();
+ await page.locator(".uq-start").click();
+ assert.match(await page.locator(".uq-head").innerText(),/1 of 7/);
+ await page.setViewportSize(initialSize);
 }
 
 async function illustratedDirectory(page,width){
@@ -545,6 +644,7 @@ async function settlement(page,width){
   stage="illustrated directory and smartboard reveals";
   await illustratedDirectory(page,1280);
   await unitAssessmentPair(page,1280);
+  await egyptReview(page,1280);
   await cellAndGreeceAssessments(page,1280);
   stage="course maps and resource libraries";
   for(const subject of courses){
@@ -1015,6 +1115,7 @@ async function settlement(page,width){
   stage="illustrated directory and smartboard reveals on mobile";
   await illustratedDirectory(phone,390);
   await unitAssessmentPair(phone,390);
+  await egyptReview(phone,390);
   await cellAndGreeceAssessments(phone,390);
   for(const subject of courses){
    await goto(phone,"/"+subject+"/#overview","#atlas-unit-grid .atlas-unit");

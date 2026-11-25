@@ -683,12 +683,13 @@ const UNITS = [
 },
 {
   id:"egypt", n:"2", name:"Ancient Egypt", status:"next",
+  span:"c. 3100 – 30 BCE",
   activities:[{href:"river-valley-lab.html?civilization=egypt",title:"River Valley Decision Lab",blurb:"Lesson 1: living with the Nile flood."},{href:"river-valley-lab.html?civilization=egypt#settlement",title:"Which River Would You Choose?",blurb:"Use three geographic details to choose land for a farming family."},{href:"river-council.html#review",title:"River Council and Settlement Test",blurb:"Weigh new field reports in pairs, then defend a settlement independently."},{href:"giza-harbour.html",title:"The Missing Stone Shipment",blurb:"Lesson 3: a 3D mystery at the Giza harbour."},{href:"temple-walkthrough.html",title:"Inside an Egyptian Temple",blurb:"Lesson 5: walk from the pylon to the sanctuary."},
     {href:"../computer-class/#social-nile-advantage",title:"Was the Nile always an advantage?",blurb:"Lessons 1 and 8 · Use flood and trade evidence to write an argument."},
     {href:"egypt-trade-desk.html",title:"Royal Trade Desk",blurb:"Lesson 8 · Trace a cargo and plan an expedition."},
     {href:"egypt-nubia-evidence.html",title:"Egypt and Nubia",blurb:"Lesson 9 · Follow five shifts in power along the Nile."},
-    {href:"egypt-rosetta-investigation.html",title:"Rosetta Stone Investigation",blurb:"Lesson 12 · Magnify three scripts and decipher royal names."}],
-  span:"c. 3100 – 30 BCE",
+    {href:"egypt-rosetta-investigation.html",title:"Rosetta Stone Investigation",blurb:"Lesson 12 · Magnify three scripts and decipher royal names."},
+    {href:"egypt-fact-myth.html",title:"Fact or Myth?",blurb:"Lesson 13 · Challenge seven claims, then use sources to revisit your missed topics."}],
   bbox:[24,14,41.5,33], anchor:[31.2,26.6], tol:40,
   intro:"One river through a desert. The Nile's yearly flood made Egypt rich and its deserts kept it safe, so one civilization lasted almost 3,000 years. To the south, Nubia was its trading partner, rival and, for a while, its ruler.",
   footnote:"Lake Nasser, behind the Aswan High Dam, now covers the Second Cataract and the fortress of Buhen. Abu Simbel was cut into blocks and moved uphill in the 1960s to save it.",
@@ -1220,7 +1221,7 @@ function renderSheet(keepTicketOpen=false){
     ${l.terms.length?`<h3>Key terms</h3><dl class="terms">${l.terms.map(t=>`<dt>${esc(t[0])}</dt><dd>${esc(t[1])}</dd>`).join("")}</dl>`:""}
     ${places.length?`<h3>On the map</h3><div class="chips">${places.map(p=>`<button class="chip" data-place="${p.id}">${glyph(p.kind)}${esc(p.name)}</button>`).join("")}</div>`:""}
     <h3>Your work</h3><p>${esc(l.work)}</p>
-    ${u.id==="egypt"&&l.id==="l13"?'<nav class="lesson-activities" aria-label="Egypt assessment"><a href="egypt-exhibit-test.html"><span class="activity-format" data-format="test">Test</span> Egypt on Exhibit</a></nav>':""}
+    ${u.id==="egypt"&&l.id==="l13"?'<nav class="lesson-activities" aria-label="Egypt assessment"><a href="egypt-fact-myth.html#quiz"><span class="activity-format" data-format="quiz">Quiz</span> Egypt evidence quiz</a><a href="egypt-exhibit-test.html"><span class="activity-format" data-format="test">Test</span> Egypt on Exhibit</a></nav>':""}
     ${activity?`<p><a class="atlas-compare-link" href="${esc(activity.href)}">${u.id==="egypt"&&l.id==="l13"?'<span class="activity-format" data-format="review">Review game</span> · ':""}${esc(activity.title||"Open investigation")}</a></p>`:""}<p class="fine">Get the handout from Mr. Mangles if you don't have it.</p>
     ${u.id==="egypt"&&["l1","l8"].includes(l.id)?'<p><a class="atlas-compare-link" href="../computer-class/#social-nile-advantage">Was the Nile always an advantage? · Computer Class investigation</a></p>':""}
     <h3>Check yourself</h3>${qs}

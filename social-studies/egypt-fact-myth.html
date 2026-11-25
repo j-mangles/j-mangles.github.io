@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-room="egypt" data-theme="light">
+<html lang="en-CA" data-room="egypt" data-theme="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -60,30 +60,41 @@ button:focus-visible,a:focus-visible,textarea:focus-visible{outline:3px solid va
 [hidden]{display:none!important}
 @media(max-width:520px){main{padding:18px 13px 36px}.choices{grid-template-columns:1fr}.topline{align-items:flex-start}.controls{display:grid;grid-template-columns:1fr auto 1fr}.navbtn{min-width:0;width:100%}.score{max-width:100px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+html[data-room="egypt"] #quiz{padding:clamp(1rem,3vw,1.75rem)}
+#quiz-title{margin:0 0 .5rem}#all-topics{margin:1.1rem 0 0}
+#practise-missed{display:inline-flex;align-items:center;background:var(--room);color:var(--room-ink);text-decoration:none}
+.source-inspector{margin:.85rem 0}.source-inspector summary{cursor:pointer;min-height:44px;padding:.55rem 0;font-weight:700}
+#egypt-quiz-panel .uq{margin:0;padding:0;border:0;background:transparent}#egypt-quiz-panel .uq>h3,#egypt-quiz-panel .uq>.uq-kicker{display:none}
+html[data-room] #egypt-quiz-panel .uq-choice{font:inherit;text-transform:none;letter-spacing:normal;text-align:left}
 </style>
 <link rel="stylesheet" href="../assets/fonts.css?v=20261114a">
 <link rel="stylesheet" href="rooms.css?v=20261114a">
 <link rel="stylesheet" href="lab.css?v=20261114a">
+<link rel="stylesheet" href="../assets/unit-prep.css">
+<link rel="stylesheet" href="egypt-evidence.css">
+<link rel="stylesheet" href="../assets/classroom-reveal.css">
 </head>
 <body>
 <main>
   <div class="topline">
     <div><p class="kicker">Unit 2 · Ancient Egypt · Lesson 13</p><h1>Fact or Myth?</h1></div>
-    <a href="index.html">Back to the Egypt atlas</a>
+    <a href="./#egypt">Back to the Egypt atlas</a>
   </div>
-  <p class="intro">Seven claims from the unit review. Make your call first. Then try to correct the claim or name the evidence before you open the explanation. Your answers stay in this browser tab and are not submitted or saved.</p>
+  <nav class="prep-nav" aria-label="Egypt review activities"><a href="#game" data-mode="game">Review game</a><a href="#quiz" data-mode="quiz">Practice quiz</a><a href="egypt-exhibit-test.html">Individual test</a></nav>
+  <div id="game">
+  <p class="intro">Decide whether each of the seven claims is supported by evidence. Write down the detail that convinced you, then compare it with the class sources. Your work stays in this tab until you reload or close it.</p>
   <div class="progress-wrap"><progress id="progress" max="7" value="0" aria-label="Review progress"></progress><span class="progress-label" id="progress-label">Round 1 of 7</span></div>
   <section class="card" aria-labelledby="claim">
     <div class="roundline"><span id="round-topic">Egypt review</span><span class="pill" id="round-status">Your call</span></div>
-    <h2 class="claim" id="claim"></h2>
+    <h2 class="claim" id="claim" tabindex="-1"></h2>
     <p class="prompt" id="prompt">Is the claim fact or myth? Choose before checking the evidence.</p>
     <div class="choices" id="choices"></div>
     <div id="feedback" aria-live="polite"></div>
     <div id="recall" class="recall" hidden>
-      <label for="recall-answer" id="recall-label"></label>
+      <label for="recall-answer" id="recall-label" tabindex="-1"></label>
       <textarea id="recall-answer" autocomplete="off" placeholder="Try it in your own words. Nothing here is saved."></textarea>
       <button class="action" id="show-evidence" type="button">I’ve tried — show the evidence</button>
-      <div class="reveal" id="evidence" hidden></div>
+      <div class="reveal" id="evidence" tabindex="-1" hidden></div>
     </div>
     <div class="controls">
       <button class="navbtn" id="previous" type="button">← Previous</button>
@@ -93,8 +104,9 @@ button:focus-visible,a:focus-visible,textarea:focus-visible{outline:3px solid va
   </section>
   <section class="card finish" id="finish" hidden aria-labelledby="finish-title">
     <p class="kicker">Review complete</p>
-    <h2 id="finish-title">What will you remember?</h2>
+    <h2 id="finish-title" tabindex="-1">What will you remember?</h2>
     <p id="result"></p>
+    <a class="action" id="practise-missed" href="#corrections" hidden>Practise missed topics</a>
     <p>Without looking back, explain one idea from each thread. Add a specific example from the unit.</p>
     <ol>
       <li><b>The river:</b> How did the Nile help Egypt, and what could still go wrong?</li>
@@ -107,22 +119,34 @@ button:focus-visible,a:focus-visible,textarea:focus-visible{outline:3px solid va
     <details><summary>One-minute check-in</summary><label for="checkin">One idea I can explain now; one I still want to review:</label><textarea id="checkin" placeholder="This reflection stays on this page only."></textarea></details>
     <button class="action" id="restart" type="button">Start the seven rounds again</button>
   </section>
-  <p class="small">Adapted from the student-facing Egypt: Fact or Myth? review. Historical claims are simplified for practice; use your lesson notes and class sources for fuller context.</p>
-<p><a href="egypt-exhibit-test.html">Take the Egypt on Exhibit source test</a></p>
+
+</div>
+<section id="quiz" hidden aria-labelledby="quiz-title">
+  <h2 id="quiz-title" tabindex="-1">Egypt evidence quiz</h2>
+  <div id="egypt-quiz-panel"></div>
+  <p id="all-topics" hidden><a href="#quiz">Practise all seven topics</a></p>
+</section>
 </main>
+<script src="../assets/classroom-reveal.js"></script>
+<script src="egypt-evidence.js"></script>
+<script src="../science/unit-practice-quiz.js"></script>
+<script src="egypt-review-quiz.js"></script>
 <script>
 (function(){
 "use strict";
 const rounds=[
- {claim:"“Slaves built the pyramids.”",fact:false,topic:"Pyramids",recall:"Rewrite the claim accurately. What evidence supports your correction?",correction:"Organized Egyptian work crews built the pyramids. Archaeologists found a workers’ town and cemetery beside Giza. The slave story grew out of Herodotus, who described forced labour about 2,000 years later.",source:"The town and cemetery are archaeological evidence close to the site. Herodotus was a much later visitor, so his account needs careful checking."},
- {claim:"“The Nile floods because of heavy rain in Egypt.”",fact:false,topic:"The river",recall:"Where did the floodwater come from, and what part of the flood was less predictable?",correction:"Summer rains far to the south, in the Ethiopian Highlands, fed the Nile flood. Its timing was dependable; its height could vary.",source:"Egypt itself is very dry. The timing of the flood was reliable, while its size was not."},
- {claim:"“Each hieroglyph is a picture of the thing it means.”",fact:false,topic:"Writing",recall:"What can a hieroglyph stand for besides a picture of an object?",correction:"Most hieroglyphic signs stand for sounds. Some stand for whole words, and some are silent clues. An owl sign can stand for the sound M.",source:"The signs work as a writing system, not simply as pictures. Different signs can represent sounds, words or meaning clues."},
- {claim:"“Egyptian women could own property, sign contracts and take a case to court.”",fact:true,topic:"Daily life",recall:"What important limits should you add to this statement?",correction:"This is a fact about legal standing: women could own property, make contracts and go to court. Men held government jobs, and few girls learned to read.",source:"Legal rights did not mean equality in every part of life. The review contrasts women's legal standing with limits on jobs and literacy."},
- {claim:"“Ancient Egypt was cut off from the rest of the world.”",fact:false,topic:"Trade",recall:"Name two places or goods that show Egypt had far-reaching connections.",correction:"Egypt traded over long distances: for example, cedar came from Lebanon and incense from Punt; lapis lazuli came from far to the east. Egypt also adopted technologies such as the chariot.",source:"Deserts offered protection, but they did not stop trade and exchange. The exact routes and goods varied across different periods."},
- {claim:"“Egypt always ruled over Nubia.”",fact:false,topic:"Egypt and Nubia",recall:"How did power between Egypt and Kush change over time?",correction:"Egypt ruled Nubia for centuries, and later Kushite kings conquered and ruled Egypt as pharaohs. Nubia also built about twice as many pyramids as Egypt.",source:"The relationship changed over time. Nubia and Kush had their own kingdoms, rulers and achievements."},
- {claim:"“Cleopatra was the last of a long line of Egyptian-born pharaohs.”",fact:false,topic:"Cleopatra",recall:"Which part of the claim is accurate, and which part needs correction?",correction:"Cleopatra VII was Egypt’s last pharaoh, but her family was Greek, descended from one of Alexander the Great’s generals.",source:"She lived much closer to us in time than to the building of the Great Pyramid. The Ptolemaic dynasty ruled Egypt after Alexander’s conquests."}
+ {claim:"“The workers’ town at Giza proves that every pyramid builder was enslaved.”",fact:false,topic:"Pyramids",lesson:"l3",recall:"Rewrite the claim accurately. What evidence supports your correction?",correction:"Organized work crews built the pyramids. Housing and bakeries at Giza show how workers were supplied.",source:"The settlement is direct evidence for the workforce. Its buildings alone cannot tell us whether any particular worker was free to leave."},
+ {claim:"“Egyptians could anticipate the flood season, even though flood heights varied.”",fact:true,topic:"The river",lesson:"l1",recall:"Where did much of the floodwater come from, and why did its height matter to a farmer?",correction:"Summer rains far to the south, in the Ethiopian Highlands, fed the Nile flood. Its timing was dependable; its height could vary.",source:"Egypt itself is very dry. The timing of the flood was reliable, while its size was not."},
+ {claim:"“Each hieroglyph is a picture of the thing it means.”",fact:false,topic:"Writing",lesson:"l6",recall:"What can a hieroglyph stand for besides a picture of an object?",correction:"Most hieroglyphic signs stand for sounds. Some stand for whole words, and some are silent clues. An owl sign can stand for the sound M.",source:"The signs work as a writing system, not simply as pictures. Different signs can represent sounds, words or meaning clues."},
+ {claim:"“Egyptian women could own property, sign contracts and take a case to court.”",fact:true,topic:"Daily life",lesson:"l7",recall:"What important limits should you add to this statement?",correction:"This is a fact about legal standing: women could own property, make contracts and go to court. Men held government jobs, and few girls learned to read.",source:"Legal rights did not mean equality in every part of life. The review contrasts women's legal standing with limits on jobs and literacy."},
+ {claim:"“Egypt obtained cedar and incense through long-distance trade.”",fact:true,topic:"Trade",lesson:"l8",recall:"Name a trading partner for one of those goods. What would you need to trace its exact route?",correction:"Egypt traded over long distances: for example, cedar came from Lebanon and incense from Punt; lapis lazuli came from far to the east. Egypt also adopted technologies such as the chariot.",source:"Deserts offered protection, but they did not stop trade and exchange. The exact routes and goods varied across different periods."},
+ {claim:"“Egypt always ruled over Nubia.”",fact:false,topic:"Egypt and Nubia",lesson:"l9",recall:"How did power between Egypt and Kush change over time?",correction:"Egyptian rulers controlled parts of Nubia in some periods. Later Kushite kings ruled Egypt as pharaohs.",source:"The relationship changed over time. Nubia and Kush had their own kingdoms, rulers and achievements."},
+ {claim:"“Cleopatra VII belonged to the same royal dynasty as Khufu, builder of the Great Pyramid.”",fact:false,topic:"Cleopatra",lesson:"l11",recall:"What is the difference between sharing the title pharaoh and belonging to the same dynasty?",correction:"Khufu ruled during the Old Kingdom. Cleopatra VII ruled more than 2,000 years later and belonged to the Ptolemaic dynasty.",source:"She lived much closer to us in time than to the building of the Great Pyramid. The Ptolemaic dynasty ruled Egypt after Alexander’s conquests."}
 ];
-let current=0;
+const quizUnit=window.EgyptReviewQuiz;
+const exhibits={l6:["rosetta","Inspect the Rosetta Stone"],l8:["trade","Trace the cargo routes"],l9:["nubia","Compare the two kingdoms on the map"]};
+const exhibitStates=rounds.map(()=>({}));
+let current=0, quizKey=null;
 const answers=Array(rounds.length).fill(null);
 const evidenceShown=Array(rounds.length).fill(false);
 const recallDraft=Array(rounds.length).fill("");
@@ -134,19 +158,20 @@ function render(){
  $("progress").value=countAnswered();
  setText("progress-label","Round "+(current+1)+" of "+rounds.length);
  setText("round-topic",r.topic);
- setText("round-status",answer===null?"Your call":answer===r.fact?"Correct call":"Try the next one");
+ setText("round-status",answer===null?"Your call":answer===r.fact?"Correct call":"Revisit this claim");
  setText("claim",r.claim);
  $("choices").replaceChildren();
  [["Fact",true],["Myth",false]].forEach(item=>{
    const b=document.createElement("button");b.type="button";b.className="choice";b.textContent=item[0];
    b.disabled=answer!==null;
    b.setAttribute("aria-pressed",answer===item[1]?"true":"false");
-   b.addEventListener("click",()=>{answers[current]=item[1];render();});
+   b.addEventListener("click",()=>{answers[current]=item[1];render();$("recall-label").focus();});
    $("choices").appendChild(b);
  });
  $("feedback").replaceChildren();
  $("recall").hidden=answer===null;
  $("evidence").hidden=!evidenceShown[current];
+ $("show-evidence").hidden=evidenceShown[current];
  $("recall-answer").value=recallDraft[current];
  if(answer!==null){
    const box=document.createElement("div");box.className="feedback "+(answer===r.fact?"good":"bad");
@@ -157,10 +182,24 @@ function render(){
    if(evidenceShown[current]){
      const p1=document.createElement("p"),p2=document.createElement("p");
      const b1=document.createElement("b"),b2=document.createElement("b");
-     b1.textContent="A strong correction";b2.textContent="Evidence lens";
+     b1.textContent=r.fact?"One way to support the claim":"One way to correct the claim";b2.textContent="Evidence lens";
      p1.append(b1,document.createTextNode(" "+r.correction));
      p2.append(b2,document.createTextNode(" "+r.source));
      $("evidence").replaceChildren(p1,p2);
+     const lesson=quizUnit.lessons.find(item=>item.id===r.lesson);
+     const link=document.createElement("a");
+     link.href=quizUnit.lessonPrefix+r.lesson;link.target="_blank";link.rel="noopener";
+     link.textContent="Read "+lesson.title+" (new tab)";
+     $("evidence").appendChild(link);
+     if(exhibits[r.lesson]){
+       const [key,label]=exhibits[r.lesson], state=exhibitStates[current];
+       const details=document.createElement("details"), summary=document.createElement("summary"), exhibit=document.createElement("div");
+       details.className="source-inspector";summary.textContent=label;exhibit.className="eg-exhibit";
+       details.append(summary,exhibit);$("evidence").appendChild(details);
+       details.addEventListener("toggle",()=>{
+         if(details.open && !exhibit.firstElementChild) window.EgyptInteractives[key].mount(exhibit,state);
+       });
+     }
    }else{$("evidence").replaceChildren();}
  }
  setText("score",countAnswered()+" of "+rounds.length+" answered");
@@ -172,17 +211,66 @@ function finish(){
  $("progress").value=rounds.length;
  setText("progress-label","7 of 7 answered");
  const right=answers.filter((a,i)=>a===rounds[i].fact).length;
- setText("result","You made "+right+" of "+rounds.length+" correct calls. Use the prompts below to practise explaining the ideas with evidence; this is for review, not a grade.");
+ setText("result","First attempt: "+right+" of "+rounds.length+" correct calls.");
+ $("practise-missed").hidden=right===rounds.length;
  $("finish").hidden=false;
- $("finish").scrollIntoView({block:"start",behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});
+ $("finish-title").focus();
 }
 $("recall-answer").addEventListener("input",event=>{recallDraft[current]=event.target.value;});
-$("show-evidence").addEventListener("click",()=>{evidenceShown[current]=true;render();});
-$("previous").addEventListener("click",()=>{if(current>0){current--;render();}});
-$("next").addEventListener("click",()=>{if(current<rounds.length-1){current++;render();}else if(countAnswered()===rounds.length){finish();}else{setText("score","Answer each round before finishing");}});
-$("restart").addEventListener("click",()=>{current=0;answers.fill(null);evidenceShown.fill(false);recallDraft.fill("");$("checkin").value="";render();window.scrollTo({top:0,behavior:"auto"});});
+$("show-evidence").addEventListener("click",()=>{evidenceShown[current]=true;render();$("evidence").focus();});
+$("previous").addEventListener("click",()=>{if(current>0){current--;render();$("claim").focus();}});
+$("next").addEventListener("click",()=>{
+ if(current<rounds.length-1){
+   current++;render();$("claim").focus();
+ }else if(countAnswered()===rounds.length){
+   finish();
+ }else{
+   current=answers.indexOf(null);render();
+   setText("score","Answer this claim to finish the review.");
+   $("claim").focus();
+ }
+});
+$("restart").addEventListener("click",()=>{
+ current=0;answers.fill(null);evidenceShown.fill(false);recallDraft.fill("");
+ exhibitStates.forEach((_,i)=>{exhibitStates[i]={};});quizKey=null;
+ $("checkin").value="";render();$("claim").focus();
+});
 $("checkin").value="";
-render();
+function selectMode(focusTitle){
+ const quizOpen=["#quiz","#corrections"].includes(location.hash);
+ $("game").hidden=quizOpen;
+ $("quiz").hidden=!quizOpen;
+ const mode=quizOpen?"quiz":"game";
+ document.querySelectorAll("a[data-mode]").forEach(link=>{
+   if(link.dataset.mode===mode) link.setAttribute("aria-current","page");
+   else link.removeAttribute("aria-current");
+ });
+ if(quizOpen){
+   const reviewMisses=location.hash==="#corrections" && countAnswered()===rounds.length;
+   const missed=reviewMisses?rounds.filter((round,i)=>answers[i]!==round.fact):[];
+   const lessonIds=missed.map(round=>round.lesson);
+   const key=missed.length?lessonIds.join(","):"all";
+   $("all-topics").hidden=!missed.length;
+   setText("quiz-title",missed.length?"Review your missed topics":"Egypt evidence quiz");
+   if(quizKey!==key){
+     quizKey=key;
+     const unit={...quizUnit};
+     if(missed.length){
+       unit.lessons=quizUnit.lessons.filter(lesson=>lessonIds.includes(lesson.id));
+       unit.restartLabel="Repeat these topics";
+       unit.quizIntro="Game score: "+(rounds.length-missed.length)+" of "+rounds.length+
+         ". Use new evidence to practise these topics: "+missed.map(round=>round.topic).join(" · ")+".";
+     }
+     window.UnitPracticeQuiz.mount($("egypt-quiz-panel"),unit);
+   }
+ }
+ if(focusTitle){
+   const heading=quizOpen?"quiz-title":$("finish").hidden?"claim":"finish-title";
+   $(heading).focus();
+ }
+}
+render();selectMode(false);
+window.addEventListener("hashchange",()=>selectMode(true));
 })();
 </script>
 </body>

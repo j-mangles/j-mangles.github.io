@@ -4,6 +4,7 @@ window.UnitPrep = {
   quizIntro: "Eight new questions, from particle motion to the properties of water. Check each answer, then revisit any lesson you missed.",
   rounds: [
     {
+      visual:"sample",
       title: "The chipped sample", source: "Bench record",
       evidence: "A uniform solid has a mass of 84 g and a volume of 28 cm³. A chip from the same solid has a volume of 7 cm³. Neither piece contains air pockets.",
       steps: [
@@ -12,6 +13,7 @@ window.UnitPrep = {
       ], why:"Each cubic centimetre has a mass of 3 g. The chip contains 7 of them, so its mass is 21 g. Cutting changes the amount of material and leaves its density the same."
     },
     {
+      visual:"ramp",
       title:"The slow lane", source:"Ramp log",
       evidence:"Two 5 mL drops travel 18 cm on the same ramp at 22 °C. Drop P takes 7 s. Drop Q takes 19 s.",
       steps:[
@@ -20,14 +22,16 @@ window.UnitPrep = {
       ],why:"Q takes longer to flow the same distance under matched conditions. Heating one sample adds a second difference because temperature can change viscosity."
     },
     {
+      visual:"barrel",
       title:"The sealed syringe", source:"Particle model",
       evidence:"A capped syringe holds 18 mL of air. A slow push reduces the volume to 12 mL. The seal holds and the temperature stays the same.",
       steps:[
         {q:"Which particle sketch would fit the second reading?",a:["Fewer particles in the barrel.","Smaller particles in the barrel.","The same particles closer together."],c:2},
         {q:"How does the pressure against the barrel walls change?",a:["It rises as the particles hit the walls more often per unit area.","It falls because each particle now has less mass.","It stays the same because no air escaped."],c:0}
-      ],why:"The trapped air keeps its mass. With less space and the same temperature, its particles collide with the walls more often per unit area."
+      ],why:"The trapped air keeps its mass. With less space and the same temperature, its particles collide with the walls more often per unit area. Move the plunger again to check the model pressure."
     },
     {
+      visual:"ice",
       title:"The ice tray", source:"Observation log",
       evidence:"Pure ice and liquid water sit together at 0 °C under ordinary air pressure. A heater supplies energy. The thermometer stays at 0 °C while more ice melts.",
       steps:[
