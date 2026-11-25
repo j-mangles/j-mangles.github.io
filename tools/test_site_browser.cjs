@@ -22,6 +22,51 @@ async function checkNoHorizontalOverflow(page,label){
  assert.ok(o.scroll<=o.width+6,label+" overflows: "+JSON.stringify(o));
 }
 
+async function cellAndGreeceAssessments(page, width) {
+ const viewport=page.viewportSize();
+ await page.setViewportSize({width,height:width===390?844:900});
+ await goto(page,"/science/#cells",'a[href="mystery-cell.html"]');
+ await page.locator('a[href="mystery-cell.html"]').first().click();
+ await page.locator("#begin-game").click();
+ assert.match(await page.locator("#mc-field").getAttribute("aria-label"),/Slide A at 400/);
+ await page.locator("#mc-slide").selectOption("cheek");
+ await page.locator("#mc-objective").selectOption("10");
+ assert.match(await page.locator("#mc-reading").innerText(),/Slide B · 100× total · 1800/);
+ await page.locator("#mc-focus").fill("50");
+ assert.equal(await page.locator("#mc-focus-status").innerText(),"Blurred");
+ for(const [i,answers] of [[1,2],[0,1],[2,0],[1,2]].entries()){
+  assert.equal(await page.locator("#mystery-instrument").isVisible(),i<2);
+  for(const answer of answers)await page.locator("#choices button").nth(answer).click();
+  await page.locator("#continue").click();
+ }
+ assert.match(await page.locator("#total").innerText(),/8 of 8/);
+ for(const [route,test] of [["/science/mystery-cell.html#quiz","cells-test.html"],["/social-studies/greece-review-circuit.html#quiz","greece-test.html"]]){
+  await goto(page,route,".uq-start");
+  await page.locator(".uq-start").click();
+  for(let i=0;i<8;i++){
+   await page.locator(".uq-choice").first().click();
+   await page.locator(".uq-next").click();
+   assert.ok(await page.locator(".uq-feedback").isVisible());
+   await page.locator(".uq-next").click();
+  }
+  assert.match(await page.locator(".uq-score").innerText(),/\/ 8/);
+  await page.locator('a[href="'+test+'"]').last().click();
+  await page.locator("#q5").fill("My evidence.");
+  await page.reload();
+  assert.equal(await page.locator("#q5").inputValue(),"My evidence.");
+  await checkNoHorizontalOverflow(page,test);
+ }
+ await goto(page,"/social-studies/#greece-l13",'a[href="greece-review-circuit.html"]');
+ await page.locator('a[href="greece-review-circuit.html"]').first().click();
+ for(const [i,v] of ["a","b","c","c","a","b"].entries())await page.locator('input[name="q'+(i+1)+'"][value="'+v+'"]').check();
+ for(let i=1;i<=4;i++)await page.locator("#t"+i).selectOption(String(i));
+ await page.locator("#check").click();
+ assert.match(await page.locator("#result").innerText(),/6 of 6 choices correct. Timeline: correct/);
+ await page.locator("#clear").click();
+ assert.equal(await page.locator('input[type="radio"]:checked').count(),0);
+ await page.setViewportSize(viewport);
+}
+
 async function unitAssessmentPair(page, width) {
  const originalViewport=page.viewportSize();
  await page.setViewportSize({width,height:width===390?844:900});
@@ -58,6 +103,7 @@ async function unitAssessmentPair(page, width) {
   await page.locator("[data-restart-quiz]").click();
   assert.match(await page.locator(".uq-head").innerText(),/Question 1 of 8/);
   await page.locator('a[href="'+test+'"]').click();
+  await page.locator('#q5').waitFor();
   assert.equal(await page.locator('textarea[data-answer]').count(),5);
   await page.locator("#q1").fill("Evidence and reasoning for this sample.");
   await page.reload();
@@ -499,6 +545,7 @@ async function settlement(page,width){
   stage="illustrated directory and smartboard reveals";
   await illustratedDirectory(page,1280);
   await unitAssessmentPair(page,1280);
+  await cellAndGreeceAssessments(page,1280);
   stage="course maps and resource libraries";
   for(const subject of courses){
    await goto(page,"/"+subject+"/#overview","#atlas-unit-grid .atlas-unit");
@@ -968,6 +1015,7 @@ async function settlement(page,width){
   stage="illustrated directory and smartboard reveals on mobile";
   await illustratedDirectory(phone,390);
   await unitAssessmentPair(phone,390);
+  await cellAndGreeceAssessments(phone,390);
   for(const subject of courses){
    await goto(phone,"/"+subject+"/#overview","#atlas-unit-grid .atlas-unit");
    await checkNoHorizontalOverflow(phone,subject+" overview mobile");

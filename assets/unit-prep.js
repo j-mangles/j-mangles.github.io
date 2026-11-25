@@ -37,6 +37,7 @@
     document.getElementById("case-title").textContent = card.title;
     document.getElementById("source").textContent = card.source;
     record.textContent = card.evidence;
+    if (unit.showEvidence) unit.showEvidence(card);
     showDecision();
     document.getElementById("case-title").focus();
   }
