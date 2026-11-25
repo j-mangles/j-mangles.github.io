@@ -51,6 +51,7 @@ async function cellAndGreeceAssessments(page, width) {
   }
   assert.match(await page.locator(".uq-score").innerText(),/\/ 8/);
   await page.locator('a[href="'+test+'"]').last().click();
+  await page.waitForLoadState("domcontentloaded");
   await page.locator("#q5").fill("My evidence.");
   await page.reload();
   assert.equal(await page.locator("#q5").inputValue(),"My evidence.");
@@ -144,6 +145,7 @@ async function unitAssessmentPair(page, width) {
   await page.locator("[data-restart-quiz]").click();
   assert.match(await page.locator(".uq-head").innerText(),/Question 1 of 8/);
   await page.locator('a[href="'+test+'"]').click();
+  await page.waitForLoadState("domcontentloaded");
   await page.locator('#q5').waitFor();
   assert.equal(await page.locator('textarea[data-answer]').count(),5);
   await page.locator("#q1").fill("Evidence and reasoning for this sample.");
