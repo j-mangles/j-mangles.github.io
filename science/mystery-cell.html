@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mystery Cell · Grade 8 Science</title>
+<link rel="stylesheet" href="../assets/fonts.css">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="stylesheet" href="../assets/class-assessment.css">
+<link rel="stylesheet" href="../assets/activity-formats.css">
+<link rel="stylesheet" href="../assets/unit-prep.css">
+<link rel="stylesheet" href="mystery-cell.css">
+<script defer src="unit-practice-quiz.js"></script>
+<script defer src="virtual-microscope.js"></script>
+<script defer src="mystery-cell.js"></script>
+<script defer src="../assets/unit-prep.js"></script>
+</head>
+<body data-subject="sci">
+<main class="rally">
+<a class="back" href="./#cells">Back to Cells and Systems</a>
+<h1>Mystery Cell</h1>
+<p class="meta">Grade 8 Science · Cells and Systems</p>
+<nav class="prep-nav" aria-label="Choose an activity">
+<a href="#game" data-mode="game">Review game</a><a href="#quiz" data-mode="quiz">Practice quiz</a><a href="cells-test.html">Individual test</a>
+</nav>
+<section class="prep-mode" id="game">
+<h2 id="case-title" tabindex="-1">Identify the evidence</h2>
+<p id="game-intro">Switch between two unlabelled slides, change the objective and focus the field. Then use a membrane model and a tissue observation to explain what cells do. Play solo or with a partner. Earn one point for each decision and one for the reasoning behind it.</p>
+<button class="primary" type="button" id="begin-game">Start four rounds</button>
+<div id="round" hidden>
+<p id="progress" class="meta"></p>
+<div class="record"><strong id="source"></strong><p id="record"></p></div>
+<div id="mystery-instrument" hidden>
+<div class="mc-instrument">
+<figure><svg id="mc-field" viewBox="0 0 420 420" role="img" aria-label="Model microscope field"></svg><figcaption id="mc-reading"></figcaption></figure>
+<div class="mc-controls">
+<label for="mc-slide">Specimen</label><select id="mc-slide"><option value="onion">Slide A</option><option value="cheek">Slide B</option></select>
+<label for="mc-objective">Objective · 10× eyepiece</label><select id="mc-objective"><option value="4">4×</option><option value="10">10×</option><option value="40">40×</option></select>
+<label for="mc-focus">Focus <output id="mc-focus-status" for="mc-focus"></output></label><input id="mc-focus" type="range" min="0" max="100" value="100">
+<details><summary>Read a description of this view</summary><p id="mc-description"></p></details>
+</div></div></div>
+<h3 id="decision" tabindex="-1"></h3><div class="choices" id="choices"></div>
+<div id="round-result" hidden></div><button type="button" class="primary" id="continue" hidden>Next round</button>
+</div>
+<div id="game-result" hidden><h3 id="total" tabindex="-1"></h3><p id="summary"></p>
+<div class="actions"><button type="button" id="retry-rounds">Retry missed rounds</button><button type="button" id="play-again">Play all four again</button><a href="#quiz">Try the practice quiz</a></div></div>
+</section>
+<section class="prep-mode" id="quiz" hidden><h2 tabindex="-1">Practice quiz</h2><div id="quiz-panel"></div></section>
+<noscript><p>Turn on JavaScript to play or take the quiz. The individual test can also be printed.</p></noscript>
+</main>
+</body></html>

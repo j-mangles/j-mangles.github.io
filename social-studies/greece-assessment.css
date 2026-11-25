@@ -1,0 +1,8 @@
+.test-map{max-width:36rem;margin:.8rem 0 1rem}.test-map img{display:block;width:100%;height:auto;border:1px solid var(--rule)}
+.test-map figcaption{margin-top:.35rem;font-size:.9rem;color:var(--muted)}
+@media print{.assessment .test-map{max-width:260pt;margin:3pt 0}.test-map figcaption{font:8pt/1.25 Georgia,serif;color:#222}.assessment.unit-test .part:nth-of-type(-n+2) .writing-lines i{height:16pt}}
+
+html[data-room="greece"] #synthesis::placeholder{color:var(--muted);opacity:1}
+html[data-room="greece"] main .station button:hover{background:var(--room);color:var(--room-ink)}
+html[data-room="greece"] #greece-quiz-panel .uq{border:0;background:transparent}
+html[data-room="greece"] #greece-quiz-panel .uq-choice{font:inherit;text-align:left;text-transform:none;letter-spacing:normal}

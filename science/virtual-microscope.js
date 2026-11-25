@@ -1,7 +1,7 @@
 /* Grade 8 virtual microscope: vector illustration, not an actual photomicrograph. */
 (function(g){
 "use strict";
-const H=g.HUB;if(!H)return;
+const H=g.HUB;
 const specimens={
  onion:{label:"Onion epidermis",size:110,kind:"rect",note:"Illustrated plant cells have cell walls. Bulb epidermis usually has no visible chloroplasts."},
  cheek:{label:"Cheek epithelial cells",size:65,kind:"oval",note:"Illustrated animal cells have flexible membranes and nuclei. Cells vary in size."},
@@ -18,6 +18,47 @@ const core={specimens,objectives:[4,10,40],ocular:10,
 };
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const rnd=x=>Math.round(x*10)/10;
+function drawField(svg,{name,obj,focus,panX=0,panY=0,label=specimens[name].label}){
+  const field=core.fieldUm(obj),step=Math.max(4,366*specimens[name].size/field);
+  const pitchY=name==="onion"?step*.64:step;
+  const cols=Math.ceil(480/step)+3,rows=Math.ceil(480/pitchY)+3;
+  let shapes="";
+  for(let y=0;y<rows;y++)for(let x=0;x<cols;x++){
+   const left=210+(x-cols/2+(y%2)*.45)*step+panX*.45;
+   const top=210+(y-rows/2)*pitchY+panY*.45;
+   if(Math.hypot(left+step/2-210,top+pitchY/2-210)>184+step)continue;
+   const variant=(x*37+y*23+x*y)%13;
+   const detail=step>12;
+   if(name==="onion"){
+    const fill=["#f0ddb8","#efdfc2","#f5e4bd","#edd9b3"][variant%4];
+    const cx=rnd(left+step*(.70+(variant%3)*.045)),cy=rnd(top+pitchY*(.28+(variant%5)*.09));
+    shapes+=`<rect x="${rnd(left)}" y="${rnd(top)}" width="${rnd(step)}" height="${rnd(pitchY)}" rx="${rnd(step*.07)}" fill="${fill}" stroke="#8b7253" stroke-width="${rnd(Math.max(.55,step*.019))}"/>`;
+    if(detail){
+     shapes+=`<rect x="${rnd(left+step*.06)}" y="${rnd(top+pitchY*.10)}" width="${rnd(step*.86)}" height="${rnd(pitchY*.76)}" rx="${rnd(step*.13)}" fill="#f8e9cc" opacity=".75"/><ellipse cx="${cx}" cy="${cy}" rx="${rnd(step*.085)}" ry="${rnd(step*.061)}" fill="#ad8182" stroke="#875f68" stroke-width=".7"/>`;
+     if(step>30)shapes+=`<circle cx="${cx}" cy="${cy}" r="${rnd(step*.023)}" fill="#774c60"/>`;
+    }
+   }else if(name==="cheek"){
+    const cx=rnd(left+step*(.46+(variant%3)*.025)),cy=rnd(top+step*(.44+(variant%4)*.022));
+    const angle=(variant-6)*4;
+    shapes+=`<g transform="translate(${cx} ${cy}) rotate(${angle}) scale(${step})"><path d="M-.47,-.06 Q-.50,-.30 -.19,-.40 Q.10,-.52 .34,-.29 Q.58,-.10 .43,.15 Q.33,.37 .10,.39 Q-.19,.50 -.39,.25 Q-.51,.14 -.47,-.06Z" fill="#e1cfd9" stroke="#946f88" stroke-width=".018"/>`;
+    if(detail)shapes+='<ellipse cx=".08" cy="-.035" rx=".125" ry=".095" fill="#8f6384"/><circle cx=".10" cy="-.05" r=".030" fill="#654564"/>';
+    shapes+="</g>";
+   }else{
+    const cx=rnd(left+step*.46),cy=rnd(top+step*.38);
+    shapes+=`<ellipse cx="${cx}" cy="${cy}" rx="${rnd(step*.44)}" ry="${rnd(step*.33)}" fill="#9acb91" stroke="#3b7c4e" stroke-width="1"/>`;
+    if(detail)shapes+=`<circle cx="${cx}" cy="${cy}" r="${rnd(step*.09)}" fill="#4a874e"/>`;
+   }
+  }
+  const bar=field>=1000?500:field>=500?100:50;
+  svg.innerHTML='<defs><clipPath id="vm-clip"><circle cx="210" cy="210" r="183"/></clipPath>'+
+   '<filter id="vm-soft"><feGaussianBlur stdDeviation="'+rnd((100-focus)/22)+'"/></filter></defs>'+
+   '<circle cx="210" cy="210" r="185" fill="#eef2ea" stroke="#263e31" stroke-width="4"/>'+
+   '<g clip-path="url(#vm-clip)"><g filter="url(#vm-soft)">'+shapes+'</g>'+
+   '<line x1="128" y1="342" x2="'+rnd(128+366*bar/field)+'" y2="342" stroke="#153b29" stroke-width="4"/>'+
+   '<text x="128" y="360" font-size="12" fill="#153b29">'+bar+' µm</text></g>';
+  svg.setAttribute("aria-label",label+" at "+core.total(obj)+" times total magnification. Model field "+field+" micrometres.");
+  return {field,bar};
+}
 function mount(el){
  let name="onion",obj=4,focus=100,panX=0,panY=0,records=[];
  el.innerHTML='<section class="vm" id="virtual-microscope" tabindex="-1"><h3>Virtual Microscope Investigation</h3><span class="activity-format" data-format="simulation">Simulation</span>'+
@@ -51,29 +92,7 @@ function mount(el){
  '<p class="vm-small">This is a schematic model, not a real microscope image. Measurements are approximate. Work stays only in this tab until exported.</p></section></section>';
  const $=id=>el.querySelector(id);
  function draw(){
-  const field=core.fieldUm(obj),step=Math.max(4,366*specimens[name].size/field);
-  const cols=Math.min(44,Math.ceil(390/step)+2),rows=Math.min(44,Math.ceil(390/step)+2);
-  let shapes="";
-  for(let y=0;y<rows;y++)for(let x=0;x<cols;x++){
-   const a=210-cols*step/2+x*step+panX*.45,b=210-rows*step/2+y*step+panY*.45;
-   if(Math.hypot(a-210,b-210)>184+step)continue;
-   if(specimens[name].kind==="rect"){
-    shapes+='<rect x="'+rnd(a)+'" y="'+rnd(b)+'" width="'+rnd(step*.93)+'" height="'+rnd(step*.74)+'" rx="2" fill="#ead7ad" stroke="#7f7154" stroke-width="1"/>';
-    if(step>10)shapes+='<ellipse cx="'+rnd(a+step*.56)+'" cy="'+rnd(b+step*.4)+'" rx="'+rnd(step*.08)+'" ry="'+rnd(step*.09)+'" fill="#a8897c"/>';
-   }else{
-    const green=specimens[name].kind==="green",cy=b+step*.38,cx=a+step*.46;
-    shapes+='<ellipse cx="'+rnd(cx)+'" cy="'+rnd(cy)+'" rx="'+rnd(step*.44)+'" ry="'+rnd(step*.33)+'" fill="'+(green?"#9acb91":"#ddcdd6")+'" stroke="'+(green?"#3b7c4e":"#977a89")+'" stroke-width="1"/>';
-    if(step>10)shapes+='<circle cx="'+rnd(cx)+'" cy="'+rnd(cy)+'" r="'+rnd(step*.09)+'" fill="'+(green?"#4a874e":"#8e748d")+'"/>';
-   }
-  }
-  const bar=field>=1000?500:field>=500?100:50;
-  $("#vm-picture").innerHTML='<defs><clipPath id="vm-clip"><circle cx="210" cy="210" r="183"/></clipPath>'+
-   '<filter id="vm-soft"><feGaussianBlur stdDeviation="'+rnd((100-focus)/22)+'"/></filter></defs>'+
-   '<circle cx="210" cy="210" r="185" fill="#eef2ea" stroke="#263e31" stroke-width="4"/>'+
-   '<g clip-path="url(#vm-clip)"><g filter="url(#vm-soft)">'+shapes+'</g>'+
-   '<line x1="50" y1="348" x2="'+rnd(50+366*bar/field)+'" y2="348" stroke="#153b29" stroke-width="4"/>'+
-   '<text x="50" y="369" font-size="12" fill="#153b29">'+bar+' µm</text></g>';
-  $("#vm-picture").setAttribute("aria-label",specimens[name].label+" at "+core.total(obj)+" times total magnification. Model field "+field+" micrometres.");
+  const {field,bar}=drawField($("#vm-picture"),{name,obj,focus,panX,panY});
   $("#vm-scale").textContent="Scale bar: "+bar+" µm. Estimate how many cells fit across the field before recording.";
   $("#vm-total").textContent=core.total(obj)+"×";$("#vm-field").textContent=field+" µm";
   $("#vm-focus-status").textContent=focus>=95?"Sharp":focus>=85?"Nearly sharp":"Blurred";
@@ -128,11 +147,13 @@ function mount(el){
  drawTable();draw();
  el.microscopeInvestigation={get trials(){return records.slice();},select(n,o){if(specimens[n]){$("#vm-slide").value=n;name=n;}if(core.objectives.includes(o)){$("#vm-objective").value=o;obj=o;}draw();}};
 }
+core.drawField=drawField;
+g.VirtualMicroscopeCore=core;
+if(!H)return;
 H.lessonTools=H.lessonTools||{};
 const previous=H.lessonTools["cells/theory"];
 H.lessonTools["cells/theory"]=root=>{
  const pane=document.createElement("div");root.appendChild(pane);mount(pane);
  if(previous){const old=document.createElement("div");root.appendChild(old);previous(old);}
 };
-g.VirtualMicroscopeCore=core;
 })(window);
