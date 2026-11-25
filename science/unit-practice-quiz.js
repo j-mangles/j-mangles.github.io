@@ -73,7 +73,7 @@
     target.innerHTML = `<style>${styles}</style><section class="uq" aria-label="${esc(unit.name)} practice quiz">
       <div class="uq-kicker">Unit ${esc(unit.n)} · Practice</div>
       <h3>Check what you know</h3>
-      <p>Try a short quiz using questions from this unit’s lesson checks. You’ll see an explanation after each answer.</p>
+      <p>${esc(unit.quizIntro || 'Try a short quiz using questions from this unit’s lesson checks. You’ll see an explanation after each answer.')}</p>
       ${bank.length ? `<button class="uq-start" type="button">Start practice</button><div class="uq-stage" hidden aria-live="polite"></div>` : '<p>Practice questions for this unit are coming soon.</p>'}
     </section>`;
     if (!bank.length) return;
@@ -122,8 +122,8 @@
 
     function renderResults() {
       const missedHTML = missed.length ? missed.map(({ item, selected: answer }) => `<article><h4>${esc(item.q)}</h4><p style="color:var(--bad,#c2373a)">Your answer: ${esc(item.a[answer])}</p><p style="color:var(--good,#1e8a5a)">Best answer: ${esc(item.a[item.c])}</p><p>${esc(item.why)}</p>${item.lessonId ? `<button class="uq-retry uq-review-lesson" type="button" data-review-lesson="${esc(item.lessonId)}">Review: ${esc(item.lesson)}</button>` : ''}</article>`).join('') : '<article><h4>All correct</h4><p>Try another round when you’re ready.</p></article>';
-      stage.innerHTML = `<div class="uq-result"><div class="uq-kicker">Round complete</div><div class="uq-score">${score} / ${questions.length}</div><p>${score === questions.length ? 'Excellent work.' : 'Review any missed ideas, then try again.'}</p><div class="uq-missed">${missedHTML}</div><button class="uq-retry" type="button">Try another round</button></div>`;
-      stage.querySelector('.uq-retry').addEventListener('click', begin);
+      stage.innerHTML = `<div class="uq-result"><div class="uq-kicker">Round complete</div><div class="uq-score">${score} / ${questions.length}</div><p>${score === questions.length ? 'Excellent work.' : 'Review any missed ideas, then try again.'}</p><div class="uq-missed">${missedHTML}</div><button class="uq-retry" data-restart-quiz type="button">Try another round</button></div>`;
+      stage.querySelector('[data-restart-quiz]').addEventListener('click', begin);
       stage.querySelectorAll('[data-review-lesson]').forEach(button => button.addEventListener('click', () => {
         if (typeof onLesson === 'function') onLesson(button.dataset.reviewLesson);
       }));

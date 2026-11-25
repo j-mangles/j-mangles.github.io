@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bench Decisions · Grade 8 Science</title>
+<link rel="stylesheet" href="../assets/fonts.css">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="stylesheet" href="../assets/class-assessment.css">
+<link rel="stylesheet" href="../assets/activity-formats.css">
+<link rel="stylesheet" href="../assets/unit-prep.css">
+<script defer src="unit-practice-quiz.js"></script>
+<script defer src="matter-review.js"></script>
+<script defer src="../assets/unit-prep.js"></script>
+</head>
+<body data-subject="sci">
+<main class="rally">
+<a class="back" href="./#matter">Back to Matter, Density and Fluids</a>
+<h1>Bench Decisions</h1>
+<p class="meta">Grade 8 Science · Matter, Density and Fluids</p>
+<nav class="prep-nav" aria-label="Choose an activity">
+<a href="#game" data-mode="game">Review game</a><a href="#quiz" data-mode="quiz">Practice quiz</a><a href="matter-test.html">Individual test</a>
+</nav>
+<section class="prep-mode" id="game">
+<h2 id="case-title" tabindex="-1">Make the call</h2>
+<p id="game-intro">Use a chipped sample, a ramp trial, a sealed syringe and melting ice to make four lab decisions. Play solo or with a partner. Earn one point for each decision and one for the reasoning behind it.</p>
+<button class="primary" type="button" id="begin-game">Start four rounds</button>
+<div id="round" hidden>
+<p id="progress" class="meta"></p>
+<div class="record"><strong id="source"></strong><p id="record"></p></div>
+<h3 id="decision" tabindex="-1"></h3><div class="choices" id="choices"></div>
+<div id="round-result" hidden></div><button type="button" class="primary" id="continue" hidden>Next round</button>
+</div>
+<div id="game-result" hidden><h3 id="total" tabindex="-1"></h3><p id="summary"></p>
+<div class="actions"><button type="button" id="retry-rounds">Retry missed rounds</button><button type="button" id="play-again">Play all four again</button><a href="#quiz">Try the practice quiz</a></div></div>
+</section>
+<section class="prep-mode" id="quiz" hidden><h2 tabindex="-1">Practice quiz</h2><div id="quiz-panel"></div></section>
+<noscript><p>Turn on JavaScript to play or take the quiz. The individual test can also be printed.</p></noscript>
+</main>
+</body></html>
