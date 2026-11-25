@@ -1,0 +1,33 @@
+.prep-nav{display:flex;flex-wrap:wrap;align-items:baseline;gap:.4rem 1.4rem;margin:1.2rem 0 1.8rem;border-bottom:1px solid var(--rule)}
+.prep-nav a{display:inline-block;padding:.6rem 0;color:var(--ink);text-underline-offset:.22em}
+.prep-nav a[aria-current]{font-weight:700;text-decoration:none;border-bottom:3px solid currentColor}
+.prep-mode{scroll-margin:1rem}
+.prep-mode [hidden],.prep-mode[hidden]{display:none!important}
+.prep-mode h2:focus,.prep-mode h3:focus{outline-offset:3px}
+.prep-mode .record{margin:1.25rem 0;padding:1rem 0;border-block:1px solid var(--rule)}
+.prep-mode .record p{margin:.25rem 0}
+.prep-mode .record strong{font-size:1rem}
+.prep-mode .choices{display:grid;gap:.5rem;max-width:43rem;margin:.85rem 0}
+.prep-mode .choices button{text-align:left;line-height:1.45;padding:.7rem .85rem}
+.prep-mode #round-result li{margin:.4rem 0}
+.prep-mode #round-result ol{padding-inline-start:1.5rem}
+.prep-mode .uq{margin:0;border:0;padding:0;box-shadow:none}
+.prep-mode .uq-kicker,.prep-mode .uq>h3{display:none}
+.prep-mode .uq p,.prep-mode .uq button{font-size:1rem}
+.prep-mode .uq .uq-letter{flex-shrink:0}
+html[data-room] .rally button:hover{background:var(--room);color:var(--room-ink)}
+.assessment.unit-test table{border-collapse:collapse;width:min(100%,36rem);font-variant-numeric:tabular-nums;margin:.6rem 0}
+.assessment.unit-test :is(td,th){padding:.42rem .48rem;text-align:left;border-bottom:1px solid var(--rule);line-height:1.35}
+.assessment.unit-test th{font-weight:650}
+@media print{
+ .assessment.unit-test .part .print-answer:not(.filled):not(.name-output){min-height:80pt}
+ .assessment.unit-test .response{break-inside:avoid}
+ .assessment.unit-test .response:has(.filled){break-inside:auto}
+}
+html[data-room] .rally .prep-mode,html[data-room] .rally .uq{border:0;background:transparent}
+html[data-room] .prep-mode .choices button{color:var(--ink);background:var(--paper);text-transform:none;letter-spacing:normal}
+html[data-room] .prep-mode .choices button:hover{background:var(--room);color:var(--room-ink)}
+.prep-mode #decision,.prep-mode #total{font:700 clamp(1.15rem,2vw,1.45rem)/1.3 var(--f-title,inherit);font-size:clamp(1.15rem,2vw,1.45rem);font-weight:700;line-height:1.3;letter-spacing:normal;text-transform:none;border:0}
+.prep-mode .uq{background:transparent}
+html[data-room] .prep-mode .uq-choice{font-size:1rem;text-transform:none;letter-spacing:normal}
+.prep-mode .uq-next:disabled{opacity:.55;cursor:default}

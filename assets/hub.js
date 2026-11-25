@@ -77,6 +77,7 @@
     const left = `<div>
       ${unitCover?`<div class="unit-cover-title" data-cover="${u.id}"><span class="cover-art" aria-hidden="true"></span>`:""}<h2>${esc(u.name)}</h2><div class="span">Unit ${esc(u.n)}${u.when?` · ${esc(u.when)}`:""} <span class="status s-${esc(u.status||"soon")}">${statusLabel(u)}</span></div>${unitCover?"</div>":""}
       ${u.intro?`<p>${esc(u.intro)}</p>`:""}
+      ${H.subject==="sci" && u.id==="matter" ? `<nav class="lesson-activities" aria-label="Matter assessment activities"><a href="matter-review.html"><span class="activity-format" data-format="review">Review game</span> Bench Decisions</a><a href="matter-review.html#quiz">Practice quiz</a><a href="matter-test.html"><span class="activity-format" data-format="test">Test</span> Matter at the Test Bench</a></nav>` : ""}
       ${ls.length>1?`<button class="reviewcard" id="openreview"><b>Review ${esc(u.name)}</b><span>Big ideas, ${ls.reduce((a,l)=>a+(l.terms||[]).length,0)} flashcards and a practice test from every lesson.</span><span class="go">Start &rarr;</span></button>`:""}
       ${ls.length?`<h3>Lessons</h3>
       <ol class="lessons">${ls.map(l=>{const ok=done.has(u.id+"/"+l.id);

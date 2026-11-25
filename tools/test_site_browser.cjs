@@ -22,6 +22,60 @@ async function checkNoHorizontalOverflow(page,label){
  assert.ok(o.scroll<=o.width+6,label+" overflows: "+JSON.stringify(o));
 }
 
+async function unitAssessmentPair(page, width) {
+ const originalViewport=page.viewportSize();
+ await page.setViewportSize({width,height:width===390?844:900});
+ for(const [folder,slug,unitRoute,scoreKeys] of [
+  ["social-studies","mesopotamia","/social-studies/#mesopotamia",[[1,2],[0,1],[2,0],[1,2]]],
+  ["science","matter","/science/#matter",[[1,2],[0,1],[2,0],[1,2]]]
+ ]) {
+  const review=slug+"-review.html",test=slug+"-test.html";
+  await goto(page,unitRoute,'a[href="'+review+'"]');
+  await page.locator('a[href="'+review+'"]').first().click();
+  await page.locator("#begin-game").click();
+  for(const [i,[decision,reason]] of scoreKeys.entries()){
+   await page.locator("#choices button").nth(i===0?(decision+1)%3:decision).click();
+   await page.locator("#choices button").nth(reason).click();
+   assert.match(await page.locator("#round-result").innerText(),i===0?/1 of 2/:/2 of 2/);
+   await page.locator("#continue").click();
+  }
+  assert.match(await page.locator("#total").innerText(),/7 of 8/);
+  await page.locator("#retry-rounds").click();
+  assert.match(await page.locator("#progress").innerText(),/Round 1 of 1/);
+  await page.locator("#choices button").nth(scoreKeys[0][0]).click();
+  await page.locator("#choices button").nth(scoreKeys[0][1]).click();
+  await page.locator("#continue").click();
+  assert.match(await page.locator("#total").innerText(),/2 of 2/);
+  await page.locator('[data-mode="quiz"]').click();
+  await page.locator(".uq-start").click();
+  for(let i=0;i<8;i++){
+   await page.locator(".uq-choice").first().click();
+   await page.locator(".uq-next").click();
+   assert.ok(await page.locator(".uq-feedback").isVisible());
+   await page.locator(".uq-next").click();
+  }
+  assert.match(await page.locator(".uq-score").innerText(),/\/ 8/);
+  await page.locator("[data-restart-quiz]").click();
+  assert.match(await page.locator(".uq-head").innerText(),/Question 1 of 8/);
+  await page.locator('a[href="'+test+'"]').click();
+  assert.equal(await page.locator('textarea[data-answer]').count(),5);
+  await page.locator("#q1").fill("Evidence and reasoning for this sample.");
+  await page.reload();
+  assert.match(await page.locator("#q1").inputValue(),/reasoning/);
+  await page.emulateMedia({media:"print"});
+  assert.match(await page.locator("#q1-paper").innerText(),/reasoning/);
+  await page.emulateMedia({media:"screen"});
+  const file=page.waitForEvent("download");
+  await page.locator("#download-test").click();
+  assert.equal((await file).suggestedFilename(),slug+"-test-answers.txt");
+  await page.locator("#reset-panel summary").click();
+  await page.locator("#clear-test").click();
+  assert.equal(await page.locator("#q1").inputValue(),"");
+  await checkNoHorizontalOverflow(page,folder+" test "+width);
+ }
+ await page.setViewportSize(originalViewport);
+}
+
 async function illustratedDirectory(page,width){
  const actual=page.viewportSize();
  await page.setViewportSize({width,height:width===390?844:900});
@@ -444,6 +498,7 @@ async function settlement(page,width){
   await capture(page,"01-home-desktop");
   stage="illustrated directory and smartboard reveals";
   await illustratedDirectory(page,1280);
+  await unitAssessmentPair(page,1280);
   stage="course maps and resource libraries";
   for(const subject of courses){
    await goto(page,"/"+subject+"/#overview","#atlas-unit-grid .atlas-unit");
@@ -912,6 +967,7 @@ async function settlement(page,width){
   await capture(phone,"home-mobile");
   stage="illustrated directory and smartboard reveals on mobile";
   await illustratedDirectory(phone,390);
+  await unitAssessmentPair(phone,390);
   for(const subject of courses){
    await goto(phone,"/"+subject+"/#overview","#atlas-unit-grid .atlas-unit");
    await checkNoHorizontalOverflow(phone,subject+" overview mobile");
