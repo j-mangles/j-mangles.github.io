@@ -15,7 +15,10 @@
   const retry = document.getElementById("retry-rounds");
   let deck = [], missed = [], picks = [], index = 0, score = 0;
 
-  function begin(cases) {
+  let firstRound = null;
+
+  function begin(cases, isRetry = false) {
+    if (!isRetry) firstRound = null;
     deck = [...cases];
     missed = [];
     index = 0;
@@ -81,6 +84,7 @@
     const reason = document.createElement("p");
     reason.textContent = card.why;
     feedback.append(list, reason);
+    if (unit.revealEvidence) unit.revealEvidence(card);
     feedback.hidden = false;
     next.textContent = index + 1 === deck.length ? "See final score" : "Next round";
     next.hidden = false;
@@ -94,18 +98,29 @@
     result.hidden = false;
     document.getElementById("case-title").textContent = "Game results";
     const total = document.getElementById("total");
-    total.textContent = score + " of " + (deck.length * 2) + " points";
-    document.getElementById("summary").textContent = missed.length ?
-      "Revisit these rounds: " + missed.map(card => card.title).join(", ") + "." :
+    const points = score + " of " + (deck.length * 2) + " points";
+    total.textContent = firstRound ? "Retry · " + points : points;
+    const message = missed.length ? "Revisit these rounds: " + missed.map(card => card.title).join(", ") + "." :
       "You made and supported every decision in this round set.";
+    const summary = document.getElementById("summary");
+    if (firstRound) {
+      const corrected = firstRound.missed - missed.length;
+      const rounds = firstRound.missed === 1 ? "round" : "rounds";
+      summary.textContent = "First game: " + firstRound.points + ". You have corrected " + corrected +
+        " of " + firstRound.missed + " missed " + rounds + ".";
+      if (missed.length) summary.textContent += " " + message;
+    } else {
+      firstRound = { points, missed: missed.length };
+      summary.textContent = message;
+    }
     retry.hidden = !missed.length;
     total.focus();
   };
   start.onclick = again.onclick = () => begin(unit.rounds);
-  retry.onclick = () => begin(missed);
+  retry.onclick = () => begin(missed, true);
+  start.disabled = false;
 
-  window.UnitPracticeQuiz.mount(document.getElementById("quiz-panel"), unit,
-    lessonId => { location.href = unit.lessonPrefix + encodeURIComponent(lessonId); });
+  window.UnitPracticeQuiz.mount(document.getElementById("quiz-panel"), unit);
 
   function selectMode() {
     const mode = location.hash === "#quiz" ? "quiz" : "game";

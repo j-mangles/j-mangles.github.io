@@ -9,8 +9,10 @@
 <link rel="stylesheet" href="../assets/class-assessment.css">
 <link rel="stylesheet" href="../assets/activity-formats.css">
 <link rel="stylesheet" href="../assets/unit-prep.css">
+<link rel="stylesheet" href="bench-evidence.css">
 <script defer src="unit-practice-quiz.js"></script>
 <script defer src="matter-review.js"></script>
+<script defer src="bench-evidence.js"></script>
 <script defer src="../assets/unit-prep.js"></script>
 </head>
 <body data-subject="sci">
@@ -24,17 +26,47 @@
 <section class="prep-mode" id="game">
 <h2 id="case-title" tabindex="-1">Make the call</h2>
 <p id="game-intro">Use a chipped sample, a ramp trial, a sealed syringe and melting ice to make four lab decisions. Play solo or with a partner. Earn one point for each decision and one for the reasoning behind it.</p>
-<button class="primary" type="button" id="begin-game">Start four rounds</button>
+<button class="primary" type="button" id="begin-game" disabled>Start four rounds</button>
 <div id="round" hidden>
 <p id="progress" class="meta"></p>
+<div class="case-layout">
 <div class="record"><strong id="source"></strong><p id="record"></p></div>
-<h3 id="decision" tabindex="-1"></h3><div class="choices" id="choices"></div>
-<div id="round-result" hidden></div><button type="button" class="primary" id="continue" hidden>Next round</button>
+<aside class="case-file" aria-label="Round evidence"><div id="evidence-slot"></div><button type="button" id="enlarge-evidence">Enlarge evidence</button></aside>
+<div class="case-decision"><h3 id="decision" tabindex="-1"></h3><div class="choices" id="choices"></div>
+<div id="round-result" hidden></div><button type="button" class="primary" id="continue" hidden>Next round</button></div>
+</div>
 </div>
 <div id="game-result" hidden><h3 id="total" tabindex="-1"></h3><p id="summary"></p>
 <div class="actions"><button type="button" id="retry-rounds">Retry missed rounds</button><button type="button" id="play-again">Play all four again</button><a href="#quiz">Try the practice quiz</a></div></div>
 </section>
 <section class="prep-mode" id="quiz" hidden><h2 tabindex="-1">Practice quiz</h2><div id="quiz-panel"></div></section>
 <noscript><p>Turn on JavaScript to play or take the quiz. The individual test can also be printed.</p></noscript>
+<dialog id="evidence-view" aria-label="Enlarged evidence"><div class="evidence-toolbar"><button type="button" id="close-evidence" autofocus>Close evidence</button></div><div id="enlarged-slot"></div></dialog>
+<template id="sample"><figure><h3>A piece of the original sample</h3>
+  <div class="volume-grid" aria-hidden="true"></div>
+  <ul class="sample-key"><li><i></i>Original sample · 28 cm³</li><li><i></i>Chip · 7 cm³</li></ul>
+  <figcaption>Each square represents 1 cm³ of the original solid. The outlined row marks the volume of the chip.</figcaption>
+ </figure></template>
+<template id="ramp"><figure><h3>Compare the stopwatches</h3>
+  <label class="readout" for="ramp-time">Replay time <output for="ramp-time">7 s</output></label>
+  <input type="range" id="ramp-time" min="0" max="19" value="7" step="1" aria-valuetext="7 seconds">
+  <div class="trial-clock" data-stop="7"><div><b>Drop P</b><span></span></div><div class="timing-track" aria-hidden="true"><i></i></div></div>
+  <div class="trial-clock" data-stop="19"><div><b>Drop Q</b><span></span></div><div class="timing-track" aria-hidden="true"><i></i></div></div>
+  <figcaption>Move through the trial. Each watch stops when its drop crosses the 18 cm line.</figcaption>
+ </figure></template>
+<template id="barrel"><figure><h3>Set the syringe reading</h3>
+  <label class="readout" for="syringe-volume">Trapped air <output for="syringe-volume">18 mL</output></label>
+  <div class="instrument" aria-hidden="true"><div class="nozzle"></div><div class="barrel"><i class="air"></i><i class="piston"></i></div><div class="barrel-scale"><span>0</span><span>5</span><span>10</span><span>15</span><span>20 mL</span></div></div>
+  <input type="range" id="syringe-volume" min="12" max="18" value="18" step="1" aria-valuetext="18 millilitres">
+  <div id="pressure-model" hidden><div class="readout"><span>Model pressure</span><output id="syringe-pressure" for="syringe-volume" aria-label="Pressure relative to starting pressure">1.00×</output></div>
+   <p>At 18 mL, the starting pressure is 1.00×. Each snapshot shows the same 12 dots at the same temperature.</p></div>
+  <figcaption>Move the plunger from the starting mark to 12 mL. The cap stays sealed.</figcaption>
+ </figure></template>
+<template id="ice"><figure><h3>Two readings during melting</h3>
+  <div class="ice-pair">
+   <div><b>First reading</b><div class="ice-dish" aria-hidden="true"><i></i><i></i><i></i></div><strong>0 °C</strong><span>Ice and water</span></div>
+   <div><b>Later reading</b><div class="ice-dish later" aria-hidden="true"><i></i><i></i></div><strong>0 °C</strong><span>More liquid water</span></div>
+  </div><figcaption>The heater is on between readings. Sketches show the change in state, with no measured quantities of ice or water.</figcaption>
+ </figure></template>
 </main>
 </body></html>

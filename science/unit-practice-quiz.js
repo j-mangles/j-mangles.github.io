@@ -1,11 +1,4 @@
-/*
- * Draft module for the Grade 8 Science site.
- * Load this script on science/index.html before ../assets/hub.js. In the
- * existing renderReview(u) function, add a mount point after #review, then:
- *   UnitPracticeQuiz.mount(document.querySelector('#unit-practice-quiz'), u);
- * The unit object is supplied by assets/hub.js, so each review page gets its
- * own quiz and students never need to choose a unit from a separate hub.
- */
+/* Shared formative quiz for unit reviews and standalone review games. */
 (() => {
   'use strict';
 
@@ -33,6 +26,17 @@
     .uq-feedback[data-correct=true]{background:#e8f5ee}.uq-feedback[data-correct=false]{background:#fbecee}.uq-feedback strong{display:block;margin-bottom:3px;color:var(--ink,#202126)}
     .uq-result{padding:12px 0 2px}.uq-score{font-size:28px;font-weight:750;color:var(--accent-ink,var(--accent,#5968e8))}
     .uq-missed{margin-top:12px;display:grid;gap:8px}.uq-missed article{padding:12px;border:1px solid var(--rule,#dedfe7);border-radius:10px}.uq-missed h4{margin:0 0 5px;font-size:15px}.uq-missed p{margin:3px 0;font-size:14px}
+    .uq-choice[data-verdict]{opacity:1}
+    .uq-choice[data-verdict=correct]{border-color:var(--good,#1e8a5a)}
+    .uq-choice[data-verdict=selected]{border-color:var(--bad,#c2373a)}
+    .uq .uq-feedback{color:var(--ink,#202126);background:var(--soft,#eef0fb);border-inline-start:4px solid var(--good,#1e8a5a)}
+    .uq .uq-feedback[data-correct=false]{border-color:var(--bad,#c2373a)}
+    .uq .uq-feedback span{display:block;margin-top:.25rem}
+    .uq .uq-result h4,.uq .uq-question{margin-block:.4rem;font-family:inherit;letter-spacing:normal;text-transform:none}
+    .uq .uq-actions{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem .85rem;margin:1rem 0}
+    .uq .uq-actions button{margin:0}.uq .uq-actions .uq-secondary{background:transparent;color:var(--ink);border:1px solid var(--muted)}
+    .uq .uq-review-lesson{display:inline-block;margin:.35rem 0;color:var(--accent-ink,var(--ink));text-underline-offset:.18em}
+    .uq-sr{position:absolute;width:1px;height:1px;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
     @media(max-width:520px){.uq{padding:17px}.uq-head{font-size:12px}}
   `;
 
@@ -74,22 +78,24 @@
       <div class="uq-kicker">Unit ${esc(unit.n)} · Practice</div>
       <h3>Check what you know</h3>
       <p>${esc(unit.quizIntro || 'Try a short quiz using questions from this unit’s lesson checks. You’ll see an explanation after each answer.')}</p>
-      ${bank.length ? `<button class="uq-start" type="button">Start practice</button><div class="uq-stage" hidden aria-live="polite"></div>` : '<p>Practice questions for this unit are coming soon.</p>'}
+      ${bank.length ? `<button class="uq-start" type="button">Start practice</button><div class="uq-stage" hidden></div>` : '<p>Practice questions for this unit are coming soon.</p>'}
     </section>`;
     if (!bank.length) return;
 
     const start = target.querySelector('.uq-start');
     const stage = target.querySelector('.uq-stage');
-    let questions = [], index = 0, score = 0, selected = -1, missed = [];
+    let questions = [], index = 0, selected = -1, missed = [];
+    let firstAttempt = null;
 
     function renderQuestion() {
       const item = questions[index];
       selected = -1;
-      stage.innerHTML = `<div class="uq-head"><span>Unit ${esc(unit.n)}: ${esc(unit.name)}</span><span>Question ${index + 1} of ${questions.length}</span></div>
+      stage.innerHTML = `<div class="uq-head"><span>${firstAttempt ? 'Correction round' : 'Unit ' + esc(unit.n) + ' · ' + esc(unit.name)}</span><span>Question ${index + 1} of ${questions.length}</span></div>
         <div class="uq-track" aria-hidden="true"><span style="width:${Math.round(index / questions.length * 100)}%"></span></div>
-        <p class="uq-lesson">${esc(item.lesson)}</p><p class="uq-question">${esc(item.q)}</p>
+        <p class="uq-lesson">${esc(item.lesson)}</p><h4 class="uq-question" tabindex="-1"><span class="uq-sr">Question ${index + 1} of ${questions.length}. </span>${esc(item.q)}</h4>
         <div class="uq-options">${item.a.map((answer, i) => `<button class="uq-choice" type="button" aria-pressed="false" data-answer="${i}"><span class="uq-letter">${String.fromCharCode(65 + i)}</span><span>${esc(answer)}</span></button>`).join('')}</div>
-        <p class="uq-feedback" hidden></p><button class="uq-next" type="button" disabled>Check answer</button>`;
+        <p class="uq-feedback" tabindex="-1" hidden></p><button class="uq-next" type="button" disabled>Check answer</button>`;
+      stage.querySelector('.uq-question').focus();
       stage.querySelectorAll('.uq-choice').forEach(button => button.addEventListener('click', () => {
         if (!stage.querySelector('.uq-feedback').hidden) return;
         selected = Number(button.dataset.answer);
@@ -101,16 +107,18 @@
         if (feedback.hidden) {
           if (selected < 0) return;
           const correct = selected === item.c;
-          if (correct) score++;
-          else missed.push({ item, selected });
+          if (!correct) missed.push({ item, selected });
           stage.querySelectorAll('.uq-choice').forEach((button, i) => {
             button.disabled = true;
-            if (i === item.c) button.style.borderColor = 'var(--good,#1e8a5a)';
-            else if (i === selected) button.style.borderColor = 'var(--bad,#c2373a)';
+            if (i === item.c) button.dataset.verdict = 'correct';
+            else if (i === selected) button.dataset.verdict = 'selected';
           });
           feedback.hidden = false;
           feedback.dataset.correct = String(correct);
-          feedback.innerHTML = `<strong>${correct ? 'That’s right.' : 'Not quite.'}</strong>${esc(item.why)}`;
+          feedback.innerHTML = correct
+            ? `<strong>Correct.</strong>${esc(item.why)}`
+            : `<strong>Correct answer: ${esc(item.a[item.c])}</strong><span>You chose: ${esc(item.a[selected])}</span><span>${esc(item.why)}</span>`;
+          feedback.focus();
           stage.querySelector('.uq-next').textContent = index === questions.length - 1 ? 'See results' : 'Next question';
           return;
         }
@@ -120,20 +128,51 @@
       });
     }
 
+    function lessonLink(item) {
+      if (!item.lessonId) return '';
+      const title = esc(item.lesson);
+      if (unit.lessonPrefix) {
+        const href = esc(unit.lessonPrefix + encodeURIComponent(item.lessonId));
+        return `<a class="uq-review-lesson" href="${href}" target="_blank" rel="noopener">Review ${title} (new tab)</a>`;
+      }
+      return typeof onLesson === 'function'
+        ? `<button class="uq-review-lesson" type="button" data-review-lesson="${esc(item.lessonId)}">Review ${title}</button>` : '';
+    }
+
     function renderResults() {
-      const missedHTML = missed.length ? missed.map(({ item, selected: answer }) => `<article><h4>${esc(item.q)}</h4><p style="color:var(--bad,#c2373a)">Your answer: ${esc(item.a[answer])}</p><p style="color:var(--good,#1e8a5a)">Best answer: ${esc(item.a[item.c])}</p><p>${esc(item.why)}</p>${item.lessonId ? `<button class="uq-retry uq-review-lesson" type="button" data-review-lesson="${esc(item.lessonId)}">Review: ${esc(item.lesson)}</button>` : ''}</article>`).join('') : '<article><h4>All correct</h4><p>Try another round when you’re ready.</p></article>';
-      stage.innerHTML = `<div class="uq-result"><div class="uq-kicker">Round complete</div><div class="uq-score">${score} / ${questions.length}</div><p>${score === questions.length ? 'Excellent work.' : 'Review any missed ideas, then try again.'}</p><div class="uq-missed">${missedHTML}</div><button class="uq-retry" data-restart-quiz type="button">Try another round</button></div>`;
+      const isCorrection = firstAttempt !== null;
+      if (!isCorrection) firstAttempt = { total: questions.length, missed: missed.length };
+      const remaining = missed.length;
+      const summary = isCorrection
+        ? `${firstAttempt.missed - remaining} of ${firstAttempt.missed} originally missed ${firstAttempt.missed === 1 ? 'question' : 'questions'} corrected.`
+        : remaining ? 'Read the explanations below, then retry the questions you missed.' : 'You answered every question correctly.';
+      const missedHTML = missed.map(({ item, selected: answer }) => `<article><h4>${esc(item.q)}</h4>
+        <p>Your answer: ${esc(item.a[answer])}</p><p><strong>Correct answer: ${esc(item.a[item.c])}</strong></p>
+        <p>${esc(item.why)}</p>${lessonLink(item)}</article>`).join('');
+      const retryLabel = remaining === 1 ? 'Retry 1 missed question' : `Retry ${remaining} missed questions`;
+      stage.innerHTML = `<div class="uq-result"><h4 tabindex="-1">First attempt <span class="uq-score">${firstAttempt.total - firstAttempt.missed} / ${firstAttempt.total}</span></h4>
+        <p class="uq-summary">${summary}</p><div class="uq-actions">
+        ${remaining ? `<button class="uq-retry" data-retry-missed type="button">${retryLabel}</button>` : ''}
+        <button class="uq-retry${remaining ? ' uq-secondary' : ''}" data-restart-quiz type="button">${esc(unit.restartLabel || 'Start a full round')}</button></div>
+        ${remaining ? `<div class="uq-missed">${missedHTML}</div>` : ''}</div>`;
+      stage.querySelector('.uq-result h4').focus();
       stage.querySelector('[data-restart-quiz]').addEventListener('click', begin);
-      stage.querySelectorAll('[data-review-lesson]').forEach(button => button.addEventListener('click', () => {
-        if (typeof onLesson === 'function') onLesson(button.dataset.reviewLesson);
-      }));
+      if (remaining) stage.querySelector('[data-retry-missed]').addEventListener('click', () => run(missed.map(entry => entry.item)));
+      stage.querySelectorAll('[data-review-lesson]').forEach(button => button.addEventListener('click', () => onLesson(button.dataset.reviewLesson)));
+    }
+
+    function run(items) {
+      questions = items;
+      index = 0;
+      missed = [];
+      start.hidden = true;
+      stage.hidden = false;
+      renderQuestion();
     }
 
     function begin() {
-      questions = shuffle(bank).slice(0, Math.min(10, bank.length));
-      index = 0; score = 0; missed = [];
-      start.hidden = true; stage.hidden = false;
-      renderQuestion();
+      firstAttempt = null;
+      run(shuffle(bank).slice(0, 10));
     }
     start.addEventListener('click', begin);
   }
