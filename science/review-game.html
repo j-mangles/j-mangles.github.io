@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="theme-color" content="#ffffff">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Cells &amp; Transport Review Game · Mr. Mangles' Class</title>
-<meta name="description" content="Grade 8 Science team review game: cell theory, organelles, plant vs. animal cells, permeability and transport.">
+<title>Cells and Systems Review Game · Mr. Mangles' Class</title>
+<meta name="description" content="Two Grade 8 Science team review boards covering cells, transport, cell division, specialized cells, body systems and circulation.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231C3A5E'/%3E%3Ctext x='16' y='22' font-family='Georgia' font-size='17' font-weight='700' text-anchor='middle' fill='%23ffffff'%3EM%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="../assets/fonts.css">
 <link rel="stylesheet" href="../assets/site.css">
@@ -27,10 +27,13 @@
 .rg-adj{display:flex;gap:4px}
 .rg-adj button{width:30px;height:30px;border-radius:50%;border:1px solid var(--rule);background:var(--paper);color:var(--ink);font-weight:700;cursor:pointer}
 .rg-team.lead{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
-.rg-scroll{overflow-x:auto}
-.rg-board{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;min-width:560px}
-.rg-cat{background:var(--ink);color:#fff;border-radius:10px;padding:12px 8px;text-align:center;font-weight:700;font-size:clamp(13px,1.4vw,17px);text-transform:uppercase;letter-spacing:.05em;display:flex;align-items:center;justify-content:center;min-height:68px;text-wrap:balance}
-.rg-tile{background:var(--accent);color:#fff;border:0;border-radius:10px;min-height:clamp(64px,11vh,110px);font:inherit;font-weight:700;font-size:clamp(24px,3.4vw,44px);letter-spacing:-.02em;font-variant-numeric:tabular-nums;cursor:pointer;transition:transform .12s ease,filter .12s ease}
+.rg-boards{display:flex;flex-wrap:wrap;gap:8px 22px;border-bottom:1px solid var(--rule)}
+.rg-boards a{color:var(--accent-ink);padding:9px 0;text-underline-offset:3px}
+.rg-boards a[aria-current]{border-bottom:3px solid var(--accent);color:var(--ink);font-weight:700;text-decoration:none}
+.rg-board{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.rg-column{display:grid;grid-template-rows:minmax(62px,auto) repeat(5,auto);gap:8px}
+.rg-cat{background:var(--ink);color:#fff;border-radius:10px;padding:12px 8px;text-align:center;font-weight:700;font-size:clamp(13px,1.4vw,17px);text-transform:uppercase;letter-spacing:.05em;display:flex;align-items:center;justify-content:center;min-height:62px;text-wrap:balance}
+.rg-tile{background:var(--accent);color:#fff;border:0;border-radius:10px;min-height:clamp(50px,7vh,80px);font:inherit;font-weight:700;font-size:clamp(24px,3.4vw,44px);letter-spacing:-.02em;font-variant-numeric:tabular-nums;cursor:pointer;transition:transform .12s ease,filter .12s ease}
 .rg-tile:hover{filter:brightness(1.1);transform:translateY(-2px)}
 .rg-tile.used{background:var(--soft);color:#A3A6B4}
 .rg-tile.used:hover{transform:none;filter:none}
@@ -68,6 +71,12 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline
 .rg-judge button{flex:1;border-radius:8px;padding:8px;font:inherit;font-weight:600;border:1px solid rgba(255,255,255,.3);background:transparent;color:#F3F4FF;cursor:pointer}
 .rg-judge button.on-good{background:var(--good);border-color:var(--good)}
 .rg-judge button.on-bad{background:var(--bad);border-color:var(--bad)}
+@media(max-width:650px){
+  .rg-board{grid-template-columns:1fr;gap:5px}
+  .rg-column{grid-template-columns:minmax(0,1.8fr) repeat(5,minmax(0,1fr));grid-template-rows:1fr;gap:4px}
+  .rg-cat{min-height:52px;justify-content:flex-start;text-align:left;text-transform:none;letter-spacing:0;font-size:14px;padding:5px;overflow-wrap:anywhere}
+  .rg-tile{min-height:48px;font-size:clamp(15px,4vw,22px)}
+}
 @media (prefers-reduced-motion:reduce){.rg-tile{transition:none}.rg-tile:hover{transform:none}}
 </style>
 <link rel="stylesheet" href="../assets/activity-formats.css">
@@ -78,9 +87,8 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline
   <div class="rg-head">
     <div>
       <a class="rg-back" href="./#cells">&larr; Back to Cells and Systems</a>
-      <div class="eyebrow" style="margin-top:10px">Grade 8 Science · Review Game</div>
-      <h1>Cells &amp; Transport Review</h1>
-      <p class="lede">Topic 1: Introduction to Cells · Topic 2: Permeability &amp; Transport</p>
+      <h1>Cells and Systems Review</h1>
+      <p class="lede">Grade 8 Science · Team review</p>
     </div>
     <div><a href="systems-rally.html"><span class="activity-format" data-format="review">Review game</span> · Body Systems Rally</a> · <a href="body-systems-test.html"><span class="activity-format" data-format="test">Test</span> · Body Systems in Action</a></div>
     <div class="rg-tools" id="tools">
@@ -89,6 +97,10 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline
       <button class="btn ghost" id="resetBtn" type="button">New game</button>
     </div>
   </div>
+  <nav class="rg-boards" aria-label="Choose a review board">
+    <a href="review-game.html" id="cells-link">Topics 1–2 · Cells and transport</a>
+    <a href="?board=systems" id="systems-link">Topics 3–7 · Cells to systems</a>
+  </nav>
   <section class="rg-scores" id="scores" aria-label="Team scores"></section>
   <div class="rg-scroll"><section class="rg-board" id="board" aria-label="Game board"></section></div>
   <div class="rg-final"><button class="btn" id="finalBtn" type="button">Final Question</button></div>
@@ -96,8 +108,9 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline
 </main>
 <div class="rg-overlay" id="overlay" hidden role="dialog" aria-modal="true" aria-labelledby="ovQ"></div>
 <footer class="site"><div class="wrap">Mr. Mangles' Class · École Edward Schreyer School · 2026–27</div></footer>
+<script src="systems-board.js"></script>
 <script>
-const CATS = [
+const transportCategories = [
   { name: "Cell Theory", qs: [
     { q: "What is biology?", a: "The scientific study of living things." },
     { q: "Who first named cells, and what was he looking at under the microscope?", a: "Robert Hooke. He was looking at a thin piece of cork.", note: "He called them “cellulae,” Latin for “small rooms.”" },
@@ -108,19 +121,19 @@ const CATS = [
   { name: "Organelles", qs: [
     { q: "Which organelle is the control centre of the cell and contains DNA?", a: "The nucleus." },
     { q: "Which organelle is called the “powerhouse of the cell,” and what does it do?", a: "The mitochondria. They convert sugars into a usable form of energy." },
-    { q: "What is the gel-like fluid (mostly water) found between the cell membrane and the nucleus?", a: "Cytoplasm.", note: "Older diagrams may call it “cytosol.”" },
+    { q: "What is the material inside a cell membrane, outside the nucleus, that includes the fluid and the organelles suspended in it?", a: "Cytoplasm. The fluid part is called cytosol." },
     { q: "Which organelle is the cell's “post office” that packs and transports materials around the cell?", a: "The Golgi apparatus." },
     { q: "The ER and the Golgi apparatus look alike in diagrams. How can you tell them apart?", a: "The ER is connected (or nearly connected) to the nucleus. The Golgi apparatus sits on its own." }
   ]},
   { name: "Plant vs. Animal", qs: [
-    { q: "Name the TWO organelles found in plant cells but NOT in animal cells.", a: "The cell wall and the chloroplast." },
+    { q: "Which two structures can you find in a green leaf cell that an animal cell lacks?", a: "The cell wall and the chloroplast." },
     { q: "What is the green pigment inside chloroplasts called?", a: "Chlorophyll." },
-    { q: "Only two types of organisms have cell walls. Name both, and say what each one's walls are made of.", a: "Plants (cellulose) and fungi (chitin)." },
+    { q: "Plants and fungi both have cell walls. Which material strengthens each type of wall?", a: "Plants (cellulose) and fungi (chitin)." },
     { q: "How are vacuoles different in plant cells compared to animal cells?", a: "Plant cells usually have one large vacuole that helps support the cell. Animal cells have many smaller vacuoles." },
-    { q: "Why do plant cells need a rigid cell wall, but animal cells don't?", a: "Plants can't move, so they need rigid support to stay upright against gravity and wind.", note: "Accept any answer about plants needing support/structure because they don't move." }
+    { q: "Why do plant cells need a rigid cell wall, but animal cells don't?", a: "The cell wall gives support, helps maintain shape and resists pressure as water enters." }
   ]},
   { name: "Permeability", qs: [
-    { q: "If a substance is PERMEABLE, what does it let through?", a: "Anything." },
+    { q: "A membrane is described as permeable to water. What does this tell you about water?", a: "Water can pass through that membrane." },
     { q: "What's the difference between IMPERMEABLE and SELECTIVELY PERMEABLE?", a: "Impermeable lets nothing through. Selectively permeable lets only some things through.", note: "Another name for selectively permeable is semipermeable." },
     { q: "Give a real-life example of something permeable, something impermeable, and something selectively permeable.", a: "Accept reasonable examples.", note: "Permeable: cheesecloth, window screen. Impermeable: plastic wrap, brick wall. Selectively permeable: coffee filter, the cell membrane." },
     { q: "Most of the cell membrane is made up of what molecules?", a: "Phospholipids." },
@@ -135,14 +148,18 @@ const CATS = [
   ]}
 ];
 const VALUES = [100,200,300,400,500];
-const FINAL = {
-  cat: "Final Question",
+const transportFinal = {
+  cat: "In and out of the cell",
   q: "A cell already has MORE sugar inside it than outside, but it needs to bring in even more. Which type of transport must it use, and why?",
   a: "Active transport. The sugar has to move from low concentration (outside) to high concentration (inside), against the gradient, so it needs energy (ATP).",
   note: "Diffusion couldn't do it, because diffusion only moves from high to low."
 };
 
-const KEY = "sci-cells-transport-review-v1";
+const systemsMode = new URLSearchParams(location.search).get("board") === "systems";
+const CATS = systemsMode ? systemsBoard.categories : transportCategories;
+const FINAL = systemsMode ? systemsBoard.final : transportFinal;
+const KEY = systemsMode ? "sci-cells-systems-review-v1" : "sci-cells-transport-review-v1";
+document.getElementById(systemsMode ? "systems-link" : "cells-link").setAttribute("aria-current","page");
 let state = load() || fresh(4);
 function fresh(n){ return { teams: Array.from({length:n},(_,i)=>({name:"Team "+(i+1), score:0})), used:{} }; }
 function load(){ try{ const s = JSON.parse(localStorage.getItem(KEY)); if(s && Array.isArray(s.teams)) return s; }catch(e){} return null; }
@@ -166,16 +183,20 @@ function renderScores(){
     </div>`).join("");
 }
 function renderBoard(){
-  let html = CATS.map(c=>`<div class="rg-cat">${esc(c.name)}</div>`).join("");
-  VALUES.forEach((v,r)=>{
-    CATS.forEach((c,ci)=>{
-      const id = ci+"-"+r, used = state.used[id];
-      html += `<button type="button" class="rg-tile ${used?"used":""}" data-c="${ci}" data-r="${r}" aria-label="${esc(c.name)} for ${v}${used?" (done)":""}">${v}</button>`;
-    });
-  });
-  $("#board").innerHTML = html;
+  $("#board").innerHTML = CATS.map((category, ci) => {
+    const tiles = VALUES.map((value, r) => {
+      const used = state.used[ci+"-"+r];
+      return `<button type="button" class="rg-tile ${used?"used":""}" data-c="${ci}" data-r="${r}" aria-label="${esc(category.name)} for ${value}${used?" (done)":""}">${value}</button>`;
+    }).join("");
+    return `<div class="rg-column"><div class="rg-cat">${esc(category.name)}</div>${tiles}</div>`;
+  }).join("");
 }
-function render(){ renderScores(); renderBoard(); }
+function render(){
+  renderScores();
+  renderBoard();
+  $("#finalBtn").disabled = Boolean(state.finalScored);
+  $("#finalBtn").textContent = state.finalScored ? "Final question scored" : "Final Question";
+}
 
 $("#scores").addEventListener("input", e=>{
   if(e.target.matches("input[data-i]")){ state.teams[+e.target.dataset.i].name = e.target.value || ("Team "+(+e.target.dataset.i+1)); save(); }
@@ -232,6 +253,11 @@ function reveal(){
   if(!current || current.revealed || current.final) return;
   current.revealed = true;
   $("#ans").hidden = false;
+  if(state.used[current.ci+"-"+current.r]){
+    $("#ovActions").textContent = "Already scored";
+    $("#ovClose").focus();
+    return;
+  }
   $("#ovActions").innerHTML = `<div class="rg-award-lbl">Who got it? (+${current.val})</div>` +
     state.teams.map((t,i)=>`<button type="button" class="rg-award" data-award="${i}">${esc(t.name)}</button>`).join("") +
     `<button type="button" class="rg-award none" data-award="-1">No one</button>`;
@@ -246,8 +272,11 @@ function reveal(){
 }
 function closeQ(){
   ov.hidden = true; ov.innerHTML = ""; document.body.style.overflow = "";
+  const tile = current && !current.final ? current : null;
   current = null; render();
-  if(lastFocus && document.contains(lastFocus)) lastFocus.focus();
+  if(tile) $(`[data-c="${tile.ci}"][data-r="${tile.r}"]`).focus();
+  else if(lastFocus && document.contains(lastFocus) && !lastFocus.disabled) lastFocus.focus();
+  else $("#resetBtn").focus();
 }
 document.addEventListener("keydown", e=>{
   if(ov.hidden) return;
@@ -260,7 +289,7 @@ $("#finalBtn").onclick = ()=>{
   lastFocus = document.activeElement;
   current = {final:true};
   ov.innerHTML = `
-    <div class="rg-ov-top"><span class="rg-ov-label">Final Question · Category: In &amp; Out of the Cell</span><button class="rg-ov-close" type="button" id="ovClose">Back to board</button></div>
+    <div class="rg-ov-top"><span class="rg-ov-label">Final Question · Category: ${esc(FINAL.cat)}</span><button class="rg-ov-close" type="button" id="ovClose">Back to board</button></div>
     <div class="rg-ov-body">
       <p class="rg-q" id="ovQ">Each team: how many points will you risk?</p>
       <div class="rg-wagers">${state.teams.map((t,i)=>`
@@ -271,6 +300,7 @@ $("#finalBtn").onclick = ()=>{
   ov.hidden = false; document.body.style.overflow = "hidden";
   $("#ovClose").onclick = closeQ;
   $("#toFinalQ").onclick = showFinalQ;
+  $("#wager-0").focus();
 };
 function showFinalQ(){
   const wagers = state.teams.map((t,i)=>{
@@ -289,15 +319,18 @@ function showFinalQ(){
   $("#finReveal").focus();
   $("#finReveal").onclick = ()=>{
     $("#ans").hidden = false; $("#judges").hidden = false;
-    act.innerHTML = `<button class="rg-reveal" type="button" id="finApply">Update scores</button>`;
+    act.innerHTML = `<button class="rg-reveal" type="button" id="finApply" disabled>Update scores</button>`;
+    $("#judges button").focus();
     $("#judges").onclick = e=>{
       const b = e.target.closest("[data-j]"); if(!b) return;
       const i = +b.dataset.j; marks[i] = b.dataset.v==="1";
       b.parentElement.querySelectorAll("button").forEach(x=>x.className="");
       b.className = marks[i] ? "on-good" : "on-bad";
+      $("#finApply").disabled = marks.includes(null);
     };
     $("#finApply").onclick = ()=>{
       state.teams.forEach((t,i)=>{ if(marks[i]===true) t.score += wagers[i]; else if(marks[i]===false) t.score -= wagers[i]; });
+      state.finalScored = true;
       save(); closeQ();
     };
   };

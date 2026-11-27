@@ -444,6 +444,43 @@ async function evidenceAndCurves(page,width){
  for(const item of [reading,"lower reading","Both curves stay","First prediction: Curve "+wrong])assert.ok(text.includes(item));
 }
 
+async function systemsTeamBoard(page){
+ const tile = page.locator('.rg-tile[data-c="0"][data-r="0"]');
+ const score = page.locator(".rg-pts").first();
+ await goto(page,"/science/#cells",'a[href="review-game.html?board=systems"]');
+ await page.locator('a[href="review-game.html?board=systems"]').first().click();
+ await page.locator('#systems-link[aria-current="page"]').waitFor();
+ assert.equal(await page.locator(".rg-tile").count(),25);
+ await tile.click();
+ assert.match(await page.locator("#ovQ").innerText(),/scraped knee/);
+ await page.locator("#revealBtn").click();
+ await page.locator('[data-award="0"]').click();
+ assert.equal(await score.innerText(),"100");
+ await tile.click();
+ await page.locator("#revealBtn").click();
+ assert.equal(await page.locator("[data-award]").count(),0);
+ await page.keyboard.press("Escape");
+ await page.locator("#cells-link").click();
+ assert.equal(await score.innerText(),"0");
+ await page.locator("#systems-link").click();
+ assert.equal(await score.innerText(),"100");
+ await page.locator("#finalBtn").click();
+ await page.locator("#wager-0").fill("100");
+ await page.locator("#toFinalQ").click();
+ assert.match(await page.locator("#ovQ").innerText(),/leg muscle/);
+ await page.locator("#finReveal").click();
+ assert.ok(await page.locator("#finApply").isDisabled());
+ for(const button of await page.locator('[data-v="1"]').all()) await button.click();
+ await page.locator("#finApply").click();
+ await page.reload();
+ assert.equal(await score.innerText(),"200");
+ assert.ok(await page.locator("#finalBtn").isDisabled());
+ await page.locator("#resetBtn").click();
+ await page.locator(".rg-yes").click();
+ assert.equal(await score.innerText(),"0");
+ assert.ok(await page.locator("#finalBtn").isEnabled());
+}
+
 async function rallyAssessments(page,width){
  const loc=id=>page.locator("#"+id);
  await goto(page,"/science/review-game.html",'a[href="systems-rally.html"]');
@@ -645,6 +682,7 @@ async function settlement(page,width){
   await illustratedDirectory(page,1280);
   await unitAssessmentPair(page,1280);
   await egyptReview(page,1280);
+  await systemsTeamBoard(page);
   await cellAndGreeceAssessments(page,1280);
   stage="course maps and resource libraries";
   for(const subject of courses){
